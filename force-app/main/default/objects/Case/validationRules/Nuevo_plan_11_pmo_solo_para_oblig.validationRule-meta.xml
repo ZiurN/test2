@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nuevo_plan_11_pmo_solo_para_oblig</fullName>
+    <active>true</active>
+    <description>El valor de nuevo plan ‘11 PMO’ se podrá seleccionar solamente para cuando en el titular la asociación sea ‘aporte obligatorio</description>
+    <errorConditionFormula>AND(
+RecordType.Name = &quot;Solicitud de cambio de plan&quot;,
+ISPICKVAL(  Plandespegue__c , &quot;11 PMO&quot;),
+NOT(ISPICKVAL( Account.Afiliacion__c , &quot;Aporte Obligatorio&quot;))
+)</errorConditionFormula>
+    <errorMessage>Se podrá seleccionar un nuevo plan &quot;11 PMO&quot;, para cuando la asociación del titular sea &quot;Aporte obligatorio&quot;</errorMessage>
+</ValidationRule>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Question__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Utilice este campo para documentar la pregunta a la que responde este artículo. Incluya palabras clave importantes para ayudar a los usuarios a encontrar este artículo.</inlineHelpText>
+    <label>Pregunta</label>
+    <length>32768</length>
+    <type>Html</type>
+    <visibleLines>25</visibleLines>
+</CustomField>

@@ -1,0 +1,33 @@
+<aura:component controller="AsociadoScoreBtnCtrl" implements="force:hasRecordId" access="global">
+
+	<ltng:require scripts="{!$Resource.LightningUtils}" />
+	<ltng:require styles="{!$Resource.multilineToast}" />
+
+	<aura:attribute name="isLoading" type="Boolean" default="false"/>
+	<aura:attribute name="accountSimpleRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+
+    <force:recordData 
+		aura:id="recordLoader"
+		recordId="{!v.recordId}"
+		fields="Codigo_de_Afiliado__c"
+		targetFields="{! v.accountSimpleRecord }"
+		targetError="{! v.recordLoadError }"
+    />
+
+	
+	<lightning:button 
+		variant="neutral" 
+		onclick="{! c.handleClickBtn }" 
+  		title="Scoring" 
+		label="Scoring"
+		aura:id="disableEnviarAP"
+	/>
+
+	<aura:if isTrue="{! v.isLoading }">
+		<lightning:spinner alternativeText="Loading" variant="brand"/>
+	</aura:if>
+
+	<lightning:overlayLibrary aura:id="overlayLib"/>
+
+</aura:component>

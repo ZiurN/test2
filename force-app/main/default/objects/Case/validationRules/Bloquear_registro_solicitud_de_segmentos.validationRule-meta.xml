@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Bloquear_registro_solicitud_de_segmentos</fullName>
+    <active>true</active>
+    <description>Validacion para bloquear registro mientras el estado de solicitud de segmento este en completa o tranformada siempre y cuando el estado DDJJ no sea firma OS</description>
+    <errorConditionFormula>AND(
+				RecordType.DeveloperName = &quot;Solicitud_de_segmento&quot;,
+				$Profile.Name &lt;&gt; &quot;Administrador del sistema&quot;,
+				NOT($Permission.Usuario_integracion),
+				NOT(ISNEW()),
+				OR(
+			   	ISPICKVAL(PRIORVALUE(Estado_de_solicitud__c),&quot;COMPLETA&quot;),
+					 	ISPICKVAL(PRIORVALUE(Estado_de_solicitud__c),&quot;TRANSOFRMADA&quot;)
+								),				
+				NOT(ISPICKVAL(Estado_DDJJ__c,&quot;FIRMA O.S.&quot;))
+				)</errorConditionFormula>
+    <errorMessage>No puede modificar el registro si el estado de la solicitud es &quot;TRANSFORMADA&quot; o &quot;COMPLETA&quot; siempre y cuando el Estado DDJJ no es &quot;FIRMA O.S&quot;</errorMessage>
+</ValidationRule>

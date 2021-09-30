@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fecha_suspendido__c</fullName>
+    <description>En esta campo se almacena la fecha y hora en el que el evento medico cambio suspendido</description>
+    <externalId>false</externalId>
+    <label>Fecha suspendido</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

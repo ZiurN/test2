@@ -1,0 +1,64 @@
+<aura:component controller="CaseReintegroAnularBtnCtrl" implements="force:hasRecordId" access="global">
+	<ltng:require scripts="{!$Resource.LightningUtils}" />
+	<ltng:require styles="{!$Resource.multilineToast}" />
+
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="caseSimpleRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+	<aura:attribute name="showConfirmDialog" type="boolean" default="false"/>
+
+    <force:recordData
+		aura:id="recordLoader"
+   		recordId="{! v.recordId }"
+        fields="Status, Nro_AP__c, Caso_Rechazado__c"
+        targetFields="{! v.caseSimpleRecord }"
+        targetError="{! v.recordLoadError }"
+		recordUpdated="{! c.doInit }"
+	/>
+
+
+	<aura:if isTrue="{!v.showConfirmDialog}">
+
+		<div role="dialog" class="slds-modal slds-fade-in-open ">
+			<div class="slds-modal__container">
+
+				<header class="slds-modal__header">
+					<div class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+						<lightning:buttonIcon
+								iconName="utility:close"
+								variant="border-inverse"
+								onclick="{! c.handleConfirmDialogNo }"
+								alternativeText="Close"
+						/>
+					</div>
+					<h1 class="slds-text-heading--medium">Confirme</h1>
+				</header>
+
+				<div class="slds-modal__content slds-p-around--medium">
+					<center><b>Está seguro/a que desea anular el Caso(AP)?</b></center>
+				</div>
+
+				<footer class="slds-modal__footer" style="text-align:center">
+					<lightning:button variant="brand" name='Si' label='Si' onclick='{!c.handleConfirmDialogYes}'/>
+					<lightning:button variant="destructive" name='No' label='No' onclick='{!c.handleConfirmDialogNo}'/>
+				</footer>
+
+			</div>
+		</div>
+		<div class="slds-backdrop slds-backdrop--open"></div>
+	</aura:if>
+
+    <aura:if isTrue="{! v.isLoading }">
+		<lightning:spinner alternativeText="Loading" variant="brand"/>
+	</aura:if>
+    
+	<lightning:overlayLibrary aura:id="overlayLib"/>
+
+	<lightning:button 
+		variant="neutral" 
+		onclick="{! c.handleClickBtn }" 
+  		title="Anular" 
+		label="Anular"
+		aura:id="button"
+	/>
+</aura:component>

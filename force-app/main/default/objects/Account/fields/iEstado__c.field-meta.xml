@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>iEstado__c</fullName>
+    <externalId>false</externalId>
+    <formula>CASE(
+Estado__c ,
+&quot;Activo&quot;, IMAGE (&quot;https://acasalud--uat--c.documentforce.com/servlet/servlet.ImageServer?id=0158A0000001Kyu&amp;oid=00D8A0000005P6b&amp;lastMod=1577114728000&quot;, &quot;Activo&quot;,20,20),
+&quot;Dado de baja&quot;, IMAGE (&quot;https://acasalud--uat--c.documentforce.com/servlet/servlet.ImageServer?id=0158A0000001Kz4&amp;oid=00D8A0000005P6b&amp;lastMod=1577114765000&quot;, &quot;Dado de baja&quot;,20,20),
+&quot;Generado&quot;, IMAGE (&quot;https://acasalud--uat--c.documentforce.com/servlet/servlet.ImageServer?id=0158A0000001Kyz&amp;oid=00D8A0000005P6b&amp;lastMod=1577114748000&quot;, &quot;Generado&quot;,20,20),
+&quot;Suspendido&quot;, IMAGE (&quot;https://acasalud--uat--c.documentforce.com/servlet/servlet.ImageServer?id=0158A0000001L9j&amp;oid=00D8A0000005P6b&amp;lastMod=1577320690000&quot;, &quot;Suspendido&quot;,20,20),
+&quot;&quot;
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Estado</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

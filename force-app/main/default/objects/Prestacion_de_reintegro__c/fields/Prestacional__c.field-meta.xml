@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Prestacional__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>Prestacion</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Nomenclador_de_Prestacion__c.Descripcion_tipo_nomenclador__c</field>
+            <operation>notContain</operation>
+            <value>ODONTOLOGICAS</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Nomenclador_de_Prestacion__c</referenceTo>
+    <relationshipLabel>Prestaciones de reintegros</relationshipLabel>
+    <relationshipName>Prestaciones_de_reintegros</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

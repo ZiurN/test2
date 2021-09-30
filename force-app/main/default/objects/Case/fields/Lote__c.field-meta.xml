@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lote__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>Lote</label>
+    <lookupFilter>
+        <active>true</active>
+        <booleanFilter>(1 AND 2 AND 9) OR (3 AND 4 AND 9 AND 10) OR (5 AND 6 AND 9) OR (7 AND 8 AND 9)</booleanFilter>
+        <filterItems>
+            <field>$Source.Derivacion_de_lote__c</field>
+            <operation>equals</operation>
+            <value>Lote Especial</value>
+        </filterItems>
+        <filterItems>
+            <field>Lote__c.Tipo__c</field>
+            <operation>equals</operation>
+            <value>Especial</value>
+        </filterItems>
+        <filterItems>
+            <field>$Source.Derivacion_de_lote__c</field>
+            <operation>equals</operation>
+            <value>Lote Vigente</value>
+        </filterItems>
+        <filterItems>
+            <field>Lote__c.Tipo__c</field>
+            <operation>equals</operation>
+            <value>Vigente</value>
+        </filterItems>
+        <filterItems>
+            <field>$Source.Derivacion_de_lote__c</field>
+            <operation>equals</operation>
+            <value>Lote Devolucion</value>
+        </filterItems>
+        <filterItems>
+            <field>Lote__c.Tipo__c</field>
+            <operation>equals</operation>
+            <value>Devoluciones</value>
+        </filterItems>
+        <filterItems>
+            <field>$Source.Derivacion_de_lote__c</field>
+            <operation>equals</operation>
+            <value>Lote Pendiente</value>
+        </filterItems>
+        <filterItems>
+            <field>Lote__c.Tipo__c</field>
+            <operation>equals</operation>
+            <value>Pendiente</value>
+        </filterItems>
+        <filterItems>
+            <field>Lote__c.Estado__c</field>
+            <operation>equals</operation>
+            <value>Abierto</value>
+        </filterItems>
+        <filterItems>
+            <field>Lote__c.Visibilidad_Front__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </filterItems>
+        <isOptional>true</isOptional>
+    </lookupFilter>
+    <referenceTo>Lote__c</referenceTo>
+    <relationshipLabel>Reintegros</relationshipLabel>
+    <relationshipName>Casos</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Estado_de_cuenta_corriente_color__c</fullName>
+    <externalId>false</externalId>
+    <formula>CASE(
+				 Color_estado_de_cuenta__c, 
+				&quot;NARANJA&quot;,IMAGE(&quot;https://acasalud--uat--c.documentforce.com/servlet/servlet.FileDownload?file=0158A0000001snS&quot;,&quot;NARANJA&quot;,25,25),
+				&quot;VERDE&quot;,IMAGE(&quot;https://acasalud--uat--c.documentforce.com/servlet/servlet.FileDownload?file=0158A0000001snU&quot;,&quot;VERDE&quot;,25,25),
+				&quot;AMARILLO&quot;,IMAGE(&quot;https://acasalud--uat--c.documentforce.com/servlet/servlet.FileDownload?file=0158A0000001snR&quot;,&quot;AMARILLO&quot;,25,25),
+				&quot;ROJO&quot;,IMAGE(&quot;https://acasalud--uat--c.documentforce.com/servlet/servlet.FileDownload?file=0158A0000001snT&quot;,&quot;ROJO&quot;,25,25),
+				&quot;&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Color estado de cuenta corriente</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

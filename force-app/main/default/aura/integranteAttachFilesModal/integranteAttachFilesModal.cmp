@@ -1,0 +1,56 @@
+<aura:component controller="OpportunityFileUploadCtrl" implements="force:hasRecordId" description="opportunityAttachFilesModal">
+    <ltng:require scripts="{!$Resource.LightningUtils}" />
+	<lightning:overlayLibrary aura:id="overlayLib"/>
+    
+	<aura:attribute name="isLoading" type="Boolean" default="false"/>
+	<aura:attribute name="integranteRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+
+	<force:recordData 
+		aura:id="recordLoader"
+		recordId="{! v.recordId }"
+		fields="Oportunidad__r.Segmento_del_Grupo_Familiar__c,Integrante_tipo_asociado__c,Aportes__c, Oportunidad__c,Tipo_de_relacion_con_titular__c,Oportunidad__r.Tipo_de_Asociado__c"
+		targetFields="{! v.integranteRecord }"
+		targetError="{! v.recordLoadError }"
+	/>
+	<aura:if isTrue="{!v.integranteRecord.Oportunidad__r.Segmento_del_Grupo_Familiar__c != null}">
+		<c:opportunityAttachFilesInputGroup inputs="[{'key':'dni_integrante','value':'DNI'}]" recordId="{!v.integranteRecord.Oportunidad__c}" entityId="{!v.recordId}"/>
+</aura:if>
+	<!--  Conyuge-->
+	<aura:if isTrue="{!and(v.integranteRecord.Oportunidad__r.Segmento_del_Grupo_Familiar__c != null , equals(v.integranteRecord.Tipo_de_relacion_con_titular__c,'Conyuge'))}">
+		<c:opportunityAttachFilesInputGroup inputs="[{'key':'cert_matrimonio','value':'Certificado de Matrimonio o concubinato'}]" recordId="{!v.integranteRecord.Oportunidad__c}" entityId="{!v.recordId}"/>
+	</aura:if>
+
+<!-- Grupo VOLDIR | VOLEMP - Hijo/a-->
+	<aura:if isTrue="{!and(or(equals(v.integranteRecord.Oportunidad__r.Segmento_del_Grupo_Familiar__c , 'VOLDIR'),equals(v.integranteRecord.Oportunidad__r.Segmento_del_Grupo_Familiar__c , 'VOLEMP')) , equals(v.integranteRecord.Tipo_de_relacion_con_titular__c,'Hijo/a'))}">
+		<c:opportunityAttachFilesInputGroup inputs="[{'key':'cert_nacimiento_integrante','value':'Certificado de Nacimiento'},{'key':'historia_clinica','value':'Historia clínica pediátrica – solo menores de 1 año'}]" recordId="{!v.integranteRecord.Oportunidad__c}" entityId="{!v.recordId}"/>
+	</aura:if>
+
+<!-- GRUPO OBLDIR | conyuge no aporta -->
+	<aura:if isTrue="{!and(and(or(equals(v.integranteRecord.Oportunidad__r.Segmento_del_Grupo_Familiar__c, 'OBLDIR'),equals(v.integranteRecord.Oportunidad__r.Segmento_del_Grupo_Familiar__c, 'OBLEMP')) ,  or(v.integranteRecord.Oportunidad__r.Tipo_de_Asociado__c == 'Relacion de Dependencia',v.integranteRecord.Oportunidad__r.Tipo_de_Asociado__c == 'Monotributista')),or(v.integranteRecord.Aportes__c == null, v.integranteRecord.Aportes__c == 0))}">
+		<c:opportunityAttachFilesInputGroup inputs="[{'key':'cert_negativa_integrante','value':'Certificación negativa'}]" recordId="{!v.integranteRecord.Oportunidad__c}" entityId="{!v.recordId}"/>
+
+	</aura:if>
+
+<!-- GRUPO OBLDIR | conyuge rel dep aporta -->
+	<aura:if isTrue="{!and(or(equals(v.integranteRecord.Oportunidad__r.Segmento_del_Grupo_Familiar__c, 'OBLDIR'),equals(v.integranteRecord.Oportunidad__r.Segmento_del_Grupo_Familiar__c, 'OBLEMP') ),  v.integranteRecord.Oportunidad__r.Tipo_de_Asociado__c == 'Relacion de Dependencia',v.integranteRecord.Aportes__c != null, v.integranteRecord.Aportes__c > 0)}">
+		<c:opportunityAttachFilesInputGroup inputs="[{'key':'recibo_sueldo_integrante','value':'Recibo de sueldo'}]" recordId="{!v.integranteRecord.Oportunidad__c}" entityId="{!v.recordId}"/>
+
+	</aura:if>
+
+	<aura:if isTrue="{!and(and(equals(v.integranteRecord.Oportunidad__r.Segmento_del_Grupo_Familiar__c, 'OBLDIR'),v.integranteRecord.Aportes__c != null), and(v.integranteRecord.Aportes__c > 0,v.integranteRecord.Oportunidad__r.Tipo_de_Asociado__c == 'Monotributista'))}">
+		<c:opportunityAttachFilesInputGroup inputs="[{'key':'recibo_sueldo_integrante','value':'Recibo de sueldo'}]" recordId="{!v.integranteRecord.Oportunidad__c}" entityId="{!v.recordId}"/>
+	</aura:if>	
+
+	<aura:if isTrue="{!and(equals(v.integranteRecord.Oportunidad__r.Segmento_del_Grupo_Familiar__c, 'OBLDIR') ,  v.integranteRecord.Integrante_tipo_asociado__c == 'Monotributista')}">
+		<c:opportunityAttachFilesInputGroup inputs="[{'key':'monotributo_152_integrante','value':'Monotributista Form. 152'},{'key':'monotributo_184_integrante','value':'Monotributista Form. 184'},{'key':'monotributo_3pagos_integrante','value':'Monotributista Últimos 3 pagos'}]" recordId="{!v.integranteRecord.Oportunidad__c}" entityId="{!v.recordId}"/>
+
+	</aura:if>
+
+
+	<aura:if isTrue="{!and(equals(v.integranteRecord.Oportunidad__r.Segmento_del_Grupo_Familiar__c , 'OBLDIR'),and(not(empty(v.integranteRecord.Oportunidad__r.Tipo_de_Asociado__c)), equals(v.integranteRecord.Tipo_de_relacion_con_titular__c,'Hijo/a')))}">
+		<c:opportunityAttachFilesInputGroup inputs="[{'key':'cert_nacimiento_integrante','value':'Certificado de Nacimiento'},{'key':'historia_clinica_integrante','value':'Historia clínica pediátrica – solo menores de 1 año'},
+{'key':'cert_alumno','value':'Certificación de alumno regular (solo si tiene entre 21 a 25 años inclusive)'}]" recordId="{!v.integranteRecord.Oportunidad__c}" entityId="{!v.recordId}"/>
+	</aura:if>
+	
+</aura:component>

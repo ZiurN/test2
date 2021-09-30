@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IND_Validar_cambio_tramitacion_boton</fullName>
+    <active>false</active>
+    <description>Si no se pasa mediante el botón de enviar a SS, no se puede pasar a etapa En tramitación</description>
+    <errorConditionFormula>AND(
+    
+    RecordType.Name =  &quot;Individuos&quot;,
+    ISPICKVAL(StageName, &quot;En tramitación&quot;),
+    Cambio_Manual__c = True
+)</errorConditionFormula>
+    <errorMessage>Para pasar a etapa En Tramitación, deberá clickear en el botón &quot;Enviar a SaludSoft&quot;</errorMessage>
+</ValidationRule>

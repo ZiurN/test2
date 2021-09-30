@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Derivacion_de_lote__c</fullName>
+    <externalId>false</externalId>
+    <label>Derivacion de lote</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Lote Vigente</fullName>
+                <default>true</default>
+                <label>Lote Vigente</label>
+            </value>
+            <value>
+                <fullName>Lote Devolucion</fullName>
+                <default>false</default>
+                <label>Lote Devolucion</label>
+            </value>
+            <value>
+                <fullName>Lote Pendiente</fullName>
+                <default>false</default>
+                <label>Lote Pendiente</label>
+            </value>
+            <value>
+                <fullName>Lote Especial</fullName>
+                <default>false</default>
+                <label>Lote Especial</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

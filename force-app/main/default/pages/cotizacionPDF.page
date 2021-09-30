@@ -1,0 +1,153 @@
+<apex:page standardController="Cotizacion__c" showHeader="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false" renderAs="pdf">
+
+    <head>
+        <style> 
+            body { font-family: 'Arial Unicode MS'; }
+
+            .parent {
+                display: flex;
+                align-items: center;
+            }
+
+            .col{
+                width: 60%;
+                display: inline-block;
+            }
+
+
+
+            ul li {
+                list-style-type: none;
+            }
+
+                .parent > div {
+                    flex: 1;
+                }
+                
+
+        </style>
+    </head>
+    <body>
+        <img src="{!$Resource.AcaHeader}" Width="200px"/>
+
+        <apex:pageBlock title="Cotizacion {!Cotizacion__c.Nro_cotizacion_individual__c}">
+            <div class="parent">  
+              <div class="col">
+                  <ul>
+                      <li>
+                        <apex:outputText rendered="{!IF(Cotizacion__c.Precio_Titular__c != null,true,false)}">
+                            Precio titular: $ {!Cotizacion__c.Precio_Titular__c}
+                        </apex:outputText>
+                      </li>
+                      <li>
+                        <apex:outputText rendered="{!IF(Cotizacion__c.Precio_Conyuge__c != null,true,false)}">
+                            Precio conyuge: $ {!Cotizacion__c.Precio_Conyuge__c}
+                        </apex:outputText>
+                      </li>
+                      <li>
+                          <apex:outputText rendered="{!IF(Cotizacion__c.Precio_hijo_entre_21_y_25_aos__c != null,true,false)}">
+                           Precio hijo entre 21 y 25 años: $ {!Cotizacion__c.Precio_hijo_entre_21_y_25_aos__c}
+                        </apex:outputText>
+                      
+                      </li>
+                      <li>
+                          <apex:outputText rendered="{!IF(Cotizacion__c.Precio_1er_hijo_menor_21_aos__c != null,true,false)}">
+                            Precio primer hijo menor 21 años: $ {!Cotizacion__c.Precio_1er_hijo_menor_21_aos__c}
+                        </apex:outputText>
+                      
+                      </li>
+                      <li>
+                          <apex:outputText rendered="{!IF(Cotizacion__c.Precio_2do_hijo_menor_21_aos__c != null,true,false)}">
+                            Precio segundo hijo menor 21 años: $ {!Cotizacion__c.Precio_2do_hijo_menor_21_aos__c}
+                        </apex:outputText>
+                      
+                      </li>
+                      <li>
+                          <apex:outputText rendered="{!IF(Cotizacion__c.Precio_3er_hijo_menor_21_aos__c != null,true,false)}">
+                            Precio tercer hijo o más menor 21 años: $ {!Cotizacion__c.Precio_3er_hijo_menor_21_aos__c}
+                        </apex:outputText>
+                      
+                      </li>
+                      <li>
+                          <apex:outputText rendered="{!IF(Cotizacion__c.Precio_total__c != null,true,false)}">
+                            Precio total: $ {!Cotizacion__c.Precio_total__c}
+                        </apex:outputText>
+                      
+                      </li>
+                      <li>
+                          <apex:outputText rendered="{!IF(Cotizacion__c.Deduccion_de_aportes__c != null,true,false)}">
+                            Deducción de aportes: $ {!Cotizacion__c.Deduccion_de_aportes__c}
+                        </apex:outputText>
+                     
+                      </li>
+                      <li>
+                          <apex:outputText rendered="{!IF(Cotizacion__c.Deduccin_de_aportes_Monotributo__c != null,true,false)}">
+                            Deducción de aportes monotributo: $ {!Cotizacion__c.Deduccin_de_aportes_Monotributo__c}
+                        </apex:outputText>
+                      
+                      </li>
+                      <li>
+                          <apex:outputText rendered="{!IF(Cotizacion__c.Bonif_especial_6_meses__c != null,true,false)}">
+                            Bonif. especial 6 meses: $ {!Cotizacion__c.Bonif_especial_6_meses__c}
+                        </apex:outputText>
+                      
+                      </li>
+                      <li>
+                          <apex:outputText rendered="{!IF(Cotizacion__c.Dto_pago_con_tarjeta_de_credito__c != null,true,false)}">
+                            Dto. pago con tarjeta de crédito: $ {!Cotizacion__c.Dto_pago_con_tarjeta_de_credito__c}
+                        </apex:outputText>
+                      
+                      </li>
+                      <li>
+                          <apex:outputText rendered="{!IF(Cotizacion__c.Descuento_pago_debito_cbu__c != null,true,false)}">
+                            Dto. pago con débito/CBU: $ {!Cotizacion__c.Descuento_pago_debito_cbu__c}
+                        </apex:outputText>
+                      
+                      </li>
+                      <li>
+                          <apex:outputText rendered="{!IF(Cotizacion__c.Diferencia_a_pagar__c != null,true,false)}">
+                            Diferencia a pagar: $ {!Cotizacion__c.Diferencia_a_pagar__c}
+                        </apex:outputText>
+                      </li>
+  
+                      <li>
+                          <apex:outputText rendered="{!IF(Cotizacion__c.Bonif_Especial_por_Grupo_de_Afinidad__c != null,true,false)}">
+                            Bonificacion especial Grupo afinidad: {!Cotizacion__c.Bonif_Especial_por_Grupo_de_Afinidad__c}
+                        </apex:outputText>
+                      
+                      </li>
+                      <li>
+                          <apex:outputText rendered="{!IF(Cotizacion__c.Bonif_Grupo_potencialidad__c != null,true,false)}">
+                            Bonificacion grupo potencialidad: {!Cotizacion__c.Bonif_Grupo_potencialidad__c}
+                        </apex:outputText>
+                      
+                      </li>
+                      <li>
+                          <apex:outputText rendered="{!IF(Cotizacion__c.Bonificacion_por_region__c != null,true,false)}">
+                            Bonificacion grupo región: {!Cotizacion__c.Bonificacion_por_region__c}
+                        </apex:outputText>
+                      
+                      </li>
+                      <li>
+                          <apex:outputText rendered="{!IF(Cotizacion__c.Capital_social_cooperativo__c != null,true,false)}">
+                            Capital social cooperativo: {!Cotizacion__c.Capital_social_cooperativo__c}
+                        </apex:outputText>
+                      
+                      </li>
+                      <li>
+                          <apex:outputText rendered="{!IF(Cotizacion__c.Total_de_capitas_cotizadas__c != null,true,false)}">
+                            Total de cápitas cotizadas: {!Cotizacion__c.Total_de_capitas_cotizadas__c}
+                        </apex:outputText>
+                      
+                      </li>
+                  </ul>
+              </div>
+            </div>
+
+
+
+        </apex:pageBlock>
+
+    </body>
+
+</apex:page>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Voluntario_directo__c</fullName>
+    <description>Este check se utiliza para convertir los valores del campo segmento en &quot;Check&quot; que se utilizan en las plantillas de la integracion de Docusign. NO BORRAR, NO MODIFICAR</description>
+    <externalId>false</externalId>
+    <formula>ISPICKVAL( Segmento_del_Grupo_Familiar__c,&quot;VOLDIR&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Voluntario directo</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

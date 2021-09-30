@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Modificar_Subtipo_en_Tipo_Oxigenoterapia</fullName>
+    <active>true</active>
+    <description>Permitir modificar subtipo cuando el perfil es Back O Compras Tecnicas</description>
+    <errorConditionFormula>AND(
+    $Profile.Name &lt;&gt; &apos;Back&apos;,
+				$Profile.Name &lt;&gt; &apos;Back Administrativo&apos;,
+				$Profile.Name &lt;&gt; &apos;Back CT&apos;,
+				$Profile.Name &lt;&gt; &apos;Administrador del sistema&apos;,
+				$Profile.Name &lt;&gt; &apos;System Administrator&apos;,
+				ISCHANGED(Subtipo__c) 
+)</errorConditionFormula>
+    <errorMessage>El Subtipo de un Evento Medico de Oxigenoterapia debe ser modificado por un Back o un Administrador</errorMessage>
+</ValidationRule>

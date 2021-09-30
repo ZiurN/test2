@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IF_Completar_CBU_y_cuil_del_CBU</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+				RecordType.DeveloperName = &quot;Interfaz_financiera&quot;,
+    ISPICKVAL( Type , &quot;C&quot;),
+				NOT(ISBLANK(TEXT(Tipo_CBU__c))),
+				OR(
+								ISBLANK(CBU__c),
+								ISBLANK(CUIL_del_CBU__c)
+				)
+)</errorConditionFormula>
+    <errorMessage>Si Tipo CBU está completo, debe completar CBU y CUIL del CBU</errorMessage>
+</ValidationRule>

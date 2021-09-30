@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IND_Aporta_por_hijos</fullName>
+    <active>true</active>
+    <description>Debe indicar si Aporta hijos, cuando tipo de contacto es grupo familiar, tipo de afiliado es monotributista, tiene hijos de hasta 20 años o hijos entre 21 y 25.</description>
+    <errorConditionFormula>AND(
+     RecordType.Name = &quot;Cotización Individual&quot;,
+     ISPICKVAL( Tipo_de_contacto__c , &quot;Grupo familiar&quot;),
+     ISPICKVAL(  Tipo_de_afiliado__c , &quot;Monotributista&quot;),
+    OR(
+       NOT(ISBLANK( Hijos_hasta_20_aos__c )),
+       NOT(ISBLANK( Hijos_entre_21_y_25_aos__c ))
+      ),
+    ISBLANK(TEXT( Aporta_por_hijos__c ))
+)</errorConditionFormula>
+    <errorDisplayField>Aporta_por_hijos__c</errorDisplayField>
+    <errorMessage>Debe indicar si aporta por hijos</errorMessage>
+</ValidationRule>

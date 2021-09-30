@@ -1,0 +1,146 @@
+<aura:component controller="OpportunityFileUploadCtrl" implements="force:hasRecordId" description="opportunityAttachFilesModal">
+    <ltng:require scripts="{!$Resource.LightningUtils}" />
+    <lightning:overlayLibrary aura:id="overlayLib" />
+    
+    <aura:attribute name = "shouldDisabledButton" type = "boolean"/>
+    <aura:attribute name = "contentDocumentEntry" type = "Boolean"/>
+    <aura:attribute name = "contentDocumentDDJJ" type = "Boolean"/>
+    <aura:attribute name = "activateFilesUpload" type = "Boolean"/>
+    <aura:attribute name="isLoading" type="Boolean" default="false" />
+    <aura:attribute name="accountSimpleRecord" type="Object" />
+    <aura:attribute name="recordLoadError" type="String" />
+    <aura:attribute name="integrantes" type="List" />
+    <aura:attribute name="perfil" type="String" />
+    <aura:attribute name="tipo_afiliado" type="String" />
+    <aura:attribute name="files" type="List" />
+    <aura:attribute name="isProfileVentas" type="Boolean"/>
+    <aura:handler name="init" value="{! this }" action="{! c.init }" />
+    
+    <aura:if isTrue="{!v.isLoading}">
+        <lightning:spinner alternativeText="Loading" variant="brand" />
+    </aura:if>
+    <force:recordData aura:id="recordLoader" recordId="{! v.recordId }" fields="Segmento_del_Grupo_Familiar__c,Edad__c,Tipo_de_Asociado__c,Aportes_del_titular__c,Cotizacion_elegida__r.Tipo_de_afiliado__c,RecordType.DeveloperName,Cotizacion_elegida__c,Sin_cotizacion__c,CreatedById,Parentesco__c,Reingresa_como__c"
+        targetFields="{! v.accountSimpleRecord }" targetError="{! v.recordLoadError }" recordUpdated="{! c.setTipo }" />
+    <aura:if isTrue="{!v.accountSimpleRecord != null}">
+        <c:opportunityAttachFilesInputGroup  shouldDisabledButton = "{!v.shouldDisabledButton}"  inputs="[{'key':'DDJJa','value':'Declaración jurada anverso'},
+        {'key':'DDJJb','value':'Declaración jurada reverso'}]" recordId="{!v.recordId}" entityId="{!v.recordId}" files="{!v.files}" checkActivateFiles = "{!v.activateFilesUpload}" contentDocument ="{!v.contentDocumentDDJJ}" isProfileVentas="{!v.isProfileVentas}"/>
+        <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}"  inputs ="[{'key':'Sola' ,'value':'Solicitud de Ingreso anverso'},
+        {'key':'Solb','value':'Solicitud de ingreso reverso'}]" recordId="{!v.recordId}" entityId="{!v.recordId}" files="{!v.files}" checkActivateFiles = "{!v.activateFilesUpload}" contentDocument ="{!v.contentDocumentEntry}" isProfileVentas="{!v.isProfileVentas}"/>
+        <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}"  inputs = "[{'key':'dni_titular','value':'DNI'}]"  recordId="{!v.recordId}" entityId="{!v.recordId}" files="{!v.files}" isProfileVentas="{!v.isProfileVentas}"/>  
+</aura:if>
+
+    <aura:if isTrue="{!and(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c != null ,not(equals(v.accountSimpleRecord.Reingresa_como__c,'Familiar')))}">
+
+        <!-- Grupo VOLDIR - Edad entre 2 y 18-->
+        <aura:if isTrue="{!and(and(equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c, 'VOLDIR'),equals(v.accountSimpleRecord.Reingresa_como__c,null)) ,  and(lessthan(v.accountSimpleRecord.Edad__c, 18),greaterthan(v.accountSimpleRecord.Edad__c, 2)))}">
+            <c:opportunityAttachFilesInputGroup inputs="[{'key':'formulario','value':'Formulario de minoridad'}]" recordId="{!v.recordId}" entityId="{!v.recordId}" isProfileVentas="{!v.isProfileVentas}" />
+        </aura:if>
+
+
+        <aura:if isTrue="{!and(equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c, 'OBLDIR') ,  v.tipo_afiliado == 'Relacion de Dependencia')}">
+            <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}" inputs="[{'key':'ultimo_recibo_sueldo','value':'Último recibo de sueldo'},
+	{'key':'codem','value':'Codem'},{'key':'cuil','value':'CUIL'},{'key':'aportes_afip','value':'Afip mi aportes (opcional)'}]" recordId="{!v.recordId}" entityId="{!v.recordId}" isProfileVentas="{!v.isProfileVentas}" />
+
+        </aura:if>
+
+        <aura:if isTrue="{!and(equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c, 'OBLEMP') ,  v.tipo_afiliado == 'Relacion de Dependencia')}">
+            <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}"  inputs="[{'key':'ultimo_recibo_sueldo','value':'Último recibo de sueldo'},
+	{'key':'codem','value':'Codem'},{'key':'cuil','value':'CUIL'}]" recordId="{!v.recordId}" entityId="{!v.recordId}" isProfileVentas="{!v.isProfileVentas}"/>
+
+        </aura:if>
+
+        <aura:if isTrue="{!and(or(equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c, 'OBLDIR'),equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c, 'OBLEMP')) ,  v.tipo_afiliado == 'Monotributista')}">
+            <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}"  inputs="[{'key':'codem','value':'Codem'},{'key':'monotributo_152','value':'Monotributista Form. 152'},{'key':'monotributo_184','value':'Monotributista Form. 184'},
+	{'key':'ultimos_pagos_mono','value':'Monotributista Últimos 3 pagos'},{'key':'cuil','value':'CUIL'}]" recordId="{!v.recordId}" entityId="{!v.recordId}"  isProfileVentas="{!v.isProfileVentas}"/>
+
+        </aura:if>
+    </aura:if>
+    <!-- Reingresa como familiar-->
+    <aura:if isTrue="{!and(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c != null ,equals(v.accountSimpleRecord.Reingresa_como__c,'Familiar'))}">
+        <aura:if isTrue="{!and(or(equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c, 'OBLDIR'),equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c, 'OBLEMP')) ,  v.accountSimpleRecord.Parentesco__c == 'HI')}">
+            <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}" inputs="[{'key':'cert_nacimiento','value':'Certificado de Nacimiento'},{'key':'cert_negativa','value':'Certificación Negativa'}]" recordId="{!v.recordId}" entityId="{!v.recordId}" isProfileVentas="{!v.isProfileVentas}"/>
+        </aura:if>
+        <aura:if isTrue="{!and(or(equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c, 'OBLDIR'),equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c, 'OBLEMP')) ,  v.accountSimpleRecord.Parentesco__c == 'CO')}">
+            <aura:if isTrue="{!and(v.tipo_afiliado == 'Relacion de Dependencia', greaterthan(v.accountSimpleRecord.Aportes_del_titular__c , 0))}">
+                <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}" inputs="[{'key':'ultimo_recibo_sueldo','value':'Último recibo de sueldo'}]" recordId="{!v.recordId}" entityId="{!v.recordId}" isProfileVentas="{!v.isProfileVentas}"/>
+
+            </aura:if>
+
+            <aura:if isTrue="{!and(v.tipo_afiliado == 'Monotributista',greaterthan(v.accountSimpleRecord.Aportes_del_titular__c,0))}">
+                <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}" inputs="[{'key':'monotributo_152','value':'Monotributista Form. 152'},{'key':'monotributo_184','value':'Monotributista Form. 184'},
+		{'key':'ultimos_pagos_mono','value':'Monotributista Últimos 3 pagos'}]" recordId="{!v.recordId}" entityId="{!v.recordId}" isProfileVentas="{!v.isProfileVentas}" />
+
+            </aura:if>
+            <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}" inputs="[{'key':'cert_matrimonio','value':'Certificado de Matrimonio o concubinato'},{'key':'cert_negativa','value':'Certificación Negativa'}]" recordId="{!v.recordId}" entityId="{!v.recordId}" isProfileVentas="{!v.isProfileVentas}"/>
+        </aura:if>
+    </aura:if>
+
+    <aura:iteration items="{!v.integrantes}" var="inp" indexVar="key">
+        <div>
+            <h2>Documentacion para integrante {!inp.Nombre__c + ' ' + inp.Apellido__c} con DNI: {!inp.Nro_de_documento__c}</h2> <br/>
+            <aura:if isTrue="{!v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c != null}">
+                <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}"  inputs="[{'key':'dni_integrante','value':'DNI'}]" recordId="{!v.recordId}" entityId="{!inp.Id}" isProfileVentas="{!v.isProfileVentas}" />
+            </aura:if>
+            <!--  Conyuge-->
+            <aura:if isTrue="{!and(and(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c != null , equals(inp.Tipo_de_relacion_con_titular__c,'CO') ), not(equals(v.perfil,'Front')))}">
+                <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}" inputs="[{'key':'cert_matrimonio','value':'Certificado de Matrimonio o concubinato'}]" recordId="{!v.recordId}" entityId="{!inp.Id}" isProfileVentas="{!v.isProfileVentas}" />
+            </aura:if>
+
+            <!-- Grupo VOLDIR | VOLEMP - Hijo/a-->
+            <aura:if isTrue="{!and(or(equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c , 'VOLDIR'),equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c , 'VOLEMP')) , equals(inp.Tipo_de_relacion_con_titular__c,'HI'))}">
+				<aura:if isTrue="{! not(equals(v.perfil,'Front'))}">
+					<c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}"  inputs="[{'key':'cert_nacimiento_integrante','value':'Certificado de Nacimiento'}]" recordId="{!v.recordId}" entityId="{!inp.Id}" isProfileVentas="{!v.isProfileVentas}" />
+				</aura:if>
+                <aura:if isTrue="{!lessthan(inp.Edad__c,1)}">
+                    <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}" inputs="[{'key':'historia_clinica_integrante','value':'Historia clínica pediátrica – solo menores de 1 año'}]" recordId="{!v.recordId}" entityId="{!inp.Id}" isProfileVentas="{!v.isProfileVentas}" />
+                </aura:if>
+            </aura:if>
+
+            <!-- GRUPO OBLDIR | conyuge no aporta -->
+            <aura:if isTrue="{!and(and(or(equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c, 'OBLDIR'),equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c, 'OBLEMP')) ,  or(v.tipo_afiliado == 'Relacion de Dependencia',v.tipo_afiliado == 'Monotributista')),or(inp.Aportes__c == null, inp.Aportes__c == 0))}">
+                <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}" inputs="[{'key':'cert_negativa_integrante','value':'Certificación negativa'}]" recordId="{!v.recordId}" entityId="{!inp.Id}" isProfileVentas="{!v.isProfileVentas}" />
+
+            </aura:if>
+
+            <!-- GRUPO OBLDIR | conyuge rel dep aporta -->
+            <aura:if isTrue="{!and(and(or(equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c, 'OBLDIR'),equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c, 'OBLEMP') ),  inp.Integrante_tipo_asociado__c == 'Relación de Dependencia'),and(inp.Indicador_de_aporte__c,equals(inp.Tipo_de_relacion_con_titular__c,'CO')))}">
+                <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}" inputs="[{'key':'recibo_sueldo_integrante','value':'Recibo de sueldo'}]" recordId="{!v.recordId}" entityId="{!inp.Id}" isProfileVentas="{!v.isProfileVentas}" />
+
+            </aura:if>
+
+            <!--<aura:if isTrue="{!and(and(equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c, 'OBLDIR'),inp.Indicador_de_aporte__c), and(greaterthan(inp.Aportes__c, 0),v.tipo_afiliado == 'Monotributista'))}">
+						<c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}" inputs="[{'key':'recibo_sueldo_integrante','value':'Recibo de sueldo'}]" recordId="{!v.recordId}" entityId="{!inp.Id}"/>
+					</aura:if>	-->
+
+            <aura:if isTrue="{!and(equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c, 'OBLDIR') ,  and((inp.Integrante_tipo_asociado__c == 'Monotributista'),inp.Indicador_de_aporte__c))}">
+                <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}" inputs="[{'key':'monotributo_152_integrante','value':'Monotributista Form. 152'},{'key':'monotributo_184_integrante','value':'Monotributista Form. 184'},{'key':'monotributo_3pagos_integrante','value':'Monotributista Últimos 3 pagos'}]"
+                    recordId="{!v.recordId}" entityId="{!inp.Id}"  isProfileVentas="{!v.isProfileVentas}"/>
+
+            </aura:if>
+
+            <aura:if isTrue="{!and(equals(v.accountSimpleRecord.Segmento_del_Grupo_Familiar__c , 'OBLDIR'),and(not(empty(v.tipo_afiliado)), equals(inp.Tipo_de_relacion_con_titular__c,'HI')))}">
+                <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}" inputs="[{'key':'cert_nacimiento_integrante','value':'Certificado de Nacimiento'}]" recordId="{!v.recordId}" entityId="{!inp.Id}" isProfileVentas="{!v.isProfileVentas}" />
+                <aura:if isTrue="{!and(lessthanorequal(inp.Edad__c,25),greaterthanorequal(inp.Edad__c,21))}">
+                    <c:opportunityAttachFilesInputGroup inputs="[{'key':'cert_alumno','value':'Certificación de alumno regular (solo si tiene entre 21 a 25 años inclusive)'}]" recordId="{!v.recordId}" entityId="{!inp.Id}"  isProfileVentas="{!v.isProfileVentas}"/>
+                </aura:if>
+                <aura:if isTrue="{!lessthan(inp.Edad__c,1)}">
+                    <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}" inputs="[{'key':'historia_clinica_integrante','value':'Historia clínica pediátrica – solo menores de 1 año'}]" recordId="{!v.recordId}" entityId="{!inp.Id}" isProfileVentas="{!v.isProfileVentas}" />
+                </aura:if>
+            </aura:if>
+
+        </div>
+    </aura:iteration>
+
+
+    Anexos no obligatorios
+    <c:opportunityAttachFilesInputGroup shouldDisabledButton = "{!v.shouldDisabledButton}" inputs="[{'key':'Nota_de_permanencia','value':'Nota de permanencia'},
+{'key':'Nota_de_antecedentes','value':'Nota de antecedentes prótesis mamarias'},{'key':'Resultado_de_anatomia','value':'Resultado de anatomía patológica'},
+{'key':'Informe_RX','value':'Informe de RX, TAC,RMN'},{'key':'otros','value':'Otros'}]" recordId="{!v.recordId}" entityId="{!v.recordId}" isProfileVentas="{!v.isProfileVentas}"/>
+
+    <aura:if isTrue="{!equals(v.perfil,'Front')}">
+        <c:opportunityAttachFilesInputGroup inputs="[{'key':'nota de aceptacion','value':'Nota de aceptacion'}]" recordId="{!v.recordId}" entityId="{!v.recordId}" isProfileVentas="{!v.isProfileVentas}" />
+    </aura:if>
+
+
+
+</aura:component>

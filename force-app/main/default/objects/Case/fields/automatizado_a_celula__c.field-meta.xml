@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>automatizado_a_celula__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>campo creado para marcar cuando se automatizo la celula por algun criterio, ya que luego se deberia poder derivar manual.</description>
+    <externalId>false</externalId>
+    <label>automatizado a celula</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

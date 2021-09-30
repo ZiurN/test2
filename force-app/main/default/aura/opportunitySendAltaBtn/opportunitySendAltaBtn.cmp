@@ -1,0 +1,69 @@
+<aura:component 
+	implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" 
+	controller="OpportunitySendAltaBtnCtrl" 
+	access="global"
+>
+
+    <ltng:require scripts="{!$Resource.LightningUtils}" />
+	<ltng:require styles="{!$Resource.multilineToast}" />
+	<lightning:overlayLibrary aura:id="overlayLib" />
+
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="oppSimpleRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+	<aura:attribute name="showConfirmDialog" type="boolean" default="false"/>
+
+	<force:recordData
+        aura:id="recordLoader"
+        recordId="{! v.recordId }"
+        fields="Id, StageName, Indicador_de_Afiliacion_de_Inmediata__c,Subestado_de_DDJJ__c"
+        targetFields="{! v.oppSimpleRecord }"
+        targetError="{! v.recordLoadError }"
+		recordUpdated="{! c.doInit }"
+	/>
+
+<aura:if isTrue="{!v.showConfirmDialog}">
+
+		<div role="dialog" class="slds-modal slds-fade-in-open ">
+			<div class="slds-modal__container">
+
+				<header class="slds-modal__header">
+					<div class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+						<lightning:buttonIcon
+								iconName="utility:close"
+								variant="border-inverse"
+								onclick="{! c.handleConfirmDialogNo }"
+								alternativeText="Close"
+						/>
+					</div>
+					<h1 class="slds-text-heading--medium">Confirme</h1>
+				</header>
+
+				<div class="slds-modal__content slds-p-around--medium">
+					<center><b>Está seguro/a que desea enviar la solicitud con Afiliación inmediata?</b></center>
+				</div>
+
+				<footer class="slds-modal__footer" style="text-align:center">
+					<lightning:button variant="brand" name='Si' label='Si' onclick='{!c.handleConfirmDialogYes}'/>
+					<lightning:button variant="destructive" name='No' label='No' onclick='{!c.handleConfirmDialogNo}'/>
+				</footer>
+
+			</div>
+		</div>
+		<div class="slds-backdrop slds-backdrop--open"></div>
+	</aura:if>
+
+	<aura:if isTrue = "{! v.isLoading }">
+        <lightning:spinner alternativeText="Loading" variant="brand"/>
+    </aura:if>
+
+
+	<lightning:button 
+		variant="neutral" 
+		onclick="{! c.handleClickBtn }"
+		title="Enviar a SaludSoft" 
+		label="Enviar a SaludSoft"
+		aura:id="sendButton"
+	/>
+
+</aura:component>

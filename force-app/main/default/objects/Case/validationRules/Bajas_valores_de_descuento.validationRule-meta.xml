@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Bajas_valores_de_descuento</fullName>
+    <active>true</active>
+    <description>Si se selecciona valor &quot;Otro&quot; no podemos poner 5 10 15 20</description>
+    <errorConditionFormula>AND(
+ISPICKVAL(  Valor_de_descuento__c , &quot;Otro&quot;),
+OR(
+Otro_valor__c  =  0.05,
+Otro_valor__c  =  0.10,
+Otro_valor__c  =  0.15,
+Otro_valor__c  =  0.20
+)
+)</errorConditionFormula>
+    <errorMessage>Ingrese un valor diferente a los porcentajes seleccionables</errorMessage>
+</ValidationRule>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_y_numero_documento_docusign__c</fullName>
+    <description>Este campo se utiliza para unir tipo y numero de documento para el envió de plantillas con Docusign, NO BORRAR</description>
+    <externalId>false</externalId>
+    <formula>TEXT(Tipo_de_Documento__c)&amp; &quot;-&quot; &amp;Numero_de_documento__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Tipo y numero documento docusign</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

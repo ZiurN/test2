@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nuevo_desde_caso</fullName>
+    <availability>online</availability>
+    <displayType>massActionButton</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>Nuevo caso</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <requireRowSelection>false</requireRowSelection>
+    <url>/lightning/cmp/c__CrearCasoOverrideLista?c__field0=Evento_Medico__c&amp;c__value0={!Case.Evento_MedicoId__c}&amp;c__field1=AccountId&amp;c__value1={!Case.AccountId}&amp;c__field2=ParentId&amp;c__value2={!Case.Id}</url>
+</WebLink>

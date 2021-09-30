@@ -1,0 +1,3 @@
+<apex:component access="global">
+		<apex:outputText escape="false" value="<style>body{font-family: Arial;size: 12pt}.green-bar{width: 100%;height: 10px;background-color: #06bf88}.imageHeader{text-align: center}</style>"/>
+</apex:component>

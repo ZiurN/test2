@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Obligarotio_agencia</fullName>
+    <active>true</active>
+    <description>Validacion para tipo de registro solicitud de datos particulares si el tipo es delegacion deben comletar el campo Agencia destino</description>
+    <errorConditionFormula>AND(
+				 RecordType.DeveloperName = &quot;Solicitud_de_datos_particulares&quot;,
+			 	ISPICKVAL(Type,&quot;MODIF_DELEG&quot;),
+				 ISBLANK(Agencia_destino__c)
+				)</errorConditionFormula>
+    <errorMessage>El campo &quot;Agencia destino&quot; debe estar completo si el tipo es &quot;Delegación&quot;</errorMessage>
+</ValidationRule>

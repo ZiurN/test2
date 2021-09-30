@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IND_Edad_conyuge</fullName>
+    <active>true</active>
+    <description>Debe indicar la edad del cónyuge</description>
+    <errorConditionFormula>AND(
+     RecordType.Name = &quot;Cotización Individual&quot;,
+    OR(
+       ISPICKVAL( Estado_Civil__c, &quot;Casado&quot;),
+       ISPICKVAL( Estado_Civil__c, &quot;Concubinato&quot;)
+      ),
+    ISBLANK(Edad_conyuge__c ),
+    ISPICKVAL ( Tipo_de_contacto__c , &quot;Grupo Familiar&quot;)
+)</errorConditionFormula>
+    <errorMessage>Debe indicar la edad del cónyuge</errorMessage>
+</ValidationRule>

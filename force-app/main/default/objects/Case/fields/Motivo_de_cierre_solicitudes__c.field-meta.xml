@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Motivo_de_cierre_solicitudes__c</fullName>
+    <externalId>false</externalId>
+    <label>Motivo de cierre</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Status</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Cambio de plan</fullName>
+                <default>false</default>
+                <label>Cambio de plan</label>
+            </value>
+            <value>
+                <fullName>Sumatoria de aportes</fullName>
+                <default>false</default>
+                <label>Sumatoria de aportes</label>
+            </value>
+            <value>
+                <fullName>Cambio de segmentos</fullName>
+                <default>false</default>
+                <label>Cambio de segmentos</label>
+            </value>
+            <value>
+                <fullName>Pluriempleos</fullName>
+                <default>false</default>
+                <label>Pluriempleos</label>
+            </value>
+            <value>
+                <fullName>Cambio de politica comercial</fullName>
+                <default>false</default>
+                <label>Cambio de política comercial</label>
+            </value>
+            <value>
+                <fullName>Contencion y asesoramiento</fullName>
+                <default>false</default>
+                <label>Contención y asesoramiento</label>
+            </value>
+            <value>
+                <fullName>Bonificacion aplicada</fullName>
+                <default>false</default>
+                <label>Bonificación aplicada</label>
+            </value>
+            <value>
+                <fullName>Baja procesada</fullName>
+                <default>false</default>
+                <label>Baja procesada</label>
+            </value>
+            <value>
+                <fullName>PMO</fullName>
+                <default>false</default>
+                <label>PMO</label>
+            </value>
+            <value>
+                <fullName>Cancelación del asociado (web)</fullName>
+                <default>false</default>
+                <label>Cancelación del asociado (web)</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Cerrado</controllingFieldValue>
+            <valueName>Cambio de plan</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cerrado</controllingFieldValue>
+            <valueName>Sumatoria de aportes</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cerrado</controllingFieldValue>
+            <valueName>Cambio de segmentos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cerrado</controllingFieldValue>
+            <valueName>Pluriempleos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cerrado</controllingFieldValue>
+            <valueName>Cambio de politica comercial</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cerrado</controllingFieldValue>
+            <valueName>Contencion y asesoramiento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cerrado</controllingFieldValue>
+            <valueName>Bonificacion aplicada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cerrado</controllingFieldValue>
+            <valueName>Baja procesada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cerrado</controllingFieldValue>
+            <valueName>PMO</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,35 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:appHostable" description="integranteAttachFilesBtn" access="global">
+    <ltng:require scripts="{!$Resource.LightningUtils}" />
+
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="integranteRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media--center" style="width: 100%;">
+                <div class="flex">
+
+                </div>
+                <force:recordData
+                        aura:id="recordLoader"
+                        recordId="{!v.recordId}"
+                        fields="Oportunidad__r.StageName"
+                        targetFields="{!v.integranteRecord}"
+                        targetError="{!v.recordLoadError}"/>
+
+                <aura:if isTrue="{!v.isLoading}">
+                    <lightning:spinner alternativeText="Loading" variant="brand"/>
+                </aura:if>
+
+                <lightning:overlayLibrary aura:id="overlayLib"/>
+
+				<lightning:button variant="neutral" onclick="{!c.handleClickBtn}" disabled="{!v.integranteRecord.Oportunidad__r.StageName != 'En tramitación'}"
+                                  title="Cargar documentos" label="Cargar documentos"/>
+
+            </header>
+        </div>
+    </article>
+
+
+</aura:component>

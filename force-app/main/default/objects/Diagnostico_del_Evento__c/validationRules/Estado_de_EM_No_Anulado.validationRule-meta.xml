@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Estado_de_EM_No_Anulado</fullName>
+    <active>true</active>
+    <description>El estado del EM debe ser distinto a anulado.</description>
+    <errorConditionFormula>ISPICKVAL(Evento_Medico__r.Estado__c, &apos;Anulado&apos;)</errorConditionFormula>
+    <errorMessage>El estado del EM debe ser distinto a anulado</errorMessage>
+</ValidationRule>

@@ -1,0 +1,20 @@
+<aura:component controller="ClausulaTempNotificationCtrl" implements="force:hasRecordId,flexipage:availableForAllPageTypes" access="global">
+    <ltng:require styles="{!$Resource.multilineToast}" />
+
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:attribute name="caseSimpleRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+    
+    <force:recordData 
+		aura:id="recordLoader"
+   		recordId="{! v.recordId }"
+        fields="Fallo_en_SS__c	, Fecha_de_fallo__c, codigo_ACT_SS__c"
+        targetFields="{! v.caseSimpleRecord }"
+        targetError="{! v.recordLoadError }"
+		recordUpdated="{!c.handleRecordUpdated}"
+	/>
+
+</aura:component>

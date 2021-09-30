@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Categorizacion_SS__c</fullName>
+    <externalId>false</externalId>
+    <label>Categorización SS</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Baja complejidad</fullName>
+                <default>false</default>
+                <label>Baja complejidad</label>
+            </value>
+            <value>
+                <fullName>Alta complejidad</fullName>
+                <default>false</default>
+                <label>Alta complejidad</label>
+            </value>
+            <value>
+                <fullName>Posible preexistencia</fullName>
+                <default>false</default>
+                <label>Posible preexistencia</label>
+            </value>
+            <value>
+                <fullName>ACM / No nomencladas</fullName>
+                <default>false</default>
+                <label>ACM / No nomencladas</label>
+            </value>
+            <value>
+                <fullName>Cubiertos</fullName>
+                <default>false</default>
+                <label>Cubiertos</label>
+            </value>
+            <value>
+                <fullName>Cubiertos por PMI madre</fullName>
+                <default>false</default>
+                <label>Cubiertos por PMI madre</label>
+            </value>
+            <value>
+                <fullName>Cubiertos solo PMI hijo</fullName>
+                <default>false</default>
+                <label>Cubiertos solo PMI hijo</label>
+            </value>
+            <value>
+                <fullName>Cubierto con AP</fullName>
+                <default>false</default>
+                <label>Cubierto con AP</label>
+            </value>
+            <value>
+                <fullName>Cubierto solo por programa</fullName>
+                <default>false</default>
+                <label>Cubierto solo por programa</label>
+            </value>
+            <value>
+                <fullName>No cubiertos</fullName>
+                <default>false</default>
+                <label>No cubiertos</label>
+            </value>
+            <value>
+                <fullName>Cubiertos por provision</fullName>
+                <default>false</default>
+                <label>Cubiertos por provisión</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

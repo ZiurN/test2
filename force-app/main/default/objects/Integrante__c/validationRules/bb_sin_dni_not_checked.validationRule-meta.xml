@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>bb_sin_dni_not_checked</fullName>
+    <active>true</active>
+    <description>Si el campo Bebé sin DNI no está tildado, se deberá ingresar DNI y CUIT.</description>
+    <errorConditionFormula>AND(
+				OR(
+							 $Profile.Name = &apos;Administrador del sistema&apos;,
+								$Profile.Name = &apos;Agente de Ventas&apos;,
+								$Profile.Name = &apos;Lider de Ventas&apos;
+				),
+				NOT(Bebe_sin_DNI__c),
+				OR(
+								ISBLANK(Nro_de_documento__c),
+								ISBLANK(CUIT_Sin_guiones__c)  
+				)
+)</errorConditionFormula>
+    <errorMessage>Debe ingresar Nro. de documento y CUIT (Sin guiones)</errorMessage>
+</ValidationRule>

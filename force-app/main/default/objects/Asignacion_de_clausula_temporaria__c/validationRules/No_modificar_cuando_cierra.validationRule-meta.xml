@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_modificar_cuando_cierra</fullName>
+    <active>true</active>
+    <description>Si ya esta cerrada la clausula no debemos modificar</description>
+    <errorConditionFormula>AND(
+    NOT(Batch__c),
+    NOT( ISBLANK( Fecha_de_cierre_de_clausula__c ) ),
+    OR(
+        ISCHANGED( FPP__c ),
+        ISCHANGED( Fecha_FUM__c ),
+        ISCHANGED(  Descripcion__c ) 
+    )
+)</errorConditionFormula>
+    <errorMessage>Cláusula temporaria cerrada</errorMessage>
+</ValidationRule>

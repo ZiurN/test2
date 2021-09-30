@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Subestado_de_DDJJ__c</fullName>
+    <externalId>false</externalId>
+    <label>Subestado de DDJJ</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>DDJJ OK</fullName>
+                <default>false</default>
+                <label>DDJJ OK</label>
+            </value>
+            <value>
+                <fullName>AUDITORIA</fullName>
+                <default>false</default>
+                <label>AUDITORÍA</label>
+            </value>
+            <value>
+                <fullName>RECHAZADA</fullName>
+                <default>false</default>
+                <label>RECHAZADA</label>
+            </value>
+            <value>
+                <fullName>FIRMA O.S.</fullName>
+                <default>false</default>
+                <label>FIRMA O.S.</label>
+            </value>
+            <value>
+                <fullName>NUEVA</fullName>
+                <default>false</default>
+                <label>NUEVA</label>
+            </value>
+            <value>
+                <fullName>PEDIDO ESTUDIO</fullName>
+                <default>false</default>
+                <label>PEDIDO ESTUDIO</label>
+            </value>
+            <value>
+                <fullName>CADUCA</fullName>
+                <default>false</default>
+                <label>CADUCA</label>
+            </value>
+            <value>
+                <fullName>ASESORADA</fullName>
+                <default>false</default>
+                <label>ASESORADA</label>
+            </value>
+            <value>
+                <fullName>LEGALES</fullName>
+                <default>false</default>
+                <label>LEGALES</label>
+            </value>
+            <value>
+                <fullName>VALORIZAR</fullName>
+                <default>false</default>
+                <label>VALORIZAR</label>
+            </value>
+            <value>
+                <fullName>APROBADA C/PREEX.</fullName>
+                <default>false</default>
+                <label>APROBADA C/PREEX.</label>
+            </value>
+            <value>
+                <fullName>CD ENVIADA</fullName>
+                <default>false</default>
+                <label>CD ENVIADA</label>
+            </value>
+            <value>
+                <fullName>TRASPASO</fullName>
+                <default>false</default>
+                <label>TRASPASO</label>
+            </value>
+            <value>
+                <fullName>EN REVISION</fullName>
+                <default>false</default>
+                <label>EN REVISIÓN</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

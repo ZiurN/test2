@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Prestadores</fullName>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>Localidad_new__c</columns>
+    <columns>ACCOUNT.ADDRESS1_STATE</columns>
+    <columns>ACCOUNT.PHONE1</columns>
+    <columns>ACCOUNT.TYPE</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>ACCOUNT.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Account.Efector</value>
+    </filters>
+    <filters>
+        <field>Es_Prestador__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <filters>
+        <field>Estado__c</field>
+        <operation>equals</operation>
+        <value>A</value>
+    </filters>
+    <label>Prestadores</label>
+</ListView>

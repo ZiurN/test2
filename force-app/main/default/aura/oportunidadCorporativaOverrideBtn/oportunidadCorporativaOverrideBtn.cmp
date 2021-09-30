@@ -1,0 +1,7 @@
+<aura:component implements="lightning:isUrlAddressable">
+    <aura:attribute name="caseParams" type="Object" />
+    <aura:handler name="init" value="{!this}" action="{!c.getParams}"/>
+    <aura:renderIf isTrue="{!v.caseParams}">
+        <c:NuevoIndividualCorpOverrideLista state="{!v.caseParams}"/>
+    </aura:renderIf>
+</aura:component>

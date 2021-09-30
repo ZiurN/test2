@@ -1,0 +1,116 @@
+<aura:component controller="EfectorSearchController" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global">
+	<ltng:require scripts="{!$Resource.LightningUtils}" />
+	<lightning:overlayLibrary aura:id="overlayLib"/>	
+	
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+	<aura:attribute name="activeSections" type="List" Default="['Filtros']"/>
+	<aura:attribute name="efectores" type="List" Default="[]"/>
+	<aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+	<aura:attribute name="account" type="Account" default="{ 'sobjectType': 'Account' }"/>
+
+	<aura:handler name="init" value="{! this }" action="{! c.init }"/>
+	
+	<lightning:card class="slds-p-around_small" title="Buscar Efectores">
+
+		<hr class="slds-m-vertical_xxx-small"/>
+		
+		<lightning:accordion allowMultipleSectionsOpen="true" activeSectionName="{! v.activeSections }">
+
+			<lightning:recordEditForm
+					aura:id="recordEditFormAccount"
+					onsuccess="{!c.handleSuccess}"
+					onerror="{!c.handleOnError}"
+					objectApiName="Account"
+			>
+				<lightning:accordionSection name="Filtros" label="Filtros">
+					<div class="slds-grid slds-gutters slds-wrap slds-p-horizontal_small">
+						<div class="slds-col slds-size_1-of-1">
+							<lightning:input aura:id="matricula" label="Matrícula"/>
+						</div> 
+						<div class="slds-col slds-size_1-of-2">
+							<!--<lightning:inputField aura:id="provincia" fieldName="Provincia_lista__c"/>-->
+							<div class="slds-form-element">
+								<label class="slds-form-element__label" for="provincia">Provincia</label>
+
+								<div class="slds-form-element__control">
+									<force:inputField aura:id="provincia" value="{!v.account.Provincia_lista__c}"/>
+								</div>
+							</div>
+						</div>
+
+						<div class="slds-col slds-size_1-of-2"> 
+							<lightning:input aura:id="localidad" label="Localidad"/>
+						</div>
+
+						<div class="slds-col slds-m-top_small slds-text-align_center">
+							<lightning:button 
+								variant="brand" 
+								onclick="{!c.handleClickBtn}" 
+								iconName="utility:search" 
+								title="Buscar" 
+								label="Buscar"
+							/>
+						</div>
+					</div>
+
+				</lightning:accordionSection>
+				
+				<aura:if isTrue="{!not(empty(v.efectores))}"> 
+					<lightning:accordionSection name="Resultados" label="Resultados">
+					
+					<lightning:datatable
+							keyField="id"
+							data="{! v.efectores }"
+							columns="{! v.columns }"
+							hideCheckboxColumn="true"
+							onrowaction="{! c.copyTextTable }"
+					/>
+					
+							
+							<!-- <aura:iteration items="{!v.efectores}" var="efector">
+								
+								<div class="slds-grid slds-gutters slds-wrap slds-grid_vertical-align-center slds-grid_align-spread slds-box slds-box_x-small slds-m-horizontal_x-small">
+									<div class="slds-col slds-size_3-of-4">
+			
+										<lightning:recordEditForm
+												aura:id="recordEditFormMatricula"
+												onsuccess="{!c.handleSuccess}"
+												onerror="{!c.handleOnError}"
+												objectApiName="Matricula__c"
+										>
+											<lightning:inputField id="{!efector.Efector__c}" value="{!efector.Efector__c}" fieldName="Efector__c" disabled="true"/>
+										</lightning:recordEditForm> 
+
+										<input id="{!efector.Efector__r.Autonumerico__c}" value="{!efector.Efector__r.Name}" 
+												disabled="true" class="slds-size_1-of-1"
+										/> 
+
+										<p>{!efector.Efector__r.Name} | {!efector.Provincia_nombre__c} | {!efector.Matricula__c}</p> 
+									</div>
+									<div class="slds-col slds-size_1-of-4 slds-text-align_right">
+										<lightning:buttonIcon 
+											variant="neutral" 
+											value="{!efector.Efector__r.Autonumerico__c}" 
+											title="Copiar" 
+											iconName="utility:copy" 
+											onclick="{!c.copyText}"
+										/>
+									</div>
+								</div>
+								
+							</aura:iteration> -->
+						
+					</lightning:accordionSection>
+				</aura:if>
+			</lightning:recordEditForm>
+
+		</lightning:accordion>
+
+
+		<aura:if isTrue="{!v.isLoading}">
+			<lightning:spinner alternativeText="Loading" variant="brand"/>
+		</aura:if>
+
+	</lightning:card >
+</aura:component>

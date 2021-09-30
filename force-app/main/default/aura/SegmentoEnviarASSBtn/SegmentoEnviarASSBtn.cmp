@@ -1,0 +1,32 @@
+<aura:component controller="SegmentoEnviarASSBtnCtrl" implements="force:hasRecordId" access="global">
+    <ltng:require scripts="{!$Resource.LightningUtils}" />
+
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="segSimpleRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+    <!--	<aura:attribute name="status" type="String"/>-->
+    <aura:attribute name="showConfirmDialog" type="boolean" default="false"/>
+
+    <force:recordData
+            aura:id="recordLoader"
+            recordId="{! v.recordId }"
+            fields="Semid__c"
+            targetFields="{! v.segSimpleRecord }"
+            targetError="{! v.recordLoadError }"
+            recordUpdated="{! c.doInit }"
+    />
+
+    <aura:if isTrue="{! v.isLoading }">
+        <lightning:spinner alternativeText="Loading" variant="brand"/>
+    </aura:if>
+
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+
+    <lightning:button
+            variant="neutral"
+            onclick="{! c.handleClickBtn }"
+            title="Enviar a SaludSoft"
+            label="Enviar a SaludSoft"
+            aura:id="disableAltaId"
+    />
+</aura:component>

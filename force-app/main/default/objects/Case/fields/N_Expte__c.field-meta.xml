@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>N_Expte__c</fullName>
+    <description>Solo se usa para registros de expedientes legales, en la seecion &quot;datos del expediente&quot;este campo se llena de forma manual por parte del usuario</description>
+    <externalId>false</externalId>
+    <label>N° Expte</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

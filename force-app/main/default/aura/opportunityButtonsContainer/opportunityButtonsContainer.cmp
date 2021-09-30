@@ -1,0 +1,64 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction,force:appHostable"
+                access="global">
+
+    <aura:attribute name="oppSimpleRecord" type="Object"/>
+    <aura:attribute name="isSales" type="Boolean" default="false"/>
+    
+    <force:recordData
+            aura:id="recordLoader"
+            recordId="{! v.recordId }"
+            fields="Id"
+            targetFields="{! v.oppSimpleRecord }"
+    />
+    <aura:html tag="style">
+        .oneUtilityBarContainer {
+        z-index: 98;
+        }
+        <!--
+  a[title="Acciones SaludSoft Efector"] {
+   display: none !important;
+  }
+ -->
+    </aura:html>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media--center" style="width: 100%;">
+                <div class="flex">
+                    <div class="slds-media__figure stencil slds-avatar slds-avatar_small">
+                        <span class="slds-icon_container" style="background-color: transparent;">
+                            <div class="slds-icon slds-icon_small">
+                                <img src="{!$Resource.AcaIcon}"/>
+                            </div>
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <h2>
+                            <div class="title slds-card__header-title">
+                                SaludSoft
+                            </div>
+                        </h2>
+                    </div>
+                </div>
+                <!--                <lightning:buttonMenu class="slds-dropdown_medium integrationButtons" label="Consultar datos">-->
+
+                <!--					<div class="botones">-->
+                <div class="slds-grid slds-gutters slds-wrap flex-column-m slds-size_1-of-1">
+
+                    <div class="slds-col slds-size_1-of-2 slds-m_1-of-1">
+                        <c:opportunitySendAltaBtn recordId="{!v.recordId}"/>
+                    </div>
+
+					<div class="slds-col slds-size_1-of-2 slds-m_1-of-1">
+                        <c:opportunityAttachFilesBtn recordId="{!v.recordId}"/>
+                    </div>
+
+                </div>
+
+
+                <!--					</div>-->
+
+                <!--                </lightning:buttonMenu>-->
+            </header>
+        </div>
+    </article>
+</aura:component>

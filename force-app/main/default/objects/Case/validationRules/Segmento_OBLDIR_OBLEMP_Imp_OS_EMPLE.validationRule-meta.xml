@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Segmento_OBLDIR_OBLEMP_Imp_OS_EMPLE</fullName>
+    <active>true</active>
+    <description>Cuando el nuevo segmento es OBLDIR - OBLEMP, será obligatorio importe del aporte, obra social y los campos de empleador.</description>
+    <errorConditionFormula>OR(
+   AND(
+       RecordType.DeveloperName=&quot;Solicitud_de_segmento&quot;,
+       OR(
+          ISPICKVAL( Nuevo_segmento__c , &quot;OBLDIR&quot;),
+          ISPICKVAL( Nuevo_segmento__c , &quot;OBLEMP&quot;)
+          ),
+       OR(
+          ISBLANK( Aporte__c ),
+          ISBLANK( Obra_Social2__c  )
+				      )
+       ),
+				AND(
+        RecordType.DeveloperName=&quot;Solicitud_de_segmento&quot;,
+								ISBLANK(Empleador__c),
+								ISBLANK(Cuit_empleador__c),
+       OR(
+          ISPICKVAL( Nuevo_segmento__c , &quot;OBLDIR&quot;),
+          ISPICKVAL( Nuevo_segmento__c , &quot;OBLEMP&quot;)
+          )
+								)
+				)</errorConditionFormula>
+    <errorMessage>Cuando el nuevo segmento es OBLDIR - OBLEMP, será obligatorio importe del aporte, obra social y los campos de empleador.</errorMessage>
+</ValidationRule>

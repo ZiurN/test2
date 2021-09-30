@@ -1,0 +1,20 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction,force:appHostable"
+            access="global">
+
+	<ltng:require scripts="{!$Resource.LightningUtils}" />
+	<ltng:require styles="{!$Resource.multilineToast}" />
+
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="caseSimpleRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+    
+    <force:recordData 
+		aura:id="recordLoader"
+   		recordId="{! v.recordId }"
+        fields="Error_reasignacion__c, Fecha_error_reasignacion__c, RecordType.DeveloperName"
+        targetFields="{! v.caseSimpleRecord }"
+        targetError="{! v.recordLoadError }"
+		recordUpdated="{!c.handleRecordUpdated}"
+	/>
+
+</aura:component>

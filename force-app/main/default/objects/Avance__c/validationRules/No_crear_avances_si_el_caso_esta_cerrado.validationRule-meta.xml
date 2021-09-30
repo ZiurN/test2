@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_crear_avances_si_el_caso_esta_cerrado</fullName>
+    <active>true</active>
+    <description>Validacion para que no se puedan crear registros de avances si el caso se encuentra cerrado</description>
+    <errorConditionFormula>AND(
+				ISNEW(),
+				ISPICKVAL(Caso__r.Status, &quot;Cerrado&quot;)
+				)</errorConditionFormula>
+    <errorMessage>No puede crear avances si el Caso esta &quot;Cerrado&quot;</errorMessage>
+</ValidationRule>

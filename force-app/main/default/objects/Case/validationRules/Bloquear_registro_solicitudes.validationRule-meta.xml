@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Bloquear_registro_solicitudes</fullName>
+    <active>true</active>
+    <description>Bloquea el registro cuando el estado de solicitud pasa a transformado, unico campo modificable es &quot;informacion completa&quot;</description>
+    <errorConditionFormula>OR(
+AND(
+    $Profile.Name 	&lt;&gt; &quot;Administrador del sistema&quot;,
+				NOT($Permission.Usuario_integracion),
+			RecordType.DeveloperName = &quot;Solicitud_de_alta_familiar&quot;,
+				OR(ISPICKVAL(PRIORVALUE(Estado_de_solicitud__c), &quot;COMPLETA&quot;), 
+				   ISPICKVAL(PRIORVALUE(Estado_de_solicitud__c), &quot;TRANSFORMADA&quot;)),
+			OR( 
+				ISCHANGED(Status),
+				ISCHANGED(Priority),
+				ISCHANGED(Subject), 
+				ISCHANGED(Fecha_de_vigencia__c), 
+				ISCHANGED(ContactId),
+				ISCHANGED(Estado_DDJJ__c),
+				ISCHANGED(Estado_de_solicitud__c),
+				ISCHANGED(AccountId),
+				ISCHANGED(Delegacion__c), 
+				ISCHANGED(Description),
+				ISCHANGED(Origin), 
+				ISCHANGED(Apellido__c), 
+				ISCHANGED(Nombre__c),
+				ISCHANGED(Bebe_nacido_en_sistema__c),
+				ISCHANGED(Informacion_al_asociado__c), 
+				ISCHANGED(Estado_civil__c),
+				ISCHANGED(Discapacidad__c),
+				ISCHANGED(Adherente__c),
+				ISCHANGED(Segmento_de_grupo_familiar__c), 
+				ISCHANGED(Aporte__c), 
+				ISCHANGED(Tipo_DNI__c), 
+				ISCHANGED(DNI__c),    
+				ISCHANGED(Tipo_de_Parentesco__c),
+				ISCHANGED(Sexo__c),				
+				ISCHANGED(Fecha_de_nacimiento__c), 
+				ISCHANGED(Nacionalidad__c),
+				ISCHANGED(Deriva_aportes__c),
+				ISCHANGED(CUIT__c), 
+				ISCHANGED(Cuit_empleador__c),
+				ISCHANGED(Usuario__c),
+			 ISCHANGED(Bebe_sin_DNI__c),
+				ISCHANGED(ParentId))
+				
+				),
+AND(
+				OR(
+       RecordType.DeveloperName  = &quot;Solicitud_de_despegues&quot;,
+							RecordType.DeveloperName  = &quot;Solicitud_de_datos_particulares&quot;,
+							RecordType.DeveloperName  = &quot;Solicitud_de_nueva_credencial&quot;,
+							RecordType.DeveloperName  = &quot;Solicitud_de_cambio_de_plan&quot;,
+							RecordType.DeveloperName  = &quot;Solicitud_de_baja&quot;,
+							RecordType.DeveloperName  = &quot;Interfaz_financiera&quot;
+								),
+				   $Profile.Name  &lt;&gt; &quot;Administrador del sistema&quot;,
+			   	NOT( $Permission.Usuario_integracion),
+			   	NOT(ISNEW()),
+				   ISPICKVAL(PRIORVALUE(Estado_de_solicitud__c),&quot;COMPLETA&quot;)
+			   	)
+				)</errorConditionFormula>
+    <errorMessage>No puede modificar el registro es estado &quot;Transformado&quot; o &quot;Completo&quot;</errorMessage>
+</ValidationRule>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Solicitudes_de_Baja_CDA_Rosario</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>CASES.TYPE</columns>
+    <columns>Motivo_de_baja__c</columns>
+    <columns>CASES.PRIORITY</columns>
+    <columns>iPrioridad__c</columns>
+    <columns>Fecha_de_vigencia__c</columns>
+    <columns>SLA__c</columns>
+    <columns>Delegacion__c</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CASES.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Case.Solicitud_de_baja</value>
+    </filters>
+    <filters>
+        <field>Agencia_asociado__c</field>
+        <operation>contains</operation>
+        <value>650098</value>
+    </filters>
+    <filters>
+        <field>CASES.CLOSED</field>
+        <operation>notEqual</operation>
+        <value>1</value>
+    </filters>
+    <label>Solicitudes de Baja CDA Rosario</label>
+</ListView>

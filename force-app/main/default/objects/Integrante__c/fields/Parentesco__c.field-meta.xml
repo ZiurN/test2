@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Parentesco__c</fullName>
+    <description>Este campo se usa para mostrar el valor correcto para el tipo de parentesco con el titular ya que el campo principal muestra valores API al momento de enviar el Documneto de Docusign, NO BORRAR</description>
+    <externalId>false</externalId>
+    <formula>IF(ISPICKVAL(Tipo_de_relacion_con_titular__c,&quot;HI&quot;),&quot;Hijo/a&quot;,
+			IF(ISPICKVAL(Tipo_de_relacion_con_titular__c,&quot;CO&quot;),&quot;Cónyuge&quot;,
+						IF(ISPICKVAL(Tipo_de_relacion_con_titular__c,&quot;OP&quot;),&quot;Otro Pariente&quot;,
+									IF(ISPICKVAL(Tipo_de_relacion_con_titular__c,&quot;PA&quot;),&quot;Padre&quot;,
+												IF(ISPICKVAL(Tipo_de_relacion_con_titular__c,&quot;MA&quot;),&quot;Madre&quot;,
+															IF(ISPICKVAL(Tipo_de_relacion_con_titular__c,&quot;SO&quot;),&quot;Sobrino/a&quot;,
+																		IF(ISPICKVAL(Tipo_de_relacion_con_titular__c,&quot;AB&quot;),&quot;Abuelo/a&quot;,
+																					IF(ISPICKVAL(Tipo_de_relacion_con_titular__c,&quot;NT&quot;),&quot;Nieto/a&quot;,
+																								IF(ISPICKVAL(Tipo_de_relacion_con_titular__c,&quot;HE&quot;),&quot;Hermano/a&quot;,
+																											IF(ISPICKVAL(Tipo_de_relacion_con_titular__c,&quot;YE&quot;),&quot;Yerno&quot;,
+																														IF(ISPICKVAL(Tipo_de_relacion_con_titular__c,&quot;NU&quot;),&quot;Nuera&quot;,
+																																	IF(ISPICKVAL(Tipo_de_relacion_con_titular__c,&quot;SU&quot;),&quot;Suego/a&quot;,
+																																				IF(ISPICKVAL(Tipo_de_relacion_con_titular__c,&quot;TI&quot;),&quot;Tío/a&quot;,&quot;&quot;
+																																							)
+																																				)
+																																	)
+																														)
+																											)
+																								)
+																					)
+																		)
+															)
+												)
+									)
+						)
+			)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Parentesco</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

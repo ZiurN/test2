@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Actividad_Profesion_docusign3__c</fullName>
+    <description>Este campo se utiliza para unir los otros dos campos de actividad docusign 1 y 2 y mostrar la actividad del titular. Se realizo en tres campos ya que en 1 solo no entrababan todas los opciones del campos actividad original porque excedía el limite de recopilación</description>
+    <externalId>false</externalId>
+    <formula>IF(ISBLANK(Actividad_Profesion_docusign__c), Actividad_Profesion_docusign2__c, Actividad_Profesion_docusign__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Actividad/Profesion docusign3</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,6 @@
+.THIS .verticalCenter {
+	/* Center vertically. Damn "vertical-align: middle;" is useless */
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}

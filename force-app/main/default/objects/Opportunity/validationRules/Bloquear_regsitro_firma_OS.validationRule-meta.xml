@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Bloquear_regsitro_firma_OS</fullName>
+    <active>true</active>
+    <description>Validacion para bloquear registro cuando el estado DDJJ es firma OS para tipo de registro &quot;Individuos&quot;</description>
+    <errorConditionFormula>AND(
+				 RecordType.DeveloperName =&quot;Individuos&quot;,
+				 $Profile.Name =&quot;Front&quot;, 
+				OR(
+				    ISPICKVAL(PRIORVALUE(Subestado_de_DDJJ__c),&quot;FIRMA O.S.&quot;),
+								ISPICKVAL(PRIORVALUE(Subestado_de_DDJJ__c),&quot;CD ENVIADA&quot;)),
+				 OR(
+			    	ISCHANGED(Name),
+				    ISCHANGED(StageName),
+				    ISCHANGED(Probability),
+				   	ISCHANGED(Fecha_de_vigencia_de_solicitud__c), 
+				   	ISCHANGED(Segmento_del_Grupo_Familiar__c),
+				    ISCHANGED(Plan_del_grupo_familiar__c),
+				    ISCHANGED(Tipo_de_Solicitud__c),
+				    ISCHANGED(Agencia__c),
+			   		ISCHANGED(Sin_cotizacion__c),
+					   ISCHANGED(Obra_social_del_titular__c),
+				    ISCHANGED(Cobertura_anterior__c),
+				    ISCHANGED(CloseDate), 
+				    ISCHANGED(Indicador_de_contratacion_de_emergencia__c),
+				   	ISCHANGED(Tipo_de_Asociado__c),
+					   ISCHANGED(Competidor__c),
+				    ISCHANGED(AccountId),
+				    ISCHANGED(Tipo_de_Documento__c),
+				    ISCHANGED(Numero_de_documento__c), 
+				   	ISCHANGED(ActividadProfesion_del_titular__c),
+				   	ISCHANGED(Nombre_INDCORP__c),
+				   	ISCHANGED(Apellido_INDCOR__c),
+				    ISCHANGED(Telefono__c),
+				   	ISCHANGED(Correo_Electronico__c),
+				   	ISCHANGED(Fecha_de_Nacimiento__c),
+				   	ISCHANGED(Nacionalidad__c),
+				    ISCHANGED(Sexo__c),
+					   ISCHANGED(Estado_Civil__c), 
+				   	ISCHANGED(Calle__c),
+					   ISCHANGED(Numero__c),
+				    ISCHANGED(Piso__c),
+				   	ISCHANGED(Dpto__c),
+				   	ISCHANGED(Provincia_lista__c),
+				    ISCHANGED(Localidad_new__c), 
+				   	ISCHANGED(CUIT__c), 			
+				   	ISCHANGED(Condicion_IVA__c), 
+				    ISCHANGED(Factura_sin_papel__c),
+				   	ISCHANGED(Tarjeta_de_credito__c),
+				   	ISCHANGED(Medio_de_cobro__c),
+				   	ISCHANGED(Tipo_CBU__c),
+				   	ISCHANGED(Nmero_de_tarjeta_de_credito__c),
+				   	ISCHANGED(Nro_CBU_para_cobro_de_cuota__c),
+				   	ISCHANGED(Recordar_Llamada__c),
+				   	ISCHANGED(Organizador_lookup__c),
+				    ISCHANGED(Supervisor__c),
+				   	ISCHANGED(Asesor_comercial__c),
+				   	ISCHANGED(Fecha_de_contacto__c),
+				   	ISCHANGED(Canal_de_contacto_Asesor_con_cliente__c),
+				   	ISCHANGED(Reingresa_como__c),
+				   	ISCHANGED(Nuevo_titular__c),
+				   	ISCHANGED(Subestado_de_DDJJ__c),
+								ISCHANGED(Parentesco__c)
+									)
+				)</errorConditionFormula>
+    <errorMessage>No puede modificar la oportunidad si el Subestado DDJJ es &quot;Firma OS&quot; o &quot;CD ENVIADA&quot;</errorMessage>
+</ValidationRule>

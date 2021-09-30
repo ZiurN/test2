@@ -1,0 +1,95 @@
+<apex:page standardController="Account" showHeader="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false" renderAs="pdf">
+
+    <head>
+        <style> 
+            body { 
+                font-family: 'Arial Unicode MS'; 
+                font-size: 14px;
+                margin: 2.5em 3em;
+            }
+
+            .parent {
+                display: flex;
+                align-items: center;
+            }
+
+            .col{
+                width: 60%;
+                display: inline-block;
+            }
+
+            p {
+                margin: 0;
+                padding: 0;
+            }
+
+            .m_t-5 {
+                margin-top: 5em;
+            }
+
+            .m_t-4 {
+                margin-top: 4em;
+            }
+
+            .text-justify {
+                text-align: justify;
+            }
+                
+
+        </style>
+
+    </head>
+    <body>
+        <apex:variable var="mes" value="{!CASE( 
+                                            MONTH(TODAY() ),
+                                            1, 'Enero',
+                                            2, 'Febrero',
+                                            3, 'Marzo',
+                                            4, 'Abril',
+                                            5, 'Mayo',
+                                            6, 'Junio',
+                                            7, 'Julio',
+                                            8, 'Agosto',
+                                            9, 'Septiembre',
+                                            10, 'Octubre',
+                                            11, 'Noviembre',
+                                            'Diciembre'
+                                    )}" 
+        />
+
+        <div>
+            
+            <div>
+                <apex:image url="{!URLFOR($Resource.LibreDeudaPdf, 'logo.png')}"  Width="200px"/>
+            </div>
+
+            <div Align="right" class="m_t-5">
+                <p>Buenos aires {! DAY(TODAY()) } de {! mes } de {! YEAR(TODAY()) }</p>
+            </div>
+
+            <div Align="right" class="m_t-5">
+                <p>Ex asociado/a N° {! Account.Codigo_de_Afiliado__c} </p>
+            </div>
+
+            <div class="m_t-4 text-justify" >
+                <p>Por la presente se deja expresa constancia que el Sr./Sra. {! Account.Name }</p>
+                <p>DNI {! Account.Numero_de_documento__c } al dia de la fecha no registra ni mantiene deuda alguna con esta entidad.</p>
+                <p>Sin perjuicio de ello, corresponde puntualizar que Ud. se encontraba afiliado a un Plan con copagos en Avalian 
+                    (Plan {!Account.Plan_Nombre__c}). Estos planes permiten acceder de forma directa a todas las prestaciones de salud, 
+                    pagando luego los copagos correspondientes a las prácticas que establece el diagrama de cobertura. Por razones que 
+                    hacen esctrictamente al proceso de facturación de las prestaciones, los copagos se liquidan tardíamente, pero siempre 
+                    dentro de los plazos de prescripción previstos por el Código Civil.</p>
+                <p>Por lo tanto, y en caso de existir copagos pendientes, los mismos se liquidarán en los meses siguientes.</p>
+            </div>
+
+            <div Align="center" class="m_t-5">
+                <apex:image url="{!URLFOR($Resource.LibreDeudaPdf, 'firma.png')}"  Width="200px"/>
+                <p>Guido Pereyra</p>
+                <p>Jefe Administración y Finanzas</p>
+            </div>
+                    
+        </div>
+
+    </body>
+
+</apex:page>

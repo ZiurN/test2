@@ -1,0 +1,44 @@
+<aura:component controller="ConvertLeadController" implements="force:hasRecordId,flexipage:availableForRecordHome">
+	<aura:attribute name="selectedState" type="String" default="converted" />
+	<aura:attribute name="convertedState" type="String" default="Contactado - Interesado" />
+	<aura:attribute name="leadRecord" type="Object" />
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+
+	
+	<ltng:require scripts="{!$Resource.LightningUtils}" />
+    <ltng:require styles="{!$Resource.multilineToast}" />
+
+	<force:recordData aura:id="recordLoader"
+		recordId="{!v.recordId}"
+		fields="Status"
+		targetFields="{!v.leadRecord}"
+	/>
+	
+	
+	<lightning:card>
+		<div class="slds-grid" style="margin-right: 1em;">
+			<span class="slds-col">
+				<lightning:path aura:id="path"
+					recordId="{!v.recordId}"
+					variant="non-linear"
+					onselect="{!c.handleSelect}"
+					hideUpdateButton="true"
+				/>
+			</span>
+			<span class="slds-col slds-grow-none verticalCenter">
+				<lightning:button
+					variant="brand"
+					iconName="{!v.selectedState == 'converted'?'utility:check':''}"
+					label="{!v.selectedState == 'converted'?'Marcar Estado como completado(a)':'Marcar como Estado actual'}"
+					onclick="{!c.changeState}"
+				/>
+			</span>
+		</div>
+	</lightning:card>
+    <aura:if isTrue="{! v.isLoading }">
+        <lightning:spinner alternativeText="Loading" variant="brand"/>
+    </aura:if>
+
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+	
+</aura:component>

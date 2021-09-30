@@ -1,0 +1,42 @@
+.THIS tr th {
+    /*background-color: rgba(34, 34, 34, 0.25);*/
+    text-align: center;
+    padding: 8px;
+}
+.THIS tr td {
+    text-align: center;
+}
+.THIS hr {
+    margin: 5px !important;
+    height: 1px;
+}
+/*.THIS .slds-th__action {
+	justify-content: center !important; 
+}
+.THIS .slds-grid_align-end {
+    justify-content: center !important;
+}
+.THIS .slds-button_icon-bare {
+    display: none;
+}*/
+/*.THIS.gris {
+    background-color: rgba(34, 34, 34, 0.25) !important;
+}*/
+/*.THIS .slds-truncate {
+    white-space: normal;
+    
+}*/
+ /*
+.THIS .slds-cell-fixed {
+    background-color: rgba(34, 34, 34, 0.25);
+}
+.THIS .slds-th__action {
+    background-color: rgba(34, 34, 34, 0.25);
+}
+.THIS .slds-table thead th {
+    background-color: rgba(34, 34, 34, 0.25);
+}
+.THIS .slds-line-height_reset {
+    background-color: rgba(34, 34, 34, 0.25);
+}
+*/

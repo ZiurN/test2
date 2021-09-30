@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IND_Afiliacion_inmediata_reingreso</fullName>
+    <active>true</active>
+    <description>Los reingresos no pueden ingresar inmediatamente</description>
+    <errorConditionFormula>AND(
+NOT(ISBLANK(Account.Afi_Id__c)),
+(Indicador_de_Afiliacion_de_Inmediata__c=true))</errorConditionFormula>
+    <errorDisplayField>Indicador_de_Afiliacion_de_Inmediata__c</errorDisplayField>
+    <errorMessage>Los reingresos no pueden ingresar inmediatamente</errorMessage>
+</ValidationRule>

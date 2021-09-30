@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IF_pago_de_reintegros_cuit_y_cbu</fullName>
+    <active>true</active>
+    <description>Si el tipo de caso es &quot;IF Pago de reintegros&quot;, solo se permitirá y será obligatorio completar los campos &quot;CUIT/CUIL TITULAR CBU&quot; y &quot;Número de cbu&quot;.</description>
+    <errorConditionFormula>OR(
+    AND(
+        RecordType.Name = &quot;Interfaz financiera&quot;,
+        ISPICKVAL( Type , &quot;T&quot;),
+        OR(
+            NOT(ISBLANK( TEXT(Tipo_de_debito_por_ACA__c ))),
+            NOT(ISBLANK( Numero_de_tarjeta_de_credito__c )),
+            NOT(ISBLANK( CUIL_del_CBU__c )),
+												ISCHANGED(Borrar_tarjeta_debito_o_cobro_por_CBU__c),
+            NOT(ISBLANK(TEXT( Condicion_IVA__c ))),
+            NOT(ISBLANK(TEXT( Tipo_CBU__c  ))),
+												ISBLANK(CUIT_CUIL_Titular_CBU__c),
+												ISBLANK(Numero_CBU__c)
+        )
+				)/*,
+    AND(
+        RecordType.Name = &quot;Interfaz financiera&quot;,
+        ISPICKVAL( Type , &quot;T&quot;),
+								OR(
+								    ISBLANK(CUIT_CUIL_Titular_CBU__c),
+								    ISBLANK(Numero_CBU__c)
+								)
+    )*/
+)</errorConditionFormula>
+    <errorMessage>Para IF Pago de reintegros, es obligatorio completar todos los campos de la sección &quot;Medio de pago&quot; y no puede completar los campos de &quot;Medio de cobro&quot;</errorMessage>
+</ValidationRule>

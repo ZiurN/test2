@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Enviar_con_Docusign</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <hasMenubar>false</hasMenubar>
+    <hasScrollbars>true</hasScrollbars>
+    <hasToolbar>false</hasToolbar>
+    <height>600</height>
+    <isResizable>true</isResizable>
+    <linkType>url</linkType>
+    <masterLabel>Enviar con Docusign</masterLabel>
+    <openType>newWindow</openType>
+    <position>none</position>
+    <protected>false</protected>
+    <showsLocation>false</showsLocation>
+    <showsStatus>false</showsStatus>
+    <url>{!URLFOR(&apos;/apex/dsfs__DocuSign_CreateEnvelope&apos;, null, [
+SourceID = Opportunity.Id,
+DST = &apos;bb81144b-534b-4a78-bc48-b347682974c1&apos;,
+CCTM=&apos;Comercial Avalian~Signer;Asociado~Signer; Organizador Regional~Carbon Copy&apos;,
+CCRM = &apos;Comercial Avalian ~ Comercial Avalian; Asociado ~ Asociado; Organizador Regional~ Organizador Regional&apos;,
+CRL= &apos;Email~{!Opportunity.Correo_propietario__c};FirstName~{!Opportunity.Nombre_del_propietario__c}; Role~Comercial Avalian; RoutingOrder~1, Email~{!Opportunity.Correo_Electronico__c};FirstName~{!Opportunity.Nombre_INDCORP__c};LastName~ {!Opportunity.Apellido_INDCOR__c};Role~Asociado; RoutingOrder~2, Email~{!Opportunity.Correo_Organizador__c};FirstName~{!Opportunity.Nombre_Organizador__c};LastName~{!Opportunity.Apellido_del_organizador__c}; Role~Organizador Regional;RoutingOrder~3&apos;,
+OCO = &apos;Preview&apos;, 
+LA = &apos;1&apos;,
+CEM = &apos;.&apos;,
+CES = &apos;Avalian - Solicitud de ingreso completa - {!Opportunity.Nombre_cuenta__c} -  {!Opportunity.Nombre_del_propietario__c}&apos;
+] 
+)}</url>
+</WebLink>

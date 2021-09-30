@@ -1,0 +1,92 @@
+<apex:page standardController="Account" showHeader="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false" renderAs="pdf">
+
+    <head>
+        <style>
+            body {
+                font-family: 'Arial Unicode MS';
+                font-size: 14px;
+                margin: 2.5em 3em;
+            }
+
+            .parent {
+                display: flex;
+                align-items: center;
+            }
+
+            .col {
+                width: 60%;
+                display: inline-block;
+            }
+
+            p {
+                margin: 0;
+                padding: 0;
+            }
+
+            .m_t-4 {
+                margin-top: 4em;
+            }
+
+            .m_t-5 {
+                margin-top: 5em;
+            }
+
+            .m_t-7 {
+                margin-top: 7em;
+            }
+
+            .text-justify {
+                text-align: justify;
+            }
+
+
+        </style>
+    </head>
+    <body>
+        <apex:variable var="mes" value="{!CASE( 
+                                            MONTH(TODAY() ),
+                                            1, 'Enero',
+                                            2, 'Febrero',
+                                            3, 'Marzo',
+                                            4, 'Abril',
+                                            5, 'Mayo',
+                                            6, 'Junio',
+                                            7, 'Julio',
+                                            8, 'Agosto',
+                                            9, 'Septiembre',
+                                            10, 'Octubre',
+                                            11, 'Noviembre',
+                                            'Diciembre'
+                                    )}" 
+        />
+
+        <div>
+            
+            <div>
+                <apex:image url="{!URLFOR($Resource.LibreDeudaPdf, 'logo.png')}"  Width="200px"/>
+            </div>
+
+            <div Align="right" class="m_t-5">
+                <p>Buenos aires {! DAY(TODAY()) } de {! mes } de {! YEAR(TODAY()) }</p>
+            </div>
+
+            <div Align="right" class="m_t-5">
+                <p>Ex asociado/a N° {! Account.Codigo_de_Afiliado__c} </p>
+            </div>
+
+            <div class="m_t-4 text-justify" >
+                <p>Por la presente se deja expresa constancia que el Sr./Sra. {! Account.Name }</p>
+                <p>DNI {! Account.Numero_de_documento__c } al dia de la fecha no registra ni mantiene deuda alguna con esta entidad.</p>
+            </div>
+
+            <div Align="center" class="m_t-7">
+                <apex:image url="{!URLFOR($Resource.LibreDeudaPdf, 'firma.png')}"  Width="200px"/>
+                <p>Guido Pereyra</p>
+                <p>Jefe Administración y Finanzas</p>
+            </div>
+        
+        </div>
+
+    </body>
+
+</apex:page>

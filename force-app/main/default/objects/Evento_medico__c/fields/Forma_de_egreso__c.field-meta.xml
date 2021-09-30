@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Forma_de_egreso__c</fullName>
+    <externalId>false</externalId>
+    <label>Forma de egreso</label>
+    <required>false</required>
+    <trackFeedHistory>true</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>ALTA_INTERN_DOM</fullName>
+                <default>false</default>
+                <label>ALTA CONTINUA INTERNACION DOMICILIARIA</label>
+            </value>
+            <value>
+                <fullName>ALTA_MEDICA</fullName>
+                <default>false</default>
+                <label>ALTA MEDICA</label>
+            </value>
+            <value>
+                <fullName>ALTA_VOL</fullName>
+                <default>false</default>
+                <label>ALTA VOLUNTARIA</label>
+            </value>
+            <value>
+                <fullName>COMPRA</fullName>
+                <default>false</default>
+                <label>COMPRA EQUIPO</label>
+            </value>
+            <value>
+                <fullName>CIERRE</fullName>
+                <default>false</default>
+                <label>DUPLICIDAD EVENTO/EVENTO VENCIDO</label>
+            </value>
+            <value>
+                <fullName>EMBARAZO</fullName>
+                <default>false</default>
+                <label>EMBARAZO</label>
+            </value>
+            <value>
+                <fullName>ALTA_FUERA_VIG</fullName>
+                <default>false</default>
+                <label>EVENTO DE ALTA POR FUERA DE VIGENCIA</label>
+            </value>
+            <value>
+                <fullName>FALLECIMIENTO</fullName>
+                <default>false</default>
+                <label>FALLECIMIENTO DEL PACIENTE</label>
+            </value>
+            <value>
+                <fullName>FUGA</fullName>
+                <default>false</default>
+                <label>FUGA</label>
+            </value>
+            <value>
+                <fullName>RECH</fullName>
+                <default>false</default>
+                <label>RECHAZO</label>
+            </value>
+            <value>
+                <fullName>BAJA</fullName>
+                <default>false</default>
+                <label>SOCIO BAJA</label>
+            </value>
+            <value>
+                <fullName>EDAD_LIMITE</fullName>
+                <default>false</default>
+                <label>SUPERA EL LIMITE DE EDAD</label>
+            </value>
+            <value>
+                <fullName>TRASLADO</fullName>
+                <default>false</default>
+                <label>TRASLADO A CENTRO DE MAYOR COMPLEJIDAD</label>
+            </value>
+            <value>
+                <fullName>SUSPENDIDO</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>SUSPENDIDO</label>
+            </value>
+            <value>
+                <fullName>jasdasd</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>jasdasd</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

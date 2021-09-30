@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Agrupamiento__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(ISPICKVAL(Type, &quot;Aportes&quot;),&quot;Estados de cuenta&quot;,
+IF(ISPICKVAL(Type, &quot;Pagos&quot;),&quot;Estados de cuenta&quot;,
+IF(ISPICKVAL(Type, &quot;Saldos a favor&quot;),&quot;Estados de cuenta&quot;,
+IF(ISPICKVAL(Type, &quot;Desconocimiento Deuda&quot;),&quot;Estados de cuenta&quot;,
+IF(ISPICKVAL(Type, &quot;Cuota&quot;),&quot;Estados de cuenta&quot;,
+IF(ISPICKVAL(Type, &quot;Copago&quot;),&quot;Estados de cuenta&quot;,
+IF(ISPICKVAL(Type,&quot;Cobros por debito automatico&quot;),&quot;Estados de cuenta&quot;,
+IF(ISPICKVAL(Type,&quot;Cobros por otras entidades&quot;),&quot;Estados de cuenta&quot;,
+IF(ISPICKVAL(Type,&quot;Tramite del caso padron&quot;),&quot;Tramites Padron&quot;,
+IF(ISPICKVAL(Type, &quot;Tramite del caso prestacional&quot;),&quot;Tramites Prestacional&quot;,
+IF(ISPICKVAL(Type,&quot;Cartilla - Falta prestador&quot;), &quot;Prestadores&quot;,
+IF(ISPICKVAL(Type,&quot;Quejas calidad de atencion&quot;), &quot;Quejas&quot;, 
+IF(ISPICKVAL(Type,&quot;Aumento de cuota&quot;),&quot;Quejas&quot;,
+IF(ISPICKVAL(Type,&quot;Prestadores - Cobro de servicio&quot;),&quot;Prestadores&quot;,
+IF(ISPICKVAL(Type,&quot;Cobro indebido&quot;),&quot;Prestadores&quot;,
+IF(ISPICKVAL(Type,&quot;Cobertura plan&quot;),&quot;Cobertura&quot;,
+IF(ISPICKVAL(Type,&quot;Factura&quot;),&quot;Tramites administrativos&quot;,
+IF(ISPICKVAL(Type,&quot;Reintegros no transferidos&quot;),&quot;Tramites administrativos&quot;,
+IF(ISPICKVAL(Type,&quot;Tramite no registrado&quot;),&quot;Gestiones Varias&quot;,
+IF(ISPICKVAL(Type,&quot;RESOL 075/98 Afiliacion&quot;),&quot;Legales&quot;,
+IF(ISPICKVAL(Type,&quot;RESOL 075/98 Cobertura&quot;),&quot;Legales&quot;,
+IF(ISPICKVAL(Type,&quot;Defensa del consumidor por cobertura&quot;),&quot;Reclamos Administrativos&quot;,
+IF(ISPICKVAL(Type,&quot;Defensa del consumidor por Afiliaciones&quot;),&quot;Reclamos Administrativos&quot;,
+IF(ISPICKVAL(Type,&quot;Denuncia ante la salud por cobertura&quot;),&quot;Reclamos Administrativos&quot;,
+IF(ISPICKVAL(Type,&quot;Denuncia ante el INADI&quot;),&quot;Reclamos Administrativos&quot;,
+IF(ISPICKVAL(Type,&quot;Denuncia ante el INAES&quot;),&quot;Reclamos Administrativos&quot;,
+IF(ISPICKVAL(Type,&quot;Reclamos impositivos&quot;),&quot;Reclamos Administrativos&quot;,
+IF(ISPICKVAL(Type,&quot;Mediaciones&quot;),&quot;Instancias Prejudiciales&quot;,
+IF(ISPICKVAL(Type,&quot;Conciliaciones Laborales&quot;),&quot;Instancias Prejudiciales&quot;,
+IF(ISPICKVAL(Type,&quot;Defensorias oficiales&quot;),&quot;Instancias Prejudiciales&quot;,
+IF(ISPICKVAL(Type,&quot;Secretaria de trabajo&quot;),&quot;Instancias Prejudiciales&quot;,
+IF(ISPICKVAL(Type,&quot;Amparo por cobertura&quot;),&quot;Instacias Judiciales&quot;,
+IF(ISPICKVAL(Type,&quot;Amparo por afiliaciones&quot;),&quot;Instacias Judiciales&quot;,
+IF(ISPICKVAL(Type,&quot;Juicios ordinarios&quot;),&quot;Instacias Judiciales&quot;,
+IF(ISPICKVAL(Type,&quot;Juicios laborales&quot;),&quot;Instacias Judiciales&quot;,
+IF(ISPICKVAL(Type,&quot;Oficios&quot;),&quot;Pedido de Informes&quot;,
+IF(ISPICKVAL(Type,&quot;Embargos laborales&quot;),&quot;Pedido de Informes&quot;,
+IF(ISPICKVAL(Type,&quot;Reclamo por cobertura&quot;),&quot;Intervenciones Directas&quot;,
+IF(ISPICKVAL(Type,&quot;Reclamo por afiliaciones&quot;),&quot;Intervenciones Directas&quot;,
+IF(ISPICKVAL(Type,&quot;Falseamiento de DDJJ&quot;),&quot;Intervenciones Directas&quot;,
+IF(ISPICKVAL(Type,&quot;Notificacion valorizacion Ley&quot;),&quot;Intervenciones Directas&quot;,
+IF(ISPICKVAL(Type,&quot;Reclamos laborales/intercambio epistolar&quot;),&quot;Intervenciones Directas&quot;,
+IF(ISPICKVAL(Type,&quot;Gestion de cobranzas&quot;),&quot;Intervenciones Directas&quot;,
+IF(ISPICKVAL(Type,&quot;Juicios laborales&quot;),&quot;Pedido de Informe&quot;,
+IF(ISPICKVAL(Type,&quot;Oficios&quot;),&quot;Pedido de Informe&quot;,
+IF(ISPICKVAL(Type,&quot;Embargos laborales&quot;),&quot;Pedido de Informes&quot;,&quot;&quot;
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Agrupamiento</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

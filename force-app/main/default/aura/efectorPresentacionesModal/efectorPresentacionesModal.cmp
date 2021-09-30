@@ -1,0 +1,35 @@
+<aura:component controller="EfectorPresentacionesBtnCtrl">
+
+    <ltng:require scripts="{!$Resource.LightningUtils}" />
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+
+	<aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="presentaciones" type="Object"/>
+    <aura:attribute name="mycolumns" type="List"/>
+
+    <aura:html tag="style">
+        .slds-modal__content {
+            position: relative;
+        }
+        .slds-modal__container{
+			min-width: 0%;
+			max-width: 90%;
+			width: max-content;
+			margin: 0 auto;
+        }
+    </aura:html>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+	
+	<aura:if isTrue="{! v.isLoading }">
+        <lightning:spinner alternativeText="Loading" variant="brand"/>
+    </aura:if>
+
+    <lightning:datatable
+            data="{!v.presentaciones}"
+            columns="{!v.mycolumns}"
+            keyField="id"
+			onrowselection="{!c.showPresentacionDetail}"
+			maxRowSelection="1"
+    />
+</aura:component>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Seccion_datos_particulares</fullName>
+    <active>true</active>
+    <description>Validacion para solicitud de datos particulares y el tipo es datos particulares la seccion datos particulares debe estar llena</description>
+    <errorConditionFormula>AND( 
+					RecordType.DeveloperName =&quot;Solicitud_de_datos_particulares&quot;,
+				 ISPICKVAL(Type,&quot;MODIF_DPART&quot;),
+					OR(
+								NOT(ISBLANK(TEXT(Tipo_de_domicilio__c))),
+								Baja_domicilio__c,
+        Baja_telefono__c,  							
+							 NOT(ISBLANK(Calle__c)),        
+							 NOT(ISBLANK(Piso__c)),
+						 	NOT(ISBLANK(Numero__c)),
+        NOT(ISBLANK(Departamento__c)),
+  					 NOT(ISBLANK(Codigo_postal__c)),
+		 				 NOT(ISBLANK(Localidad__c)),
+							 NOT(ISBLANK(TEXT(Provincia__c))),
+								NOT(ISBLANK(TEXT(Tipo_de_telefono__c))),
+								NOT(ISBLANK(Telefono__c)),
+								NOT(ISBLANK(TEXT(Tipo_DNI__c))),
+								NOT(ISBLANK(DNI__c)),
+								NOT(ISBLANK(SuppliedEmail)),
+								NOT(ISBLANK(TEXT(Envio_de_recibo__c))),
+								NOT(ISBLANK(Agencia_destino__c))
+									)
+				)</errorConditionFormula>
+    <errorMessage>Cuando el tipo es &quot;Datos particulares&quot; solo pueden completar los campos de la sección &quot;Datos particulares&quot;</errorMessage>
+</ValidationRule>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Solicitar_carga_manual__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Este check se utiliza para que el vendedor active una alerta de correo al organizador de la oportunidad solicitando habilitar la caga manual de documentos DDJJ y solicitud de ingreso</description>
+    <externalId>false</externalId>
+    <label>Solicitar carga manual</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

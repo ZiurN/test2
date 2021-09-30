@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Administracion_de_la_venta_Case</fullName>
+    <columns>CASES.RECORDTYPE</columns>
+    <columns>Sub_tipo__c</columns>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>Usuario__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>Tiempo_SLA__c</columns>
+    <columns>CASES.TYPE</columns>
+    <columns>Retencion_Lograda__c</columns>
+    <columns>Bebe_sin_DNI__c</columns>
+    <columns>CREATEDBY_USER.ALIAS</columns>
+    <columns>Informacion_completa__c</columns>
+    <filterScope>Queue</filterScope>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>notEqual</operation>
+        <value>Cerrado</value>
+    </filters>
+    <label>Administracion de la venta</label>
+    <queue>Administracion_de_la_venta</queue>
+    <sharedTo>
+        <allInternalUsers></allInternalUsers>
+    </sharedTo>
+</ListView>

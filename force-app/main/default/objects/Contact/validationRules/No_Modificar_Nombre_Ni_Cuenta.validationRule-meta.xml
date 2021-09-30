@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_Modificar_Nombre_Ni_Cuenta</fullName>
+    <active>true</active>
+    <description>No permite modificar el nombre de la cuenta o la cuenta - regla diseñada para el conjunto de permisos que permite modificar todos los contactos para poder trabajar el objeto Social Person</description>
+    <errorConditionFormula>AND(
+OR(
+ISCHANGED(LastName),
+ISCHANGED(FirstName),
+ISCHANGED(AccountId)),
+OR (
+ $Profile.Name = &apos;CDC&apos;,
+ $Profile.Name = &apos;Front&apos;
+))</errorConditionFormula>
+    <errorMessage>No tiene permisos para modificar el Nombre del Contacto y/o la Cuenta Relacionada</errorMessage>
+</ValidationRule>

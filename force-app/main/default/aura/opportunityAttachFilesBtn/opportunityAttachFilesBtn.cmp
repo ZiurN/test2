@@ -1,0 +1,31 @@
+<aura:component
+    implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction,force:appHostable"
+    description="opportunityAttachFilesBtn"  controller="OpportunitySendAltaBtnCtrl"  access="global">
+    <ltng:require scripts="{!$Resource.LightningUtils}" />
+
+    <aura:attribute name="isVentas" type="Boolean"/>
+    
+    <aura:attribute name="disabledButton" type="Boolean"/>
+  	<aura:attribute name="previousState" type="Boolean" default="false" />
+    <aura:attribute name="isLoading" type="Boolean" default="false" />
+    <aura:attribute name="accountSimpleRecord" type="Object" />
+    <aura:attribute name="recordLoadError" type="String" />
+
+   	<aura:handler name="init" value="this" action="{!c.doInit}"/>
+    
+    <force:recordData aura:id="recordLoader" recordId="{!v.recordId}" fields="StageName,Nro_de_solicitud__c"
+        targetFields="{!v.accountSimpleRecord}" targetError="{!v.recordLoadError}" 
+        recordUpdated="{! c.handleUpdate }" />
+
+    <!-- <aura:if isTrue="{!v.isLoading}">
+                    <lightning:spinner alternativeText="Loading" variant="brand"/>
+                </aura:if> -->
+
+    <lightning:overlayLibrary aura:id="overlayLib" />
+
+    <lightning:button aura:id="cargarDocumentosButton" variant="neutral" onclick="{!c.handleClickBtn}" disabled="false"
+        title="Cargar documentos" label="Cargar documentos" />
+
+
+
+</aura:component>

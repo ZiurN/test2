@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>validacion_parentesco</fullName>
+    <active>true</active>
+    <description>Regla de validadcion para que segun el parentesco no puedan selecciones ciertos estados civil</description>
+    <errorConditionFormula>OR(
+   AND(
+				   OR(
+								  RecordType.DeveloperName= &quot;Solicitud_de_alta_familiar&quot;,
+								  RecordType.DeveloperName= &quot;Solicitud_de_despegues&quot;,
+							   RecordType.DeveloperName= &quot;Solicitud_de_datos_particulares&quot;),
+							  	ISPICKVAL(Tipo_de_Parentesco__c,&quot;CO&quot;),    
+								  NOT(
+												  OR(
+															  ISPICKVAL(Estado_civil__c,&quot;N&quot;),
+															  ISPICKVAL(Estado_civil__c,&quot;C&quot;))
+														)
+							),
+				AND(
+				   OR(
+								RecordType.DeveloperName= &quot;Solicitud_de_alta_familiar&quot;,
+								RecordType.DeveloperName= &quot;Solicitud_de_despegues&quot;,
+							 RecordType.DeveloperName= &quot;Solicitud_de_datos_particulares&quot;),
+							OR( 
+          ISPICKVAL(Tipo_de_Parentesco__c,&quot;HI&quot;),
+										ISPICKVAL(Tipo_de_Parentesco__c,&quot;SO&quot;),
+										ISPICKVAL(Tipo_de_Parentesco__c,&quot;FD&quot;),
+										ISPICKVAL(Tipo_de_Parentesco__c,&quot;HR&quot;),
+										ISPICKVAL(Tipo_de_Parentesco__c,&quot;NT&quot;)),
+								NOT(
+												ISPICKVAL(Estado_civil__c,&quot;S&quot;)
+												)
+								),
+				AND(
+				   OR(
+								  RecordType.DeveloperName= &quot;Solicitud_de_alta_familiar&quot;,
+								  RecordType.DeveloperName= &quot;Solicitud_de_despegues&quot;,
+							   RecordType.DeveloperName= &quot;Solicitud_de_datos_particulares&quot;),
+							  	ISPICKVAL(Tipo_de_Parentesco__c,&quot;PA&quot;),
+								  NOT(
+												  OR(
+															  ISPICKVAL(Estado_civil__c,&quot;S&quot;),
+															  ISPICKVAL(Estado_civil__c,&quot;C&quot;),
+														   ISPICKVAL(Estado_civil__c,&quot;V&quot;),
+																	ISPICKVAL(Estado_civil__c,&quot;P&quot;))
+														)
+								)
+				)</errorConditionFormula>
+    <errorMessage>Valor inapropiado de Estado civil para el tipo de Parentesco</errorMessage>
+</ValidationRule>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validacion_EMI</fullName>
+    <active>true</active>
+    <description>Validacion para creacion de un EMI a un asociado dado de baja y que la fecha de emi no sea posterior a la fecha de dado de baja del asociado</description>
+    <errorConditionFormula>AND(
+				ISNEW(),
+				 RecordType.Name = &quot;Evento médico de internación&quot;,
+				 Fecha_y_Hora_inicio_EMS__c  &gt;  Asociado__r.Fecha_de_baja__c + 90
+				)</errorConditionFormula>
+    <errorMessage>No puede crear un evento con fecha posterior a la fecha de baja del asociado</errorMessage>
+</ValidationRule>

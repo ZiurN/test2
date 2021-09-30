@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>obliglatorio_aporte_si_es_conyuge</fullName>
+    <active>true</active>
+    <description>Validación para tipos de registro &quot;Despegues&quot; si el parentesco del integrante es conyugue que sea obligatorio marcar el check deriva aportes y el importe de aporte</description>
+    <errorConditionFormula>OR(
+   AND(
+				   RecordType.DeveloperName =&quot;Despegues&quot;,
+				   ISPICKVAL(Tipo_de_relacion_con_titular__c,&quot;CO&quot;),
+				   OR( 
+							  	NOT(Indicador_de_aporte__c),
+							  	ISBLANK(Aportes__c)
+							 		)
+			   	),
+				AND(
+								RecordType.DeveloperName =&quot;Despegues&quot;,
+								NOT(ISPICKVAL(Tipo_de_relacion_con_titular__c,&quot;CO&quot;)),
+						  	OR(
+									   Indicador_de_aporte__c,
+									   NOT(ISBLANK(Aportes__c))
+									 		)
+								) 
+				)</errorConditionFormula>
+    <errorMessage>Si el tipo de relacion con titular es &quot;Cónyuge&quot; debe marcar &quot;Indicador de aporte&quot; y completar &quot;Aportes&quot;, si es distinto a conyugue no pueden completar dichos campos</errorMessage>
+</ValidationRule>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IND_Segmento_Grupo_Familiar</fullName>
+    <active>true</active>
+    <description>Para pasar a etapa en Negociación deberá completar el Segmento del grupo familiar</description>
+    <errorConditionFormula>AND(
+    RecordType.Name = &quot;Individuos&quot;,
+    ISPICKVAL(StageName, &quot;En Negociación&quot;),
+    ISBLANK(TEXT(Segmento_del_Grupo_Familiar__c))
+)</errorConditionFormula>
+    <errorDisplayField>Segmento_del_Grupo_Familiar__c</errorDisplayField>
+    <errorMessage>Debe completar el grupo familiar para cambiar de etapa</errorMessage>
+</ValidationRule>

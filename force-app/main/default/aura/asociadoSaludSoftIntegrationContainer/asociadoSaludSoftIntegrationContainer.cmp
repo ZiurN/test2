@@ -1,0 +1,121 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction"
+	access="global">
+
+	<aura:html tag="style">
+		.oneUtilityBarContainer {
+		z-index: 98;
+		}
+		<!--
+		a[title="Acciones SaludSoft"] {
+			display: none !important;		
+		}
+	-->
+	</aura:html>
+
+	<article class="slds-card">
+		<div class="slds-card__header slds-grid">
+			<header class="slds-media slds-media--center" style="width: 100%;">
+				<div class="flex">
+					<div class="slds-media__figure stencil slds-avatar slds-avatar_small">
+						<span class="slds-icon_container" style="background-color: transparent;">
+							<div class="slds-icon slds-icon_small">
+								<img src="{!$Resource.AcaIcon}" />
+							</div>
+						</span>
+					</div>
+					<div class="slds-media__body">
+						<h2>
+							<div class="title slds-card__header-title">
+								SaludSoft
+							</div>
+						</h2>
+					</div>
+				</div>
+
+				<div class="slds-grid slds-grid_vertical">
+					<lightning:buttonMenu class="slds-dropdown_medium slds-size_1-of-1 slds-m-bottom_small"
+						label="Consultar datos del asociado">
+						<div class="slds-dropdown__item">
+							<c:asociadoAlertasBtn recordId="{!v.recordId}" />
+						</div>
+						<div class="slds-dropdown__item">
+							<c:asociadoAportesDeclaradosBtn recordId="{!v.recordId}" />
+						</div>
+						<div class="slds-dropdown__item">
+							<c:asociadoAportesTransferidosBtn recordId="{!v.recordId}" />
+						</div>
+						<div class="slds-dropdown__item">
+							<c:asociadoClausulasPlanBtn recordId="{!v.recordId}" />
+						</div>
+						<div class="slds-dropdown__item">
+							<c:asociadoClausulasTempoBtn recordId="{!v.recordId}" />
+						</div>
+						<div class="slds-dropdown__item">
+							<c:asociadoConsumosBtn recordId="{!v.recordId}" />
+						</div>
+						<!-- <div class="slds-dropdown__item">
+							<c:asociadoCredencialesBtn recordId="{!v.recordId}"/>
+						</div> -->
+						<div class="slds-dropdown__item">
+							<c:asociadoImportCuentaCorrienteBtn recordId="{!v.recordId}" />
+						</div>
+						<div class="slds-dropdown__item">
+							<c:asociadoCuotasBtn recordId="{!v.recordId}" />
+						</div>
+						<div class="slds-dropdown__item">
+							<c:asociadoDatosAdicionalesBtn recordId="{!v.recordId}" />
+						</div>
+						<!-- <div class="slds-dropdown__item">
+							<c:asociadoDomiciliosBtn recordId="{!v.recordId}"/>
+						</div> -->
+						<div class="slds-dropdown__item">
+							<c:asociadoEmpleosBtn recordId="{!v.recordId}" />
+						</div>
+						<div class="slds-dropdown__item">
+							<c:asociadoEstadoCredencialesBtn recordId="{!v.recordId}" />
+						</div>
+						<div class="slds-dropdown__item">
+							<c:asociadoGetCopagoBtn recordId="{!v.recordId}" />
+						</div>
+						<div class="slds-dropdown__item">
+							<c:asociadoHistoricoBtn recordId="{!v.recordId}" />
+						</div>
+						<div class="slds-dropdown__item">
+							<c:asociadoInterfazFinancieraBtn recordId="{!v.recordId}" />
+						</div>
+						<!-- <div class="slds-dropdown__item">
+							<c:asociadoPromotoresBtn recordId="{!v.recordId}"/>
+						</div> -->
+						<div class="slds-dropdown__item">
+							<c:asociadoTopesBtn recordId="{!v.recordId}" />
+						</div>
+						<div class="slds-dropdown__item">
+							<c:asociadoValoracionesBtn recordId="{!v.recordId}" />
+						</div>
+					</lightning:buttonMenu>
+
+					<lightning:buttonMenu class="slds-dropdown_medium slds-size_1-of-1 slds-m-bottom_small z-98"
+						label="Actualizar datos del asociado">
+						<div class="slds-dropdown__item">
+							<c:asociadoImportFacturasBtn recordId="{!v.recordId}" />
+						</div>
+						<div class="slds-dropdown__item">
+							<c:AsociadoScoreBtn recordId="{!v.recordId}" />
+						</div>
+						<div class="slds-dropdown__item">
+							<c:asociadoExpedientesLegalesBtn recordId="{!v.recordId}" />
+						</div>
+						<div class="slds-dropdown__item">
+							<c:EstadoDeCuentaBtn recordId="{!v.recordId}" />
+						</div>
+
+					</lightning:buttonMenu>
+					<div>
+						<c:asociadoGenerarCuponBtn recordId="{!v.recordId}" />
+					</div>
+				</div>
+
+			</header>
+		</div>
+	</article>
+</aura:component>

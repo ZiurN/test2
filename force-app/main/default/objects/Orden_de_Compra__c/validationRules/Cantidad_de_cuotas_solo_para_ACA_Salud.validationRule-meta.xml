@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cantidad_de_cuotas_solo_para_ACA_Salud</fullName>
+    <active>true</active>
+    <description>Sólo se podrá completar el campo Cantidad de cuotas si la forma de pago es &quot;Aca Salud&quot;</description>
+    <errorConditionFormula>AND(
+    NOT(ISBLANK(Cant_Cuotas__c)),
+    NOT(ISPICKVAL(forma_de_Pago__c,&quot;Aca Salud&quot;))
+)</errorConditionFormula>
+    <errorDisplayField>Cant_Cuotas__c</errorDisplayField>
+    <errorMessage>Solo puede llenar el campo Catidad de cuotas si la forma de pago es Aca Salud</errorMessage>
+</ValidationRule>

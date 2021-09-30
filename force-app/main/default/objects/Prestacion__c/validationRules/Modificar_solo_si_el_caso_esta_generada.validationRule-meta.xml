@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Modificar_solo_si_el_caso_esta_generada</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    $Profile.Name != &quot;Administrador del sistema&quot;,
+				NOT(ISPICKVAL(Ap__r.Status, &apos;CA-----G&apos;)),
+    NOT(Cambio_automatico__c),
+				OR(
+				    ISCHANGED(Contexto__c),
+				    ISCHANGED(Tipo__c),
+				    ISCHANGED(Cantidad__c),
+				    ISCHANGED(Observaciones__c),
+				    ISCHANGED(Alerta__c),
+								ISCHANGED(Prestacion__c),
+								ISCHANGED(Medicamento__c),
+								ISCHANGED(Grupo_de_Prestaciones__c)
+				)
+)</errorConditionFormula>
+    <errorMessage>Solo se puede modificar cuando el estado del caso es &quot;Generada&quot;</errorMessage>
+</ValidationRule>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Alerta</fullName>
+    <fields>Nivel_de_auditoria__c</fields>
+    <fields>Estado__c</fields>
+    <fields>Tipo__c</fields>
+    <fields>Evento_Medico__c</fields>
+    <label>Alerta</label>
+</CompactLayout>

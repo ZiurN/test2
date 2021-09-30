@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_cambiar_subtipo</fullName>
+    <active>true</active>
+    <description>No se debe permitir cambiar el subtipo una vez que el caso fue guardado</description>
+    <errorConditionFormula>AND(
+NOT(ISCHANGED(RecordTypeId)),
+RecordType.DeveloperName = &apos;Autorizacion_previa&apos;,
+ISCHANGED(Sub_tipo__c)
+)</errorConditionFormula>
+    <errorMessage>No puede modificar el subtipo una vez guardada la Autorización previa</errorMessage>
+</ValidationRule>

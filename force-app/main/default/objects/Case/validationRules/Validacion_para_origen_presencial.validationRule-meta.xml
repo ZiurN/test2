@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validacion_para_origen_presencial</fullName>
+    <active>true</active>
+    <description>Validacion si el caso es tipo RESOL 075/98 Afiliacion&quot; o &quot;RESOL 075/98 Cobertura&quot;solo puedan seleccionar origen &quot;Presencial&quot;</description>
+    <errorConditionFormula>AND(
+				OR(
+				   ISPICKVAL(Type, &quot;RESOL 075/98 Afiliacion&quot;),
+							ISPICKVAL(Type, &quot;RESOL 075/98 Cobertura&quot;)),
+				NOT(ISPICKVAL(Origin, &quot;Presencial&quot;)
+								)
+				)</errorConditionFormula>
+    <errorMessage>Solo puede seleccionar origen &quot;Presencial&quot; para caso de tipo &quot;RESOL 075/98 Afiliacion&quot; o &quot;RESOL 075/98 Cobertura&quot;</errorMessage>
+</ValidationRule>

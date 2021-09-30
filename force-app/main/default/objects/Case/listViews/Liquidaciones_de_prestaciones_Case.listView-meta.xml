@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Liquidaciones_de_prestaciones_Case</fullName>
+    <filterScope>Queue</filterScope>
+    <label>Liquidaciones de prestaciones</label>
+    <queue>Liquidaciones_de_prestaciones</queue>
+    <sharedTo>
+        <allInternalUsers></allInternalUsers>
+    </sharedTo>
+</ListView>
