@@ -1,7 +1,0 @@
-<design:component>
-    <design:supportedFormFactors>
-        <design:supportedFormFactor type="Large"/>
-        <design:supportedFormFactor type="Small"/>
-    </design:supportedFormFactors>
-    <design:attribute name="isSales" label="Estoy en la app de sales"/>
-</design:component>

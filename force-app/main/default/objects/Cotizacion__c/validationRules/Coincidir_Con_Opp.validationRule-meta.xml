@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Coincidir_Con_Opp</fullName>
-    <active>false</active>
-    <description>Debe coincidir tipo de afiliado de la cotización y el tipo de asociado de la oportunidad</description>
-    <errorConditionFormula>TEXT(Tipo_de_afiliado__c) &lt;&gt;  TEXT(Oportunidad__r.Tipo_de_Asociado__c)</errorConditionFormula>
-    <errorDisplayField>Tipo_de_afiliado__c</errorDisplayField>
-    <errorMessage>Debe coincidir tipo de afiliado de la cotización y el tipo de asociado de la oportunidad</errorMessage>
-</ValidationRule>

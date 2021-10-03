@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Prueba_Campos</fullName>
-    <fields>Nombre_de_Localidad__c</fields>
-    <fields>Loc_Id__c</fields>
-    <fields>Codigo_de_Provincia__c</fields>
-    <label>Prueba Campos</label>
-</CompactLayout>

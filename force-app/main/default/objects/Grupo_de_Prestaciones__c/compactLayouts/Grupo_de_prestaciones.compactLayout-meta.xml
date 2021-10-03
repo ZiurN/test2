@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Grupo_de_prestaciones</fullName>
-    <fields>Nombre_de_Grupo__c</fields>
-    <fields>Familia__c</fields>
-    <fields>Name</fields>
-    <fields>Codigo__c</fields>
-    <label>Grupo de prestaciones</label>
-</CompactLayout>

@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<AuraDefinitionBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>48.0</apiVersion>
-    <description>Modal donde se cargan los datos para el test de reingreso, se envian a SS y luego se muestran los datos devueltos en la espuesta</description>
-</AuraDefinitionBundle>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Procedimiento</fullName>
-    <active>true</active>
-    <compactLayoutAssignment>Recommended_Compact_Layout</compactLayoutAssignment>
-    <description>Se utiliza para definir los pasos a seguir en este proceso</description>
-    <label>Procedimiento</label>
-</RecordType>
