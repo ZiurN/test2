@@ -1,0 +1,21 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId,force:appHostable" controller="CotizadorBtnCtrl" access="global">
+
+	<ltng:require scripts="{!$Resource.LightningUtils}" />
+	<lightning:overlayLibrary aura:id="overlayLib"/>
+    
+	<aura:attribute name="isLoading" type="Boolean" default="false"/>
+	<aura:attribute name="cotizadorCorpRecord" type="Object"/>
+	<aura:attribute name="file" type="String"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+
+	<lightning:fileUpload label="Archivo xlsx a cotizar"
+                          name="fileUploader"
+                          multiple="false"
+                          accept=".xlsx"
+                          recordId="{!v.recordId}"
+						  onuploadfinished="{!c.handleUploadFinished}" />
+	<aura:if isTrue="{! v.isLoading }">
+		<lightning:spinner alternativeText="Loading" variant="brand"/>
+	</aura:if>
+
+</aura:component>

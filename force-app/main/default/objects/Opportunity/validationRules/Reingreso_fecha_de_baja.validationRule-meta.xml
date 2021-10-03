@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reingreso_fecha_de_baja</fullName>
+    <active>true</active>
+    <description>Validacion que impide la creacion de una oportunidad de tipo &quot;Individuos&quot; si la fecha de la vigencia es menor que la fecha de baja del asociado a reingresar</description>
+    <errorConditionFormula>AND(
+				 RecordType.DeveloperName =&quot;Individuos&quot;,
+				 $Profile.Name =&quot;Front&quot;,
+				 Fecha_de_vigencia_de_solicitud__c  &lt;  DATEVALUE(Account.Fecha_de_baja__c) 
+				)</errorConditionFormula>
+    <errorMessage>La fecha de la vigencia de solicitud debe ser mayor o igual a la fecha de baja del Asociado</errorMessage>
+</ValidationRule>

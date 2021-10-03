@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Si_medio_de_cobro_es_tarjeta</fullName>
+    <active>true</active>
+    <description>Validacion para solicitud de despeque si el medio de cobro es tarjeta los campos tarjeta de credito, su numero, tipo de débito por ACA y codigo debito por ACa son obligatorios</description>
+    <errorConditionFormula>OR(
+   AND(
+       RecordType.DeveloperName = &quot;Solicitud_de_despegues&quot;,
+			    ISPICKVAL(Medio_de_cobro__c, &quot;DEBAUT&quot;),
+				  	ISPICKVAL(Tarjeta_de_credito__c,&quot;&quot;),
+	      ISPICKVAL(Tipo_de_debito_por_ACA__c,&quot;&quot;)
+							 ),
+				AND(
+								RecordType.DeveloperName = &quot;Solicitud_de_despegues&quot;,
+			     ISPICKVAL(Medio_de_cobro__c, &quot;DEBAUT&quot;),
+								NOT(ISPICKVAL(Tarjeta_de_credito__c,&quot;&quot;)),
+	       NOT(ISPICKVAL(Tipo_de_debito_por_ACA__c,&quot;&quot;))
+								),
+				AND(
+								RecordType.DeveloperName = &quot;Solicitud_de_despegues&quot;,
+			     ISPICKVAL(Medio_de_cobro__c, &quot;DEBAUT&quot;),
+								NOT(ISPICKVAL(Tarjeta_de_credito__c,&quot;&quot;)),
+								ISBLANK(Numero_de_tarjeta_de_credito__c)
+								),
+				AND(
+								RecordType.DeveloperName = &quot;Solicitud_de_despegues&quot;,
+			     ISPICKVAL(Medio_de_cobro__c, &quot;DEBAUT&quot;),
+							 NOT(ISPICKVAL(Tarjeta_de_credito__c,&quot;&quot;)),
+								OR(
+							   	NOT(ISBLANK(Cdigo_debito_por_ACA__c)),
+											NOT(ISPICKVAL(Tipo_CBU__c,&quot;&quot;)),
+											NOT(ISBLANK(Numero_CBU_cobro_de_cuota__c)),
+											NOT(ISPICKVAL(Tipo_de_debito_por_ACA__c,&quot;&quot;))
+												)
+								),
+				AND(
+								RecordType.DeveloperName = &quot;Solicitud_de_despegues&quot;,
+			     ISPICKVAL(Medio_de_cobro__c, &quot;DEBAUT&quot;),
+								NOT(ISPICKVAL(Tipo_de_debito_por_ACA__c,&quot;&quot;)),
+								ISBLANK(Cdigo_debito_por_ACA__c)
+								),
+				AND(
+								RecordType.DeveloperName = &quot;Solicitud_de_despegues&quot;,
+			     ISPICKVAL(Medio_de_cobro__c, &quot;DEBAUT&quot;),
+								NOT(ISPICKVAL(Tipo_de_debito_por_ACA__c,&quot;&quot;)),
+								OR(
+				       NOT(ISBLANK(Numero_de_tarjeta_de_credito__c)),
+											NOT(ISPICKVAL(Tipo_CBU__c,&quot;&quot;)),
+											NOT(ISBLANK(Numero_CBU_cobro_de_cuota__c)),
+											NOT(ISPICKVAL(Tarjeta_de_credito__c,&quot;&quot;))
+												)
+								)
+				)</errorConditionFormula>
+    <errorMessage>Si el medio de cobro es &quot;Tarjeta o Débito por Aca&quot; los campos de tarjeta o de débito por Aca son solo requeridos y obligatorios, Ejemplo: Si selecciona Tarjeta es obligatorio y solo puede llenar Nro de tarjeta</errorMessage>
+</ValidationRule>

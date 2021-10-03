@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Copia_de_Celula_3_Oxigenoterapia_loren1</fullName>
+    <booleanFilter>1 OR 2</booleanFilter>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>Evento_Medico__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>Sub_tipo__c</columns>
+    <columns>Usuario__c</columns>
+    <columns>Agencia_asociado__c</columns>
+    <columns>SLA__c</columns>
+    <columns>Observaciones__c</columns>
+    <columns>Contiene_alerta_AM__c</columns>
+    <columns>Medico_asignado__c</columns>
+    <columns>UPDATEDBY_USER.ALIAS</columns>
+    <filterScope>Queue</filterScope>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>equals</operation>
+        <value>CA-----G,Generada,CA-----A</value>
+    </filters>
+    <filters>
+        <field>CASES.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Case.Consultas,Case.Reclamos</value>
+    </filters>
+    <label>Copia de Celula 3 - Oxigenoterapia loren</label>
+    <queue>Celula_3</queue>
+</ListView>

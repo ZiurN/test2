@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IND_EstadoCivil_en_Negociacion</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+RecordType.Name = &quot;Individuos&quot;,
+ISPICKVAL(StageName, &quot;En Negociación&quot;),
+OR(
+ISBLANK(TEXT(Estado_Civil__c)),
+ISBLANK(TEXT(Canal_de_contacto_Asesor_con_cliente__c))
+)
+)</errorConditionFormula>
+    <errorMessage>Debe completar el campo Estado civil y Canal de contacto para avanzar a la etapa Negociación</errorMessage>
+</ValidationRule>

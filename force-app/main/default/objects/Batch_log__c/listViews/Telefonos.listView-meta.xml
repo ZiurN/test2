@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Telefonos</fullName>
+    <columns>NAME</columns>
+    <columns>Error__c</columns>
+    <columns>Id_registro_error__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>LAST_UPDATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>NAME</field>
+        <operation>contains</operation>
+        <value>telefono</value>
+    </filters>
+    <label>Telefonos</label>
+    <sharedTo>
+        <role>Administrador</role>
+    </sharedTo>
+</ListView>

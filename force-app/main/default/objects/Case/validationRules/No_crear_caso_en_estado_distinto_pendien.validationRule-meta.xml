@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_crear_caso_en_estado_distinto_pendien</fullName>
+    <active>true</active>
+    <description>Validacion al crear una solicitud de despeque o solicitud de alta familiar el estado solo pueda se en proceso</description>
+    <errorConditionFormula>AND(
+			  RecordType.DeveloperName= &quot;Solicitud_de_nueva_credencial&quot;,
+			  NOT(ISPICKVAL(Status,&quot;Pendiente&quot;)),
+				 ISNEW()
+				)</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>No puede crear un caso si el estado es distinto a &quot;Pendiente&quot;</errorMessage>
+</ValidationRule>

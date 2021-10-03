@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Autorizaciones_Previas_San_Antonio_Oeste</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>Evento_Medico__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>SLA__c</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>Nivel_de_derivacion__c</columns>
+    <columns>Celula__c</columns>
+    <columns>Delegacion__c</columns>
+    <columns>Codigo_empresa__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650821</value>
+    </filters>
+    <filters>
+        <field>Nivel_de_derivacion__c</field>
+        <operation>equals</operation>
+        <value>Nivel 1</value>
+    </filters>
+    <filters>
+        <field>CASES.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Case.Autorizacion_previa</value>
+    </filters>
+    <label>Autorizaciones Previas San Antonio Oeste</label>
+    <sharedTo>
+        <roleAndSubordinates>Encargado_Filial_San_Antonio_Oeste</roleAndSubordinates>
+    </sharedTo>
+</ListView>

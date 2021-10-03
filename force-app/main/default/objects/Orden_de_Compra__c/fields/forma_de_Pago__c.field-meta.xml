@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>forma_de_Pago__c</fullName>
+    <externalId>false</externalId>
+    <label>Forma de Pago</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Aca Salud</fullName>
+                <default>false</default>
+                <label>Avalian</label>
+            </value>
+            <value>
+                <fullName>Prestador</fullName>
+                <default>false</default>
+                <label>Prestador</label>
+            </value>
+            <value>
+                <fullName>Sin cargo</fullName>
+                <default>false</default>
+                <label>Sin cargo</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

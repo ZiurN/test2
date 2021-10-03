@@ -1,0 +1,11 @@
+.THIS tr th {
+    text-align: center;
+    padding: 8px;
+}
+.THIS tr td {
+    text-align: center;
+}
+.THIS hr {
+    margin: 5px !important;
+    height: 1px;
+}

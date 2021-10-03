@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>si_es_hijo_y_el_titular_es_OBL</fullName>
+    <active>true</active>
+    <description>Validacion para tipo de registros &quot;Individuos&quot; si el segmento del nuevo titular es OBL y el parentezco del reingreso es Hijo no deberia permitir</description>
+    <errorConditionFormula>AND(
+				RecordType.DeveloperName =&quot;Individuos&quot;,
+				 ISPICKVAL(Parentesco__c,&quot;HI&quot;),
+			 	NOT(ISBLANK(Aportes_del_titular__c)),
+				OR(
+							ISPICKVAL(Nuevo_titular__r.Segmento_de_grupo_familiar__c, &quot;OBLDIR&quot;),
+							ISPICKVAL(Nuevo_titular__r.Segmento_de_grupo_familiar__c, &quot;OBLEMP&quot;)
+								)
+				)</errorConditionFormula>
+    <errorMessage>El campo &quot;Aporte del titular&quot; debe estar en blanco cuando el segmento del nuevo titular es &quot;OBLDIR&quot; o&quot; OBLEMP&quot; y el parentesco en la oportunidad es &quot;Hijo&quot;</errorMessage>
+</ValidationRule>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_cargar_a_EM_anulado</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+				$Profile.Name &lt;&gt; &quot;Administrador del sistema&quot;,
+    NOT(ISBLANK(Evento_Medico__c)),
+				OR(
+								ISNEW(),
+								ISCHANGED(Evento_Medico__c)
+				),
+				OR(
+								ISPICKVAL( Evento_Medico__r.Estado__c, &quot;Anulado&quot;),
+								ISPICKVAL( Evento_Medico__r.Estado__c, &quot;Rechazado&quot;),
+								ISPICKVAL( Evento_Medico__r.Estado__c, &quot;Suspendido&quot;),
+								ISPICKVAL( Evento_Medico__r.Estado__c, &quot;Cerrado&quot;)
+				)
+)</errorConditionFormula>
+    <errorDisplayField>Evento_Medico__c</errorDisplayField>
+    <errorMessage>No se puede asociar un caso a un evento médico en estado &quot;Anulado&quot;, &quot;Rechazado&quot;, &quot;Suspendido&quot; o &quot;Cerrado&quot;</errorMessage>
+</ValidationRule>

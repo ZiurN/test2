@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validar_fechas</fullName>
+    <active>false</active>
+    <description>La Fecha Fin real debe ser posterior a la Fecha Inicio real</description>
+    <errorConditionFormula>Fecha_Fin_real__c &lt;  Fecha_Inicio_real__c</errorConditionFormula>
+    <errorMessage>La Fecha Fin real debe ser posterior a la Fecha Inicio real</errorMessage>
+</ValidationRule>

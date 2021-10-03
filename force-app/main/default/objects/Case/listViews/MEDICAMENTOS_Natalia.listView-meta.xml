@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MEDICAMENTOS_Natalia</fullName>
+    <columns>Fecha__c</columns>
+    <columns>SLA__c</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>Estado_de_documentacion__c</columns>
+    <columns>CREATEDBY_USER.ALIAS</columns>
+    <columns>Nivel_de_derivacion__c</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>CONTACT.LAST_NAME</columns>
+    <columns>Delegacion__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>notContain</operation>
+        <value>Orden Emitida,Anulada,Autorizada</value>
+    </filters>
+    <filters>
+        <field>CASES.TYPE</field>
+        <operation>equals</operation>
+        <value>Medicamento</value>
+    </filters>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650098</value>
+    </filters>
+    <filters>
+        <field>Celula__c</field>
+        <operation>equals</operation>
+        <value>Celula 4,Celula 6,Celula 7,Celula 9</value>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>equals</operation>
+        <value>CA-----G,Generada,CA-----A,Autorizada,Rechazado,Pendiente socio</value>
+    </filters>
+    <filters>
+        <field>CREATEDBY_USER.ALIAS</field>
+        <operation>equals</operation>
+        <value>MANSANCH</value>
+    </filters>
+    <label>MEDICAMENTOS Natalia</label>
+</ListView>

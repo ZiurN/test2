@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Bajas_scoring_amarillo</fullName>
+    <active>true</active>
+    <description>No se permite un descuento de 20% a un asociado con Scoring amarillo</description>
+    <errorConditionFormula>AND(
+ Account.Color_scoring__c = &quot;AMARILLO&quot;,
+ISPICKVAL( Tipo_de_retencion__c , &quot;Economica&quot;),
+OR(
+ISPICKVAL( Valor_de_descuento__c  , &quot;20%&quot;),
+ISPICKVAL( Valor_de_descuento__c  , &quot;15%&quot;),
+Otro_valor__c  &gt; 0.10
+)
+)</errorConditionFormula>
+    <errorMessage>No se permite un descuento superior al 10% en un asociado con Scoring amarillo</errorMessage>
+</ValidationRule>

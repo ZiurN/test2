@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AUTORIZACIONES_PREVIAS_SAN_LORENZO1</fullName>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>Evento_Medico__c</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>SLA__c</columns>
+    <columns>Fecha__c</columns>
+    <columns>Fecha_probable__c</columns>
+    <columns>Nivel_de_derivacion__c</columns>
+    <columns>Delegacion__c</columns>
+    <columns>Celula__c</columns>
+    <columns>CREATEDBY_USER.ALIAS</columns>
+    <columns>iOrigen__c</columns>
+    <columns>Codigo_empresa__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650846</value>
+    </filters>
+    <filters>
+        <field>CASES.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Case.Autorizacion_previa</value>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>notContain</operation>
+        <value>Orden Emitida,Anulada</value>
+    </filters>
+    <filters>
+        <field>Evento_Medico__c</field>
+        <operation>contains</operation>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>equals</operation>
+        <value>CA-----A,Autorizada,Pendiente,Pendiente socio</value>
+    </filters>
+    <label>AUTORIZACIONES PREVIAS SAN LORENZO</label>
+    <sharedTo>
+        <role>Encargado_Filial_San_lorenzo</role>
+        <role>Filial_San_lorenzo</role>
+    </sharedTo>
+</ListView>

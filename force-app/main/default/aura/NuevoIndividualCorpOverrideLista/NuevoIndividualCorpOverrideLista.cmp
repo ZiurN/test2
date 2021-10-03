@@ -1,0 +1,20 @@
+<aura:component  controller="SelectTypeController">
+    <aura:attribute name="state" type="Object" />
+    <aura:attribute name="typeId" type="ID"/>
+    <aura:attribute name="error" type="Boolean" default="false" />
+    <aura:attribute name="loaded" type="Boolean" default="false" />
+    
+    <aura:handler name="change" value="{!v.loaded}" action="{!c.createRecord}"/>
+    <aura:handler name="change" value="{!v.error}" action="{!c.error}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="thisOpportunity" type="Opportunity" />
+    <force:recordData 
+            aura:id="recordData"
+			recordId="{!v.state.Oportunidad_Corporativa__c}"
+			fields="StageName"
+			targetFields="{!v.thisOpportunity}"
+			targetError="{!v.recordLoadError}"/>
+    <lightning:workspaceAPI aura:id="workspace"/>
+    <ltng:require scripts="{!$Resource.LightningUtils}"  />
+    <lightning:spinner alternativeText="Loading" variant="brand"/>
+</aura:component>

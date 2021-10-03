@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validacion_segmento_VOLDIR</fullName>
+    <active>true</active>
+    <description>Validacion Si el  segmento &quot;VOLDIR&quot; y el campo tipo de asociado es &quot;Relacion de dependencia&quot; no debe permitir guardar la oportunidad</description>
+    <errorConditionFormula>AND(
+    $Profile.Name =&quot;Front&quot;,
+    RecordType.DeveloperName =&quot;Individuos&quot;,
+    ISPICKVAL(Segmento_del_Grupo_Familiar__c, &quot;VOLDIR&quot;),
+				ISPICKVAL(Tipo_de_Asociado__c,&quot;Relacion de Dependencia&quot;)
+				)</errorConditionFormula>
+    <errorMessage>Si selecciona el segmento &quot;VOLDIR&quot; y el campo tipo de asociado es &quot;Relacion de dependencia&quot; no se puede guardar la oportunidad</errorMessage>
+</ValidationRule>

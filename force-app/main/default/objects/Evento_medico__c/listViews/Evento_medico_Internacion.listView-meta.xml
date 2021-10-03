@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Evento_medico_Internacion</fullName>
+    <columns>NAME</columns>
+    <columns>Asociado__c</columns>
+    <columns>Fecha_y_Hora_inicio_EMS__c</columns>
+    <columns>Subtipo__c</columns>
+    <columns>Delegacion__c</columns>
+    <columns>Estado__c</columns>
+    <columns>AP_presupuesto__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Evento_medico__c.Evento_medico_de_internacion</value>
+    </filters>
+    <label>Todos los Eventos medicos de Internación</label>
+</ListView>

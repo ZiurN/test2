@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Evento_Medico_Id__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>Evento Médico</label>
+    <referenceTo>Evento_medico__c</referenceTo>
+    <relationshipLabel>Notas de Auditorias</relationshipLabel>
+    <relationshipName>Notas_de_Auditorias</relationshipName>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

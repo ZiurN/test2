@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IND_Conyuge_monotributista</fullName>
+    <active>true</active>
+    <description>Debe indicar si cónyuge es monotributista cuando tipo de afiliado es relación de dependencia o monotributista, y estado civil es casado o concubinato</description>
+    <errorConditionFormula>AND(
+     RecordType.Name = &quot;Cotización Individual&quot;,
+    OR(
+       ISPICKVAL(  Tipo_de_afiliado__c , &quot;Relación de dependencia&quot;),
+       ISPICKVAL(  Tipo_de_afiliado__c , &quot;Monotributista&quot;)
+       ),
+    OR(
+       ISPICKVAL( Estado_Civil__c, &quot;C&quot;),
+       ISPICKVAL( Estado_Civil__c, &quot;N&quot;)
+      ),
+    ISBLANK(TEXT(Monotributista_conyuge__c ))
+)</errorConditionFormula>
+    <errorDisplayField>Monotributista_conyuge__c</errorDisplayField>
+    <errorMessage>Debe indicar si cónyuge es monotributista</errorMessage>
+</ValidationRule>

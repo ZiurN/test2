@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Bloquear_registro</fullName>
+    <active>true</active>
+    <description>Validación para bloquear registro si el estado del caso es &quot;Centro autorizador&quot;</description>
+    <errorConditionFormula>AND(
+    $Profile.Name &lt;&gt; &quot;Administrador del sistema&quot;,
+    Cambio_Manual__c,
+    OR( 
+								RecordType.DeveloperName= &quot;Autorizacion_previa&quot;,
+        RecordType.DeveloperName= &quot;Internacion&quot;,
+        RecordType.DeveloperName= &quot;Reintegro&quot;,
+        RecordType.DeveloperName= &quot;Seguimiento&quot;
+				),
+    OR(
+        ISPICKVAL(PRIORVALUE(Status),&quot;Autorizada&quot;),
+        ISPICKVAL(PRIORVALUE(Status),&quot;CA-----A&quot;),
+        ISPICKVAL(PRIORVALUE(Status),&quot;CA-----E&quot;)
+    ),
+    OR(
+        ISCHANGED(Status),
+        ISCHANGED(Otros_Mail__c),
+        ISCHANGED(Subject),
+        ISCHANGED(Type),
+        ISCHANGED(CUIT__c),
+        ISCHANGED(Razon_social__c),
+        ISCHANGED(Observaciones__c),
+        ISCHANGED(Description),
+        ISCHANGED(Importe_reintegro__c),
+        ISCHANGED(Tipo_de_Comprobante__c),
+        ISCHANGED(AP_Material__c),
+        ISCHANGED(AP_Presupuesto__c),
+        /*ISCHANGED(Pre_existencia__c),*/
+        ISCHANGED(Importe_presupuesto__c),
+        ISCHANGED(Origin),
+        ISCHANGED(Urgente__c),
+        ISCHANGED(Prestador__c),
+        ISCHANGED(Consultorio__c),
+        ISCHANGED(ContactId),
+        ISCHANGED(AccountId),
+        ISCHANGED(Diagnostico__c),
+        ISCHANGED(Fecha_prescripcion__c),
+        ISCHANGED(Otros_Mail__c),
+        ISCHANGED(Mail__c),
+        ISCHANGED(Grupo_de_Prestaciones__c),
+        ISCHANGED(Lote_original__c),
+        ISCHANGED(Modalidad__c),
+        ISCHANGED(Cobro_indebido__c),
+        ISCHANGED(Nota__c),
+        ISCHANGED(Prescriptor__c),
+        ISCHANGED(Lote__c),
+        ISCHANGED(Derivacion_de_lote__c),
+        ISCHANGED(Destinatario__c),
+        ISCHANGED(Evento_Medico__c),
+        ISCHANGED(SuppliedEmail)
+    )
+)</errorConditionFormula>
+    <errorMessage>No se puede modificar el registro porque el estado es &quot;Centro Autorizador&quot; , &quot;Orden Emitida&quot; o &quot;Autorizada&quot;</errorMessage>
+</ValidationRule>

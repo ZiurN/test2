@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fechas_dentro_de_EM</fullName>
+    <active>true</active>
+    <description>La fecha debe estar dentro de las fechas de inicio y fin del Evento Médico asociado.</description>
+    <errorConditionFormula>OR(
+    Fecha__c &lt;  DATEVALUE(Evento_Medico__r.Fecha_y_Hora_inicio_EMS__c),
+				Fecha__c &gt;  DATEVALUE(Evento_Medico__r.Fecha_y_hora_fin_ems__c)
+)</errorConditionFormula>
+    <errorMessage>La fecha del diagnóstico no debe ser menor a la fecha de inicio del EM ni mayor a la fecha de fin</errorMessage>
+</ValidationRule>

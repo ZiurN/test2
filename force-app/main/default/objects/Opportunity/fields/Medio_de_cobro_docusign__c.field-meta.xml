@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Medio_de_cobro_docusign__c</fullName>
+    <description>Esta formula se usa para el envió de documentos de docusign, NO BORRAR</description>
+    <externalId>false</externalId>
+    <formula>OR(
+				ISPICKVAL(Medio_de_cobro__c,&quot;Tarjeta&quot;),
+				ISPICKVAL(Medio_de_cobro__c,&quot;CBU&quot;)
+				)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Medio de cobro docusign</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

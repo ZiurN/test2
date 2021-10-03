@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Autorizaciones_Previas_Com_Rivadavia</fullName>
+    <columns>Fecha__c</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>Evento_Medico__c</columns>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>Nivel_de_derivacion__c</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>CREATEDBY_USER.ALIAS</columns>
+    <columns>Estado_de_documentacion__c</columns>
+    <columns>Correo_asociado__c</columns>
+    <columns>iOrigen__c</columns>
+    <columns>Codigo_empresa__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650712</value>
+    </filters>
+    <filters>
+        <field>CASES.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Case.Autorizacion_previa,Case.Internacion,Case.Seguimiento,Case.Solicitud_de_baja</value>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>notContain</operation>
+        <value>Orden Emitida,Anulada</value>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>notEqual</operation>
+        <value>Rechazado</value>
+    </filters>
+    <label>Autorizaciones Previas  Com Rivadavia</label>
+</ListView>

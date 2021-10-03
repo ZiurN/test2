@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Actividad_Profesion_docusign__c</fullName>
+    <description>Este campo se utiliza para indicar el valor correcto del campo actividad o profesión del titular para el envio de documento de docusign</description>
+    <externalId>false</externalId>
+    <formula>IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;ODON&quot;),&quot;Odontólogo&quot;,
+			IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;EMPL&quot;),&quot;Empleado&quot;,
+						IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;PROF&quot;),&quot;Profesional&quot;,
+									IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;AGRO&quot;),&quot;Productor Agropecuario&quot;,
+												IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;EMPR&quot;),&quot;Empresario&quot;,
+															IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;AMA&quot;),&quot;Ama de Casa&quot;,
+																		IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;EST&quot;),&quot;Estudiante&quot;,
+																					IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;CUEN&quot;),&quot;Cuenta Propia&quot;,
+																								IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;INDU&quot;),&quot;Industrial&quot;,
+																											IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;TEC&quot;),&quot;Técnico&quot;,
+																														IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;ART&quot;),&quot;Artesano&quot;,
+																																	IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;JUBI&quot;),&quot;Jubilado/Pensionado&quot;,
+																																				IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;DESO&quot;),&quot;Desocupado/Desempleado&quot;,
+																																							IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;OTRA&quot;),&quot;Otra&quot;,
+																																										IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;TRAM&quot;),&quot;Transportista/Viaje&quot;,
+																																													IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;AGRI&quot;),&quot;Agricultor&quot;,
+																																																IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;MEC&quot;),&quot;Mecanico&quot;,
+																																																				IF(ISPICKVAL(ActividadProfesion_del_titular__c,&quot;TAMB&quot;),&quot;Tambero&quot;,&quot;&quot;
+																																																							)
+																																																			)
+																																																)
+																																													)
+																																										)
+																																							)
+																																				)
+																																	)
+																														)
+																											)
+																								)
+																					)
+																		)
+															)
+												)
+									)
+						)
+			)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Actividad/Profesion docusign</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

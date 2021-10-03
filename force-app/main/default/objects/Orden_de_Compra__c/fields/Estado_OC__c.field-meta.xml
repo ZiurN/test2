@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Estado_OC__c</fullName>
+    <externalId>false</externalId>
+    <label>Estado OC</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Generada</fullName>
+                <default>true</default>
+                <label>Generada</label>
+            </value>
+            <value>
+                <fullName>Pedido Cotizacion</fullName>
+                <default>false</default>
+                <label>Pedido Cotizacion</label>
+            </value>
+            <value>
+                <fullName>Cotizada</fullName>
+                <default>false</default>
+                <label>Cotizada</label>
+            </value>
+            <value>
+                <fullName>Finalizada</fullName>
+                <default>false</default>
+                <label>Finalizada</label>
+            </value>
+            <value>
+                <fullName>Rechazada</fullName>
+                <default>false</default>
+                <label>Rechazada</label>
+            </value>
+            <value>
+                <fullName>Anulada</fullName>
+                <default>false</default>
+                <label>Anulada</label>
+            </value>
+            <value>
+                <fullName>Diferencia Socio</fullName>
+                <default>false</default>
+                <label>Diferencia Socio</label>
+            </value>
+            <value>
+                <fullName>Desestimada</fullName>
+                <default>false</default>
+                <label>Desestimada</label>
+            </value>
+            <value>
+                <fullName>Ctro Aut</fullName>
+                <default>false</default>
+                <label>Ctro Aut</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

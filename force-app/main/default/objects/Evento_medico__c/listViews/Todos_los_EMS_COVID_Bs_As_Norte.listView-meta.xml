@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Todos_los_EMS_COVID_Bs_As_Norte</fullName>
+    <columns>NAME</columns>
+    <columns>Codigo_Afiliado__c</columns>
+    <columns>Asociado__c</columns>
+    <columns>Estado__c</columns>
+    <columns>Delegacion__c</columns>
+    <columns>Dias_de_internacion__c</columns>
+    <columns>CREATEDBY_USER</columns>
+    <columns>Fecha_y_Hora_inicio_EMS__c</columns>
+    <columns>Fecha_y_hora_fin_ems__c</columns>
+    <columns>Efector_Solicitante__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>Forma_de_egreso__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Tipo__c</field>
+        <operation>contains</operation>
+        <value>Covid</value>
+    </filters>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650743,650744,650330,650916</value>
+    </filters>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Evento_medico__c.Evento_medico_de_internacion,Evento_medico__c.Evento_medico_de_seguimiento</value>
+    </filters>
+    <filters>
+        <field>Forma_de_egreso__c</field>
+        <operation>notContain</operation>
+        <value>ALTA CONTINUA INTERNACION DOMICILIARIA,ALTA MEDICA,ALTA VOLUNTARIA,COMPRA EQUIPO,DUPLICIDAD EVENTO/EVENTO VENCIDO,EMBARAZO,EVENTO DE ALTA POR FUERA DE VIGENCIA,FALLECIMIENTO DEL PACIENTE,FUGA</value>
+    </filters>
+    <label>Todos los EMS COVID  Bs As Norte</label>
+</ListView>

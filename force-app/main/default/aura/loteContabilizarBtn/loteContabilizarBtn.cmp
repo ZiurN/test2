@@ -1,0 +1,25 @@
+<aura:component implements="force:hasRecordId" controller="LoteContabilizacionCtrl" access="global">
+
+	<ltng:require scripts="{!$Resource.LightningUtils}" />
+	<lightning:overlayLibrary aura:id="overlayLib"/>
+    
+	<aura:attribute name="isLoading" type="Boolean" default="false"/>
+	<aura:attribute name="loteRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+
+	<force:recordData 
+		aura:id="recordLoader"
+		recordId="{! v.recordId }"
+		fields="Id_lote_SS__c,Estado__c, Errores_reintegros__c"
+		targetFields="{! v.loteRecord }"
+		targetError="{! v.recordLoadError }"
+	/>
+
+	<lightning:button variant="neutral" disabled="{! v.loteRecord.Estado__c != 'C' || v.loteRecord.Errores_reintegros__c == true}" onclick="{! c.handleClickBtn }" value="Contabilizar" label="Contabilizar"/>
+
+	<aura:if isTrue="{! v.isLoading }">
+		<lightning:spinner alternativeText="Loading" variant="brand"/>
+	</aura:if>
+
+	
+</aura:component>

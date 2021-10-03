@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cotizacion_prestador</fullName>
+    <fields>Name</fields>
+    <fields>Total_a_Pagar__c</fields>
+    <fields>Total_Socio__c</fields>
+    <fields>Nombre_Prestador__c</fields>
+    <label>Cotizacion prestador</label>
+</CompactLayout>

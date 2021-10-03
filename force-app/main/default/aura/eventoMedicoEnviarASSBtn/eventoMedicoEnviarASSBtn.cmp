@@ -1,0 +1,37 @@
+<aura:component implements="force:hasRecordId" controller="EventoMedicoEnviarASSBtnCtrl" access="global">
+
+    <ltng:require
+            scripts="{!$Resource.LightningUtils}"
+    />
+
+    <ltng:require styles="{!$Resource.multilineToast}" />
+
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="eventoMedicoSimpleRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+    <aura:attribute name="showConfirmDialog" type="boolean" default="false"/>
+
+    <force:recordData
+            aura:id="recordLoader"
+            recordId="{! v.recordId }"
+            fields="Id, Asociado__c, Asociado__r.Codigo_de_Afiliado__c, Diagnostico__c, Delegacion__c, Tipo__c,
+                Efector_Solicitante__c, Efector_Solicitante__r.Codigo_de_efector__c, Fecha_y_Hora_inicio_EMS__c,
+                Sin_complicaciones__c, Diagnostico__r.Codigo_del_Diagnostico__c, Delegacion__r.Codigo_de_delegacion__c"
+            targetFields="{! v.eventoMedicoSimpleRecord }"
+            targetError="{! v.recordLoadError }"
+            recordUpdated="{! c.update }"
+    />
+
+    <lightning:button
+            aura:id="sendButtonId"
+            variant="neutral"
+            onclick="{! c.handleClickBtn }"
+            value="Enviar a SaludSoft"
+            label="Enviar a SaludSoft"
+    />
+
+    <aura:if isTrue="{! v.isLoading }">
+        <lightning:spinner alternativeText="Loading" variant="brand"/>
+    </aura:if>
+    
+</aura:component>

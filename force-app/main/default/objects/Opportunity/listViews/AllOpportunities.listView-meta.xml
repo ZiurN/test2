@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AllOpportunities</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>Nro_de_solicitud__c</columns>
+    <columns>Estado_de_solicitud__c</columns>
+    <columns>Subestado_de_DDJJ__c</columns>
+    <columns>Fecha_de_vigencia_de_solicitud__c</columns>
+    <columns>Nro_de_asociado__c</columns>
+    <columns>Plan_del_grupo_familiar__c</columns>
+    <columns>CORE.USERS.FULL_NAME</columns>
+    <columns>Organizador_lookup__c</columns>
+    <columns>OPPORTUNITY.LEAD_SOURCE</columns>
+    <columns>Indicador_de_Afiliacion_de_Inmediata__c</columns>
+    <columns>Localidad_Nombre__c</columns>
+    <columns>Provincia_lista__c</columns>
+    <columns>Capitas__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>Todas las oportunidades</label>
+</ListView>

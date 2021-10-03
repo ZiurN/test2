@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Femenino__c</fullName>
+    <description>Este campo se utiliza para el envio de plantillas de Docusign NO BORRAR NI MODIFICAR</description>
+    <externalId>false</externalId>
+    <formula>ISPICKVAL(Sexo__c,&quot;F&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Femenino</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

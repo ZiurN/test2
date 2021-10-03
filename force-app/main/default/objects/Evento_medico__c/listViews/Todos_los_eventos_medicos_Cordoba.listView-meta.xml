@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Todos_los_eventos_medicos_Cordoba</fullName>
+    <columns>NAME</columns>
+    <columns>Codigo_Afiliado__c</columns>
+    <columns>Asociado__c</columns>
+    <columns>Estado__c</columns>
+    <columns>Diagnostico__c</columns>
+    <columns>Tipo__c</columns>
+    <columns>Tipo_de_Evento_Medico_de_seguimiento__c</columns>
+    <columns>CREATEDBY_USER</columns>
+    <columns>Delegacion__c</columns>
+    <columns>Prestador__c</columns>
+    <columns>AP_material__c</columns>
+    <columns>AP_presupuesto__c</columns>
+    <columns>Fecha_y_Hora_inicio_EMS__c</columns>
+    <columns>Forma_de_egreso__c</columns>
+    <columns>Fecha_y_hora_fin_ems__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650461,650999,650286,650175,650171</value>
+    </filters>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Evento_medico__c.Evento_medico_de_internacion</value>
+    </filters>
+    <filters>
+        <field>Forma_de_egreso__c</field>
+        <operation>notContain</operation>
+        <value>ALTA CONTINUA INTERNACION DOMICILIARIA,ALTA MEDICA,ALTA VOLUNTARIA,FUGA</value>
+    </filters>
+    <filters>
+        <field>Estado__c</field>
+        <operation>contains</operation>
+        <value>Autorizado</value>
+    </filters>
+    <label>Todos los eventos médicos Zona Córdoba</label>
+    <sharedTo>
+        <role>Lider_Cordoba</role>
+    </sharedTo>
+</ListView>

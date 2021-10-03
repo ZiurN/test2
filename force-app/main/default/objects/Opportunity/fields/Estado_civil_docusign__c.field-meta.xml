@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Estado_civil_docusign__c</fullName>
+    <description>Este campo se utiliza para mostrar el estado civil para el envio de documento Docusign, NO BORRAR</description>
+    <externalId>false</externalId>
+    <formula>IF(ISPICKVAL(Estado_Civil__c,&quot;C&quot;),&quot;Casado&quot;,
+			IF(ISPICKVAL(Estado_Civil__c,&quot;N&quot;),&quot;Concubinato&quot;,
+						IF(ISPICKVAL(Estado_Civil__c,&quot;D&quot;),&quot;Divorciado&quot;,
+									IF(ISPICKVAL(Estado_Civil__c,&quot;P&quot;),&quot;Separado&quot;,
+												IF(ISPICKVAL(Estado_Civil__c,&quot;S&quot;),&quot;Soltero&quot;,
+															IF(ISPICKVAL(Estado_Civil__c,&quot;V&quot;),&quot;Viudo&quot;,&quot;&quot;
+																		)
+															)
+												)
+									)
+						)
+			)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Estado civil docusign</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

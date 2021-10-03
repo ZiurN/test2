@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Casos_Web_Filial_Virtual</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>Nro_AP__c</columns>
+    <columns>CASES.TYPE</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>Evento_Medico__c</columns>
+    <columns>Fecha__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>Celula__c</columns>
+    <columns>Nivel_de_derivacion__c</columns>
+    <columns>Delegacion__c</columns>
+    <columns>Urgente__c</columns>
+    <columns>Tiempo_SLA__c</columns>
+    <columns>SLA__c</columns>
+    <columns>CASES.ORIGIN</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650100</value>
+    </filters>
+    <filters>
+        <field>CASES.ORIGIN</field>
+        <operation>equals</operation>
+        <value>Web</value>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>equals</operation>
+        <value>CA-----G,Generada,CA-----A,Pendiente,En Proceso,Pendiente socio</value>
+    </filters>
+    <label>Casos Web Filial Virtual</label>
+</ListView>

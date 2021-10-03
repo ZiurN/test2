@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>no_cambiar_de_nivel_1_a_3_manualmente</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+				OR(
+        RecordType.DeveloperName = &apos;Autorizacion_previa&apos;,
+								RecordType.DeveloperName = &apos;Reintegro&apos;,
+								RecordType.DeveloperName = &apos;Seguimiento&apos;,
+								RecordType.DeveloperName = &apos;Internacion&apos;
+				),
+    $Profile.Name != &apos;Administrador del sistema&apos;,
+    Cambio_Manual__c,
+    ISPICKVAL(PRIORVALUE(Nivel_de_derivacion__c), &apos;Nivel 1&apos;),
+    ISPICKVAL(Nivel_de_derivacion__c, &apos;Nivel 3&apos;),
+				NOT(
+								AND(
+												ISCHANGED(Estado_de_documentacion__c),
+								    ISPICKVAL(Estado_de_documentacion__c, &apos;Documentacion finalizada&apos;)
+								)
+				)
+)</errorConditionFormula>
+    <errorMessage>No se puede pasar del nivel 1 al 3 manualmente</errorMessage>
+</ValidationRule>

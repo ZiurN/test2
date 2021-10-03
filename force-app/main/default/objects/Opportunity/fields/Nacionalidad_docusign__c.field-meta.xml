@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nacionalidad_docusign__c</fullName>
+    <description>Este campo se utiliza para mostrar el nombre de la nacionalidad para el envio de documentos de Docusign NO BORRAR</description>
+    <externalId>false</externalId>
+    <formula>IF(ISPICKVAL(Nacionalidad__c,&quot;054&quot;),&quot;Argentina&quot;,
+			IF(ISPICKVAL(Nacionalidad__c,&quot;410&quot;),&quot;España&quot;,
+						IF(ISPICKVAL(Nacionalidad__c,&quot;039&quot;),&quot;Italia&quot;,
+									IF(ISPICKVAL(Nacionalidad__c,&quot;BO&quot;),&quot;Bolivia&quot;,
+												IF(ISPICKVAL(Nacionalidad__c,&quot;BR&quot;),&quot;Brasil&quot;,
+															IF(ISPICKVAL(Nacionalidad__c,&quot;CL&quot;),&quot;Chile&quot;,
+																		IF(ISPICKVAL(Nacionalidad__c,&quot;CO&quot;),&quot;Colombia&quot;,
+																					IF(ISPICKVAL(Nacionalidad__c,&quot;CR&quot;),&quot;Costa Rica&quot;,
+																								IF(ISPICKVAL(Nacionalidad__c,&quot;CU&quot;),&quot;Cuba&quot;,
+																											IF(ISPICKVAL(Nacionalidad__c,&quot;EC&quot;),&quot;Ecuador&quot;,
+																														IF(ISPICKVAL(Nacionalidad__c,&quot;SV&quot;),&quot;El Salvador&quot;,
+																																	IF(ISPICKVAL(Nacionalidad__c,&quot;502&quot;),&quot;Guatemala&quot;,
+																																				IF(ISPICKVAL(Nacionalidad__c,&quot;504&quot;),&quot;Honduras&quot;,
+																																							IF(ISPICKVAL(Nacionalidad__c,&quot;MX&quot;),&quot;Mexico&quot;,
+																																										IF(ISPICKVAL(Nacionalidad__c,&quot;NI&quot;),&quot;Nicaragua&quot;,
+																																													IF(ISPICKVAL(Nacionalidad__c,&quot;PA&quot;),&quot;Panama&quot;,
+																																																IF(ISPICKVAL(Nacionalidad__c,&quot;PY&quot;),&quot;Paraguay&quot;,
+																																																			IF(ISPICKVAL(Nacionalidad__c,&quot;PE&quot;),&quot;Peru&quot;,
+																																																						IF(ISPICKVAL(Nacionalidad__c,&quot;809&quot;),&quot;República Dominicana&quot;,
+																																																									IF(ISPICKVAL(Nacionalidad__c,&quot;UY&quot;),&quot;Uruguay&quot;,
+																																																												IF(ISPICKVAL(Nacionalidad__c,&quot;VE&quot;),&quot;Venezuela&quot;,&quot;&quot;
+																																																															)
+																																																												)
+																																																									)
+																																																						)
+																																																			)
+																																																)
+																																													)
+																																										)
+																																							)
+																																				)
+																																	)
+																														)
+																											)
+																								)
+																					)
+																		)
+															)
+												)
+									)
+						)
+			)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Nacionalidad docusign</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

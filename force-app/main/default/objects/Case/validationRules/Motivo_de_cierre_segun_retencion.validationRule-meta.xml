@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Motivo_de_cierre_segun_retencion</fullName>
+    <active>true</active>
+    <description>Validación para que en el motivo solo pueda seleccionar valeres validos segun tipo de retencion</description>
+    <errorConditionFormula>OR(
+   AND(
+				   RecordType.DeveloperName = &quot;Solicitud_de_baja&quot;,
+		 	  	ISPICKVAL(Status,&quot;Cerrado&quot;),
+							ISPICKVAL(Tipo_de_retencion__c,&quot;Administrativa&quot;),
+							OR(
+											ISPICKVAL(Motivo_de_cierre_solicitudes__c,&quot;Bonificacion aplicada&quot;),
+											ISPICKVAL(Motivo_de_cierre_solicitudes__c,&quot;PMO&quot;)
+											)
+							),
+				 AND(
+				     RecordType.DeveloperName = &quot;Solicitud_de_baja&quot;,
+		 	    	ISPICKVAL(Status,&quot;Cerrado&quot;),
+									OR(
+							     ISPICKVAL(Tipo_de_retencion__c,&quot;Economica&quot;),
+				        ISPICKVAL(Tipo_de_retencion__c,&quot;Viaje al exterior&quot;)
+													),
+									NOT(ISPICKVAL(Motivo_de_cierre_solicitudes__c,&quot;Bonificacion aplicada&quot;))		
+									),
+				AND(
+				    RecordType.DeveloperName = &quot;Solicitud_de_baja&quot;,
+		 	  	 ISPICKVAL(Status,&quot;Cerrado&quot;),
+						 	ISPICKVAL(Tipo_de_retencion__c,&quot;Pase a PMO&quot;),
+								NOT(ISPICKVAL(Motivo_de_cierre_solicitudes__c,&quot;PMO&quot;))
+								)
+				)</errorConditionFormula>
+    <errorMessage>Valor incorrecto de &quot;Motivo de cierre&quot; para el tipo de retención lograda</errorMessage>
+</ValidationRule>

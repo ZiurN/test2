@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Seccion_datos_de_contacto</fullName>
+    <active>true</active>
+    <description>Validacion para la seccion de datos de contacto que sea solo requeria y obligatoria para tipo de registro Solicitud de datos particulares si el tipo es &quot;Datos particulares&quot;</description>
+    <errorConditionFormula>AND(
+				RecordType.DeveloperName = &quot;Solicitud_de_datos_particulares&quot;,
+			 ISPICKVAL(Type,&quot;MODIF_ADDEP&quot;),
+				OR(
+							NOT(ISBLANK(Apellido__c)),
+							NOT(ISBLANK(Nombre__c)),
+							NOT(ISBLANK(TEXT(Nacionalidad__c))),
+							NOT(ISBLANK(TEXT(Sexo__c))),
+       NOT(ISBLANK(Fecha_de_nacimiento__c)),
+							NOT(ISBLANK(TEXT(Estado_civil__c))),
+       NOT(ISBLANK(Obra_Social2__c)),
+							NOT(ISBLANK(TEXT(Tipo_de_Parentesco__c))),
+							NOT(ISBLANK(CUIT__c )),
+							NOT(ISBLANK(Agencia_destino__c))
+								)
+				)</errorConditionFormula>
+    <errorMessage>Cuando el tipo es &quot;Datos de contacto&quot; solo pueden completar los campos de las secciones &quot;Datos de contacto&quot;, &quot;Domicilio&quot;, &quot;Teléfono&quot; y &quot;Documento&quot;</errorMessage>
+</ValidationRule>

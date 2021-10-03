@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Eventos_medicos_Casa_Central</fullName>
+    <columns>NAME</columns>
+    <columns>Dias_de_internacion__c</columns>
+    <columns>Prestador__c</columns>
+    <columns>Asociado__c</columns>
+    <columns>Fecha_y_Hora_inicio_EMS__c</columns>
+    <columns>Delegacion__c</columns>
+    <columns>Estado__c</columns>
+    <columns>Diagnostico__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>Emitido__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650071,650720,650300,650977,650978,650676,650806,650730</value>
+    </filters>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Evento_medico__c.Evento_medico_de_internacion</value>
+    </filters>
+    <filters>
+        <field>Estado__c</field>
+        <operation>notContain</operation>
+        <value>En Auditoría,Anulado,Rechazado,Suspendido,Cerrado</value>
+    </filters>
+    <label>Eventos medicos Casa Central</label>
+    <sharedTo>
+        <role>Filial_Casa_central</role>
+    </sharedTo>
+</ListView>

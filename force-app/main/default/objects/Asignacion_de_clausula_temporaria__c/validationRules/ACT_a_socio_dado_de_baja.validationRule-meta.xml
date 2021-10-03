@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ACT_a_socio_dado_de_baja</fullName>
+    <active>true</active>
+    <description>No se podrá cargar una ACT a un socio dado de baja</description>
+    <errorConditionFormula>AND(
+NOT(ISBLANK(Asociado__c )),
+ISPICKVAL( Asociado__r.Estado__c , &quot;Dado de baja&quot;) 
+)</errorConditionFormula>
+    <errorMessage>No se podrá generar una asignación a un socio dado de baja</errorMessage>
+</ValidationRule>

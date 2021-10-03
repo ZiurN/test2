@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>segmento_VOLD_VEL_DT_no_elegir_11_PMO</fullName>
+    <active>true</active>
+    <description>Cuando el nuevo segmento es VOLDIR - VOLEMP - DTCAP, no se podrá seleccionar 11 PMO en plan</description>
+    <errorConditionFormula>OR(
+AND(
+RecordType.Name = &quot;Solicitud de segmento&quot;,
+ISPICKVAL( Plandespegue__c , &quot;11 PMO&quot;),
+OR(
+ISPICKVAL( Nuevo_segmento__c , &quot;VOLDIR&quot;),
+ISPICKVAL( Nuevo_segmento__c , &quot;VOLEMP&quot;),
+ISPICKVAL( Nuevo_segmento__c , &quot;DTCAP&quot;),
+ISPICKVAL( Nuevo_segmento__c , &quot;OBLEMP&quot;)
+ 
+)
+),
+AND(
+RecordType.Name = &quot;Solicitud de despegues&quot;,
+ISPICKVAL( Plandespegue__c , &quot;11 PMO&quot;),
+OR(
+ISPICKVAL(Segmento_de_grupo_familiar__c  , &quot;VOLDIR&quot;),
+ISPICKVAL(Segmento_de_grupo_familiar__c , &quot;VOLEMP&quot;),
+ISPICKVAL(Segmento_de_grupo_familiar__c , &quot;DTCAP&quot;),
+ISPICKVAL(Segmento_de_grupo_familiar__c , &quot;OBLEMP&quot;)
+)
+)
+)</errorConditionFormula>
+    <errorMessage>Cuando el segmento sea VOLDIR - VOLEMP - DTCAP - OBLEMP, no se podrá seleccionar plan &quot;11 PMO&quot;</errorMessage>
+</ValidationRule>

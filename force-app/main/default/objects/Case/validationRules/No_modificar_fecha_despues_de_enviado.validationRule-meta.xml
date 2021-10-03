@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_modificar_fecha_despues_de_enviado</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR(
+    AND(
+				    ISCHANGED(Fecha__c),
+        Cambio_Manual__c,								
+								NOT(ISBLANK(Nro_AP__c)),
+				    OR(
+				        RecordType.DeveloperName == &apos;Autorizacion_previa&apos;,
+								    RecordType.DeveloperName == &apos;Internacion&apos;,
+								    RecordType.DeveloperName == &apos;Seguimiento&apos;
+				    )
+				),
+				AND(
+				    ISCHANGED(Fecha__c),
+								Cambio_Manual__c,
+								NOT(ISBLANK(Codigo_reintegro_SS__c)),
+				    RecordType.DeveloperName == &apos;Reintegro&apos;
+				)
+)</errorConditionFormula>
+    <errorDisplayField>Fecha__c</errorDisplayField>
+    <errorMessage>No se puede modificar la fecha si el caso ya fue enviado a SaludSoft</errorMessage>
+</ValidationRule>

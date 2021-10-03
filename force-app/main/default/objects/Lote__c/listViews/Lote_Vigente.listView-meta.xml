@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lote_Vigente</fullName>
+    <columns>NAME</columns>
+    <columns>Id_lote_SS__c</columns>
+    <columns>Estado__c</columns>
+    <columns>Tipo__c</columns>
+    <columns>Descripcion__c</columns>
+    <columns>Fecha__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Tipo__c</field>
+        <operation>equals</operation>
+        <value>Vigente</value>
+    </filters>
+    <filters>
+        <field>Visibilidad_Front__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>Lote Vigente</label>
+    <sharedTo>
+        <roleAndSubordinates>Lider_Amba</roleAndSubordinates>
+        <roleAndSubordinates>Lider_Buenos_Aires_Centro</roleAndSubordinates>
+        <roleAndSubordinates>Lider_Buenos_Aires_Norte</roleAndSubordinates>
+        <roleAndSubordinates>Lider_Buenos_Aires_So_y_Pampeana</roleAndSubordinates>
+        <roleAndSubordinates>Lider_CDC</roleAndSubordinates>
+        <roleAndSubordinates>Lider_Cordoba</roleAndSubordinates>
+        <roleAndSubordinates>Lider_Litoral</roleAndSubordinates>
+        <roleAndSubordinates>Lider_NEA</roleAndSubordinates>
+        <roleAndSubordinates>Lider_NOA</roleAndSubordinates>
+        <roleAndSubordinates>Lider_Nucleo</roleAndSubordinates>
+        <roleAndSubordinates>Lider_Patagonia_Andina</roleAndSubordinates>
+        <roleAndSubordinates>Lider_Patagonia_Atlantica</roleAndSubordinates>
+    </sharedTo>
+</ListView>

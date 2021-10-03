@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>COR_Campos_Obligatorios_Cotizado</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+       RecordType.Name =&quot;Corporativo&quot;,
+       OR(
+       ISBLANK (Facturacion_estimada_mensual__c),
+       ISBLANK (Numero_de_empleados__c),
+       ISBLANK (Competidor__c),
+       ISBLANK (TEXT (Tipo_de_mercado__c))
+       ),
+       ISPICKVAL(StageName, &quot;Cotizado&quot;)
+)</errorConditionFormula>
+    <errorMessage>Para cambiar de etapa a Cotizado debe completar los campos Facturación potencial mensual, Número de empledos, Competidor y Tipo de mercado</errorMessage>
+</ValidationRule>

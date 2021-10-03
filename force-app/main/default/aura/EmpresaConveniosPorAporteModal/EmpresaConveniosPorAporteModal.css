@@ -1,0 +1,24 @@
+.THIS .slds-th__action {
+    justify-content: center !important;
+    height: 4rem;
+}
+.THIS .slds-grid_align-end {
+    justify-content: center !important;
+}
+.THIS .slds-truncate {
+    text-align: center;
+    white-space: normal;
+    word-break: break-word;
+}
+.THIS .slds-button_icon-bare {
+    display: none;
+}
+.THIS .slds-table_header-fixed_container, .THIS .slds-table--header-fixed_container {
+    padding-top: 4rem;
+}
+.THIS .slds-has-button-menu .slds-th__action {
+    padding-right: 8px;
+}
+.THIS .slds-scrollable_y {
+    width: max-content !important;
+}

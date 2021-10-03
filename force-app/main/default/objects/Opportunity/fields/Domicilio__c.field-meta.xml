@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Domicilio__c</fullName>
+    <description>Este campo se utiliza para unir los campos calle, numero, piso y dpto para el mapeo de campos de envios de documentos de Docusign</description>
+    <externalId>false</externalId>
+    <formula>Calle__c   &amp; &quot; &quot; &amp; TEXT(Numero__c) &amp; &quot;,&quot; &amp; &quot; &quot; &amp; &quot;Piso&quot; &amp; &quot; &quot; &amp; Piso__c &amp; &quot;,&quot; &amp; &quot; &quot; &amp; &quot;Dpto&quot; &amp; &quot; &quot; &amp; Dpto__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Domicilio</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_cambiar_asociado</fullName>
+    <active>true</active>
+    <description>No se puede modificar el asociado si el Caso ya fue enviado a SaludSoft</description>
+    <errorConditionFormula>AND(
+    OR(
+        NOT(ISBLANK(Nro_AP__c)),
+        NOT(ISBLANK(Codigo_reintegro_SS__c))
+    ),
+    ISCHANGED(AccountId)
+)</errorConditionFormula>
+    <errorMessage>No se puede modificar el asociado si el Caso ya fue enviado a SaludSoft</errorMessage>
+</ValidationRule>

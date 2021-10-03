@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Copia_de_Mesa_de_Ayuda_Caro</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>Celula__c</columns>
+    <columns>SLA__c</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>Fecha_probable__c</columns>
+    <columns>Delegacion__c</columns>
+    <columns>Contiene_alerta_AM__c</columns>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>Usuario__c</columns>
+    <columns>UPDATEDBY_USER.ALIAS</columns>
+    <columns>Estado_de_documentacion__c</columns>
+    <columns>Ap_autorizada__c</columns>
+    <columns>Medico_asignado__c</columns>
+    <filterScope>Queue</filterScope>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>equals</operation>
+        <value>CA-----G,CA-----A</value>
+    </filters>
+    <filters>
+        <field>Celula__c</field>
+        <operation>notContain</operation>
+        <value>Célula 4,Célula 5,Célula 6,Célula 9,Célula 10,Célula 11</value>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>notContain</operation>
+        <value>Generada,Orden Emitida,Anulada,Autorizada,Rechazado</value>
+    </filters>
+    <filters>
+        <field>Contiene_alerta_AM__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <filters>
+        <field>Contiene_alerta_AM__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>Copia de Mesa de Ayuda Caro</label>
+    <queue>Mesa_de_ayuda</queue>
+</ListView>

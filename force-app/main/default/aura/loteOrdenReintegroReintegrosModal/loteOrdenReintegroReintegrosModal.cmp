@@ -1,0 +1,39 @@
+<aura:component>
+	<aura:attribute name="mydata" type="Object"/>
+	<aura:attribute name="mycolumns" type="List"/>
+
+	<aura:html tag="style">
+		.slds-modal__container{
+			min-width: 50%;
+			max-width: 90%;
+		}
+	</aura:html>
+
+	<!--
+		<aura:iteration items="{! v.mydata }" var="reintegro">
+			<center>
+				<div>
+					<strong> rei_id </strong>{! reintegro.rei_id }
+					<strong> Fecha </strong>{! reintegro.fecha }
+					<strong> del_os_codigo </strong>{! reintegro.del_os_codigo }
+					<strong> afi_afi_id </strong>{! reintegro.afi_afi_id }
+					<strong> efe_codigo_realizador </strong>{! reintegro.efe_codigo_realizador }
+					<strong> efe_codigo_prescriptor </strong>{! reintegro.efe_codigo_prescriptor }
+					<strong> diag_codigo </strong>{! reintegro.diag_codigo }
+					<strong> cobro_indeb </strong>{! reintegro.cobro_indeb }
+					<strong> importe </strong>{! reintegro.importe }
+					<strong> vda_drv_estado </strong>{! reintegro.vda_drv_estado }
+					<strong> nombre_estado </strong>{! reintegro.nombre_estado }
+				</div>
+			</center>
+		</aura:iteration>
+	-->
+	<aura:handler name="init" value="{! this }" action="{! c.init }"/>
+
+	<lightning:datatable data="{! v.mydata }"
+		columns="{! v.mycolumns }"
+		keyField="id"
+		hideCheckboxColumn="true"
+	/>
+
+</aura:component>

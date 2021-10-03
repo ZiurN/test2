@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SLALegalesflag__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Casilla para que nos se vuelva a asignar el sla legales</description>
+    <externalId>false</externalId>
+    <label>SLALegalesFLAG</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

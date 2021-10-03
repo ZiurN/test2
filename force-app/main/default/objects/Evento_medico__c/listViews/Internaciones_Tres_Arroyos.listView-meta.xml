@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Internaciones_Tres_Arroyos</fullName>
+    <columns>NAME</columns>
+    <columns>Asociado__c</columns>
+    <columns>Fecha_y_Hora_inicio_EMS__c</columns>
+    <columns>Subtipo__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <columns>Delegacion__c</columns>
+    <columns>Estado__c</columns>
+    <columns>Ap_Anestesia__c</columns>
+    <columns>AP_material__c</columns>
+    <columns>AP_presupuesto__c</columns>
+    <columns>Suspendido__c</columns>
+    <columns>Agencia__c</columns>
+    <columns>Forma_de_egreso__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650070</value>
+    </filters>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Evento_medico__c.Evento_medico_de_internacion</value>
+    </filters>
+    <filters>
+        <field>Forma_de_egreso__c</field>
+        <operation>contains</operation>
+    </filters>
+    <label>Internaciones Tres Arroyos</label>
+    <sharedTo>
+        <roleAndSubordinates>Encargado_Filial_Tres_Arroyos</roleAndSubordinates>
+    </sharedTo>
+</ListView>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Creacion_AP_con_fecha_de_evento_vencido</fullName>
+    <active>true</active>
+    <description>Validacion para que no se puedan crear AP con fecha posterior a las fecha fin del EM</description>
+    <errorConditionFormula>AND(
+				ISNEW(),
+				Fecha__c &gt;  Evento_Medico__r.Fecha_activacion__c + 60 )</errorConditionFormula>
+    <errorMessage>No se puede crear un Caso con fecha posterior a la fecha fin mas 60 dias del EM asociado</errorMessage>
+</ValidationRule>

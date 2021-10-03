@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Agrupacion1__c</fullName>
+    <externalId>false</externalId>
+    <label>Agrupacion 1</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>ANU</fullName>
+                <default>false</default>
+                <label>ANU</label>
+            </value>
+            <value>
+                <fullName>MEN</fullName>
+                <default>true</default>
+                <label>MEN</label>
+            </value>
+            <value>
+                <fullName>SEM</fullName>
+                <default>false</default>
+                <label>SEM</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

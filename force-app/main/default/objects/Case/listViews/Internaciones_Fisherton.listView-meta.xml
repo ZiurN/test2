@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Internaciones_Fisherton</fullName>
+    <columns>iOrigen__c</columns>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>Evento_Medico__c</columns>
+    <columns>CASES.TYPE</columns>
+    <columns>SLA__c</columns>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>Fecha_probable__c</columns>
+    <columns>CREATEDBY_USER.ALIAS</columns>
+    <columns>Nivel_de_derivacion__c</columns>
+    <columns>caso_con_celula__c</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>Codigo_empresa__c</columns>
+    <columns>Caso_Rechazado__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650989</value>
+    </filters>
+    <filters>
+        <field>Nivel_de_derivacion__c</field>
+        <operation>equals</operation>
+        <value>Nivel 1,Nivel 2,Nivel 3</value>
+    </filters>
+    <filters>
+        <field>CASES.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Case.Internacion</value>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>equals</operation>
+        <value>CA-----G,CA-----A,Autorizada,Rechazado,Pendiente socio</value>
+    </filters>
+    <label>Internaciones Fisherton</label>
+    <sharedTo>
+        <roleAndSubordinates>Encargado_Filial_Fisherton</roleAndSubordinates>
+    </sharedTo>
+</ListView>

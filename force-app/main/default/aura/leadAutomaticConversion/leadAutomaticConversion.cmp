@@ -1,0 +1,28 @@
+<aura:component controller="ConvertLeadController" implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global">
+	<aura:html tag="style">
+		.modal-footer{
+			display: none;
+		}
+		.slds-is-relative {
+			margin-top: 15%;
+		}
+	</aura:html>
+
+	<aura:if isTrue="{! v.isLoading }">
+        <div class="slds-is-relative">
+			<lightning:spinner alternativeText="Loading" variant="brand"/>
+		</div>
+    </aura:if>
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+	<aura:attribute name="leadRecord" type="Object" />
+	<ltng:require scripts="{!$Resource.LightningUtils}" />
+	<force:recordData aura:id="recordLoader"
+		recordId="{!v.recordId}"
+		fields="Status"
+		targetFields="{!v.leadRecord}"
+	/>
+
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+	
+</aura:component>

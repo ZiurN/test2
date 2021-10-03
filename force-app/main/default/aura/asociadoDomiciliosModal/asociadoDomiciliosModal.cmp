@@ -1,0 +1,126 @@
+<aura:component>
+
+	<ltng:require scripts="{!$Resource.LightningUtils}" />
+	<lightning:overlayLibrary aura:id="overlayLib"/>
+
+	<aura:attribute name="domicilios" type="Object"/>
+    <aura:attribute name="mycolumns" type="List"/>
+
+	<aura:html tag="style">
+        .slds-modal__container{
+			min-width: 0%;
+			max-width: 90%;
+			width: max-content;
+			margin: 0 auto;
+        }
+		.slds-modal__content{ 
+			overflow-x: auto; 
+		}
+	</aura:html>
+	
+	<table class="slds-table slds-table_bordered">
+		<thead>
+            <tr class="slds-line-height_reset gris">
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Tipo de Domicilio">Tipo de Domicilio</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Calle">Calle</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Número">Número</div>
+                </th>
+				<th class="" scope="col">
+                    <div class="slds-truncate" title="Piso">Piso</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Departamento">Dpto</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Código Postal">Código Postal</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Localidad">Localidad</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Provincia">Provincia</div>
+                </th>
+				<th class="" scope="col">
+                    <div class="slds-truncate" title="País">País</div>
+                </th>
+				<th class="" scope="col">
+                    <div class="slds-truncate" title="País">Observaciones</div>
+                </th>
+				<th class="" scope="col">
+                    <div class="slds-truncate" title="País">Nro. de Teléfono</div>
+                </th>
+				<th class="" scope="col">
+                    <div class="slds-truncate" title="País">Tipo</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{! v.domicilios }" var="domicilio">
+                <tr class="slds-hint-parent">
+                    <td scope="row">
+                        <div class="slds-truncate">{! domicilio.tipo_domicilio }</div>
+                    </td>
+                    <td scope="row">
+                        <div class="slds-truncate">{! domicilio.calle }</div>
+                    </td>
+					<td scope="row">
+                        <div class="slds-truncate">{! domicilio.numero }</div>
+                    </td>
+					<td scope="row">
+                        <div class="slds-truncate">{! domicilio.piso }</div>
+                    </td>
+					<td scope="row">
+                        <div class="slds-truncate">{! domicilio.dpto }</div>
+                    </td>
+					<td scope="row">
+                        <div class="slds-truncate">{! domicilio.codigo_postal }</div>
+                    </td>
+					<td scope="row">
+                        <div class="slds-truncate">{! domicilio.localidad }</div>
+                    </td>
+					<td scope="row">
+                        <div class="slds-truncate">{! domicilio.provincia }</div>
+                    </td>
+					<td scope="row">
+                        <div class="slds-truncate">{! domicilio.pais }</div>
+                    </td>
+					<td scope="row">
+                        <div class="slds-truncate">{! domicilio.observaciones }</div>
+                    </td>
+					<td scope="row">
+						<aura:iteration items="{! domicilio.telefonos }" var="telefono">
+							<div class="slds-truncate">{! telefono.numero}</div>
+							<hr/> 
+						</aura:iteration>
+					</td>
+					<td scope="row">
+						<aura:iteration items="{! domicilio.telefonos }" var="telefono">
+							<div class="slds-truncate">{! telefono.tipo_telefono  }</div>
+							<hr/>
+						</aura:iteration>
+					</td>
+                </tr>
+            </aura:iteration>
+        </tbody>
+    </table>
+
+	<!-- PARA MOSTRARLO EN UN DATATABLE
+	
+	<aura:handler name="init" value="{! this }" action="{! c.init }"/>     
+	<lightning:datatable 
+		data="{! v.domicilios }"
+		columns="{! v.mycolumns }"
+		keyField="id"
+		hideCheckboxColumn="true"
+		onrowaction="{! c.handleRowAction }"
+	/>
+	
+	-->
+
+	
+</aura:component>

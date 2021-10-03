@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Descripcion_de_Forma__c</fullName>
+    <externalId>false</externalId>
+    <formula>Forma__r.Descripcion_de_Forma__c</formula>
+    <label>Descripción de Forma</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

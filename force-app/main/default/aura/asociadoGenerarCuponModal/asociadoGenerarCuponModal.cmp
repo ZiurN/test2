@@ -1,0 +1,80 @@
+<aura:component controller="AsociadoCuponDePagoCtrl">
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="cuentaCorriente" type="Object"/>
+    <aura:attribute name="mycolumns" type="List"/>
+    <aura:attribute name="accountEmail" type="String"/>
+    <aura:attribute name="dateDeuda" type="Date"/>
+
+    <aura:html tag="style">
+        .slds-modal__container{
+			min-width: 0%;
+			max-width: 90%;
+			width: max-content;
+			margin: 0 auto;
+        }
+        @media (max-width: 700px) {
+            .email-input{
+                width: 100% !important;
+                margin-bottom: 2%;
+            }
+            .send-email{
+                margin-bottom: 1%;
+            }
+            .button-section {
+                display: contents !important;
+
+            }
+        }
+		.slds-modal__content {
+            position: relative;
+			display: flex;
+			flex-direction: column;
+		}
+        .email-input{
+            width: 30%;
+            display: inline-block;
+        }
+        .send-email{
+            display:inline-block;
+            margin-left: 1%;
+        }
+        .button-section {
+            display: flex;
+            justify-content: center;
+			align-items: flex-end;
+        }
+        .table-section {
+            display: flex;
+            justify-content: center;
+        	overflow: auto;
+        }
+        lightning-datatable {
+            overflow-x: auto;
+        }
+    </aura:html>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    <ltng:require scripts="{!$Resource.LightningUtils}" />
+    <div class="table-section">
+        <lightning:datatable aura:id="table" data="{!v.cuentaCorriente}"
+                             columns="{!v.mycolumns}"
+                             keyField="id_index"
+                             maxRowSelection="20"
+                             resizeColumnDisabled="true"/>
+	</div>
+    <div class="button-section">
+        <lightning:input aura:id="dateDeuda" type="date" name="fecha" class="date-input" value="{!v.dateDeuda}" label="Fecha de Cálculo de Intereses" />
+    </div>
+	<div class="button-section">
+		<lightning:input aura:id="sendEmail" type="email" name="email" class="email-input" value="{!v.accountEmail}" label="Email" />
+        <lightning:button variant="brand" label="Enviar cupon por mail" class="send-email" title="Enviar cupon por mail" onclick="{! c.sendInvoices }" />
+		<lightning:button variant="brand" label="Imprimir" title="Imprimir" onclick="{!c.printInvoices }" />
+    </div>
+
+    <aura:if isTrue="{! v.isLoading }">
+        <lightning:spinner alternativeText="Loading" variant="brand"/>
+    </aura:if>
+
+</aura:component>

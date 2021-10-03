@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Creacion_cuando_EM_es_autorizado</fullName>
+    <active>true</active>
+    <description>Validacion de modificacion ni creacion de segmentos cuando el EM este en un estado distinto a &quot;Autorizado&quot;</description>
+    <errorConditionFormula>AND(
+    ISNEW(),
+    NOT(ISPICKVAL( Evento_Medico__r.Estado__c, &quot;Autorizado&quot;)),
+    $Profile.Name &lt;&gt; &quot;Administrador del sistema&quot;,
+				/*Numero_del_segmento__c  &gt; 1*/
+				NOT( Creado_Automaticamente__c )
+)</errorConditionFormula>
+    <errorMessage>No puede Crear Segmentos si el Evento medico no ha sido &quot;Autorizado&quot;</errorMessage>
+</ValidationRule>

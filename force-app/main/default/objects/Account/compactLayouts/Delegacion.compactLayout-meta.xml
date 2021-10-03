@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Delegacion</fullName>
+    <fields>Name</fields>
+    <fields>Codigo_de_delegacion__c</fields>
+    <fields>iEstado__c</fields>
+    <fields>Type</fields>
+    <fields>OwnerId</fields>
+    <label>Delegacion</label>
+</CompactLayout>

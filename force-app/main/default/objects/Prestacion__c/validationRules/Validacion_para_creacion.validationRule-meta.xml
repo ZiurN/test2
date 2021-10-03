@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validacion_para_creacion</fullName>
+    <active>true</active>
+    <description>Validación al momento de crear no me deje relacionar medicamento, grupo, y prestaciones, solo se podra uno a la vez</description>
+    <errorConditionFormula>OR(
+   AND(
+							NOT(ISBLANK(Medicamento__c)),
+							OR(      
+											NOT(ISBLANK(Grupo_de_Prestaciones__c)),
+											NOT(ISBLANK( Prestacion__c)),
+											ISPICKVAL(Tipo__c,&quot;G&quot;),
+											ISPICKVAL(Tipo__c,&quot;N&quot;)
+											) 
+							), 
+				AND(
+							NOT(ISBLANK(Prestacion__c)),
+							 OR(
+											NOT(ISBLANK(Grupo_de_Prestaciones__c)),
+											NOT(ISBLANK(Medicamento__c)),
+											ISPICKVAL(Tipo__c,&quot;G&quot;),
+											ISPICKVAL(Tipo__c,&quot;M&quot;)
+											)
+								),
+				AND(
+							NOT(ISBLANK(Grupo_de_Prestaciones__c)),
+							OR(
+											NOT(ISBLANK(Prestacion__c)),
+											NOT(ISBLANK(Medicamento__c)),
+											ISPICKVAL(Tipo__c,&quot;M&quot;),
+											ISPICKVAL(Tipo__c,&quot;N&quot;)
+											)
+								)
+				)</errorConditionFormula>
+    <errorMessage>Valor del campo &quot;Tipo&quot; incorrecto para la relación o no puede relacionar 2 a la vez</errorMessage>
+</ValidationRule>

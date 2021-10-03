@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Canal_de_contacto_Asesor_con_cliente__c</fullName>
+    <externalId>false</externalId>
+    <label>Canal de contacto (Asesor con cliente)</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Telefono</fullName>
+                <default>false</default>
+                <label>Telefono</label>
+            </value>
+            <value>
+                <fullName>Mail</fullName>
+                <default>false</default>
+                <label>Mail</label>
+            </value>
+            <value>
+                <fullName>Presencial</fullName>
+                <default>false</default>
+                <label>Presencial</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

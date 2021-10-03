@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>baja_economica_o_viaje_al_exterior</fullName>
+    <active>true</active>
+    <description>Si el tipo de retención es &quot;Económica&quot; o &quot;Viaje al exterior&quot;, sólo podrá cerrar el caso un perfil &quot;ADM de venta&quot; o &quot;Administrador del sistema&quot;.</description>
+    <errorConditionFormula>AND(
+    RecordType.DeveloperName= &quot;Solicitud_de_baja&quot;,
+    ISPICKVAL( Status, &quot;Cerrado&quot;),
+				NOT($Profile.Name = &quot;Administrador del sistema&quot;),
+    NOT($Profile.Name = &quot;Administracion de la venta&quot;),			
+    OR( 
+       ISPICKVAL( Tipo_de_retencion__c , &quot;Economica&quot;),
+       ISPICKVAL( Tipo_de_retencion__c , &quot;Viaje al exterior&quot;)
+)
+)</errorConditionFormula>
+    <errorMessage>Solo podrá cerrar el caso un ADM de la venta o ADM de sistema</errorMessage>
+</ValidationRule>

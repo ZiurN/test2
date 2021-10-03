@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cobertura_especial</fullName>
+    <fields>Name</fields>
+    <fields>Consultorio__c</fields>
+    <fields>Fecha_desde__c</fields>
+    <fields>Fecha_hasta__c</fields>
+    <fields>Valor__c</fields>
+    <label>Cobertura especial</label>
+</CompactLayout>

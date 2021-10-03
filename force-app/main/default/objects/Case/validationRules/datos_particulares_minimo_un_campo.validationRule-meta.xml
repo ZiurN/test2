@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>datos_particulares_minimo_un_campo</fullName>
+    <active>true</active>
+    <description>Debe completar al menos una modificación de datos particulares</description>
+    <errorConditionFormula>AND(
+RecordType.DeveloperName =&quot;Solicitud_de_datos_particulares&quot;,
+ISPICKVAL(Type,&quot;MODIF_DPART&quot;),
+ISBLANK(Apellido__c),
+ISBLANK(Nombre__c),
+ISBLANK(TEXT(Nacionalidad__c)),
+ISBLANK(TEXT(Sexo__c)),
+ISBLANK(Fecha_de_nacimiento__c),
+ISBLANK(TEXT(Estado_civil__c)),
+ISBLANK(TEXT(Tipo_de_Parentesco__c)),
+ISBLANK(CUIT__c )
+)</errorConditionFormula>
+    <errorMessage>Debe completar al menos una modificación de datos particulares</errorMessage>
+</ValidationRule>

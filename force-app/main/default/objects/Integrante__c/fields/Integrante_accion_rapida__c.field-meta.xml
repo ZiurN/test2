@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Integrante_accion_rapida__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Este campo se autocompleta cuando se ejecuta la QuickAction en Oportunidad &quot;Integrante de Reingreso&quot;. Al tildarse este campo, se dispara un process que hace que se completen los campos de Integrante de oportunidad según los datos de la cuenta elegida</description>
+    <externalId>false</externalId>
+    <label>Integrante acción rapida</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

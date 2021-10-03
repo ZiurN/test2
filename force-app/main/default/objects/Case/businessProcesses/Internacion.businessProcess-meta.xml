@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BusinessProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Internacion</fullName>
+    <isActive>true</isActive>
+    <values>
+        <fullName>Anulada</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Autorizada</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Centro Autorizador</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Generada</fullName>
+        <default>true</default>
+    </values>
+    <values>
+        <fullName>Orden Emitida</fullName>
+        <default>false</default>
+    </values>
+</BusinessProcess>

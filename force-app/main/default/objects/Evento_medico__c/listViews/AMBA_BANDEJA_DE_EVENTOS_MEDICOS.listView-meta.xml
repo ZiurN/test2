@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AMBA_BANDEJA_DE_EVENTOS_MEDICOS</fullName>
+    <columns>Fecha_y_Hora_inicio_EMS__c</columns>
+    <columns>NAME</columns>
+    <columns>Emitido__c</columns>
+    <columns>Existente_en_SS__c</columns>
+    <columns>Dias_de_internacion__c</columns>
+    <columns>Prestador__c</columns>
+    <columns>Prestacion__c</columns>
+    <columns>Asociado__c</columns>
+    <columns>Delegacion__c</columns>
+    <columns>Diagnostico__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>Estado__c</columns>
+    <columns>Tipo__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650071,650720,650300,650977,650978,650676,650806,650730,650258</value>
+    </filters>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Evento_medico__c.Evento_medico_de_internacion</value>
+    </filters>
+    <filters>
+        <field>Estado__c</field>
+        <operation>notContain</operation>
+        <value>En Auditoría,Anulado,Rechazado,Suspendido,Cerrado</value>
+    </filters>
+    <filters>
+        <field>Forma_de_egreso__c</field>
+        <operation>notContain</operation>
+        <value>ALTA CONTINUA INTERNACION DOMICILIARIA,ALTA MEDICA,ALTA VOLUNTARIA,FALLECIMIENTO DEL PACIENTE,FUGA</value>
+    </filters>
+    <filters>
+        <field>Prestador__c</field>
+        <operation>notEqual</operation>
+        <value>internaciones domiciliarias</value>
+    </filters>
+    <label>AMBA BANDEJA DE EM SIN CERRAR/egreso</label>
+</ListView>

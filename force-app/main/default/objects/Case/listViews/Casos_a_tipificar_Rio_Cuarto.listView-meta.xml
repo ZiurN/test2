@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Casos_a_tipificar_Rio_Cuarto</fullName>
+    <booleanFilter>1 AND 2 AND 3 AND 4</booleanFilter>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>Usuario__c</columns>
+    <columns>CASES.SUBJECT</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>CASES.LAST_UPDATE_DATE_ONLY</columns>
+    <columns>Correo_asociado__c</columns>
+    <columns>CASES.EMAIL</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CASES.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Case.Caso_a_tipificar</value>
+    </filters>
+    <filters>
+        <field>CORE.USERS.ALIAS</field>
+        <operation>equals</operation>
+        <value>front</value>
+    </filters>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650175</value>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>notContain</operation>
+        <value>Cerrado,Anulada</value>
+    </filters>
+    <label>Casos a tipificar Rio Cuarto</label>
+</ListView>

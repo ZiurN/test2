@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_crear_avaces_perfil_front</fullName>
+    <active>true</active>
+    <description>Que el perfil front no pueda crear avances en legales</description>
+    <errorConditionFormula>AND( 
+ISNEW(),
+Caso__r.RecordType.Name  = &quot;Expedientes legales&quot;,
+OR(
+Caso__r.Propietario_del_caso__c = &quot;Legales&quot;,
+Caso__r.Owner:User.Profile.Name = &quot;Administrador Legales&quot;,
+Caso__r.Owner:User.Profile.Name = &quot;Legales&quot;
+),
+$Profile.Name &lt;&gt; &quot;Administrador Legales&quot;,
+$Profile.Name &lt;&gt; &quot;Legales&quot;,
+$Profile.Name &lt;&gt; &quot;Administrador del sistema&quot;
+)</errorConditionFormula>
+    <errorMessage>Usuario inapropiado para generar avances en los Expedientes Legales</errorMessage>
+</ValidationRule>

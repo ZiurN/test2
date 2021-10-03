@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validar_estado_al_crear</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    OR( 
+        RecordType.DeveloperName= &quot;Autorizacion_previa&quot;,
+        RecordType.DeveloperName= &quot;Internacion&quot;,
+        RecordType.DeveloperName= &quot;Reintegro&quot;,
+        RecordType.DeveloperName= &quot;Seguimiento&quot;
+    ),
+    ISNEW(), 
+    $Profile.Name &lt;&gt; &quot;Administrador del sistema&quot;,
+    Cambio_Manual__c,
+    NOT( ISPICKVAL(Status, &apos;CA-----G&apos;) )
+)</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>El Estado debe ser &quot;Generada&quot; al crear el caso</errorMessage>
+</ValidationRule>

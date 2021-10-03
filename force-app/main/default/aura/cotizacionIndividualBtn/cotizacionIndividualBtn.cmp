@@ -1,0 +1,45 @@
+<aura:component controller="CotizadorBtnCtrl" implements="flexipage:availableForRecordHome,force:hasRecordId,force:appHostable"
+                access="global">
+    <ltng:require scripts="{!$Resource.LightningUtils}" />
+    <ltng:require styles="{!$Resource.multilineToast}" />
+
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="caseSimpleRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+    <aura:html tag="style">.slds-media {
+        display: grid;
+        } </aura:html>
+
+    <force:recordData
+            aura:id="recordLoader"
+            recordId="{! v.recordId }"
+            fields="Name"
+            targetFields="{! v.caseSimpleRecord }"
+            targetError="{! v.recordLoadError }"
+    />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media--center" style="width: 100%;">
+
+                <lightning:button
+                        variant="neutral"
+                        onclick="{! c.handleClickBtn }"
+                        title="Cotizar"
+                        label="Cotizar"
+                />
+
+                <aura:if isTrue="{! v.isLoading }">
+                    <lightning:spinner alternativeText="Loading" variant="brand"/>
+                </aura:if>
+
+
+            </header>
+        </div>
+    </article>
+
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+
+</aura:component>
