@@ -1,29 +1,29 @@
 public without sharing class CaseAPRevertirOrdenCtrl  {
 	static final String[] ADMIN_PROFILES = new List<String>{'System Administrator','Administrador del sistema', 'Administrador de Servicio'};
+	public static Id emiId = XappiaHelper.getRecordType('Evento_medico__c', 'Evento_medico_de_internacion').Id;
+
 
 	@AuraEnabled
 	public static BasicResponse revertirOrden(String caseId) {
 		Case caso = [
-			SELECT Status, Nivel_de_derivacion__c, OwnerId, Delegacion__r.Codigo_de_delegacion__c, Nro_AP__c, 
-				Orden_de_Compra__c, Orden_de_Compra__r.Estado_OC__c, 
+			SELECT Status, Nivel_de_derivacion__c, OwnerId, Delegacion__r.Codigo_de_delegacion__c, Nro_AP__c,
+				Orden_de_Compra__c, Orden_de_Compra__r.Estado_OC__c, Evento_medico__c,Evento_medico__r.RecordTypeId,
 				(
 					SELECT Id FROM Prestaciones__r
-				) 
-			FROM Case 
-			WHERE Id =: caseId
+				)
+			FROM Case
+			WHERE Id = :caseId
 		];
 		User usuario = [
-			SELECT CommunityNickname, Profile.Name, UserRole.DeveloperName, Codigo_delegacion__c 
-			FROM User 
+			SELECT CommunityNickname, Profile.Name, UserRole.DeveloperName, Codigo_delegacion__c
+			FROM User
 			WHERE Id =: UserInfo.getUserId()
 		];
-		
+
 		BasicResponse validation = validatePermissions(usuario, caso);
 		if(validation.message != 'ok') {
 			return validation;
 		}
-
-
 
 		String body = JSON.serialize(new Map<String, Object> {'username' => usuario.CommunityNickname?.toUpperCase()});
 
@@ -37,6 +37,10 @@ public without sharing class CaseAPRevertirOrdenCtrl  {
 			caso.Caso_Rechazado__c = false;
 
 			deleteOrdenAttached(caseId);
+			if(caso.Evento_medico__c != null && caso.Evento_medico__r.RecordTypeId == emiId){
+				deleteOrdenAttached(caso.Evento_medico__c);
+			}
+
 			revertirOrdenDeCompra(caso);
 
 			Database.SaveResult resultCaso = Database.update(caso);
@@ -51,7 +55,7 @@ public without sharing class CaseAPRevertirOrdenCtrl  {
 			//update prestaciones.values();
 			if (!prestaciones.isEmpty()) {
 				List<Alerta__c> alertasToDelete = [
-					SELECT Id 
+					SELECT Id
 					FROM Alerta__c
 					WHERE Prestacion__c IN :prestaciones.keySet()
 				];
@@ -59,22 +63,19 @@ public without sharing class CaseAPRevertirOrdenCtrl  {
 				if (!alertasToDelete.isEmpty()) {
 					delete alertasToDelete;
 				}
-				
 			}
 			return new BasicResponse(false, 'ok');
 		}
 		return new BasicResponse(true, resp.message);
-		 
 	}
-	
 	private static BasicResponse validatePermissions(User usuario, Case caso) {
 		String strObjPrefix = String.valueOf(caso.OwnerId).substring(0, 3);
 
-        
+
         Boolean isUserInqueue = false;
-		if(strObjPrefix == Group.sObjectType.getDescribe().getKeyPrefix()){            
+		if(strObjPrefix == Group.sObjectType.getDescribe().getKeyPrefix()){
 			Group cola = [
-				SELECT Id 
+				SELECT Id
 				FROM Group
 				WHERE Type = 'Queue' AND Id = :caso.OwnerId
 			];
@@ -90,7 +91,7 @@ public without sharing class CaseAPRevertirOrdenCtrl  {
                         break;
 					}
 				}
-            }    
+            }
         }
 
 		String nick =  usuario.CommunityNickname != null ? usuario.CommunityNickname.toUppercase() : null;
@@ -110,25 +111,25 @@ public without sharing class CaseAPRevertirOrdenCtrl  {
 		List<GroupMember> grupo = new List<GroupMember>();
 		if(caso.Nivel_de_derivacion__c == 'Nivel 1') {
 			grupo = [SELECT Id FROM GroupMember WHERE Group.DeveloperName = 'Front' AND UserOrGroupId =: usuario.Id];
-			
+
 			if(grupo.isEmpty() && !admin) {
 				return new BasicResponse(false, '- El usuario no pertenece a Front');
 			}
-		} 
+		}
 		else if(caso.Nivel_de_derivacion__c == 'Nivel 2') {
 			grupo = [SELECT Id FROM GroupMember WHERE Group.DeveloperName = 'Mesa_de_ayuda' AND UserOrGroupId =: usuario.Id];
-			
+
 			if(grupo.isEmpty() && !admin) {
 				return new BasicResponse(false, '- El usuario no pertenece a Mesa de Ayuda');
 			}
-		} 
+		}
 		else if(caso.Nivel_de_derivacion__c == 'Nivel 3') {
 			List<CaseTeamMember> equipo = [
 				SELECT MemberId
 				FROM CaseTeamMember
 				WHERE ParentId =: caso.Id AND MemberId =: usuario.Id
 			];
-		
+
 			if(equipo.isEmpty() && !admin) {
 				return new BasicResponse(false, '- El usuario no pertenece al equipo del caso');
 			}
@@ -144,11 +145,11 @@ public without sharing class CaseAPRevertirOrdenCtrl  {
 		Id[] contentDocumentIds = new List<Id>();
 		Id[] contentDocumentIdsToDelete = new List<Id>();
 		ContentDocumentLink[] links = [
-            SELECT LinkedEntityId, ContentDocumentId, ContentDocument.LatestPublishedVersionId, ContentDocument.Title, 
+            SELECT LinkedEntityId, ContentDocumentId, ContentDocument.LatestPublishedVersionId, ContentDocument.Title,
 			ShareType, ContentDocument.FileType, ContentDocument.FileExtension
             FROM ContentDocumentLink
-            WHERE LinkedEntityId =: caseId 
-				AND ContentDocument.Title LIKE 'Orden_%' 
+            WHERE LinkedEntityId =: caseId
+				AND ContentDocument.Title LIKE 'Orden_%'
 				AND ContentDocument.FileExtension = 'pdf'
         ];
 
@@ -157,8 +158,8 @@ public without sharing class CaseAPRevertirOrdenCtrl  {
 		}
 
 		ContentVersion[] versions = [
-			SELECT Id, PathOnClient, ContentDocumentId 
-			FROM ContentVersion 
+			SELECT Id, PathOnClient, ContentDocumentId
+			FROM ContentVersion
 			WHERE ContentDocumentId IN :contentDocumentIds
 		];
 

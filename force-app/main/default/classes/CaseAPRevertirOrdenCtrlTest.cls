@@ -1,5 +1,5 @@
-@isTest 
-private class CaseAPRevertirOrdenCtrlTest {	
+@isTest
+private class CaseAPRevertirOrdenCtrlTest {
 	static XHttpCalloutMock getResponseFound;
 	static XHttpCalloutMock getResponseError;
 	static User usuarioFront;
@@ -134,7 +134,7 @@ private class CaseAPRevertirOrdenCtrlTest {
 
 		Integer cantAlertas = [SELECT COUNT() FROM Alerta__c];
 		Case casoToAssert = [SELECT Status FROM Case WHERE Id =: caso.Id];
-		
+
 		System.assertEquals('CA-----G', casoToAssert.Status);
 		System.assertEquals(0, cantAlertas);
 
@@ -232,7 +232,7 @@ private class CaseAPRevertirOrdenCtrlTest {
 		System.assertEquals('- El usuario no pertenece al equipo del caso', resp.message);
 	}
 
-	@isTest 
+	@isTest
 	private static void whenAFrontUserBelongsToFrontQueue_revertirAP() {
 		BasicResponse resp;
 		Case newCaso = new Case();
@@ -285,6 +285,48 @@ private class CaseAPRevertirOrdenCtrlTest {
 
 		System.assert(!resp);
 
+	}
+
+	@isTest
+	public static void ifRevertimosACaseWithEMIMustDeleteThePDFlinkedToTheEMI(){
+
+		Evento_medico__c em = new Evento_medico__c(
+            Fecha_y_Hora_inicio_EMS__c = DateTime.now().addDays(-2),
+            Fecha_y_hora_fin_ems__c = DateTime.now(),
+            RecordTypeId = XappiaHelper.getRecordType('Evento_medico__c', 'Evento_medico_de_internacion').Id
+        );
+		insert em;
+
+		caso.Nro_AP__c = '1017985413';
+		caso.Evento_Medico__c =  em.Id;
+		update caso;
+
+		Test.setMock(HttpCalloutMock.class,getResponseFound);
+		ContentVersion version = new ContentVersion();
+		version.PathOnClient = '/123456789.pdf';
+		version.origin = 'H';
+		version.Title = 'Orden_123456789.pdf';
+		version.VersionData = Blob.valueOf('CaseAPRevertirOrdenCtrlTest');
+		insert version;
+
+		version = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :version.Id];
+
+		ContentDocumentLink cdl = new ContentDocumentLink();
+		cdl.LinkedEntityId = em.Id;
+		cdl.ContentDocumentId = version.ContentDocumentId;
+		insert cdl;
+
+		Test.startTest();
+		CaseAPRevertirOrdenCtrl.revertirOrden(caso.Id);
+		Test.stopTest();
+
+		Case casoToAssert = [SELECT Status FROM Case WHERE Id =: caso.Id];
+
+		System.assertEquals('CA-----G', casoToAssert.Status);
+
+
+		ContentDocument[] cds = [SELECT Id FROM ContentDocument WHERE Id = :version.ContentDocumentId];
+		System.assert(cds.isEmpty());
 	}
 
 }
