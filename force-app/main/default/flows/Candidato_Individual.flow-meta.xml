@@ -25,6 +25,7 @@
         <locationY>200</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
@@ -126,6 +127,7 @@
         <connector>
             <targetReference>myAssignment_myRule_3_A2</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
@@ -227,6 +229,7 @@
         <connector>
             <targetReference>myRule_3_A3</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
@@ -313,6 +316,7 @@
         <locationY>400</locationY>
         <actionName>Lead.Candidato_72_horas</actionName>
         <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>SObjectRowId</name>
             <value>
@@ -348,6 +352,7 @@
         <connector>
             <targetReference>myDecision6</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
@@ -697,7 +702,10 @@
             <value>
                 <stringValue>AND(
 NOT(ISBLANK([Lead].Telefono_origen_Chat__c )),
-[Lead].Creadoporcaso__c 
+[Lead].Creadoporcaso__c,
+NOT(ISPICKVAL([Lead].Caso__r.Status, &apos;Cerrado&apos;)),
+$Profile.Name != &apos;Lider de Ventas&apos;,
+$Profile.Name != &apos;Agente de Ventas&apos;
 )
 </stringValue>
             </value>
@@ -706,7 +714,10 @@ NOT(ISBLANK([Lead].Telefono_origen_Chat__c )),
         <dataType>Boolean</dataType>
         <expression>AND(
 NOT(ISBLANK({!myVariable_current.Telefono_origen_Chat__c} )),
-{!myVariable_current.Creadoporcaso__c} 
+{!myVariable_current.Creadoporcaso__c},
+NOT(ISPICKVAL({!myVariable_current.Caso__r.Status}, &apos;Cerrado&apos;)),
+{!$Profile.Name} != &apos;Lider de Ventas&apos;,
+{!$Profile.Name} != &apos;Agente de Ventas&apos;
 )</expression>
     </formulas>
     <formulas>
@@ -807,7 +818,7 @@ NOT(ISBLANK({!myVariable_current.Telefono_origen_Chat__c} )),
          ISPICKVAL( {!myVariable_current.Tiempo_sin_abrir__c} , &quot;96 horas&quot;)
 )</expression>
     </formulas>
-    <interviewLabel>Candidato_Individual-6_InterviewLabel</interviewLabel>
+    <interviewLabel>Candidato_Individual-9_InterviewLabel</interviewLabel>
     <label>Candidato Individual</label>
     <processMetadataValues>
         <name>ObjectType</name>
