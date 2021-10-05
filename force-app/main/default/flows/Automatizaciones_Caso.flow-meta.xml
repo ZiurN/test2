@@ -467,7 +467,7 @@
             </processMetadataValues>
             <name>Celula1</name>
             <value>
-                <elementReference>formula_38_myRule_37_A2_3423007776</elementReference>
+                <elementReference>formula_38_myRule_37_A2_3498464599</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -596,7 +596,7 @@
             </processMetadataValues>
             <name>Celula2</name>
             <value>
-                <elementReference>formula_41_myRule_40_A2_6713818158</elementReference>
+                <elementReference>formula_41_myRule_40_A2_1766349970</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -701,7 +701,7 @@
             </processMetadataValues>
             <name>Celula3</name>
             <value>
-                <elementReference>formula_44_myRule_43_A2_8463212308</elementReference>
+                <elementReference>formula_44_myRule_43_A2_4578007139</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -806,7 +806,7 @@
             </processMetadataValues>
             <name>Celula4</name>
             <value>
-                <elementReference>formula_47_myRule_46_A2_2066436205</elementReference>
+                <elementReference>formula_47_myRule_46_A2_1066241556</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -911,7 +911,7 @@
             </processMetadataValues>
             <name>Celula5</name>
             <value>
-                <elementReference>formula_50_myRule_49_A2_2770967237</elementReference>
+                <elementReference>formula_50_myRule_49_A2_5751742972</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -1016,7 +1016,7 @@
             </processMetadataValues>
             <name>Celula6</name>
             <value>
-                <elementReference>formula_53_myRule_52_A2_0205233720</elementReference>
+                <elementReference>formula_53_myRule_52_A2_5136024848</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -1121,7 +1121,7 @@
             </processMetadataValues>
             <name>Celula7</name>
             <value>
-                <elementReference>formula_56_myRule_55_A2_7491383091</elementReference>
+                <elementReference>formula_56_myRule_55_A2_7226097258</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -1226,7 +1226,7 @@
             </processMetadataValues>
             <name>Celula8</name>
             <value>
-                <elementReference>formula_59_myRule_58_A2_3350785877</elementReference>
+                <elementReference>formula_59_myRule_58_A2_6444743075</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -1355,7 +1355,7 @@
             </processMetadataValues>
             <name>Celula9</name>
             <value>
-                <elementReference>formula_62_myRule_61_A2_9747278893</elementReference>
+                <elementReference>formula_62_myRule_61_A2_2210347399</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -1460,7 +1460,7 @@
             </processMetadataValues>
             <name>Celula10</name>
             <value>
-                <elementReference>formula_65_myRule_64_A2_4333343638</elementReference>
+                <elementReference>formula_65_myRule_64_A2_2547258751</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -1565,7 +1565,7 @@
             </processMetadataValues>
             <name>Celula11</name>
             <value>
-                <elementReference>formula_68_myRule_67_A2_6161807192</elementReference>
+                <elementReference>formula_68_myRule_67_A2_7833238819</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -1670,7 +1670,7 @@
             </processMetadataValues>
             <name>Celula_12</name>
             <value>
-                <elementReference>formula_71_myRule_70_A2_0670718997</elementReference>
+                <elementReference>formula_71_myRule_70_A2_2672985922</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -2519,7 +2519,7 @@
                 <stringValue>$CustomMetadata.Tipo_de_registro__mdt.Interfaz_financiera.idtipoderegistro__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_10_myRule_7_A2_7831477477</name>
+        <name>formula_10_myRule_7_A2_9366403992</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Tipo_de_registro__mdt.Interfaz_financiera.idtipoderegistro__c}</expression>
     </formulas>
@@ -2530,7 +2530,7 @@
                 <stringValue>$CustomMetadata.Tipo_de_registro__mdt.Reclamo.idtipoderegistro__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_11_myRule_7_A2_3238125248</name>
+        <name>formula_11_myRule_7_A2_1963686845</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Tipo_de_registro__mdt.Reclamo.idtipoderegistro__c}</expression>
     </formulas>
@@ -2541,7 +2541,7 @@
                 <stringValue>$CustomMetadata.Tipo_de_registro__mdt.Solicitud_cambio_de_plan.idtipoderegistro__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_12_myRule_7_A2_1539205387</name>
+        <name>formula_12_myRule_7_A2_5339431740</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Tipo_de_registro__mdt.Solicitud_cambio_de_plan.idtipoderegistro__c}</expression>
     </formulas>
@@ -2552,7 +2552,7 @@
                 <stringValue>$CustomMetadata.Tipo_de_registro__mdt.Solicitud_de_alta_familiar.idtipoderegistro__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_13_myRule_7_A2_8228580258</name>
+        <name>formula_13_myRule_7_A2_5587812950</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Tipo_de_registro__mdt.Solicitud_de_alta_familiar.idtipoderegistro__c}</expression>
     </formulas>
@@ -2563,7 +2563,7 @@
                 <stringValue>$CustomMetadata.Tipo_de_registro__mdt.Solicitud_de_baja.idtipoderegistro__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_14_myRule_7_A2_7530772428</name>
+        <name>formula_14_myRule_7_A2_6654654083</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Tipo_de_registro__mdt.Solicitud_de_baja.idtipoderegistro__c}</expression>
     </formulas>
@@ -2574,7 +2574,7 @@
                 <stringValue>$CustomMetadata.Tipo_de_registro__mdt.Solicitud_de_datos_particulares.idtipoderegistro__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_15_myRule_7_A2_9190459786</name>
+        <name>formula_15_myRule_7_A2_3376866554</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Tipo_de_registro__mdt.Solicitud_de_datos_particulares.idtipoderegistro__c}</expression>
     </formulas>
@@ -2585,7 +2585,7 @@
                 <stringValue>$CustomMetadata.Tipo_de_registro__mdt.Solicitud_de_despegues.idtipoderegistro__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_16_myRule_7_A2_2383288006</name>
+        <name>formula_16_myRule_7_A2_7559167368</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Tipo_de_registro__mdt.Solicitud_de_despegues.idtipoderegistro__c}</expression>
     </formulas>
@@ -2596,7 +2596,7 @@
                 <stringValue>$CustomMetadata.Tipo_de_registro__mdt.Solicitud_de_nueva_credencial.idtipoderegistro__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_17_myRule_7_A2_9164352409</name>
+        <name>formula_17_myRule_7_A2_8343575058</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Tipo_de_registro__mdt.Solicitud_de_nueva_credencial.idtipoderegistro__c}</expression>
     </formulas>
@@ -2607,7 +2607,7 @@
                 <stringValue>$CustomMetadata.Tipo_de_registro__mdt.Solicitud_de_segmento.idtipoderegistro__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_18_myRule_7_A2_1989731472</name>
+        <name>formula_18_myRule_7_A2_3659248480</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Tipo_de_registro__mdt.Solicitud_de_segmento.idtipoderegistro__c}</expression>
     </formulas>
@@ -2618,7 +2618,7 @@
                 <stringValue>NOW()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_19_myRule_7_A1_3008197372</name>
+        <name>formula_19_myRule_7_A1_5964814461</name>
         <dataType>DateTime</dataType>
         <expression>NOW()</expression>
     </formulas>
@@ -2629,7 +2629,7 @@
                 <stringValue>$CustomMetadata.Reagsincion_lote__mdt.Lote_pendiente.Id_lote__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_22_myRule_21_A2_2292852190</name>
+        <name>formula_22_myRule_21_A2_7912493122</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Reagsincion_lote__mdt.Lote_pendiente.Id_lote__c}</expression>
     </formulas>
@@ -2640,7 +2640,7 @@
                 <stringValue>$CustomMetadata.Reagsincion_lote__mdt.Lote_devoluciones.Id_lote__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_23_myRule_21_A1_7673001591</name>
+        <name>formula_23_myRule_21_A1_3758769621</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Reagsincion_lote__mdt.Lote_devoluciones.Id_lote__c}</expression>
     </formulas>
@@ -2651,7 +2651,7 @@
                 <stringValue>$CustomMetadata.Equipo_de_caso__mdt.celula_1.Equipo_de_caso__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_38_myRule_37_A2_3423007776</name>
+        <name>formula_38_myRule_37_A2_3498464599</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Equipo_de_caso__mdt.celula_1.Equipo_de_caso__c}</expression>
     </formulas>
@@ -2662,7 +2662,7 @@
                 <stringValue>$CustomMetadata.Equipo_de_caso__mdt.Celula_2.Equipo_de_caso__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_41_myRule_40_A2_6713818158</name>
+        <name>formula_41_myRule_40_A2_1766349970</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Equipo_de_caso__mdt.Celula_2.Equipo_de_caso__c}</expression>
     </formulas>
@@ -2673,7 +2673,7 @@
                 <stringValue>$CustomMetadata.Equipo_de_caso__mdt.Celula_3.Equipo_de_caso__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_44_myRule_43_A2_8463212308</name>
+        <name>formula_44_myRule_43_A2_4578007139</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Equipo_de_caso__mdt.Celula_3.Equipo_de_caso__c}</expression>
     </formulas>
@@ -2684,7 +2684,7 @@
                 <stringValue>$CustomMetadata.Equipo_de_caso__mdt.Celula_4.Equipo_de_caso__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_47_myRule_46_A2_2066436205</name>
+        <name>formula_47_myRule_46_A2_1066241556</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Equipo_de_caso__mdt.Celula_4.Equipo_de_caso__c}</expression>
     </formulas>
@@ -2695,7 +2695,7 @@
                 <stringValue>$CustomMetadata.Equipo_de_caso__mdt.Celula_5.Equipo_de_caso__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_50_myRule_49_A2_2770967237</name>
+        <name>formula_50_myRule_49_A2_5751742972</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Equipo_de_caso__mdt.Celula_5.Equipo_de_caso__c}</expression>
     </formulas>
@@ -2706,7 +2706,7 @@
                 <stringValue>$CustomMetadata.Equipo_de_caso__mdt.Celula_6.Equipo_de_caso__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_53_myRule_52_A2_0205233720</name>
+        <name>formula_53_myRule_52_A2_5136024848</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Equipo_de_caso__mdt.Celula_6.Equipo_de_caso__c}</expression>
     </formulas>
@@ -2717,7 +2717,7 @@
                 <stringValue>$CustomMetadata.Equipo_de_caso__mdt.Celula_7.Equipo_de_caso__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_56_myRule_55_A2_7491383091</name>
+        <name>formula_56_myRule_55_A2_7226097258</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Equipo_de_caso__mdt.Celula_7.Equipo_de_caso__c}</expression>
     </formulas>
@@ -2728,7 +2728,7 @@
                 <stringValue>$CustomMetadata.Equipo_de_caso__mdt.Celula_8.Equipo_de_caso__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_59_myRule_58_A2_3350785877</name>
+        <name>formula_59_myRule_58_A2_6444743075</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Equipo_de_caso__mdt.Celula_8.Equipo_de_caso__c}</expression>
     </formulas>
@@ -2739,7 +2739,7 @@
                 <stringValue>$CustomMetadata.Equipo_de_caso__mdt.Celula_9.Equipo_de_caso__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_62_myRule_61_A2_9747278893</name>
+        <name>formula_62_myRule_61_A2_2210347399</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Equipo_de_caso__mdt.Celula_9.Equipo_de_caso__c}</expression>
     </formulas>
@@ -2750,7 +2750,7 @@
                 <stringValue>$CustomMetadata.Equipo_de_caso__mdt.Celula_10.Equipo_de_caso__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_65_myRule_64_A2_4333343638</name>
+        <name>formula_65_myRule_64_A2_2547258751</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Equipo_de_caso__mdt.Celula_10.Equipo_de_caso__c}</expression>
     </formulas>
@@ -2761,7 +2761,7 @@
                 <stringValue>$CustomMetadata.Equipo_de_caso__mdt.Celula_11.Equipo_de_caso__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_68_myRule_67_A2_6161807192</name>
+        <name>formula_68_myRule_67_A2_7833238819</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Equipo_de_caso__mdt.Celula_11.Equipo_de_caso__c}</expression>
     </formulas>
@@ -2772,7 +2772,7 @@
                 <stringValue>$CustomMetadata.Equipo_de_caso__mdt.Celula_12.Equipo_de_caso__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_71_myRule_70_A2_0670718997</name>
+        <name>formula_71_myRule_70_A2_2672985922</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Equipo_de_caso__mdt.Celula_12.Equipo_de_caso__c}</expression>
     </formulas>
@@ -2783,7 +2783,7 @@
                 <stringValue>$CustomMetadata.Tipo_de_registro__mdt.Consultas.idtipoderegistro__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_8_myRule_7_A2_1797177990</name>
+        <name>formula_8_myRule_7_A2_9645595640</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Tipo_de_registro__mdt.Consultas.idtipoderegistro__c}</expression>
     </formulas>
@@ -2794,7 +2794,7 @@
                 <stringValue>$CustomMetadata.Tipo_de_registro__mdt.Expediente_legales.idtipoderegistro__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_9_myRule_7_A2_4720567964</name>
+        <name>formula_9_myRule_7_A2_1375588221</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Tipo_de_registro__mdt.Expediente_legales.idtipoderegistro__c}</expression>
     </formulas>
@@ -3435,7 +3435,7 @@ ISPICKVAL({!myVariable_current.Status}, &quot;Cerrado&quot;),
 ISPICKVAL({!myVariable_current.Motivo_de_cierre_solicitudes__c}, &quot;Bonificacion aplicada&quot;)
 )</expression>
     </formulas>
-    <interviewLabel>Automatizaciones_Caso-22_InterviewLabel</interviewLabel>
+    <interviewLabel>Automatizaciones_Caso-68_InterviewLabel</interviewLabel>
     <label>Automatizaciones Caso</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -3672,7 +3672,7 @@ ISPICKVAL({!myVariable_current.Motivo_de_cierre_solicitudes__c}, &quot;Bonificac
             </processMetadataValues>
             <field>Lote__c</field>
             <value>
-                <elementReference>formula_23_myRule_21_A1_7673001591</elementReference>
+                <elementReference>formula_23_myRule_21_A1_3758769621</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
@@ -3805,7 +3805,7 @@ ISPICKVAL({!myVariable_current.Motivo_de_cierre_solicitudes__c}, &quot;Bonificac
             </processMetadataValues>
             <field>Lote__c</field>
             <value>
-                <elementReference>formula_22_myRule_21_A2_2292852190</elementReference>
+                <elementReference>formula_22_myRule_21_A2_7912493122</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
@@ -4015,7 +4015,7 @@ ISPICKVAL({!myVariable_current.Motivo_de_cierre_solicitudes__c}, &quot;Bonificac
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <stringValue>00G1U000002yQogUAE</stringValue>
+                <stringValue>00G8A000002BEVGUA4</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -5696,7 +5696,7 @@ ISPICKVAL({!myVariable_current.Motivo_de_cierre_solicitudes__c}, &quot;Bonificac
             </processMetadataValues>
             <field>CompletionDate</field>
             <value>
-                <elementReference>formula_19_myRule_7_A1_3008197372</elementReference>
+                <elementReference>formula_19_myRule_7_A1_5964814461</elementReference>
             </value>
         </inputAssignments>
         <object>CaseMilestone</object>
@@ -5793,7 +5793,7 @@ ISPICKVAL({!myVariable_current.Motivo_de_cierre_solicitudes__c}, &quot;Bonificac
             <field>RecordTypeId</field>
             <operator>NotEqualTo</operator>
             <value>
-                <elementReference>formula_8_myRule_7_A2_1797177990</elementReference>
+                <elementReference>formula_8_myRule_7_A2_9645595640</elementReference>
             </value>
         </filters>
         <filters>
@@ -5842,7 +5842,7 @@ ISPICKVAL({!myVariable_current.Motivo_de_cierre_solicitudes__c}, &quot;Bonificac
             <field>RecordTypeId</field>
             <operator>NotEqualTo</operator>
             <value>
-                <elementReference>formula_9_myRule_7_A2_4720567964</elementReference>
+                <elementReference>formula_9_myRule_7_A2_1375588221</elementReference>
             </value>
         </filters>
         <filters>
@@ -5891,7 +5891,7 @@ ISPICKVAL({!myVariable_current.Motivo_de_cierre_solicitudes__c}, &quot;Bonificac
             <field>RecordTypeId</field>
             <operator>NotEqualTo</operator>
             <value>
-                <elementReference>formula_10_myRule_7_A2_7831477477</elementReference>
+                <elementReference>formula_10_myRule_7_A2_9366403992</elementReference>
             </value>
         </filters>
         <filters>
@@ -5940,7 +5940,7 @@ ISPICKVAL({!myVariable_current.Motivo_de_cierre_solicitudes__c}, &quot;Bonificac
             <field>RecordTypeId</field>
             <operator>NotEqualTo</operator>
             <value>
-                <elementReference>formula_11_myRule_7_A2_3238125248</elementReference>
+                <elementReference>formula_11_myRule_7_A2_1963686845</elementReference>
             </value>
         </filters>
         <filters>
@@ -5989,7 +5989,7 @@ ISPICKVAL({!myVariable_current.Motivo_de_cierre_solicitudes__c}, &quot;Bonificac
             <field>RecordTypeId</field>
             <operator>NotEqualTo</operator>
             <value>
-                <elementReference>formula_12_myRule_7_A2_1539205387</elementReference>
+                <elementReference>formula_12_myRule_7_A2_5339431740</elementReference>
             </value>
         </filters>
         <filters>
@@ -6038,7 +6038,7 @@ ISPICKVAL({!myVariable_current.Motivo_de_cierre_solicitudes__c}, &quot;Bonificac
             <field>RecordTypeId</field>
             <operator>NotEqualTo</operator>
             <value>
-                <elementReference>formula_13_myRule_7_A2_8228580258</elementReference>
+                <elementReference>formula_13_myRule_7_A2_5587812950</elementReference>
             </value>
         </filters>
         <filters>
@@ -6087,7 +6087,7 @@ ISPICKVAL({!myVariable_current.Motivo_de_cierre_solicitudes__c}, &quot;Bonificac
             <field>RecordTypeId</field>
             <operator>NotEqualTo</operator>
             <value>
-                <elementReference>formula_14_myRule_7_A2_7530772428</elementReference>
+                <elementReference>formula_14_myRule_7_A2_6654654083</elementReference>
             </value>
         </filters>
         <filters>
@@ -6136,7 +6136,7 @@ ISPICKVAL({!myVariable_current.Motivo_de_cierre_solicitudes__c}, &quot;Bonificac
             <field>RecordTypeId</field>
             <operator>NotEqualTo</operator>
             <value>
-                <elementReference>formula_15_myRule_7_A2_9190459786</elementReference>
+                <elementReference>formula_15_myRule_7_A2_3376866554</elementReference>
             </value>
         </filters>
         <filters>
@@ -6185,7 +6185,7 @@ ISPICKVAL({!myVariable_current.Motivo_de_cierre_solicitudes__c}, &quot;Bonificac
             <field>RecordTypeId</field>
             <operator>NotEqualTo</operator>
             <value>
-                <elementReference>formula_16_myRule_7_A2_2383288006</elementReference>
+                <elementReference>formula_16_myRule_7_A2_7559167368</elementReference>
             </value>
         </filters>
         <filters>
@@ -6234,7 +6234,7 @@ ISPICKVAL({!myVariable_current.Motivo_de_cierre_solicitudes__c}, &quot;Bonificac
             <field>RecordTypeId</field>
             <operator>NotEqualTo</operator>
             <value>
-                <elementReference>formula_17_myRule_7_A2_9164352409</elementReference>
+                <elementReference>formula_17_myRule_7_A2_8343575058</elementReference>
             </value>
         </filters>
         <filters>
@@ -6283,7 +6283,7 @@ ISPICKVAL({!myVariable_current.Motivo_de_cierre_solicitudes__c}, &quot;Bonificac
             <field>RecordTypeId</field>
             <operator>NotEqualTo</operator>
             <value>
-                <elementReference>formula_18_myRule_7_A2_1989731472</elementReference>
+                <elementReference>formula_18_myRule_7_A2_3659248480</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -6325,7 +6325,7 @@ ISPICKVAL({!myVariable_current.Motivo_de_cierre_solicitudes__c}, &quot;Bonificac
         <object>Case</object>
     </recordUpdates>
     <startElementReference>myDecision</startElementReference>
-    <status>Active</status>
+    <status>Obsolete</status>
     <variables>
         <name>myCollection_myRule_25_A1recipientIds</name>
         <dataType>String</dataType>
