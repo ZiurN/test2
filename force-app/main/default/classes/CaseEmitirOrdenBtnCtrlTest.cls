@@ -15,6 +15,8 @@ private class CaseEmitirOrdenBtnCtrlTest {
 	static Alerta__c alerta3;
 
     static {
+		Account cdc = new Account(Name='Centro de Contacto');
+		insert cdc;
 		System.runAs(new User(Id = UserInfo.getUserId())) {
 			String uniqueUserName = 'standarduserAnularCase' + DateTime.now().getTime() + '@testorg.com';
 			Profile pFront = [SELECT Id FROM Profile WHERE Name='Front'];
@@ -80,7 +82,7 @@ private class CaseEmitirOrdenBtnCtrlTest {
 	private static void validCaseChangesStatusWhenCaseEmitirOrden() {
 		Test.setMock(HttpCalloutMock.class,getResponseFound);
 		Case caso = new Case();
-		caso.Status = 'CA-----A	';
+		caso.Status = 'Autorizada';
 		caso.Nro_AP__c = '12345678';
 		insert caso;
 
@@ -154,7 +156,7 @@ private class CaseEmitirOrdenBtnCtrlTest {
 
 		System.runAs(usuarioFront) {
 			newCaso.Nro_AP__c = '12345678';
-			newCaso.Status = 'CA-----A';
+			newCaso.Status = 'Autorizada';
 			newCaso.Nivel_de_derivacion__c = 'Nivel 3';
 			insert newCaso;
 
@@ -243,6 +245,81 @@ private class CaseEmitirOrdenBtnCtrlTest {
 		System.assertEquals(1, AfterInvocations);
 	}
 
+	@isTest
+	public static void whenACaseChangesStatusToOrdenEmitidaShouldChangeTheStateOfTheEMAssociate(){
+		Account prestador = Build.anAccountEfector().build();
+		prestador.Es_Prestador__c = true;
+		prestador.Correo_electronico__c = 'test@test.com';
+		insert prestador;
+
+		Evento_medico__c emCovid = new Evento_medico__c();
+		emCovid.RecordTypeId = XappiaHelper.getRecordType('Evento_medico__c', 'Evento_medico_de_seguimiento').Id;
+		emCovid.Tipo__c = 'COVID';
+		insert emCovid;
+
+		Case aCase = new Case();
+		aCase.RecordTypeId = XappiaHelper.getRecordType('Case', 'Autorizacion_previa').Id;
+		aCase.Nro_AP__c = '12345678';
+		aCase.Prestador__c = prestador.Id;
+		aCase.Status = 'Autorizada';
+		aCase.Evento_Medico__c = emCovid.Id;
+		//aCase.Type= 'COVID';
+		insert aCase;
+
+		Test.setMock(HttpCalloutMock.class, getResponseFound);
+		Test.startTest();
+		CaseEmitirOrdenBtnCtrl.Response resp = CaseEmitirOrdenBtnCtrl.changeStatusToOrdenEmitida(aCase.Nro_AP__c);
+		Integer AfterInvocations = Limits.getEmailInvocations();
+		Test.stopTest();
+
+		aCase = [SELECT Status,Evento_Medico__r.Estado__c FROM Case WHERE Id =: aCase.Id];
+
+		System.assertEquals(false, resp.hasError);
+		System.assertEquals('ok', resp.message);
+		System.assertEquals('CA-----E', aCase.Status);
+		//System.assertEquals('Autorizado', aCase.Evento_Medico__r.Estado__c);
+		System.assertEquals(1, AfterInvocations);
+	
+
+	}
+
+	@isTest
+	public static void whenACaseChangesStatusToOrdenEmitidaShouldChangeTheStateOfTheEMAssociateDos(){
+		Account prestador = Build.anAccountEfector().build();
+		prestador.Es_Prestador__c = true;
+		prestador.Correo_electronico__c = 'test@test.com';
+		insert prestador;
+
+		Evento_medico__c emCovid = new Evento_medico__c();
+		emCovid.RecordTypeId = XappiaHelper.getRecordType('Evento_medico__c', 'Evento_medico_de_internacion').Id;
+	
+		insert emCovid;
+
+		Case aCase = new Case();
+		aCase.RecordTypeId = XappiaHelper.getRecordType('Case', 'Autorizacion_previa').Id;
+		aCase.Nro_AP__c = '12345678';
+		aCase.Prestador__c = prestador.Id;
+		aCase.Status = 'Autorizada';
+		aCase.Evento_Medico__c = emCovid.Id;
+		//aCase.Type= 'COVID';
+		insert aCase;
+
+		Test.setMock(HttpCalloutMock.class, getResponseFound);
+		Test.startTest();
+		CaseEmitirOrdenBtnCtrl.Response resp = CaseEmitirOrdenBtnCtrl.changeStatusToOrdenEmitida(aCase.Nro_AP__c);
+		Integer AfterInvocations = Limits.getEmailInvocations();
+		Test.stopTest();
+
+		aCase = [SELECT Status,Evento_Medico__r.Estado__c FROM Case WHERE Id =: aCase.Id];
+
+		System.assertEquals(false, resp.hasError);
+		System.assertEquals('ok', resp.message);
+		System.assertEquals('CA-----E', aCase.Status);
+		//System.assertEquals('Autorizado', aCase.Evento_Medico__r.Estado__c);
+		System.assertEquals(0, AfterInvocations);
+	
+
+	}
 	//@isTest
 	//private static void whenAFrontUserNotBelongsToDelegacion_showTheErrorMsg() {
 		//Account delegacion = Build.anAccountDelegacion().withCodigoDeDelegacion('123456').build();
