@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_cargar_material_sin_subtipo</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR(
+    AND(
+        BEGINS(Codigo_Nomenclador__c , &apos;70&apos;),
+        NOT(ISPICKVAL(Ap__r.Sub_tipo__c,&apos;Material&apos;))
+    ),
+    AND(
+        NOT(BEGINS(Codigo_Nomenclador__c,&apos;70&apos;)),
+        ISPICKVAL(Ap__r.Sub_tipo__c,&apos;Material&apos;)
+    )
+)</errorConditionFormula>
+    <errorMessage>Al cargar un código de nomenclador de tipo Material, debe marcar el Subtipo como Material</errorMessage>
+</ValidationRule>
