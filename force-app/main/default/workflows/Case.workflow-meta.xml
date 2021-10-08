@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alerts>
+        <fullName>Advertencia_de_que_le_queda_1_4_del_total_de_horas_para_que_caduque_el_caso</fullName>
+        <description>Advertencia de que le queda 1/4 del total de horas para que caduque el caso</description>
+        <protected>false</protected>
+        <recipients>
+            <type>creator</type>
+        </recipients>
+        <senderAddress>noreply@avalian.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>unfiled$public/Plantilla_Aviso_de_Caso_por_Caducar</template>
+    </alerts>
+    <alerts>
+        <fullName>Notificacion_Ap_autorizada</fullName>
+        <description>Notificacion Ap autorizada</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Correo_asociado__c</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>noreply@avalian.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>Plantillas_publicas_Creadas/Notificacion_Ap_autorizada</template>
+    </alerts>
+    <alerts>
+        <fullName>Notificacion_caso_anulado</fullName>
+        <description>Notificacion caso anulado</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Correo_propietario_em__c</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>noreply@avalian.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>unfiled$public/Alerta_caso_anulado</template>
+    </alerts>
+    <alerts>
+        <fullName>Notificacion_caso_rechazado</fullName>
+        <description>Notificacion caso rechazado</description>
+        <protected>false</protected>
+        <recipients>
+            <type>creator</type>
+        </recipients>
+        <senderAddress>noreply@avalian.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>unfiled$public/Caso_Rechazado</template>
+    </alerts>
+    <alerts>
+        <fullName>Notificacion_cierre_de_caso_solicitud_de_baja</fullName>
+        <description>Notificacion cierre de caso solicitud de baja</description>
+        <protected>false</protected>
+        <recipients>
+            <type>creator</type>
+        </recipients>
+        <senderAddress>noreply@avalian.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>Plantillas_publicas_Creadas/Notificacion_cierre_de_caso_de_solicitude_de_baja</template>
+    </alerts>
+    <alerts>
+        <fullName>Notificacion_de_creacion_de_caso_Web_o_mail</fullName>
+        <description>Notificacion de creacion de caso Web o mail</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Correo_asociado__c</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>noreply@avalian.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>Plantillas_publicas_Creadas/Notificacion_de_creacion_de_caso_web_mail</template>
+    </alerts>
+    <alerts>
+        <fullName>Notificacion_derivacion_caso_tesorer_a</fullName>
+        <description>Notificacion derivacion caso tesorería</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>Plantillas_publicas_Creadas/Notificacion_nuevo_caso_tesoreria</template>
+    </alerts>
+    <alerts>
+        <fullName>Notificacion_documentacion_faltante</fullName>
+        <description>Notificacion documentacion faltante</description>
+        <protected>false</protected>
+        <recipients>
+            <type>creator</type>
+        </recipients>
+        <senderAddress>noreply@avalian.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>unfiled$public/Documentacion_faltante</template>
+    </alerts>
+    <alerts>
+        <fullName>Vencimiento_SLA</fullName>
+        <description>Vencimiento SLA</description>
+        <protected>false</protected>
+        <recipients>
+            <type>creator</type>
+        </recipients>
+        <senderAddress>noreply@avalian.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>Plantillas_publicas_Creadas/Vencimiento_SLA</template>
+    </alerts>
+    <alerts>
+        <fullName>Vencimiento_SLA1</fullName>
+        <description>Vencimiento SLA1</description>
+        <protected>false</protected>
+        <recipients>
+            <type>creator</type>
+        </recipients>
+        <senderAddress>noreply@avalian.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>Plantillas_publicas_Creadas/Vencimiento_SLA</template>
+    </alerts>
+    <alerts>
+        <fullName>documentacion_completa</fullName>
+        <description>documentacion completa</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Correo_electronico_responsable__c</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>noreply@avalian.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>Plantillas_publicas_Creadas/Documentacion_completa</template>
+    </alerts>
+    <fieldUpdates>
+        <fullName>Activar_SLA_Legal</fullName>
+        <field>SLALegales__c</field>
+        <literalValue>1</literalValue>
+        <name>Activar SLA Legal</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Actualiza_campo_correo</fullName>
+        <description>Actualiza el campo correo electronico del propietario del em</description>
+        <field>Correo_propietario_em__c</field>
+        <formula>Evento_Medico__r.Owner:User.Email</formula>
+        <name>Actualiza campo correo</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Actualiza_correo_responsable</fullName>
+        <field>Correo_electronico_responsable__c</field>
+        <formula>Usuario__r.Email</formula>
+        <name>Actualiza correo responsable</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Actualiza_estado_caso</fullName>
+        <field>Status</field>
+        <literalValue>Cerrado</literalValue>
+        <name>Actualiza estado caso</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Actualizar_tipo_de_ems_en_el_caso</fullName>
+        <field>celuladelevento__c</field>
+        <formula>TEXT(Evento_Medico__r.Tipo__c )</formula>
+        <name>Actualizar tipo de ems en el caso</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Cambio_manual_a_true_caso</fullName>
+        <field>Cambio_Manual__c</field>
+        <literalValue>1</literalValue>
+        <name>Cambio manual a true caso</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Caso_autorizado</fullName>
+        <description>Se autorizan unicamente los casos seguimiento o internacion, en base a la autorizacion del EM</description>
+        <field>Status</field>
+        <literalValue>Autorizada</literalValue>
+        <name>Caso autorizado</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Correo_asociado</fullName>
+        <field>Correo_asociado__c</field>
+        <formula>Account.PersonContact.Email</formula>
+        <name>Correo asociado</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Deriva_a_tesoreria</fullName>
+        <field>OwnerId</field>
+        <lookupValue>Tesoreria</lookupValue>
+        <lookupValueType>Queue</lookupValueType>
+        <name>Deriva a tesoreria</name>
+        <notifyAssignee>true</notifyAssignee>
+        <operation>LookupValue</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Desmarcar_check</fullName>
+        <field>Ap_autorizada__c</field>
+        <literalValue>0</literalValue>
+        <name>Desmarcar check</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Flag_viene_de_front</fullName>
+        <field>viene_de_front__c</field>
+        <literalValue>1</literalValue>
+        <name>Flag viene de front</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Marca_check_de_no_reasigna_sla1</fullName>
+        <field>No_reasigna_sla2__c</field>
+        <literalValue>1</literalValue>
+        <name>Marca check de no reasigna sla 2</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Marca_check_no_reasiga_sla</fullName>
+        <field>No_reasigna_sla__c</field>
+        <literalValue>1</literalValue>
+        <name>Marca check no reasiga sla</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Prioridad_alta</fullName>
+        <field>Priority</field>
+        <literalValue>Critico</literalValue>
+        <name>Prioridad alta</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Prioridad_web_mail</fullName>
+        <field>Priority</field>
+        <literalValue>Media</literalValue>
+        <name>Prioridad web mail</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>SLA_numero2</fullName>
+        <field>SLA_numero__c</field>
+        <formula>2</formula>
+        <name>SLA numero2 verde</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>SLA_numero3</fullName>
+        <field>SLA_numero__c</field>
+        <formula>2</formula>
+        <name>SLA numero amarillo</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>SLA_numero4</fullName>
+        <field>SLA_numero__c</field>
+        <formula>3</formula>
+        <name>SLA numero rojo</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Sin_semaforo</fullName>
+        <field>SLA_numero__c</field>
+        <formula>4</formula>
+        <name>Sin semaforo</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <rules>
+        <fullName>Actualiza campo correo</fullName>
+        <actions>
+            <name>Actualiza_campo_correo</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <description>Automatizacion para actualizar campo correo electronico del propietario del Em en caso</description>
+        <formula>NOT(ISBLANK( Evento_Medico__c))</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Actualiza campo correo asociado</fullName>
+        <actions>
+            <name>Correo_asociado</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <description>Actualización de campo correo electrónico del asociado en el caso</description>
+        <formula>NOT(ISBLANK(Account.PersonContact.Email))</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Aportes</fullName>
+        <actions>
+            <name>Prioridad_alta</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>false</active>
+        <criteriaItems>
+            <field>Case.Sub_tipo__c</field>
+            <operation>equals</operation>
+            <value>Aportes</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Case.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Reclamos</value>
+        </criteriaItems>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Cambiar propietario legal</fullName>
+        <actions>
+            <name>Activar_SLA_Legal</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <description>Si en el tipo de registro Legales, cambia el propietario activar check que activara proceso de asignacion</description>
+        <formula>AND( ISCHANGED(  OwnerId   ),  No_reasigna_sla__c = FALSE, RecordType.Name = &quot;Expedientes legales&quot; )</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Celula del evento medico</fullName>
+        <actions>
+            <name>Actualizar_tipo_de_ems_en_el_caso</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <description>Automatizar tipo de evento al caso, para derivar a la celular del EMS</description>
+        <formula>True</formula>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+    <rules>
+        <fullName>Cerrar caso</fullName>
+        <actions>
+            <name>Actualiza_estado_caso</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <description>Cierra casos de tipo solicitudes de alta familiar</description>
+        <formula>AND( 				 RecordType.DeveloperName = &quot;Solicitud_de_alta_familiar&quot;, 				ISCHANGED(Informacion_completa__c),  				Informacion_completa__c)</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Deriva a tesoreria</fullName>
+        <actions>
+            <name>Notificacion_derivacion_caso_tesorer_a</name>
+            <type>Alert</type>
+        </actions>
+        <actions>
+            <name>Deriva_a_tesoreria</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <formula>AND(         ISCHANGED(Nro_de_solicitud_SS__c ),         NOT(ISBLANK(Nro_de_solicitud_SS__c)),          RecordType.DeveloperName = &quot;Interfaz_financiera&quot;,        ISPICKVAL(Type,&quot;t&quot;)  )</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Marca check cambio manual</fullName>
+        <actions>
+            <name>Cambio_manual_a_true_caso</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <formula>AND (     NOT( Cambio_Manual__c ) )</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>web to case</fullName>
+        <actions>
+            <name>Prioridad_web_mail</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>false</active>
+        <criteriaItems>
+            <field>Case.Origin</field>
+            <operation>equals</operation>
+            <value>Web</value>
+        </criteriaItems>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+</Workflow>

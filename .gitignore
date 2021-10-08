@@ -5,6 +5,7 @@
 .project
 .settings/
 .metadata
+delta*/
 build.properties
 config
 
