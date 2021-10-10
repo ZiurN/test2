@@ -1,4 +1,4 @@
-@isTest 
+@isTest
 private class PrestacionTriggerTest {
 	private static Case aCase;
 	private static Prestacion__c prest;
@@ -18,7 +18,6 @@ private class PrestacionTriggerTest {
 				.withStatusCode(200)
 				.withBody(WSCaseAPEmitirOrdenMock.getFound())
 				.addForAddress(WSCaseAPEmitirOrden.SERVICE_CONFIG.URL__c + '/v1/salud/autorizaciones/orden-ap/generar/1014009998');
-
 		getResponseEmitirOrdenFound = new XHttpCalloutMock();
 		getResponseEmitirOrdenFound.buildResponse()
 				.withStatus('OK')

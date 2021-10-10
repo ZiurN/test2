@@ -1,4 +1,9 @@
-public class PrestacionTriggerHelper {
+/**-----------------------------------------------------------------------------------------------------------------------
+@author			Matias Moll
+@description	Clase auxiliar para el trigger de Prestaciones
+------------------------------------------------------------------------------------------------------------------------*/
+@SuppressWarnings('PMD.ApexCRUDViolation')
+public without sharing class PrestacionTriggerHelper {
 	public static Boolean firstRun = true;
 	public static Id emInternacionId = XappiaHelper.getRecordType('Evento_medico__c', 'Evento_medico_de_internacion').Id;
 	public static void authorizeCases(Set<String> idCases) {
@@ -17,8 +22,6 @@ public class PrestacionTriggerHelper {
 				}
 			}
 			if(authorize) {
-				//if(aCase.Status != 'Autorizada') {
-				System.debug('****aCase.Status: ' + aCase.Status);
 				if(aCase.Status != 'CA-----E' && aCase.Status != 'CA-----N') {
 					if(emInternacionRT == aCase.Evento_Medico__r.RecordTypeId) {
 						aCase.Cambio_Manual__c = false;
@@ -82,47 +85,47 @@ public class PrestacionTriggerHelper {
 			}
 		}
 	}
-    @future (callout=true)
-    public static void emitirOrdenInCases(Id[] caseIds) {
-        Case[] casos = [SELECT Status, RecordTypeId, Nivel_de_derivacion__c, Delegacion__r.Codigo_de_delegacion__c,
+	@future (callout=true)
+	public static void emitirOrdenInCases(Id[] caseIds) {
+		Case[] casos = [SELECT Status, RecordTypeId, Nivel_de_derivacion__c, Delegacion__r.Codigo_de_delegacion__c,
 							Evento_Medico__c, Ap_autorizada__c, Nro_AP__c, Prestador__r.Correo_electronico__c, Type,
 							CaseNumber, Evento_Medico__r.Tipo__c, Correo_asociado__c,Sub_tipo__c,RecordType.Name, Codigo_Diag__c,
 							Orden_de_Compra__c,Evento_Medico__r.RecordTypeId
 						FROM Case
 						WHERE Id IN: caseIds AND Status != 'CA-----E'];
-        User usuario = [SELECT CommunityNickname, Profile.Name, UserRole.DeveloperName, Codigo_delegacion__c
-            FROM User
-            WHERE Id =: UserInfo.getUserId()];
-        String rtSeguimiento = XappiaHelper.getRecordType('Case', 'Seguimiento').Id;
-        String rtInternacion = XappiaHelper.getRecordType('Case', 'Internacion').Id;
-        Case[] casesToEmitir = new List<Case>();
-        List<ContentVersion> versionsAll = new List<ContentVersion>();
-        Map<Id, ContentVersion[]> versionsByEntityId = new Map<Id, ContentVersion[]>();
-        Map<Id,Id> entityIdByContentVersionId = new Map<Id,Id>();
-        List<ContentDocumentLink> links = new List<ContentDocumentLink>();
-        for(Case caso : casos) {
-            if(caso.RecordTypeId == rtSeguimiento) {
-                casesToEmitir.add(emitirOrdenSinEnviar(caso));
-            } else {
-                String body = JSON.serialize(new Map<String, Object> {'username' => usuario.CommunityNickname.toUpperCase()});
-                WSCaseAPEmitirOrden.Response resp = WSCaseAPEmitirOrden.emitirOrden(caso.Nro_AP__c, body);
-                List<ContentVersion> versions = new List<ContentVersion>();
-                if (!resp.hasError) {
-                    Id registroId = caso.RecordTypeId == rtInternacion ? caso.Evento_Medico__c : caso.Id;
+		User usuario = [SELECT CommunityNickname, Profile.Name, UserRole.DeveloperName, Codigo_delegacion__c
+			FROM User
+			WHERE Id =: UserInfo.getUserId()];
+		String rtSeguimiento = XappiaHelper.getRecordType('Case', 'Seguimiento').Id;
+		String rtInternacion = XappiaHelper.getRecordType('Case', 'Internacion').Id;
+		Case[] casesToEmitir = new List<Case>();
+		List<ContentVersion> versionsAll = new List<ContentVersion>();
+		Map<Id, ContentVersion[]> versionsByEntityId = new Map<Id, ContentVersion[]>();
+		Map<Id,Id> entityIdByContentVersionId = new Map<Id,Id>();
+		List<ContentDocumentLink> links = new List<ContentDocumentLink>();
+		for(Case caso : casos) {
+			if(caso.RecordTypeId == rtSeguimiento) {
+				casesToEmitir.add(emitirOrdenSinEnviar(caso));
+			} else {
+				String body = JSON.serialize(new Map<String, Object> {'username' => usuario.CommunityNickname.toUpperCase()});
+				WSCaseAPEmitirOrden.Response resp = WSCaseAPEmitirOrden.emitirOrden(caso.Nro_AP__c, body);
+				List<ContentVersion> versions = new List<ContentVersion>();
+				if (!resp.hasError) {
+					Id registroId = caso.RecordTypeId == rtInternacion ? caso.Evento_Medico__c : caso.Id;
 					if(shouldGoNivelOne(caso) && resp.result.data.ap.nivel == 'N1' ){
 						caso.Nivel_de_derivacion__c = 'Nivel 1';
 					}
-                    casesToEmitir.add(emitirOrdenSinEnviar(caso));
-                    for(WSCaseAPEmitirOrdenResp.Ordenes orden : resp.result.data.ap.ordenes){
+					casesToEmitir.add(emitirOrdenSinEnviar(caso));
+					for(WSCaseAPEmitirOrdenResp.Ordenes orden : resp.result.data.ap.ordenes){
 						ContentVersion version = CaseEmitirOrdenBtnCtrl.buildPDF(orden);
 						version.Titulo_original__c = registroId;
-                        versions.add(version);
-                    }
-                    versionsAll.addAll(versions);
-                    versionsByEntityId.put(registroId, versions);
-                }
-            }
-        }
+						versions.add(version);
+					}
+					versionsAll.addAll(versions);
+					versionsByEntityId.put(registroId, versions);
+				}
+			}
+		}
 		/**-------------------------------------------------------------------------------------
 			sendToAWS(links, versionsByEntityId);
 		--------------------------------------------------------------------------------------*/
@@ -130,54 +133,51 @@ public class PrestacionTriggerHelper {
 			cv.Titulo_original__c = '';
 		}
 		insert versionsAll;
-        for(Id entity : versionsByEntityId.keySet()) {
-            for(ContentVersion cv : versionsByEntityId.get(entity)) {
-                entityIdByContentVersionId.put(cv.Id, entity);
-            }
-        }
-        Map<Id, ContentVersion> versionsUpdatedMap = new Map<Id, ContentVersion>([SELECT ContentDocumentId, VersionData, FileExtension
+		for(Id entity : versionsByEntityId.keySet()) {
+			for(ContentVersion cv : versionsByEntityId.get(entity)) {
+				entityIdByContentVersionId.put(cv.Id, entity);
+			}
+		}
+		Map<Id, ContentVersion> versionsUpdatedMap = new Map<Id, ContentVersion>([SELECT ContentDocumentId, VersionData, FileExtension
 																					FROM ContentVersion
 																					WHERE Id IN :versionsAll]);
-        for(ContentVersion ver : versionsUpdatedMap.values()) {
-            Id entityId = entityIdByContentVersionId.get(ver.Id);
-            links.add(new ContentDocumentLink(
-                LinkedEntityId = entityId,
-                ShareType = 'V',
-                ContentDocumentId = ver.ContentDocumentId
-            ));
-        }
+		for(ContentVersion ver : versionsUpdatedMap.values()) {
+			Id entityId = entityIdByContentVersionId.get(ver.Id);
+			links.add(new ContentDocumentLink(
+				LinkedEntityId = entityId,
+				ShareType = 'V',
+				ContentDocumentId = ver.ContentDocumentId
+			));
+		}
 		for(Case caso : casos) {
 			Id registroId = caso.RecordTypeId == rtInternacion ? caso.Evento_Medico__c : caso.Id;
-            ContentVersion[] cv = versionsByEntityId.get(registroId);
-            ContentVersion cvWithVersionData = new ContentVersion();
-            if(cv != null && !cv.isEmpty()) {
-                cvWithVersionData = versionsUpdatedMap.get(cv[0].Id);
-            }
+			ContentVersion[] cv = versionsByEntityId.get(registroId);
+			ContentVersion cvWithVersionData = new ContentVersion();
+			if(cv != null && !cv.isEmpty()) {
+				cvWithVersionData = versionsUpdatedMap.get(cv[0].Id);
+			}
 			if (CaseEmitirOrdenBtnCtrl.isToSendToPrestador(caso) && !versionsUpdatedMap.isEmpty() && caso.Evento_Medico__r.RecordTypeId != emInternacionId) {
 				if(shouldGoNivelOne(caso)){
 					caso.Nivel_de_derivacion__c = 'Nivel 1';
 				}
-				EmailUtils.MailResponse emailResp = EmailUtils.sendMailWithAttachment(
-					new List<String>{caso.Prestador__r.Correo_electronico__c},
-					cvWithVersionData.VersionData,
-					'Orden_' + caso.CaseNumber + '.' +  cvWithVersionData.FileExtension,
-					caso.Id,
-					'Orden_emitida_con_adjuntos',
-					null
-				);
+				EmailUtils.MailResponse emailResp = EmailUtils.sendMailWithAttachment(new List<String>{caso.Prestador__r.Correo_electronico__c},
+																						cvWithVersionData.VersionData,
+																						'Orden_' + caso.CaseNumber + '.' + cvWithVersionData.FileExtension,
+																						caso.Id,
+																						'Orden_emitida_con_adjuntos',
+																						null);
 			}
 			if (CaseEmitirOrdenBtnCtrl.isToSendToAasociado(caso) && !versionsUpdatedMap.isEmpty() && caso.Evento_Medico__r.RecordTypeId != emInternacionId) {
 				if(shouldGoNivelOne(caso)){
 					caso.Nivel_de_derivacion__c = 'Nivel 1';
 				}
-				EmailUtils.MailResponse emailRespAsociado = EmailUtils.sendMailWithAttachment(
-					new List<String>{caso.Correo_asociado__c},
-					cvWithVersionData.VersionData,
-					'Orden_' + caso.CaseNumber + '.' +  cvWithVersionData.FileExtension,
-					caso.Id,
-					'Notificacion_Ap_Emitida',
-					null
-				);
+				EmailUtils.MailResponse emailRespAsociado = EmailUtils.sendMailWithAttachment(new List<String>{caso.Correo_asociado__c},
+																								cvWithVersionData.VersionData,
+																								'Orden_' + caso.CaseNumber + '.' + cvWithVersionData.FileExtension,
+																								caso.Id,
+																								'Notificacion_Ap_Emitida',
+																								null,
+																								true);
 			}
 		}
 		insert links;
