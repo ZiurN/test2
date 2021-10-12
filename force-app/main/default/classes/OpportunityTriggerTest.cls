@@ -92,12 +92,12 @@ private class OpportunityTriggerTest {
 		//Test.setMock(HttpCalloutMock.class, getResponseFound);
 
 		//Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		//acc.Phone = '44444444';
+		//acc.Phone = '2643972015';
 		//acc.Correo_electronico__c = 'correo@test.com';
 		//acc.Prefijo__c = '011';
 		//acc.Type = 'Titular';
 		//insert acc;
-        
+
         //Account accObraSocial = new Account(RecordTypeId = XappiaHelper.getRecordType('Account', 'Obra_social').Id);
 		//accObraSocial.Name = 'Test ObraSocial';
 		//insert accObraSocial;
@@ -113,7 +113,7 @@ private class OpportunityTriggerTest {
 		//testOpp.CloseDate = Date.today();
 		//insert testOpp;
 
-		//Integrante__c int1 = new Integrante__c(			
+		//Integrante__c int1 = new Integrante__c(
             //Apellido__c = 'Apellido integrante',
 			//Nombre__c = 'Nombre integrante',
 			//Oportunidad__c = testOpp.Id,
@@ -167,7 +167,7 @@ private class OpportunityTriggerTest {
 
 		//System.assertEquals('599997/01',updatedInteg.Nro_de_asociado__c);
 		//System.assertEquals('599998/01',updatedInteg2.Nro_de_asociado__c);
-		
+
 	//}
 
 	@isTest
@@ -194,7 +194,7 @@ private class OpportunityTriggerTest {
 		oportunidadIndividualCorporativa.Sexo__c = 'F';
 		oportunidadIndividualCorporativa.Tipo_de_Solicitud__c = 'ALTA';
 		insert oportunidadIndividualCorporativa;
-		
+
 
 		Test.startTest();
 		oportunidadIndividualCorporativa.Nro_de_asociado__c = '123456';
@@ -204,7 +204,7 @@ private class OpportunityTriggerTest {
 
 		Opportunity oportunidad = [
 			SELECT Id, Name, AccountId,Numero_de_documento__c
-			FROM Opportunity 
+			FROM Opportunity
 			WHERE Name = 'Opp test'
 		];
 
@@ -215,7 +215,7 @@ private class OpportunityTriggerTest {
 		];
 
 		Date dateForAssert = Date.newInstance(1980, 2, 17);
-		
+
 		System.assertEquals('Nombre prueba', accountToAssert.FirstName);
 		System.assertEquals('Apellido prueba', accountToAssert.LastName);
 		System.assertEquals(dateForAssert, accountToAssert.PersonBirthdate);
@@ -224,15 +224,14 @@ private class OpportunityTriggerTest {
 		System.assertEquals('20380792258', accountToAssert.CUIT__c);
 		System.assertEquals('D', accountToAssert.Estado_civil__c);
 		System.assertEquals('F', accountToAssert.Sexo__c);
-		
-		
+
 	}
-	 
+
 	@IsTest
 	static void GrupoFamiliarCreationWhenOpportunityWithRecordTypeIndividuosStageNameChangesToClosedWin(){
 		Test.setMock(HttpCalloutMock.class, getResponseFound);
 		Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Type = 'TIT';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
@@ -300,7 +299,7 @@ private class OpportunityTriggerTest {
 
 		System.assertEquals('Apellido integrante', accToAssert.LastName);
 		System.assertEquals('Nombre integrante', accToAssert.FirstName);
-		System.assertEquals('44444444', accToAssert.Phone);
+		System.assertEquals('2643972015', accToAssert.Phone);
 		System.assertEquals('ej@test.com', accToAssert.Correo_electronico__c);
 		System.assertEquals('20380792258', accToAssert.CUIT__c);
 		System.assertEquals('HI', accToAssert.Parentesco__c);
@@ -317,7 +316,7 @@ private class OpportunityTriggerTest {
 	@IsTest
 	static void whenStageNamePassToEnTramitacion_ShowErrorFields() {
 		Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		insert acc;
@@ -342,7 +341,7 @@ private class OpportunityTriggerTest {
 	@IsTest
 	static void whenStageNamePassToEnTramitacion_ShowErrorsInSomeFields() {
 		Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		insert acc;
@@ -369,7 +368,7 @@ private class OpportunityTriggerTest {
 	@IsTest
 	static void whenStageNamePassToEnTramitacion_ShowErrorInFieldNroCBUParaCobroDeCuota() {
 		Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		insert acc;
@@ -398,7 +397,7 @@ private class OpportunityTriggerTest {
 	@IsTest
 	static void whenEstadoSolicitudChangedToTransformadaAndNroAsociadoIsComplete_ActivateTheAcc() {
 		Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		insert acc;
@@ -408,7 +407,7 @@ private class OpportunityTriggerTest {
 
 		Account agencia = Build.anAccountDelegacion().withCodigoDeDelegacion('50123').build();
 		insert agencia;
-		
+
 		Opportunity testOpp = Build.anOpportunityIndividuos().build();
 		testOpp.AccountId = acc.Id;
 		testOpp.Name = 'opp test';
@@ -420,6 +419,7 @@ private class OpportunityTriggerTest {
 		//testOpp.Cambio_Manual__c = false;
 		testOpp.Nacionalidad__c = '054';
 		testOpp.Sexo__c = 'M';
+		testOpp.Telefono__c='4226505185';
 		testOpp.Obra_social_del_titular__c = os.Id;
 		testOpp.Fecha_de_Nacimiento__c = Date.today();
 		testOpp.CUIT__c = '20342223339';
@@ -462,7 +462,7 @@ private class OpportunityTriggerTest {
 		Account accFromQuery = [
 			SELECT Codigo_de_Afiliado__c, Sexo__c, Obra_social__c, PersonBirthdate, CUIT__c, Delegacion__c,
 				Actividad_codigo__c, Actividad_nombre__c, Estado_civil__c, Estado__c, Segmento_de_grupo_familiar__c
-			FROM Account 
+			FROM Account
 			WHERE Id =: acc.Id
 		];
 		System.assertEquals('123456', accFromQuery.Codigo_de_Afiliado__c);
@@ -488,9 +488,9 @@ private class OpportunityTriggerTest {
 
 		Account agencia = Build.anAccountDelegacion().withCodigoDeDelegacion('50123').build();
 		insert agencia;
-		
+
 		Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		//acc.Codigo_pais__c = '054';
@@ -510,7 +510,7 @@ private class OpportunityTriggerTest {
 
 
 		insert acc;
-		
+
 		Opportunity opp = Build.anOpportunityIndividuos().build();
 		opp.RecordTypeId = XappiaHelper.getRecordType('Opportunity', 'Individuos').Id;
 		opp.StageName = 'Contactado';
@@ -526,7 +526,7 @@ private class OpportunityTriggerTest {
 			SELECT Id, Tipo_de_Documento__c, Obra_social_del_titular__c, Nacionalidad__c, Sexo__c, Fecha_de_Nacimiento__c,
 				CUIT__c, Agencia__c, ActividadProfesion_del_titular__c, Estado_Civil__c, Telefono__c, Correo_Electronico__c,
 				Numero_de_documento__c
-			FROM Opportunity 
+			FROM Opportunity
 			WHERE Id =: opp.Id
 		];
 
@@ -537,7 +537,7 @@ private class OpportunityTriggerTest {
 		System.assertEquals(os.Id, oppFromQuery.Obra_social_del_titular__c);
 		//System.assertEquals('054', oppFromQuery.Nacionalidad__c);
 		System.assertEquals('M', oppFromQuery.Sexo__c);
-		System.assertEquals('44444444', oppFromQuery.Telefono__c);
+		System.assertEquals('2643972015', oppFromQuery.Telefono__c);
 		System.assertEquals(acc.PersonBirthdate, oppFromQuery.Fecha_de_Nacimiento__c);
 		System.assertEquals('20342223339', oppFromQuery.CUIT__c);
 		System.assertEquals(agencia.Id, oppFromQuery.Agencia__c);
@@ -561,9 +561,9 @@ private class OpportunityTriggerTest {
 
 		Account agencia = Build.anAccountDelegacion().withCodigoDeDelegacion('50123').build();
 		insert agencia;
-		
+
 		Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		//acc.Codigo_pais__c = '054';
@@ -583,7 +583,7 @@ private class OpportunityTriggerTest {
 
 
 		insert acc;
-		
+
 		Opportunity opp = Build.anOpportunityIndividuos().build();
 		opp.RecordTypeId = XappiaHelper.getRecordType('Opportunity', 'Individuos').Id;
 		opp.StageName = 'Contactado';
@@ -598,7 +598,6 @@ private class OpportunityTriggerTest {
 		}
 
 		System.assertEquals(1, [SELECT COUNT() FROM Opportunity]);
-
 
 	}
 
@@ -617,9 +616,9 @@ private class OpportunityTriggerTest {
 
 		Account agencia = Build.anAccountDelegacion().withCodigoDeDelegacion('50123').build();
 		insert agencia;
-		
+
 		Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		//acc.Codigo_pais__c = '054';
@@ -639,7 +638,7 @@ private class OpportunityTriggerTest {
 
 
 		insert acc;
-		
+
 		Opportunity opp = Build.anOpportunityIndividuos().build();
 		opp.RecordTypeId = XappiaHelper.getRecordType('Opportunity', 'Individuos').Id;
 		opp.StageName = 'Contactado';
@@ -666,9 +665,9 @@ private class OpportunityTriggerTest {
 
 		Account agencia = Build.anAccountDelegacion().withCodigoDeDelegacion('50123').build();
 		insert agencia;
-		
+
 		Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		//acc.Codigo_pais__c = '054';
@@ -688,7 +687,7 @@ private class OpportunityTriggerTest {
 
 
 		insert acc;
-		
+
 		Opportunity opp = Build.anOpportunityIndividuos().build();
 		opp.RecordTypeId = XappiaHelper.getRecordType('Opportunity', 'Individuos').Id;
 		opp.StageName = 'Contactado';
@@ -720,9 +719,9 @@ private class OpportunityTriggerTest {
 
 		Account agencia = Build.anAccountDelegacion().withCodigoDeDelegacion('50123').build();
 		insert agencia;
-		
+
 		Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		//acc.Codigo_pais__c = '054';
@@ -742,7 +741,7 @@ private class OpportunityTriggerTest {
 
 
 		insert acc;
-		
+
 		Opportunity opp = Build.anOpportunityIndividuos().build();
 		opp.RecordTypeId = XappiaHelper.getRecordType('Opportunity', 'Individuos').Id;
 		opp.StageName = 'Contactado';
@@ -770,7 +769,7 @@ private class OpportunityTriggerTest {
 	@IsTest
 	private static void testEstadoDDJJValidations(){
 				Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		insert acc;
@@ -792,7 +791,7 @@ private class OpportunityTriggerTest {
 			opp.Estado_de_solicitud__c = 'Completa';
 			opp.Subestado_de_DDJJ__c = 'AUDITORIA';
 			update opp;
-		
+
 			Test.startTest();
 			opp.Nombre_INDCORP__c = 'Cambio';
 			res = Database.update(opp,false);
@@ -801,11 +800,11 @@ private class OpportunityTriggerTest {
 
 		System.assertEquals(true, res.isSuccess());
 	}
-    
+
     @IsTest
 	private static void testEstadoDDJJValidationsWithFrontProfile(){
 				Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		insert acc;
@@ -827,7 +826,7 @@ private class OpportunityTriggerTest {
 			opp.Estado_de_solicitud__c = 'Completa';
 			opp.Subestado_de_DDJJ__c = 'AUDITORIA';
 			update opp;
-		
+
 			Test.startTest();
 			opp.Nombre_INDCORP__c = 'Cambio';
 			res = Database.update(opp,false);
@@ -840,7 +839,7 @@ private class OpportunityTriggerTest {
 	@IsTest
 	private static void testEstadoDDJJValidationsComercial(){
 				Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		insert acc;
@@ -862,7 +861,7 @@ private class OpportunityTriggerTest {
 			opp.Estado_de_solicitud__c = 'Completa';
 			opp.Subestado_de_DDJJ__c = 'PEDIDO ESTUDIO';
 			update opp;
-		
+
 			Test.startTest();
 			opp.Subestado_de_DDJJ__c = 'AUDITORIA';
 			res = Database.update(opp,false);
@@ -870,13 +869,13 @@ private class OpportunityTriggerTest {
 		}
         System.assertEquals(true, res.isSuccess());
 
-        
+
     }
-        
+
    @IsTest
 	private static void testEstadoDDJJValidationsComercial2(){
         Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		insert acc;
@@ -898,7 +897,7 @@ private class OpportunityTriggerTest {
 			opp.Estado_de_solicitud__c = 'Incompleta';
 			opp.Subestado_de_DDJJ__c = 'NUEVA';
 			update opp;
-		
+
 			Test.startTest();
 			opp.Subestado_de_DDJJ__c = 'AUDITORIA';
 			res = Database.update(opp,false);
@@ -911,7 +910,7 @@ private class OpportunityTriggerTest {
 	   @IsTest
 	private static void testEstadoDDJJValidationsComercial3(){
         Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		insert acc;
@@ -933,7 +932,7 @@ private class OpportunityTriggerTest {
 			opp.Estado_de_solicitud__c = 'Incompleta';
 			opp.Subestado_de_DDJJ__c = 'NUEVA';
 			update opp;
-		
+
 			Test.startTest();
 			opp.Nombre_INDCORP__c = 'AUDITORIA';
 			res = Database.update(opp,false);
@@ -942,11 +941,11 @@ private class OpportunityTriggerTest {
 
 		System.assertEquals(true, res.isSuccess());
 	}
-        
+
     @IsTest
 	private static void testEstadoDDJJValidationsComercialError(){
         Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		insert acc;
@@ -968,7 +967,7 @@ private class OpportunityTriggerTest {
 			opp.Estado_de_solicitud__c = 'Incompleta';
 			opp.Subestado_de_DDJJ__c = 'FIRMA O.S.';
 			update opp;
-		
+
 			Test.startTest();
 			opp.Subestado_de_DDJJ__c = 'TRASPASO';
 			res = Database.update(opp,false);
@@ -977,11 +976,11 @@ private class OpportunityTriggerTest {
 
 		System.assertEquals(false, res.isSuccess());
 	}
-    
+
     @IsTest
 	private static void testEstadoDDJJValidationsORG(){
 				Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		insert acc;
@@ -1003,7 +1002,7 @@ private class OpportunityTriggerTest {
 			opp.Estado_de_solicitud__c = 'Completa';
 			opp.Subestado_de_DDJJ__c = 'PEDIDO ESTUDIO';
 			update opp;
-		
+
 			Test.startTest();
 			opp.Subestado_de_DDJJ__c = 'AUDITORIA';
 			res = Database.update(opp,false);
@@ -1012,11 +1011,11 @@ private class OpportunityTriggerTest {
 
 		System.assertEquals(true, res.isSuccess());
 	}
-    
+
     @IsTest
 	private static void testEstadoDDJJValidationsORG2(){
         Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		insert acc;
@@ -1038,7 +1037,7 @@ private class OpportunityTriggerTest {
 			opp.Estado_de_solicitud__c = 'Completa';
 			opp.Subestado_de_DDJJ__c = 'FIRMA O.S.';
 			update opp;
-		
+
 			Test.startTest();
 			opp.Subestado_de_DDJJ__c = 'TRASPASO';
 			res = Database.update(opp,false);
@@ -1047,11 +1046,11 @@ private class OpportunityTriggerTest {
 
 		System.assertEquals(true, res.isSuccess());
 	}
-    
+
     @IsTest
 	private static void testEstadoDDJJValidationsORG3(){
         Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		insert acc;
@@ -1073,7 +1072,7 @@ private class OpportunityTriggerTest {
 			opp.Estado_de_solicitud__c = 'Completa';
 			opp.Subestado_de_DDJJ__c = 'NUEVA';
 			update opp;
-		
+
 			Test.startTest();
             opp.Nombre_INDCORP__c = 'Algo';
 			opp.Subestado_de_DDJJ__c = 'AUDITORIA';
@@ -1083,11 +1082,11 @@ private class OpportunityTriggerTest {
 
 		System.assertEquals(true, res.isSuccess());
 	}
-    
+
     @IsTest
 	private static void testEstadoDDJJValidationsORGError(){
         Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		insert acc;
@@ -1109,7 +1108,7 @@ private class OpportunityTriggerTest {
 			opp.Estado_de_solicitud__c = 'Completa';
 			opp.Subestado_de_DDJJ__c = 'FIRMA O.S.';
 			update opp;
-		
+
 			Test.startTest();
 			opp.Subestado_de_DDJJ__c = 'AUDITORIA';
 			res = Database.update(opp,false);
@@ -1118,11 +1117,11 @@ private class OpportunityTriggerTest {
 
 		System.assertEquals(false, res.isSuccess());
 	}
-    
+
      @IsTest
 	private static void testEstadoDDJJValidationsORGErrorChangeMoreFields(){
         Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		insert acc;
@@ -1144,7 +1143,7 @@ private class OpportunityTriggerTest {
 			opp.Estado_de_solicitud__c = 'Completa';
 			opp.Subestado_de_DDJJ__c = 'FIRMA O.S.';
 			update opp;
-		
+
 			Test.startTest();
             opp.Nombre_INDCORP__c = 'ALGO';
 			opp.Subestado_de_DDJJ__c = 'TRASPASO';
@@ -1154,11 +1153,11 @@ private class OpportunityTriggerTest {
 
 		System.assertEquals(true, res.isSuccess());
 	}
-    
+
      @IsTest
 	private static void testEstadoDDJJValidationsORGError2(){
         Account acc = Build.anAccountCuentapersonal().withLastName('Apellido test').build();
-		acc.Phone = '44444444';
+		acc.Phone = '2643972015';
 		acc.Correo_electronico__c = 'correo@test.com';
 		acc.Prefijo__c = '011';
 		insert acc;
@@ -1180,7 +1179,7 @@ private class OpportunityTriggerTest {
 			opp.Estado_de_solicitud__c = 'Completa';
 			opp.Subestado_de_DDJJ__c = 'AUDITORIA';
 			update opp;
-		
+
 			Test.startTest();
 			opp.Nombre_INDCORP__c = 'ALGO';
 			res = Database.update(opp,false);
@@ -1237,7 +1236,7 @@ private class OpportunityTriggerTest {
 
 	@IsTest
     static void ifTheDelegacionDoesNotExistInUserDoNotGiveError() {
-		
+
         List<Profile> profileList = [SELECT Id, Name FROM Profile WHERE Name = 'Front'];
         System.debug(profileList);
 
@@ -1265,16 +1264,16 @@ private class OpportunityTriggerTest {
     @IsTest
     static void ifTheDelegacionIsNullInUserDoNotGiveError() {
         List<Profile> profileList = [SELECT Id, Name FROM Profile WHERE Name = 'Front'];
-        
+
         List<Group> groupList = [SELECT Id,Name FROM Group WHERE type= 'queue'];
-		
+
         User usuario = new User(Alias = 'standt', Email='standarduser@testorg.com',
                 EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US',
                 LocaleSidKey='en_US', TimeZoneSidKey='America/Los_Angeles',profileId=profileList[0].Id, 
                 UserName='usertotestassignDelegacionFromUser@xappia.com'
         );
         insert usuario;
-        
+
         GroupMember groupMember = new GroupMember( groupId = groupList[0].Id);
 
         Opportunity opp = Build.anOpportunityCorporativo().build();
@@ -1289,7 +1288,7 @@ private class OpportunityTriggerTest {
         Opportunity oppToAssert = [SELECT Delegacion__r.Codigo_de_delegacion__c FROM Opportunity WHERE Id =: opp.Id];
         System.assertEquals(null, oppToAssert.Delegacion__r.Codigo_de_delegacion__c);
 	}
-	
+
 	@isTest
 	private static void whenAOpportunityWithAceptadoPorElAsociadoTryToSaveWithoutFileShouldReturnError() {
 		Account cuenta = build.anAccount()
@@ -1298,7 +1297,7 @@ private class OpportunityTriggerTest {
 									.withLastName('Testing182701')
                                     .build();
         cuenta.Estado__c = 'A';
-        
+
         insert cuenta;
 		Opportunity opp = Build.anOpportunityIndividuos()
 							.withName('TEST')
@@ -1308,14 +1307,14 @@ private class OpportunityTriggerTest {
 						.build();
 		opp.Tipo_de_Solicitud__c = 'REINGRESO';
 		insert opp;
-		
+
 		User actualUser = [SELECT Id, Profile.Name FROM User WHERE Profile.Name = 'Front' LIMIT 1];
 		Database.SaveResult res;
 		Test.startTest();
 		opp.Aceptado_por_el_asociado__c = true;
 		res = Database.update(opp, false);
 		Test.stopTest();
-		
+
 		System.assertEquals(false, res.isSuccess(), 'No esta validando que tenga el adjunto');
 	}
 
@@ -1327,14 +1326,14 @@ private class OpportunityTriggerTest {
 									.withLastName('Testing182701')
                                     .build();
 		cuenta.Estado__c = 'A';
-		
+
 		ContentVersion cv = new ContentVersion();
 		cv.Title =  'Archivo x';
 		cv.VersionData = Blob.valueOf('document');
 		cv.PathOnClient = '/document';
         insert cv;
 		cv = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id];
-		
+
         insert cuenta;
 		Opportunity opp = Build.anOpportunityIndividuos()
 							.withName('TEST')
@@ -1368,7 +1367,7 @@ private class OpportunityTriggerTest {
 									.withLastName('Testing182701')
                                     .build();
 		cuenta.Estado__c = 'A';
-		
+
 		ContentVersion cv = new ContentVersion();
 		cv.Title =  'Nota de Aceptacion';
 		cv.VersionData = Blob.valueOf('document');
@@ -1388,20 +1387,19 @@ private class OpportunityTriggerTest {
 
 		ContentDocumentLink contentlink = new ContentDocumentLink();
         contentlink.LinkedEntityId= opp.id;
-		contentlink.Visibility = 'AllUsers'; 
+		contentlink.Visibility = 'AllUsers';
         contentlink.ContentDocumentId = cv.ContentDocumentId;
 		insert contentlink;
 
-		
+
 		User actualUser = [SELECT Id, Profile.Name FROM User WHERE Profile.Name = 'Front' LIMIT 1];
 		Database.SaveResult res;
 		Test.startTest();
 		opp.Aceptado_por_el_asociado__c = true;
 		res = Database.update(opp, false);
 		Test.stopTest();
-		
-		
-		//System.assertEquals(true, res.isSuccess(), 'NoA se esta guardando el check');
+
+		System.assertEquals(true, res.isSuccess(), 'No se esta guardando el check');
 	}
 
 	@isTest
@@ -1414,7 +1412,7 @@ private class OpportunityTriggerTest {
 							.withAccount(acc.Id)
 							.build();
 		opp.Tipo_de_Solicitud__c = 'REINGRESO';
-		
+
 		insert opp;
 
 		Test.startTest();
@@ -1449,7 +1447,7 @@ private class OpportunityTriggerTest {
 		Test.stopTest();
 
 		opp = [SELECT Id, Organizador_lookup__c, OwnerId FROM Opportunity WHERE Id = :opp.Id];
-		
+
 		System.assertEquals(loc.Organizador_lookup__c, opp.Organizador_lookup__c);
 		//System.assertEquals(loc.Organizador_lookup__c, opp.OwnerId);
 	}
@@ -1481,5 +1479,4 @@ private class OpportunityTriggerTest {
 		];
 		System.assertEquals(UserInfo.getUserId(),oppUpdated.Organizador_lookup__c);
 	}
-	
 }

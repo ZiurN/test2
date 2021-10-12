@@ -44,7 +44,7 @@ private class WSDatosAfiliadosTest {
                             .withStatusCode(200).withBody(successResponseBody)
                             .addForAddress(SERVICE_CONFIG.URL__c + '/v1/salud/afiliado/datos-sf');
 
-        Test.setMock(HttpCalloutMock.class, getResponseFound); 
+        Test.setMock(HttpCalloutMock.class, getResponseFound);
         Test.startTest();
         Database.SaveResult res = Database.insert(domDuplicated, false);
         Test.stopTest();
@@ -71,7 +71,7 @@ private class WSDatosAfiliadosTest {
 
         dom_COM.Tipo_de_domicilio__c = 'PART';
 
-        Test.setMock(HttpCalloutMock.class, getResponseFound); 
+        Test.setMock(HttpCalloutMock.class, getResponseFound);
         Test.startTest();
         Database.SaveResult res = Database.update(dom_COM, false);
         Test.stopTest();
@@ -96,7 +96,7 @@ private class WSDatosAfiliadosTest {
         Domicilio__c dom_COM = new Domicilio__c(Tipo_de_domicilio__c = 'COM', Cuenta__c = cuenta.Id);
         insert dom_COM;
 
-        Test.setMock(HttpCalloutMock.class, getResponseFound); 
+        Test.setMock(HttpCalloutMock.class, getResponseFound);
         Test.startTest();
         Database.DeleteResult res = Database.delete(dom_COM, false);
         Test.stopTest();
@@ -121,10 +121,10 @@ private class WSDatosAfiliadosTest {
         Telefono__c tel1 = new Telefono__c(Tipo__c = 'CEL', Cuenta__c = cuenta.Id, Telefono_principal__c = true);
         Telefono__c tel2 = new Telefono__c(Tipo__c = 'TEL', Cuenta__c = cuenta.Id, Telefono_principal__c = true);
         insert new List<Telefono__c> {tel1, tel2};
-        
+
         Telefono__c tel3 = new Telefono__c(Tipo__c = 'TEL', Cuenta__c = cuenta.Id, Telefono_principal__c = true);
-        
-        Test.setMock(HttpCalloutMock.class, getResponseFound); 
+
+        Test.setMock(HttpCalloutMock.class, getResponseFound);
         Test.startTest();
         Database.SaveResult res = Database.insert(tel3, false);
         Test.stopTest();
@@ -150,7 +150,7 @@ private class WSDatosAfiliadosTest {
         cuenta.Numero_de_documento__c = '013454789';
         cuenta.PersonEmail = 'test@test.com';
 
-        Test.setMock(HttpCalloutMock.class, getResponseFound); 
+        Test.setMock(HttpCalloutMock.class, getResponseFound);
         Test.startTest();
         Database.SaveResult res = Database.update(cuenta, false);
         Test.stopTest();
@@ -175,7 +175,7 @@ private class WSDatosAfiliadosTest {
                             .withStatusCode(200).withBody(successResponseBody)
                             .addForAddress(SERVICE_CONFIG.URL__c + '/v1/salud/afiliado/datos-sf');
 
-        Test.setMock(HttpCalloutMock.class, getResponseFound); 
+        Test.setMock(HttpCalloutMock.class, getResponseFound);
         Test.startTest();
         Database.SaveResult res = Database.insert(dom_COM, false);
         Test.stopTest();
@@ -203,8 +203,8 @@ private class WSDatosAfiliadosTest {
         getResponseFound.buildResponse().withStatus('OK')
                             .withStatusCode(200).withBody(successResponseBody)
                             .addForAddress(SERVICE_CONFIG.URL__c + '/v1/salud/afiliado/datos-sf');
-        
-        Test.setMock(HttpCalloutMock.class, getResponseFound); 
+
+        Test.setMock(HttpCalloutMock.class, getResponseFound);
         Test.startTest();
         List<Database.DeleteResult> res = Database.delete(new List<Domicilio__c> {dom_PART, dom_POST}, false);
         Test.stopTest();
@@ -230,12 +230,11 @@ private class WSDatosAfiliadosTest {
          Telefono__c tel1 = new Telefono__c(Tipo__c = 'CEL', Cuenta__c = cuenta.Id, Telefono_principal__c = true);
         Telefono__c tel2 = new Telefono__c(Tipo__c = 'TEL', Cuenta__c = cuenta.Id, Telefono_principal__c = false);
         insert new List<Telefono__c> {tel1, tel2};
-        
 
         tel2.Telefono__c = '1234567890';
         tel2.Telefono_principal__c = true;
 
-        Test.setMock(HttpCalloutMock.class, getResponseFound); 
+        Test.setMock(HttpCalloutMock.class, getResponseFound);
         Test.startTest();
         Database.SaveResult res = Database.update(tel2, false);
         Test.stopTest();
@@ -263,8 +262,8 @@ private class WSDatosAfiliadosTest {
         getResponseFound.buildResponse().withStatus('OK')
                             .withStatusCode(200).withBody(successResponseBody)
                             .addForAddress(SERVICE_CONFIG.URL__c + '/v1/salud/afiliado/datos-sf');
-        
-        Test.setMock(HttpCalloutMock.class, getResponseFound); 
+
+        Test.setMock(HttpCalloutMock.class, getResponseFound);
         Test.startTest();
         List<Database.DeleteResult> res = Database.delete(new List<Telefono__c> {tel1, tel2}, false);
         Test.stopTest();
