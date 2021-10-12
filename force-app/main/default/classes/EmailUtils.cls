@@ -209,7 +209,7 @@ public without sharing class EmailUtils {
 	private static MailResponse sendEmail () {
 		try {
 			Messaging.sendEmail(new Messaging.SingleEmailMessage[] {email});
-			return new MailResponse(false, System.Label.Email_NoAddressesNoFiles);
+			return new MailResponse(false, System.Label.Email_EnvioCorrecto);
 		} catch(Exception e) {
 			return new MailResponse(true,e.getMessage());
 		}
