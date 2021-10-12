@@ -15,8 +15,10 @@ private class CaseTriggerTest {
 	static User userBack;
 	static Account centro;
 	static CaseTeamRole caseRole;
-
+    
 	static {
+      
+        
 		String uniqueUserName = 'standardusercasetriggertest' + DateTime.now().getTime() + '@testorg.com';
 
 		Profile pMedico = [SELECT Id, Name FROM Profile WHERE Name = 'Auditor Medico'];
@@ -2615,6 +2617,48 @@ private class CaseTriggerTest {
 		System.assertEquals('PENDIENTE',casoUpdated.Status.toUpperCase());
 	}
 	
+	@isTest
+	public static void ifACaseIsTypeMedicamentoAndStatusIsNotGeneradaShowErrorWhenChangesUrgenteField(){
+		Case caso = new case();
+		caso.RecordTypeId = XappiaHelper.getRecordType('Case','Reintegro').Id;
+		caso.Type = 'Medicamento';
+		caso.Urgente__c = 'S';
+		insert caso;
+	
+		caso.Status = 'Autorizada';
+		update caso;
+		caso.Urgente__c = 'N';
+
+
+		Test.startTest();
+		Database.saveResult result = Database.update(caso,false);
+		Test.stopTest();
+		
+		System.assert(!result.isSuccess());
+		for(Database.Error err : result.getErrors()){
+			System.assertEquals(err.getMessage(),'La urgencia de un caso de tipo medicamento solo podra ser cambiada cuando el caso este en estado Generado');
+		}
+
+	}
+
+	@isTest
+	public static void ifACaseIsTypeMedicamentoAndStatusIsGeneradaDoesntShowErrorWhenChangesUrgenteField(){
+		Case caso = new case();
+		caso.RecordTypeId = XappiaHelper.getRecordType('Case','Reintegro').Id;
+		caso.Type = 'Medicamento';
+		caso.Urgente__c = 'S';
+		insert caso;
+		caso.Urgente__c = 'N';
+
+		Test.startTest();
+		Database.saveResult result = Database.update(caso,false);
+		Test.stopTest();
+		
+		System.assert(result.isSuccess());
+	}
+	
+
+
 
 	/*@isTest
 	public static void ifACaseIsUpdatedToStatusAnuladaShouldntValidateTheStateOfTheAssociate (){
