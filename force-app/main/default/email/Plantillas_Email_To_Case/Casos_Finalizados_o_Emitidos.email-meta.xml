@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Email para finalizacion de casos proceso de Email To Case Jira DES 3943- EN TESTING</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>Membrete_basico</letterhead>
+    <name>Front Casos Finalizados o Emitidos</name>
+    <style>formalLetter</style>
+    <subject>Finalización del Caso Nro. {!Case.CaseNumber}</subject>
+    <textOnly>Hola {!Case.Account},
+
+En respuesta a tu solicitud de {!Case.Tipo_De_Registro_Formula__c}, te informamos que:
+
+
+
+Por favor no respondas este mail. En caso de necesitar una consulta, envía un nuevo correo a {!Case.Correo_de_la_Delegacion__c} ya que este caso finalizó y no podremos visualizar tu respuesta en esta cadena de mails; deberás inciar uno nuevo.
+
+Muchas gracias,
+{!User.Name}</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

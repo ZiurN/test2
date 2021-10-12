@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Correo_de_la_Delegacion__c</fullName>
+    <description>Campo Fórmula para utilizar en Email Template - JIRA DES 3943 Email de la Delegación asociada al Caso</description>
+    <externalId>false</externalId>
+    <formula>Delegacion__r.Correo_electronico__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Correo de la Delegacion</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
