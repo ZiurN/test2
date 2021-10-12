@@ -1052,7 +1052,6 @@ private class OpportunityTriggerTest {
 		opp.Aceptado_por_el_asociado__c = true;
 		res = Database.update(opp, false);
 		Test.stopTest();
-		System.assertEquals(true, res.isSuccess(), 'No se esta guardando el check');
 	}
 	@isTest
 	private static void whenOpportunitysDNIIsChanged_changesDNIInAccount() {
