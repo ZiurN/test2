@@ -1,7 +1,8 @@
-trigger PrestacionTrigger on Prestacion__c (after insert, after update, before delete)  {
-	
+trigger PrestacionTrigger on Prestacion__c (
+	after insert, after update,
+	before delete
+	){
 	if(Trigger.isBefore) {
-		
 		if(Trigger.isDelete) {
 			Map<Id, Prestacion__c> prestsToDelete = new Map<Id, Prestacion__c>();
 			
@@ -15,19 +16,14 @@ trigger PrestacionTrigger on Prestacion__c (after insert, after update, before d
 				PrestacionTriggerHelper.deleteWhenCasesStatusIsNotCentroAutorizador(prestsToDelete);
 			}
 		}
-
-
 	}
 
 	if(Trigger.isAfter) {
-		
 		if(Trigger.isInsert) {
 			//Prestacion__c[] prestacionesToAuthorizeCase = new List<Prestacion__c>();
 			Set<String> caseIdsToAuthorize = new Set<String>();
 			Prestacion__c[] prestacionesToValidateDuplicateNomencladorOrMedicamento = new List<Prestacion__c>();
-
 			for(Prestacion__c prest : Trigger.new) {
-				
 				if(prest.Ap__c != null
 					&& (prest.Estado__c == 'C1----AS' || prest.Estado__c == 'C1EA--AA')
 				) {
@@ -37,7 +33,6 @@ trigger PrestacionTrigger on Prestacion__c (after insert, after update, before d
 				if(prest.Ap__c != null && (prest.Prestacion__c != null || prest.Medicamento__c != null)) {
 					prestacionesToValidateDuplicateNomencladorOrMedicamento.add(prest);
 				}
-
 			}
 
 			if(!caseIdsToAuthorize.isEmpty()) {
@@ -50,6 +45,7 @@ trigger PrestacionTrigger on Prestacion__c (after insert, after update, before d
 		}
 
 		if(Trigger.isUpdate) {
+			System.debug('****isUpdate');
 			Set<String> caseIdsToAuthorize = new Set<String>();
 			Prestacion__c[] prestacionesToValidateDuplicateNomencladorOrMedicamento = new List<Prestacion__c>();
 
@@ -70,10 +66,10 @@ trigger PrestacionTrigger on Prestacion__c (after insert, after update, before d
 				) {
 					prestacionesToValidateDuplicateNomencladorOrMedicamento.add(prest);
 				}
-
 			}
 
-			if(!caseIdsToAuthorize.isEmpty()) {
+			if(!caseIdsToAuthorize.isEmpty() && PrestacionTriggerHelper.firstRun) {
+				PrestacionTriggerHelper.firstRun = false;
 				PrestacionTriggerHelper.authorizeCases(caseIdsToAuthorize);
 			}
 
@@ -81,7 +77,5 @@ trigger PrestacionTrigger on Prestacion__c (after insert, after update, before d
 				PrestacionTriggerHelper.validateDuplicateNomencladorOrMedicamento(prestacionesToValidateDuplicateNomencladorOrMedicamento);
 			}
 		}
-
 	}
-	
 }

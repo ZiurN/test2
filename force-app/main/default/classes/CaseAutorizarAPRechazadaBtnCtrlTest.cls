@@ -84,7 +84,7 @@ private class CaseAutorizarAPRechazadaBtnCtrlTest {
 
         System.assertEquals(false, resp.hasError);
 		System.assertEquals('ok', resp.message);
-		System.assertEquals('Autorizada', caso.Status);
+		System.assertEquals('CA-----E', caso.Status);
 		System.assertEquals(6, prestacion.Alertas__r.size());
     }
 
