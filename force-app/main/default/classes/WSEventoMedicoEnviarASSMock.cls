@@ -678,7 +678,7 @@ public class WSEventoMedicoEnviarASSMock  {
 										'"estado_descripcion": "EN AUDITORIA",' +
 										'"contexto": "I",' +
 										'"cantidad": "1",' +
-										'"prestacion": "02503102",' +
+										'"prestacion": "70503102",' +
 										'"nombre_prestacion": "CODIGO PARA PRESUPUESTOS FRONT",' +
 										'"tipo_prestacion": "N",' +
 										'"troquel": null,' +

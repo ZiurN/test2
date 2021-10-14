@@ -3,29 +3,29 @@ public class CoberturaEspecialTriggerHelper  {
 		List<Cobertura_Especial__c> coberturasToUpdate = new List<Cobertura_Especial__c>();
 
 		for(Cobertura_Especial__c cobertura : coberturas) {
-			String apodo = cobertura.CreatedBy.CommunityNickname != null 
+			String apodo = cobertura.CreatedBy.CommunityNickname != null
 							? cobertura.CreatedBy.CommunityNickname.toUpperCase() : null;
 			coberturasToUpdate.add( resendToSS( cobertura.Id, apodo ) );
 		}
 
 		update coberturasToUpdate;
 	}
-	
+
 	private static Cobertura_Especial__c resendToSS(Id coberturaId, String apodo) {
 		List<Cobertura_Especial__c> coberturas = [
 			SELECT Evento_Medico_de_Seguimiento__r.Nro_de_Evento_Medico_SS__c, Fecha_desde__c, Efector__r.Codigo_de_efector__c,
-				Tipo_de_Copago__c, Incluye_Excluye__c, Prioridad__c, Valor__c, Tope_Mensual__c, Tope_Anual__c, 
+				Tipo_de_Copago__c, Incluye_Excluye__c, Prioridad__c, Valor__c, Tope_Mensual__c, Tope_Anual__c,
 				Nomenclador_Prestacion__r.Codigo__c, Fecha_hasta__c, Forma__r.Codigo_de_Forma__c, Potencia__c, Integracion__c,
-				Marca_Lunes__c, Marca_Martes__c, Marca_Miercoles__c, Marca_Jueves__c, Marca_Viernes__c, Marca_Sabado__c, 
+				Marca_Lunes__c, Marca_Martes__c, Marca_Miercoles__c, Marca_Jueves__c, Marca_Viernes__c, Marca_Sabado__c,
 				Marca_Domingo__c, Dependencia__c, Id_externo__c, Prestador__r.Codigo_de_efector__c, Por_comprimido__c,
-				Medicamento__r.Codigo_medicamento__c, Grupo_de_Prestaciones__r.Codigo__c, Monodroga__r.Codigo_de_monodroga__c,  
-				Consultorio__r.Secuencia__c, Accion_Grupo_Terapeutico__r.Codigo_Accion_Grupo_Terapeutico__c, Tipo__c, 
+				Medicamento__r.Codigo_medicamento__c, Grupo_de_Prestaciones__r.Codigo__c, Monodroga__r.Codigo_de_monodroga__c,
+				Consultorio__r.Secuencia__c, Accion_Grupo_Terapeutico__r.Codigo_Accion_Grupo_Terapeutico__c, Tipo__c,
 				Tope_Semanal__c, Prescriptor__r.Codigo_de_efector__c, Diagnostico__r.Codigo_del_Diagnostico__c
-			FROM Cobertura_Especial__c 
+			FROM Cobertura_Especial__c
 			WHERE Id =: coberturaId
-		]; //cantidad, cant_semanal, cant_dias 
+		]; //cantidad, cant_semanal, cant_dias
 		String body = generateJson(coberturas[0], apodo);
-		
+
 		WSCoberturaEspecialEnviar.Response resp = WSCoberturaEspecialEnviar.enviarCobertura(
 			coberturas[0].Evento_Medico_de_Seguimiento__r.Nro_de_Evento_Medico_SS__c, body
 		);
@@ -37,7 +37,7 @@ public class CoberturaEspecialTriggerHelper  {
 		}
 		else {
 			coberturas[0].Error_en_SS__c = '<p style="color: rgb(228, 10, 10);">' + resp.message + '</p>';
-			coberturas[0].Fecha_de_error_en_SS__c = Datetime.now(); 
+			coberturas[0].Fecha_de_error_en_SS__c = Datetime.now();
 		}
 
 		System.debug(coberturas[0]);
@@ -103,11 +103,11 @@ public class CoberturaEspecialTriggerHelper  {
 
 		body = JSON.serialize(jsonMap);
 		return body;
-		
+
 	}
 
 	public static Boolean isChangedSomeFieldToSendToSS(Cobertura_Especial__c cobertura, Cobertura_Especial__c oldCobertura) {
-		return cobertura.Dependencia__c != oldCobertura.Dependencia__c 
+		return cobertura.Dependencia__c != oldCobertura.Dependencia__c
 				|| cobertura.Marca_Domingo__c != oldCobertura.Marca_Domingo__c
 				|| cobertura.Marca_Sabado__c != oldCobertura.Marca_Sabado__c
 				|| cobertura.Marca_Viernes__c != oldCobertura.Marca_Viernes__c
@@ -132,6 +132,7 @@ public class CoberturaEspecialTriggerHelper  {
 				|| cobertura.Prescriptor__c != oldCobertura.Prescriptor__c
 				|| cobertura.Efector__c != oldCobertura.Efector__c
 				|| cobertura.Fecha_desde__c != oldCobertura.Fecha_desde__c
+				|| cobertura.Medicamento__c != oldCobertura.Medicamento__c
 				|| cobertura.Diagnostico__c != oldCobertura.Diagnostico__c;
 	}
 

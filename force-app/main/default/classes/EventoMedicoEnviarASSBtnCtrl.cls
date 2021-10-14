@@ -1,31 +1,25 @@
 public without sharing class EventoMedicoEnviarASSBtnCtrl  {
     @AuraEnabled
     public static Boolean hasAttachments(Id idEm) {
-
         List<ContentDocumentLink> dbLinks = [
                 SELECT LinkedEntityId,ContentDocumentId,ContentDocument.LatestPublishedVersionId
                 FROM ContentDocumentLink
                 WHERE LinkedEntityId =: idEm
         ];
-
         return !dbLinks.isEmpty();
     }
-
     @AuraEnabled
     public static Response sendEventoMedicoToSS(Id idEm) {
-        Evento_medico__c em = new Evento_medico__c(); 
+        Evento_medico__c em = new Evento_medico__c();
         Evento_medico__c emFromSF = getEventosMedicos(new List<Id>{idEm})[0];
-		
 		User usuario = [SELECT CommunityNickname, Profile.Name FROM User WHERE Id = :UserInfo.getUserId()];
 		Response validationOwner = validateOwner(emFromSF, usuario);
-		
 		if(!hasAttachments(idEm)) {
 			return new Response(false, 'No se puede enviar porque no tiene archivos adjuntos');
 		}
 		if(validationOwner.message != 'ok') {
 			return validationOwner;
 		}
-
         String body;
         Boolean hasError = true;
         WSEventoMedicoEnviarASS.Response wsResp;
@@ -44,7 +38,6 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl  {
         } else if(emFromSF.RecordTypeId == XappiaHelper.getRecordType('Evento_medico__c', 'Evento_medico_de_internacion').Id) {
             recordTypeName = 'internacion';
             body = generateJSONEMI(emFromSF, nick);
-
             wsResp = WSEventoMedicoEnviarASS.enviarEventoMedicoInternacion(body);
             System.debug('****wsResp.hasError: ' + wsResp.hasError);
             if(wsResp.hasError) {
@@ -53,102 +46,34 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl  {
                 hasError = false;
             }
         }
-
         if(!hasError) {
             System.debug('****No hay error!');
-			List<String> idContentVersionList = new List<String>(); 
+			List<String> idContentVersionList = new List<String>();
 			List<ContentDocumentLink> linksList = [
 					SELECT LinkedEntityId, ContentDocumentId, ContentDocument.LatestPublishedVersionId, ContentDocument.Title, ShareType,
 						ContentDocument.FileType, ContentDocument.FileExtension
 					FROM ContentDocumentLink
 					WHERE LinkedEntityId =: emFromSF.Id
 			];
-
 			for(ContentDocumentLink cdl : linksList) {
 				idContentVersionList.add(cdl.ContentDocument.LatestPublishedVersionId);
 			}
-
 			List<ContentVersion> cvList = [
 				SELECT Id
-				FROM ContentVersion 
-				WHERE Id IN :idContentVersionList AND Enviado__c = false 
+				FROM ContentVersion
+				WHERE Id IN :idContentVersionList AND Enviado__c = false
 			];
-
 			List<Id> docIds = new List<Id>();
 			for(ContentVersion cv : cvList){
 				docIds.add(cv.Id);
 			}
-
 			System.debug(cvList);
             System.debug('wsResponse**** ' + wsResp.result.data.em.segmento);
             updateEMAndCreateSegmentCasePrestAndAlerts(emFromSF, wsResp, recordTypeName);
 			System.enqueueJob(new ArchivosCargaQueueable(wsResp.result.data.em.em_id,'evento_medico',usuario.CommunityNickname.toUpperCase(),docIds));
-
-           /* WSArchivosCarga.Response respuesta = sendFiles(emFromSF, usuario.CommunityNickname.toUpperCase(), wsResp.result.data.em.em_id);
-            if(!respuesta.hasError){
-                updateArchivosUrl(emFromSF);
-                updateEMAndCreateSegmentCasePrestAndAlerts(emFromSF, wsResp, recordTypeName);
-            } else {
-                return new Response(true, respuesta.message);
-            }*/
         }
-
-        //return new Response(wsResp.hasError, wsResp.message);
 		return new Response(wsResp.hasError, 'ok');
     }
-
-    /*private static WSArchivosCarga.Response sendFiles(Evento_Medico__c emFromSF, String nick, String em_id) {	
-		Map<String, Object> bodyMap = new Map<String, Object>{
-			'tipo_tramite' => 'evento_medico',
-			'id' => em_id,
-			'usuario' => nick,
-			'archivos' => generateFilesJSON(emFromSF)
-		};
-
-		WSArchivosCarga.Response archivosCargaResp = WSArchivosCarga.uploadFiles(JSON.serialize(bodyMap), null);  
-		return archivosCargaResp;
-	}
-
-	public static List<Map<String, Object>> generateFilesJSON(Evento_medico__c eventoMedico) {
-		Archivo_url__c[] files = [
-			SELECT Id, Link__c, Ruta_relativa__c, Name, Enviado__c
-			FROM Archivo_url__c 
-			WHERE Evento_medico__c = :eventoMedico.Id
-					AND Enviado__c = false
-		];
-        
-		List<Map<String, Object>> filesJSON = new List<Map<String, Object>>();
-
-		for(Archivo_url__c file : files) {
-			Map<String, Object> fileJSON = new Map<String, Object> {
-				'url_absoluta' => file.Link__c,
-				'url' => file.Ruta_relativa__c,
-				'nombre' => file.Name.toUpperCase()
-			};
-
-			filesJSON.add(fileJSON);
-		}
-
-		System.debug('****filesJSON.isEmpty(): ' + filesJSON.isEmpty());
-		System.debug('****filesJSON: ' + filesJSON);
-		return filesJSON;
-	}
-
-	public static void updateArchivosUrl(Evento_medico__c eventoMedico) {
-		Archivo_url__c[] files = [
-			SELECT Id, Enviado__c
-			FROM Archivo_url__c 
-			WHERE Evento_medico__c = :eventoMedico.Id
-					AND Enviado__c = false
-		];
-        
-		for(Archivo_url__c file : files) {
-			file.Enviado__c = true;
-		}
-
-		update files;
-	}*/
-
 	public static Evento_medico__c[] getEventosMedicos(Id[] idEm) {
 		return [
                 SELECT Id, Asociado__r.Codigo_de_Afiliado__c, Asociado__c, Fecha_y_Hora_inicio_EMS__c, Tipo__c, Diagnostico__c,
@@ -165,29 +90,22 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl  {
                 WHERE Id IN :idEm
         ];
 	}
-
 	private static Response validateOwner(Evento_medico__c em, User usuario) {
 		Boolean propietario = usuario.Profile.Name == 'Administrador del sistema' || usuario.Profile.Name == 'CDC'
 								|| em.OwnerId == usuario.Id;
-
 		if(!propietario) {
 			return new Response(false, 'El usuario no es el propietario');
-		} 
-		
+		}
 		return new Response(false, 'ok');
-
 	}
-
 	private static void updateEMAndCreateSegmentCasePrestAndAlerts(
-		Evento_medico__c emFromSF, 
-		WSEventoMedicoEnviarASS.Response wsResp, 
+		Evento_medico__c emFromSF,
+		WSEventoMedicoEnviarASS.Response wsResp,
 		String recordTypeName
 	) {
 		Segmentos__c[] segmentosToUpdate = new List<Segmentos__c>();
-
 		for(WSEventoMedicoEnviarASSResp.Segmento segWs : wsResp.result.data.em.segmento) {
 			Segmentos__c segmento = new Segmentos__c();
-
 			if(emFromSF.Segmentos__r.isEmpty()) {
 				segmento.Creado_Automaticamente__c = true;
 			}
@@ -195,7 +113,6 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl  {
             System.debug(segWs.fecha_hasta_tentativa);
             System.debug(segWs.fecha_real_desde);
             System.debug(segWs.fecha_real_hasta);
-
 			segmento.Evento_Medico__c = emFromSF.Id;
 			segmento.Semid__c = segWs.sem_id;
 			segmento.Estado__c = segWs.estado;
@@ -206,22 +123,19 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl  {
 					? EventoMedicoEnviarASSBtnCtrl.parseStringToDateTime(segWs.fecha_hasta_tentativa)
 					: null;
 			segmento.Fecha_Inicio_real__c = segWs.fecha_real_desde != null
-					? EventoMedicoEnviarASSBtnCtrl.parseStringToDateTime(segWs.fecha_real_desde)  
+					? EventoMedicoEnviarASSBtnCtrl.parseStringToDateTime(segWs.fecha_real_desde)
 					: null;
 			segmento.Fecha_Fin_real__c = segWs.fecha_real_hasta != null
 					? EventoMedicoEnviarASSBtnCtrl.parseStringToDateTime(segWs.fecha_real_hasta)
 					: null;
 			segmento.Solicitante__c = segWs.nom_solicitante;
-			
             emFromSF.Fecha_y_Hora_Fin_EMS__c = segWs.fecha_real_hasta != null ? EventoMedicoEnviarASSBtnCtrl.parseStringToDateTime(segWs.fecha_real_hasta) :
             segWs.fecha_hasta_tentativa != null ?  EventoMedicoEnviarASSBtnCtrl.parseStringToDateTime(segWs.fecha_hasta_tentativa) : null;
-
 			segmentosToUpdate.add(segmento);
 		}
-
 		emFromSF.Cambio_Manual__c = false;
         System.debug(wsResp.result.data.em);
-		emFromSF.Fecha_y_Hora_inicio_EMS__c = String.isNotBlank(wsResp.result.data.em.fecha_inicio) 
+		emFromSF.Fecha_y_Hora_inicio_EMS__c = String.isNotBlank(wsResp.result.data.em.fecha_inicio)
 				? EventoMedicoEnviarASSBtnCtrl.parseStringToDateTime(wsResp.result.data.em.fecha_inicio)
                 : null;
         emFromSF.Nro_de_Evento_Medico_SS__c = wsResp.result.data.em.em_id;
@@ -253,11 +167,9 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl  {
         emFromSF.Importe_presupuesto__c = wsResp.result.data.em.importe_presu != null
                 ? Decimal.valueOf(wsResp.result.data.em.importe_presu) : null;
         Database.SaveResult resultEm = Database.update(emFromSF);
-		
         System.debug('****resultEm ' + resultEm);
         Database.UpsertResult[] resultSegmento = Database.upsert(segmentosToUpdate, Segmentos__c.Fields.Semid__c);
         System.debug('****resultSegmento ' + resultSegmento);
-
         List<Case> casesToUpsert = new List<Case>();
         List<Alerta__c> alertasToUpsert = new List<Alerta__c>();
         List<Prestacion__c> prestacionesToUpsert = new List<Prestacion__c>();
@@ -268,9 +180,7 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl  {
         for(WSEventoMedicoEnviarASSResp.Ap apWs : wsResp.result.data.em.ap) {
             System.debug('****apWs: ' + apWs);
             Case caseToUpdate = new Case();
-			
 			caseToUpdate.Status = apWs.estado;
-
 			if(apWs.ap_material == 'V' || apWs.ap_presupuesto == 'V' || apWs.ap_anestesia == 'V') {
 				caseToUpdate.RecordTypeId = XappiaHelper.getRecordType('Case', 'Autorizacion_previa').Id;
 				if(apWs.ap_material == 'V') {
@@ -278,10 +188,10 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl  {
 				} else if(apWs.ap_presupuesto == 'V') {
 					caseToUpdate.Sub_tipo__c = 'Presupuesto';
 				}
-			} 
+			}
 			else if(apWs.tipo_ap_sf == 'MEDICAMENTO') {
 				caseToUpdate.RecordTypeId = XappiaHelper.getRecordType('Case', 'Autorizacion_previa').Id;
-			} 
+			}
 			else if(recordTypeName == 'seguimiento') {
 			    caseToUpdate.RecordTypeId = XappiaHelper.getRecordType('Case', 'Seguimiento').Id;
 				caseToUpdate.Sub_tipo__c = emFromSF.Subtipo__c;
@@ -290,7 +200,6 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl  {
                 caseToUpdate.RecordTypeId = XappiaHelper.getRecordType('Case', 'Internacion').Id;
 				caseToUpdate.Sub_tipo__c = emFromSF.Subtipo__c;
             }
-			
 			caseToUpdate.Cambio_Manual__c = false;
 			caseToUpdate.Importe_presupuesto__c = apWs.imp_presu != null ? Decimal.valueOf(apWs.imp_presu) : null;
 			caseToUpdate.Categorizacion_SS__c = apWs.clasificacion;
@@ -318,7 +227,6 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl  {
 			caseToUpdate.Prestador__c = emFromSF.Prestador__c;
 			caseToUpdate.Consultorio__c = emFromSF.Consultorio__c;
 			caseToUpdate.Tiempo_SLA__c = apWs.sla;
-			
 			if(String.isNotBlank(apWs.celula)) {
 				caseToUpdate.Celula__c = apWs.celula;
 			}
@@ -327,7 +235,6 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl  {
 
             for(WSEventoMedicoEnviarASSResp.Prestaciones prestWS : apWs.prestaciones){
                 Prestacion__c prestToUpdate = new Prestacion__c();
-                
 				prestToUpdate.Cambio_automatico__c = true;
                 prestToUpdate.Ap__r = new Case(Nro_AP__c = apWs.apr_id);
                 prestToUpdate.Estado__c = prestWS.estado_prestacion;
@@ -339,42 +246,38 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl  {
                 prestToUpdate.Nombre_de_Prestacion__c = prestWS.nombre_prestacion;
                 prestToUpdate.Tipo__c = prestWS.tipo_prestacion;
                 prestToUpdate.Texto_aclarativo_alerta__c = prestWS.texto_aclarativo;
-				
 				if(String.isNotBlank(prestWS.prestacion)) {
-
 					switch on prestWS.tipo_prestacion {
 						when 'N' {
-							prestToUpdate.Prestacion__r = new Nomenclador_de_Prestacion__c(Codigo__c = prestWS.prestacion); 
+							prestToUpdate.Prestacion__r = new Nomenclador_de_Prestacion__c(Codigo__c = prestWS.prestacion);
 							if (!nomencladoresToUpsert.containsKey(prestWS.prestacion)) {
-								Nomenclador_de_Prestacion__c nomenclador = 
-									new Nomenclador_de_Prestacion__c(Codigo__c = prestWS.prestacion);
+								/** REVISAR ESTA ASIGNACIÓN */
+								Nomenclador_de_Prestacion__c nomenclador =
+									new Nomenclador_de_Prestacion__c(Codigo__c = prestWS.prestacion, Estado__c = 'A');
 								nomencladoresToUpsert.put(prestWS.prestacion, nomenclador);
 							}
 						}
 						when 'M' {
-							prestToUpdate.Medicamento__r = new Medicamento__c(Codigo_medicamento__c = prestWS.prestacion); 
+							prestToUpdate.Medicamento__r = new Medicamento__c(Codigo_medicamento__c = prestWS.prestacion);
 							if (!medicamentosToUpsert.containsKey(prestWS.prestacion)) {
-								Medicamento__c medicamento = 
+								Medicamento__c medicamento =
 									new Medicamento__c(Codigo_medicamento__c = prestWS.prestacion);
 								medicamentosToUpsert.put(prestWS.prestacion, medicamento);
 							}
 						}
 						when 'G' {
-							prestToUpdate.Grupo_de_Prestaciones__r = new Grupo_de_Prestaciones__c(Codigo__c = prestWS.prestacion); 
+							prestToUpdate.Grupo_de_Prestaciones__r = new Grupo_de_Prestaciones__c(Codigo__c = prestWS.prestacion);
 							if (!gruposToUpsert.containsKey(prestWS.prestacion)) {
-								Grupo_de_Prestaciones__c grupo = 
+								Grupo_de_Prestaciones__c grupo =
 									new Grupo_de_Prestaciones__c(Codigo__c = prestWS.prestacion);
 								gruposToUpsert.put(prestWS.prestacion, grupo);
 							}
 						}
 					}
 				}
-
                 prestacionesToUpsert.add(prestToUpdate);
-
                 for(WSEventoMedicoEnviarASSResp.Alertas alertWs : prestWS.alertas){
                     Alerta__c alertPres = new Alerta__c();
-
                     alertPres.Prestacion__r = new Prestacion__c(Prestacion_CA__c = prestWS.pca_id);
                     alertPres.Evento_Medico__c = emFromSF.Id;
                     alertPres.idalerta__c = alertWs.aca_id;
@@ -396,39 +299,31 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl  {
                 }
             }
         }
-
         Database.UpsertResult[] resultCasos = Database.upsert(casesToUpsert,
                 Case.Fields.Nro_AP__c, false);
         System.debug('****resultCasos ' + resultCasos);
-
         Database.UpsertResult[] resultNomencladores = Database.upsert(nomencladoresToUpsert.values(),
                 Nomenclador_de_Prestacion__c.Codigo__c, false);
         System.debug('****resultNomencladores ' + resultNomencladores);
-
 		Database.UpsertResult[] resultMedicamentos = Database.upsert(medicamentosToUpsert.values(),
                 Medicamento__c.Codigo_medicamento__c, false);
         System.debug('****resultMedicamentos ' + resultMedicamentos);
-
 		Database.UpsertResult[] resultGrupos = Database.upsert(gruposToUpsert.values(),
                 Grupo_de_Prestaciones__c.Codigo__c, false);
         System.debug('****resultGrupos ' + resultGrupos);
-			
 		Database.UpsertResult[] resultPrests = Database.upsert(prestacionesToUpsert,
                 Prestacion__c.Fields.Prestacion_CA__c, false);
         System.debug('****resultPrests ' + resultPrests);
-
         Database.UpsertResult[] resultAlerts = Database.upsert(alertasToUpsert,
                 Alerta__c.Fields.idalerta__c, false);
         System.debug('****resultAlerts ' + resultAlerts);
 	}
-
     public static String generateJSONEMS(Evento_medico__c emFromSF, String username){
         String jsonS;
         Integer consultorio = emFromSF.Consultorio__r.Secuencia__c != null
                 ? Integer.valueOf(emFromSF.Consultorio__r.Secuencia__c) : null;
         Integer complicaciones = emFromSF.Sin_complicaciones__c != null
                 ? Integer.valueOf(emFromSF.Sin_complicaciones__c) : null;
-        
         jsonS = JSON.serialize(
                 new Map<String, Object> {
 						'em_id' => emFromSF.Nro_de_Evento_Medico_SS__c,
@@ -462,7 +357,6 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl  {
 						'resul' => emFromSF.Resultado__c
 				}
 		);
-
         return jsonS;
     }
     public static String generateJSONEMI(Evento_medico__c emFromSF, String username){
@@ -500,36 +394,27 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl  {
             'importe_presupuesto' => emFromSF.AP_presupuesto__c
                     ? emFromSF.Importe_presupuesto__c : 0
         };
-
 		if(emFromSF.EMS__r.Nro_de_Evento_Medico_SS__c != null) {
 			jsonMap.put('em_seguimiento', emFromSF.EMS__r.Nro_de_Evento_Medico_SS__c);
 		}
-
 		jsonS = JSON.serialize(jsonMap);
-
         return jsonS;
     }
-
     public static DateTime parseStringToDateTime(String dateString){
         List<String> fechaSplitGuionMedio = dateString.split('-');
         List<String> yearSplit = fechaSplitGuionMedio.get(2).split(' ');
         List<String> horaMinuto = yearSplit.get(1).split(':');
-
         string dia = fechaSplitGuionMedio.get(0);
         string mes = fechaSplitGuionMedio.get(1);
         string year = yearSplit.get(0);
         string hora = horaMinuto.get(0);
         string minuto = horaMinuto.get(1);
-        
-        Datetime retorno = Datetime.newInstance(Integer.valueOf(year),Integer.valueOf(mes),Integer.valueOf(dia), Integer.valueOf(hora), Integer.valueOf(minuto), 00); 
+        Datetime retorno = Datetime.newInstance(Integer.valueOf(year),Integer.valueOf(mes),Integer.valueOf(dia), Integer.valueOf(hora), Integer.valueOf(minuto), 00);
         return retorno;
     }
-
-
     public class Response {
         @AuraEnabled public Boolean hasError;
         @AuraEnabled public String message;
-
         public Response(Boolean hasError, String message) {
             this.hasError = hasError;
             this.message = message;
