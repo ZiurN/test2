@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>IND_Reingreso_Familiar</fullName>
-    <active>true</active>
-    <description>Si el código de asociado no es el mismo que el del titular no se permitirá crearlor</description>
-    <errorConditionFormula>AND( Integrante_de_reingreso__r.Titular_codigo__c =  Caso__r.Account.Codigo_de_Afiliado__c,
-				 Integrante_accion_rapida__c)</errorConditionFormula>
-    <errorMessage>No se pueden agregar personas que no pertenezcan al grupo familiar</errorMessage>
-</ValidationRule>

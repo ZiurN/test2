@@ -1,7 +1,0 @@
-<aura:component controller="CrearNotaDeAuditoriaController" implements="lightning:actionOverride,lightning:isUrlAddressable">
-	<aura:attribute name="recordId" type="String" />
-	<aura:handler name="render" value="{!this}" action="{!c.doInit}"/>
-	<lightning:notificationsLibrary aura:id="notificationLib"/>
-
-	<lightning:workspaceAPI aura:id="workspace"/>
-</aura:component>

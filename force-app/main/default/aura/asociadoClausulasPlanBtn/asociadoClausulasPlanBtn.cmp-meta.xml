@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<AuraDefinitionBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>45.0</apiVersion>
-    <description>Al presionar el boton muestra un modal con la tabla de las clausulas de plan del afiliado</description>
-</AuraDefinitionBundle>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>IND_Fecha_Nacimiento_Mayor_Hoy</fullName>
-    <active>true</active>
-    <description>No debera crear un integrante con una fecha de nacimiento superior al dia actual</description>
-    <errorConditionFormula>Fecha_de_Nacimiento__c &gt;  TODAY()</errorConditionFormula>
-    <errorDisplayField>Fecha_de_Nacimiento__c</errorDisplayField>
-    <errorMessage>No puede crear un integrante con una fecha superior al día de hoy</errorMessage>
-</ValidationRule>
