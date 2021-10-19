@@ -1,0 +1,30 @@
+<aura:component controller="AsociadoConstanciaProvCtrl" implements="force:hasRecordId" access="global">
+	<ltng:require scripts="{!$Resource.LightningUtils}" />
+
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="caseSimpleRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+<!--	<aura:attribute name="status" type="String"/>-->
+    
+    <force:recordData 
+		aura:id="recordLoader"
+   		recordId="{! v.recordId }"
+        fields="Account.Codigo_de_Afiliado__c"
+        targetFields="{! v.caseSimpleRecord }"
+        targetError="{! v.recordLoadError }"
+	/>
+
+    <aura:if isTrue="{! v.isLoading }">
+		<lightning:spinner alternativeText="Loading" variant="brand"/>
+	</aura:if>
+    
+	<lightning:overlayLibrary aura:id="overlayLib"/>
+
+	<lightning:button 
+		variant="neutral" 
+		onclick="{! c.handleClickBtn }" 
+  		title="Constancia Provisoria" 
+		label="Constancia Provisoria"
+		aura:id="disableConstProv"
+	/>
+</aura:component>

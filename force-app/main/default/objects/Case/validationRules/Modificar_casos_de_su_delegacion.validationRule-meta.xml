@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Modificar_casos_de_su_delegacion</fullName>
+    <active>false</active>
+    <description>Los usuarios Front podrán modificar solamente los casos de su delegación</description>
+    <errorConditionFormula>AND(
+NOT( ISNEW() ), 
+$Profile.Name = &quot;Front&quot;,
+$User.Codigo_delegacion__c &lt;&gt;  Delegacion__r.Codigo_de_delegacion__c ,
+$UserRole.Name &lt;&gt; &quot;Lider Buenos Aires So y Pampeana&quot;,
+$UserRole.Name &lt;&gt; &quot;Lider Amba&quot;,
+$UserRole.Name &lt;&gt; &quot;Lider Buenos Aires Centro&quot;,
+$UserRole.Name &lt;&gt; &quot;Lider Buenos Aires Norte&quot;,
+$UserRole.Name &lt;&gt; &quot;Lider Cordoba&quot;,
+$UserRole.Name &lt;&gt; &quot;Lider Litoral&quot;,
+$UserRole.Name &lt;&gt; &quot;Lider NEA&quot;,
+$UserRole.Name &lt;&gt; &quot;Lider NOA&quot;,
+$UserRole.Name &lt;&gt; &quot;Lider Nucleo&quot;,
+$UserRole.Name &lt;&gt; &quot;Encargado Filial Rosario&quot;,
+$UserRole.Name &lt;&gt; &quot;Lider Patagonia Andina&quot;,
+$UserRole.Name &lt;&gt; &quot;Lider Patagonia Atlantica&quot;
+)</errorConditionFormula>
+    <errorMessage>Los usuarios Front podrán modificar solamente los casos de su delegación</errorMessage>
+</ValidationRule>

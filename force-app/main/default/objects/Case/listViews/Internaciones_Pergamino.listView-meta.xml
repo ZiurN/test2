@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Internaciones_Pergamino</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>CASES.TYPE</columns>
+    <columns>Sub_tipo__c</columns>
+    <columns>Fecha__c</columns>
+    <columns>SLA__c</columns>
+    <columns>Celula__c</columns>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>Estado_de_documentacion__c</columns>
+    <columns>CREATEDBY_USER.ALIAS</columns>
+    <columns>CASES.ORIGIN</columns>
+    <columns>Codigo_empresa__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650330</value>
+    </filters>
+    <filters>
+        <field>CASES.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Case.Internacion</value>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>notContain</operation>
+        <value>Orden Emitida,Anulada</value>
+    </filters>
+    <label>Internaciones Pergamino</label>
+    <sharedTo>
+        <roleAndSubordinates>Encargado_Filial_Pergamino</roleAndSubordinates>
+    </sharedTo>
+</ListView>

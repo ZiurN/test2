@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Otros_motivos_de_baja__c</fullName>
+    <externalId>false</externalId>
+    <label>Otros motivos de baja</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Por trato recibido en la atención personal en Centros de atención/Agencias</fullName>
+                <default>false</default>
+                <label>Por trato recibido en la atención personal en Centros de atención/Agencias</label>
+            </value>
+            <value>
+                <fullName>Por trato recibido en la atención telefónica del CDC</fullName>
+                <default>false</default>
+                <label>Por trato recibido en la atención telefónica del CDC</label>
+            </value>
+            <value>
+                <fullName>Por la agilidad en las respuestas en consultas/autorizaciones de prestaciones/reclamos</fullName>
+                <default>false</default>
+                <label>Por la agilidad en las respuestas en consultas/autorizaciones de prestaciones/reclamos</label>
+            </value>
+            <value>
+                <fullName>Por la calidad de la resolución de los problemas</fullName>
+                <default>false</default>
+                <label>Por la calidad de la resolución de los problemas</label>
+            </value>
+            <value>
+                <fullName>Por diferencias en la facturación/cobranzas/aportes/reintegros/copagos/descuentos/promociones</fullName>
+                <default>false</default>
+                <label>Por diferencias en la facturación/cobranzas/aportes/reintegros/copagos/descuentos/promociones</label>
+            </value>
+            <value>
+                <fullName>Por cuestiones de entrega de credencial/recepción de factura</fullName>
+                <default>false</default>
+                <label>Por cuestiones de entrega de credencial/recepción de factura</label>
+            </value>
+            <value>
+                <fullName>Por topes en sesiones</fullName>
+                <default>false</default>
+                <label>Por topes en sesiones</label>
+            </value>
+            <value>
+                <fullName>Por diferencias administrativas al momento del alta</fullName>
+                <default>false</default>
+                <label>Por diferencias administrativas al momento del alta</label>
+            </value>
+            <value>
+                <fullName>El precio de la cobertura en relación al uso que le da</fullName>
+                <default>false</default>
+                <label>El precio de la cobertura en relación al uso que le da</label>
+            </value>
+            <value>
+                <fullName>Los incrementos en la cuota según lo que marca la SuperIntendencia de Servicios de Salud</fullName>
+                <default>false</default>
+                <label>Los incrementos en la cuota según lo que marca la SuperIntendencia de Servicios de Salud</label>
+            </value>
+            <value>
+                <fullName>Cambio de estado de empleo, de trabajador a desempleado, sale del mercado laboral</fullName>
+                <default>false</default>
+                <label>Cambio de estado de empleo, de trabajador a desempleado, sale del mercado laboral</label>
+            </value>
+            <value>
+                <fullName>Cambio de lugar de trabajo, continuidad en el mercado laboral</fullName>
+                <default>false</default>
+                <label>Cambio de lugar de trabajo, continuidad en el mercado laboral</label>
+            </value>
+            <value>
+                <fullName>El valor de la cuota actual</fullName>
+                <default>false</default>
+                <label>El valor de la cuota actual</label>
+            </value>
+            <value>
+                <fullName>Cambio de cobertura a una obra social sindical</fullName>
+                <default>false</default>
+                <label>Cambio de cobertura a una obra social sindical</label>
+            </value>
+            <value>
+                <fullName>Cambio de cobertura a otra prepaga</fullName>
+                <default>false</default>
+                <label>Cambio de cobertura a otra prepaga</label>
+            </value>
+            <value>
+                <fullName>Por la cantidad de profesionales de la cartilla en su zona</fullName>
+                <default>false</default>
+                <label>Por la cantidad de profesionales de la cartilla en su zona</label>
+            </value>
+            <value>
+                <fullName>Por el Nivel de oferta de servicios</fullName>
+                <default>false</default>
+                <label>Por el Nivel de oferta de servicios</label>
+            </value>
+            <value>
+                <fullName>Por el cobro de plus por parte del profesional</fullName>
+                <default>false</default>
+                <label>Por el cobro de plus por parte del profesional</label>
+            </value>
+            <value>
+                <fullName>Por la calidad de los profesionales de la cartilla</fullName>
+                <default>false</default>
+                <label>Por la calidad de los profesionales de la cartilla</label>
+            </value>
+            <value>
+                <fullName>Por % de descuentos en farmacias</fullName>
+                <default>false</default>
+                <label>Por % de descuentos en farmacias</label>
+            </value>
+            <value>
+                <fullName>Por decisión de un tercero</fullName>
+                <default>false</default>
+                <label>Por decisión de un tercero</label>
+            </value>
+            <value>
+                <fullName>Por fallecimiento</fullName>
+                <default>false</default>
+                <label>Por fallecimiento</label>
+            </value>
+            <value>
+                <fullName>Por Divorcio/separación</fullName>
+                <default>false</default>
+                <label>Por Divorcio/separación</label>
+            </value>
+            <value>
+                <fullName>Por alcanzar la mayoría de edad y dejar de ser parte del grupo familiar</fullName>
+                <default>false</default>
+                <label>Por alcanzar la mayoría de edad y dejar de ser parte del grupo familiar</label>
+            </value>
+            <value>
+                <fullName>Otros motivos</fullName>
+                <default>false</default>
+                <label>Otros motivos</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>5</visibleLines>
+</CustomField>

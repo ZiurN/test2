@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_clausula_PMI_Madre</fullName>
+    <active>true</active>
+    <description>Si el tipo de cláusula es PMI Madre, solo se puede cargar asociados del sexo femenino y se deberá completar obligatoriamente el campo Fecha FUM y debe ser siempre menor a la &quot;fecha de vigencia desde&quot; de la cláusula.</description>
+    <errorConditionFormula>AND(
+    ISPICKVAL(Tipo__c, &quot;PMI Madre&quot;),
+    OR(
+       NOT(ISPICKVAL(Asociado__r.Sexo__c, &quot;F&quot;)),
+       ISBLANK(Fecha_FUM__c),
+       Fecha_FUM__c &gt;=  Fecha_desde__c
+    )  
+)</errorConditionFormula>
+    <errorDisplayField>Tipo__c</errorDisplayField>
+    <errorMessage>Si el tipo de cláusula es PMI Madre, solo se puede cargar asociados del sexo femenino y se debe completar obligatoriamente el campo Fecha FUM y debe ser siempre menor a la &quot;fecha de vigencia desde&quot; de la cláusula.</errorMessage>
+</ValidationRule>

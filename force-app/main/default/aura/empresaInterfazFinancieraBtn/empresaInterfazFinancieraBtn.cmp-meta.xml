@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuraDefinitionBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>45.0</apiVersion>
+    <description>Al hacer click en el boton se muestran los datos de la interfaz financiera de la empresa en un modal</description>
+</AuraDefinitionBundle>

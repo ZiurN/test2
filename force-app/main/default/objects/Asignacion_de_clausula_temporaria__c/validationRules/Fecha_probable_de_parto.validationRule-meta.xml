@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fecha_probable_de_parto</fullName>
+    <active>true</active>
+    <description>La Fecha probable de parto debe ser menor o igual a la Fecha FUM + 41 semanas.</description>
+    <errorConditionFormula>AND(
+NOT( Batch__c ),
+FPP__c &gt; (Fecha_FUM__c + 287)
+)</errorConditionFormula>
+    <errorDisplayField>FPP__c</errorDisplayField>
+    <errorMessage>La Fecha probable de parto debe ser menor o igual a la Fecha FUM + 41 semanas</errorMessage>
+</ValidationRule>

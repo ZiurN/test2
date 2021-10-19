@@ -1,0 +1,106 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction,force:appHostable"
+       controller="CaseSendToSSGenericBtnCtrl" access="global">
+    <ltng:require scripts="{!$Resource.LightningUtils}" />
+
+    <aura:attribute name="isLoading" type="Boolean" default="true"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+	<aura:attribute name="record" type="Object"/>
+    <aura:attribute name="simpleRecord" type="Object"/>
+    <aura:attribute name="recordError" type="String"/>
+    <!-- Esto es para el caso de Bajas -->
+    <aura:attribute name="isRequiredConfirm" type="Boolean"/>
+    <aura:attribute name="showAcceptanceModal" type="Boolean" default="false" />
+
+	<lightning:overlayLibrary aura:id="overlayLib"/>
+    <force:recordData aura:id="recordLoader"
+		fields="Estado_de_solicitud__c,Nro_de_solicitud_SS__c, Type, IsClosed, Retencion_Lograda__c"
+		recordId="{!v.recordId}"
+		targetFields="{!v.simpleRecord}"
+		targetError="{!v.recordError}"
+		recordUpdated="{!c.activeField}"
+	/>
+    <aura:html tag="style">
+        .oneUtilityBarContainer {
+            z-index: 98;
+        }
+        <!--
+  a[title="Acciones SaludSoft Efector"] {
+   display: none !important;		
+  }
+ -->
+    </aura:html>
+    <aura:if isTrue="{!v.showAcceptanceModal}" >
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                    
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">ALERTA</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" style="text-align:center" id="modal-content-id-1">
+                    ¿Esta seguro que quiere dar de baja todos los familiares?
+                </div>
+                <footer class="slds-modal__footer slds-modal__footer_directional">
+                    <button class="slds-button slds-button_outline-brand" onclick="{!c.handleCancel}">Cancelar</button>
+                    <button class="slds-button slds-button_destructive" onclick="{!c.handleSubmit}">Confirmar</button>
+                </footer>
+            </div>
+        </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media--center" style="width: 100%;">
+                <div class="flex">
+                    <div class="slds-media__figure stencil slds-avatar slds-avatar_small">
+                        <span class="slds-icon_container" style="background-color: transparent;">
+                            <div class="slds-icon slds-icon_small">
+                                <img src="{!$Resource.AcaIcon}"/>
+                            </div>
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <h2>
+                            <div class="title slds-card__header-title">
+                                SaludSoft
+                            </div>
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="slds-grid slds-gutters slds-wrap flex-column-m">
+					
+					<div class="slds-col slds-size_1-of-1">
+                        <aura:if isTrue="{! v.isLoading }">
+                            <lightning:spinner alternativeText="Loading" variant="brand"/>
+                        </aura:if>
+						<lightning:button 
+                            variant="neutral" 
+                            onclick="{! c.handleClickBtn }" 
+                            title="Enviar a SaludSoft" 
+                            label="Enviar a SaludSoft"
+                            aura:id="disableConstProv"
+                            disabled="{! or(
+                                                v.simpleRecord.Retencion_Lograda__c,
+                                                v.simpleRecord.IsClosed,
+                                                and(
+                                                    or(
+                                                        v.simpleRecord.Estado_de_solicitud__c == 'TRANSFORMADA', 
+                                                        v.simpleRecord.Estado_de_solicitud__c == 'COMPLETA'
+                                                    ),
+                                                    and(
+                                                        v.simpleRecord.Nro_de_solicitud_SS__c != '', 
+                                                        v.simpleRecord.Nro_de_solicitud_SS__c != null
+                                                        )
+                                                )
+                                            ) }"
+                        />
+                        
+					</div>
+                </div>
+            </header>
+        </div>
+    </article>
+</aura:component>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Front_no_puede_crear_con_codigo_02503101</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+				$Profile.Name = &apos;Front&apos;,
+				Codigo_Nomenclador__c = &apos;02503101&apos;
+)</errorConditionFormula>
+    <errorMessage>Los usuarios Front no puede carga ese numero de nomenclador</errorMessage>
+</ValidationRule>

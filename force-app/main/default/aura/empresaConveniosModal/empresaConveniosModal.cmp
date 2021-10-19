@@ -1,0 +1,36 @@
+<aura:component controller="EmpresaConveniosBtnCtrl">
+
+    <ltng:require scripts="{!$Resource.LightningUtils}" />
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="convenios" type="Object"/>
+    <aura:attribute name="mycolumns" type="List"/>
+
+    <aura:html tag="style">
+        .slds-modal__container{
+			min-width: 0%;
+			max-width: 90%;
+			width: max-content;
+			margin: 0 auto;
+        }
+        .slds-modal__content {
+            position: relative;
+        }
+    </aura:html>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <lightning:datatable
+            data="{!v.convenios}"
+            columns="{!v.mycolumns}"
+            keyField="id"
+            maxRowSelection="1"
+            resizeColumnDisabled="true"
+			onrowselection="{! c.handleShowPlanes }"
+    />
+
+	<aura:if isTrue="{! v.isLoading }">
+		<lightning:spinner alternativeText="Loading" variant="brand"/>
+	</aura:if>
+</aura:component>

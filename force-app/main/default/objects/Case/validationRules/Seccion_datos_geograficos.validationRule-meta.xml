@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Seccion_datos_geograficos</fullName>
+    <active>true</active>
+    <description>Validacion cuando es de familiar a titular y cambiar de titularidad es solo requeridad y obligatoria la seccion datos geograficos</description>
+    <errorConditionFormula>OR(
+   AND(
+       RecordType.DeveloperName= &quot;Solicitud_de_despegues&quot;,
+       OR(
+          ISPICKVAL(Type,&quot;FT&quot;),
+          ISPICKVAL(Type,&quot;CT&quot;)
+          ),
+			   	OR(
+					   		ISBLANK(Localidad__c),
+						   	ISBLANK(SuppliedEmail),
+						   	ISBLANK(Calle__c),
+					   		ISBLANK(Numero__c),
+						   	ISBLANK(Telefono__c),
+							   ISPICKVAL(Provincia__c,&quot;&quot;)
+								   )
+				    ),
+				AND(
+							 RecordType.DeveloperName= &quot;Solicitud_de_despegues&quot;,
+        NOT(
+											 OR(
+               ISPICKVAL(Type,&quot;FT&quot;),
+               ISPICKVAL(Type,&quot;CT&quot;))
+               ),
+												OR(
+															NOT(ISBLANK(Localidad__c)),
+											    NOT(ISBLANK(SuppliedEmail)),
+											    NOT(ISBLANK(Calle__c)),
+										     NOT(ISBLANK(Numero__c)),
+										     NOT(ISBLANK(Piso__c)),
+										     NOT(ISBLANK(Dpto__c)),
+											    NOT(ISBLANK(Telefono__c)),
+										     NOT(ISPICKVAL(Provincia__c,&quot;&quot;))
+															)
+								)
+				)</errorConditionFormula>
+    <errorMessage>La sección &quot;Datos Geográficos&quot; es solo requerida y obligatorios para los tipos &quot;Familiar a Titular&quot; y &quot;Cambiar de Titularidad&quot;</errorMessage>
+</ValidationRule>

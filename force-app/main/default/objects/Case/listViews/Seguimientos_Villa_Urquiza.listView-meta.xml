@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Seguimientos_Villa_Urquiza</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>CASES.TYPE</columns>
+    <columns>iOrigen__c</columns>
+    <columns>CASES.PRIORITY</columns>
+    <columns>SLA__c</columns>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>caso_con_celula__c</columns>
+    <columns>Sub_tipo__c</columns>
+    <columns>Codigo_empresa__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650400</value>
+    </filters>
+    <filters>
+        <field>Nivel_de_derivacion__c</field>
+        <operation>equals</operation>
+        <value>Nivel 2,Nivel 3</value>
+    </filters>
+    <filters>
+        <field>CASES.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Case.Seguimiento</value>
+    </filters>
+    <label>Seguimientos Villa Urquiza</label>
+    <sharedTo>
+        <roleAndSubordinates>Encargado_Filial_Villa_Urquiza</roleAndSubordinates>
+    </sharedTo>
+</ListView>

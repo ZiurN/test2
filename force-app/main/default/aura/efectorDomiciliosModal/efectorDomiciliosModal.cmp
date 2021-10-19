@@ -1,0 +1,21 @@
+<aura:component>
+	<aura:attribute name="domicilios" type="Object"/>
+    <aura:attribute name="mycolumns" type="List"/>
+	
+	<aura:html tag="style">
+        .slds-modal__container{
+			min-width: 0%;
+			max-width: 90%;
+			width: max-content;
+        }
+	</aura:html>
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <lightning:datatable 
+		data="{!v.domicilios}"
+		columns="{!v.mycolumns}"
+		keyField="id"
+		hideCheckboxColumn="true"
+	/>
+</aura:component>

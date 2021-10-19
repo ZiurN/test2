@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sentencia_de_fondo__c</fullName>
+    <externalId>false</externalId>
+    <label>Sentencia de fondo</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Acuerdo de partes</fullName>
+                <default>false</default>
+                <label>Acuerdo de partes</label>
+            </value>
+            <value>
+                <fullName>Hace lugar</fullName>
+                <default>false</default>
+                <label>Hace lugar</label>
+            </value>
+            <value>
+                <fullName>Rechaza acción judicial</fullName>
+                <default>false</default>
+                <label>Rechaza acción judicial</label>
+            </value>
+            <value>
+                <fullName>Caducidad de instancia</fullName>
+                <default>false</default>
+                <label>Caducidad de instancia</label>
+            </value>
+            <value>
+                <fullName>Cuestión abstracta</fullName>
+                <default>false</default>
+                <label>Cuestión abstracta</label>
+            </value>
+            <value>
+                <fullName>Allanamiento</fullName>
+                <default>false</default>
+                <label>Allanamiento</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

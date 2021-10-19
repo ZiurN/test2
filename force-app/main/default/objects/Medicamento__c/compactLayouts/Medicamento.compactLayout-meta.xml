@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Medicamento</fullName>
+    <fields>Nombre_de_Producto__c</fields>
+    <fields>Codigo_medicamento__c</fields>
+    <fields>Troquel__c</fields>
+    <fields>Name</fields>
+    <fields>Tipo_de_Cobertura__c</fields>
+    <fields>Fecha_Estado__c</fields>
+    <label>Medicamento</label>
+</CompactLayout>

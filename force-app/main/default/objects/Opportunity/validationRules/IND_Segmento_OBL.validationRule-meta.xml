@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IND_Segmento_OBL</fullName>
+    <active>true</active>
+    <description>Cuando el segmento sea OBL se deberá completar los campos OS anterior y actual</description>
+    <errorConditionFormula>AND(
+       RecordType.Name = &quot;Individuos&quot;,
+       $Profile.Name &lt;&gt; &quot;Front&quot;,
+       $Profile.Name &lt;&gt; &quot;Administrador del sistema&quot;,
+       OR(
+             ISPICKVAL(Segmento_del_Grupo_Familiar__c, &quot;OBLDIR&quot;),
+             ISPICKVAL(Segmento_del_Grupo_Familiar__c, &quot;OBLEMP&quot;)
+            ),
+            OR(
+                  ISBLANK(Obra_social_del_titular__c),
+                  ISBLANK(Cobertura_anterior__c)
+                  )
+)</errorConditionFormula>
+    <errorMessage>Si el segmento del grupo familiar es OBL debe completar &quot;Cobertura anterior&quot; y &quot;Obra social actual&quot;</errorMessage>
+</ValidationRule>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Recomendaria_avalian__c</fullName>
+    <externalId>false</externalId>
+    <label>¿Recomendaría Avalian?</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Si, con seguridad</fullName>
+                <default>false</default>
+                <label>Si, con seguridad</label>
+            </value>
+            <value>
+                <fullName>Probablemente si</fullName>
+                <default>false</default>
+                <label>Probablemente si</label>
+            </value>
+            <value>
+                <fullName>Neutral</fullName>
+                <default>false</default>
+                <label>Neutral</label>
+            </value>
+            <value>
+                <fullName>Probablemente no</fullName>
+                <default>false</default>
+                <label>Probablemente no</label>
+            </value>
+            <value>
+                <fullName>No, con seguridad</fullName>
+                <default>false</default>
+                <label>No, con seguridad</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

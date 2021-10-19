@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Casos_a_tipificar_San_Nicol_s</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>CASES.LAST_UPDATE_DATE_ONLY</columns>
+    <columns>Usuario__c</columns>
+    <columns>CASES.SUBJECT</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>UPDATEDBY_USER.ALIAS</columns>
+    <columns>CASES.EMAIL</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CASES.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Case.Caso_a_tipificar,Case.Consultas,Case.Reclamos</value>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>notContain</operation>
+        <value>Cerrado,Anulada</value>
+    </filters>
+    <filters>
+        <field>CORE.USERS.ALIAS</field>
+        <operation>equals</operation>
+        <value>front,nbrandol,azamora</value>
+    </filters>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650916</value>
+    </filters>
+    <label>Casos a tipificar San Nicolás</label>
+</ListView>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>iPrioridad__c</fullName>
+    <externalId>false</externalId>
+    <formula>IMAGE( 
+CASE( Priority , 
+&quot;Baja&quot;, &quot;https://acasalud--c.visualforce.com/resource/1593007147000/estrella1?&quot;, 
+&quot;Media&quot;, &quot;https://acasalud--c.visualforce.com/resource/1593007200000/estrella3?&quot;, 
+&quot;Alta&quot;, &quot;https://acasalud--c.visualforce.com/resource/1593007224000/estrella4?&quot;, 
+&quot;Critico&quot;, &quot;https://acasalud--c.visualforce.com/resource/1593007246000/Estrella5?&quot;, 
+&quot;https://acasalud--c.visualforce.com/resource/1593007182000/Estrella0?&quot;),&quot;0 Stars&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Prioridad</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

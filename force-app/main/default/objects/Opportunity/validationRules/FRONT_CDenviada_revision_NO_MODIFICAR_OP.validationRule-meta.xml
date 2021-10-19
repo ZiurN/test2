@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FRONT_CDenviada_revision_NO_MODIFICAR_OP</fullName>
+    <active>true</active>
+    <description>No se podra modificar una oportunidad en estado CD ENVIADA o EN REVISION</description>
+    <errorConditionFormula>AND(
+RecordType.DeveloperName = &quot;Individuos&quot;,
+$Profile.Name = &quot;Front&quot;,
+NOT($Permission.Usuario_integracion),
+NOT( ISNEW() ),
+OR( 
+ISPICKVAL(Subestado_de_DDJJ__c,&quot;CD ENVIADA&quot;),
+ISPICKVAL(Subestado_de_DDJJ__c,&quot;EN REVISION&quot;)
+)
+)</errorConditionFormula>
+    <errorMessage>No es posible modificar una oportunidad en estado &quot;CD Enviada&quot; o &quot;En revisión&quot;</errorMessage>
+</ValidationRule>

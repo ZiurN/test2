@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Altas_y_Reingresos_Julia_CDG</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>Nro_de_solicitud__c</columns>
+    <columns>Estado_de_solicitud__c</columns>
+    <columns>Subestado_de_DDJJ__c</columns>
+    <columns>Fecha_de_vigencia_de_solicitud__c</columns>
+    <columns>Nro_de_asociado__c</columns>
+    <columns>Nro_de_precarga__c</columns>
+    <columns>OPPORTUNITY.CREATED_DATE</columns>
+    <columns>CREATEDBY_USER.ALIAS</columns>
+    <columns>Fecha_modificacion_en_SS__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650773</value>
+    </filters>
+    <filters>
+        <field>X90_dias_sin_abrir__c</field>
+        <operation>equals</operation>
+        <value>0</value>
+    </filters>
+    <filters>
+        <field>CREATEDBY_USER.ALIAS</field>
+        <operation>equals</operation>
+        <value>JOLMEDO</value>
+    </filters>
+    <label>Altas y Reingresos Julia CDG</label>
+</ListView>

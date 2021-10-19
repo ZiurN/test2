@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Autorizaciones_Previas_Tandil</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>Evento_Medico__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>Nivel_de_derivacion__c</columns>
+    <columns>CREATEDBY_USER.ALIAS</columns>
+    <columns>Estado_de_documentacion__c</columns>
+    <columns>CASES.STATUS</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650990</value>
+    </filters>
+    <filters>
+        <field>CASES.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Case.Autorizacion_previa</value>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>notContain</operation>
+        <value>Orden Emitida,Anulada</value>
+    </filters>
+    <label>Autorizaciones Previas Tandil</label>
+    <sharedTo>
+        <roleAndSubordinates>Encargado_Filial_Tandil</roleAndSubordinates>
+    </sharedTo>
+</ListView>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Autorizaciones_Previas_Villa_Maria</fullName>
+    <columns>CASES.RECORDTYPE</columns>
+    <columns>iOrigen__c</columns>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>Nivel_de_derivacion__c</columns>
+    <columns>Celula__c</columns>
+    <columns>CREATEDBY_USER.ALIAS</columns>
+    <columns>Estado_de_documentacion__c</columns>
+    <columns>Delegacion__c</columns>
+    <columns>CASES.PRIORITY</columns>
+    <columns>Codigo_empresa__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650171</value>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>contains</operation>
+        <value>Generada,Centro Autorizador,Autorizada,En Proceso</value>
+    </filters>
+    <filters>
+        <field>CASES.ORIGIN</field>
+        <operation>notEqual</operation>
+        <value>BOT</value>
+    </filters>
+    <label>Autorizaciones Previas Villa María</label>
+</ListView>

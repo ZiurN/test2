@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Prestadores</fullName>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>ACCOUNT.TYPE</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>Es_Prestador__c</columns>
+    <columns>iEstado__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Es_Prestador__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>Prestadores</label>
+</ListView>

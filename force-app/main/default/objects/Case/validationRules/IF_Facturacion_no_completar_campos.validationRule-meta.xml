@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IF_Facturacion_no_completar_campos</fullName>
+    <active>true</active>
+    <description>Si el tipo de caso es &quot;IF Facturación&quot;, no se permitirá completar los campos &quot;Medios de pago&quot; y se debera completar al menos un campo de &quot;Medios de cobro&quot;.</description>
+    <errorConditionFormula>AND(
+   RecordType.Name = &quot;Interfaz financiera&quot;,
+   ISPICKVAL( Type , &quot;C&quot;),
+   OR(
+      NOT(ISBLANK(CUIT_CUIL_Titular_CBU__c )),
+      NOT(ISBLANK(Numero_CBU__c)),
+      AND(
+         ISBLANK(CUIT__c),
+         ISPICKVAL(Condicion_IVA__c,&quot;&quot;),
+         ISPICKVAL(Tarjeta_de_credito__c,&quot;&quot;),
+         ISBLANK(Numero_de_tarjeta_de_credito__c),
+         ISPICKVAL(Tipo_de_debito_por_ACA__c,&quot;&quot;),
+         ISBLANK(Cdigo_debito_por_ACA__c),
+         ISBLANK(CBU__c),
+         ISBLANK(CUIL_del_CBU__c),
+         !Borrar_tarjeta_debito_o_cobro_por_CBU__c 
+
+       )
+   )
+   
+)</errorConditionFormula>
+    <errorMessage>Para el caso &quot;IF Facturación&quot;, no se permitirá completar los campos &quot;Medios de pago&quot;, se debera completar al menos un campo de &quot;Medios de cobro&quot;.</errorMessage>
+</ValidationRule>

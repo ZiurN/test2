@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Subtipo__c</fullName>
+    <externalId>false</externalId>
+    <label>Subtipo</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Tipo__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Oxi Cronico</fullName>
+                <default>false</default>
+                <label>Oxi Cronico</label>
+            </value>
+            <value>
+                <fullName>Oxi Terapia</fullName>
+                <default>false</default>
+                <label>Oxi Terapia</label>
+            </value>
+            <value>
+                <fullName>Idom</fullName>
+                <default>false</default>
+                <label>Idom</label>
+            </value>
+            <value>
+                <fullName>Clinico</fullName>
+                <default>false</default>
+                <label>Clínico</label>
+            </value>
+            <value>
+                <fullName>Psiquiatrico</fullName>
+                <default>false</default>
+                <label>Psiquiátrico</label>
+            </value>
+            <value>
+                <fullName>Rehabilitacion</fullName>
+                <default>false</default>
+                <label>Rehabilitación</label>
+            </value>
+            <value>
+                <fullName>Quirurgico</fullName>
+                <default>true</default>
+                <label>Quirurgico</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Oxigenoterapia</controllingFieldValue>
+            <valueName>Oxi Cronico</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Oxigenoterapia</controllingFieldValue>
+            <valueName>Oxi Terapia</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Quirurgico</controllingFieldValue>
+            <valueName>Quirurgico</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Clinico</controllingFieldValue>
+            <valueName>Idom</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Clinico</controllingFieldValue>
+            <valueName>Clinico</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Clinico</controllingFieldValue>
+            <valueName>Psiquiatrico</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Clinico</controllingFieldValue>
+            <valueName>Rehabilitacion</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

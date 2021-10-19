@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>COR_Recordar_Llamada</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+        RecordType.Name = &quot;Corporativo&quot;,
+        ISPICKVAL((StageName), &quot;Cotizado&quot;),
+        ISBLANK (TEXT(Recordar_Llamada__c))
+)</errorConditionFormula>
+    <errorDisplayField>Recordar_Llamada__c</errorDisplayField>
+    <errorMessage>Debe completar el campo recordar llamada</errorMessage>
+</ValidationRule>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Modificacion_asociado</fullName>
+    <active>true</active>
+    <description>Validacion para que solo los usuarios con perfil de Administrador del sistema pueda modificar el campos &quot;Asociado&quot;</description>
+    <errorConditionFormula>AND(
+				 $Profile.Name  &lt;&gt; &quot;Administrador del sistema&quot;,
+				ISCHANGED(Asociado__c)
+				)</errorConditionFormula>
+    <errorMessage>Solo usuarios con Perfil &quot;Administrador del sistema&quot; pueden modificar este campo</errorMessage>
+</ValidationRule>

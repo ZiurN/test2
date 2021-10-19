@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Autorizaciones_Previas_Gral_Roca</fullName>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>iOrigen__c</columns>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>Estado_de_documentacion__c</columns>
+    <columns>Evento_Medico__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>Nivel_de_derivacion__c</columns>
+    <columns>Celula__c</columns>
+    <columns>Delegacion__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650616</value>
+    </filters>
+    <filters>
+        <field>CASES.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Case.Autorizacion_previa,Case.Internacion</value>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>notContain</operation>
+        <value>Orden Emitida,Anulada</value>
+    </filters>
+    <label>Autorizaciones Previas  Gral Roca</label>
+    <sharedTo>
+        <roleAndSubordinates>Encargado_Filial_Gral_Roca</roleAndSubordinates>
+    </sharedTo>
+</ListView>

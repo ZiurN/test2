@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>si_es_obligatorio_el_titular_FFTF</fullName>
+    <active>true</active>
+    <description>validadion cuando una solicitud de despegues si el tipo es y de Familiar a familiar y titular a familiar y el segemnto del grupo familiar del titular y si deriva aportes el cuit empleador, cuil y obra social y aporte es obligatorio</description>
+    <errorConditionFormula>OR(  
+		 AND( 
+       RecordType.DeveloperName =&quot;Solicitud_de_despegues&quot;,
+			   	OR(
+						   	ISPICKVAL(Type, &quot;FF&quot;),
+							   ISPICKVAL(Type, &quot;TF&quot;)
+						   	),
+			   	OR(
+				      ISPICKVAL(Titular__r.Segmento_de_grupo_familiar__c, &quot;OBLDIR&quot;),
+				      ISPICKVAL(Titular__r.Segmento_de_grupo_familiar__c, &quot;OBLEMP&quot;)
+							  	),
+				      Deriva_aportes__c,
+			   	OR(
+								  ISBLANK(Cuil__c),
+							  	ISBLANK(Obra_Social2__c),
+								  ISBLANK(Aporte__c)
+							  	) 
+							),
+				 AND( 
+         RecordType.DeveloperName =&quot;Solicitud_de_despegues&quot;,
+			     	OR(
+						   	  ISPICKVAL(Type, &quot;FF&quot;),
+							     ISPICKVAL(Type, &quot;TF&quot;)
+						   	  ),
+			     	OR(
+				        ISPICKVAL(Titular__r.Segmento_de_grupo_familiar__c, &quot;OBLDIR&quot;),
+				        ISPICKVAL(Titular__r.Segmento_de_grupo_familiar__c, &quot;OBLEMP&quot;)
+							    	),
+				       Deriva_aportes__c,
+									  ISBLANK(Empleador__c),
+									  ISBLANK(Cuit_empleador__c)
+									)
+				)</errorConditionFormula>
+    <errorMessage>Campos obligatorios &quot;Cuit empleador&quot;, &quot;CUIL&quot;, &quot;Obra Social&quot; y &quot;Aporte&quot; cuando el segmento del grupo familiar del titular es &quot;OBLDIR/OBLEMP&quot; para tipos FAMILIAR A FAMILIAR o TITULAR A FAMILIAR&quot;</errorMessage>
+</ValidationRule>

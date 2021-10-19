@@ -1,0 +1,22 @@
+<aura:component implements="force:hasRecordId" controller="AsociadoEstadoCredencialesBtnCtrl" access="global">
+	<ltng:require scripts="{!$Resource.LightningUtils}" />
+	<lightning:overlayLibrary aura:id="overlayLib"/>
+    
+	<aura:attribute name="isLoading" type="Boolean" default="false"/>
+	<aura:attribute name="accountSimpleRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+
+	<force:recordData 
+		aura:id="recordLoader"
+		recordId="{! v.recordId }"
+		fields="Codigo_de_Afiliado__c"
+		targetFields="{! v.accountSimpleRecord }"
+		targetError="{! v.recordLoadError }"
+	/>
+
+	<lightning:button variant="neutral" onclick="{! c.handleClickBtn }" value="Clausulas del Plan" label="Estado Credenciales"/>
+
+	<aura:if isTrue="{! v.isLoading }">
+		<lightning:spinner alternativeText="Loading" variant="brand"/>
+	</aura:if>
+</aura:component>

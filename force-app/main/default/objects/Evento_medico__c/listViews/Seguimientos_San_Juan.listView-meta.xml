@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Seguimientos_San_Juan</fullName>
+    <columns>NAME</columns>
+    <columns>Asociado__c</columns>
+    <columns>Estado__c</columns>
+    <columns>Fecha_y_Hora_inicio_EMS__c</columns>
+    <columns>Tipo__c</columns>
+    <columns>Subtipo__c</columns>
+    <columns>OWNER.FIRST_NAME</columns>
+    <columns>Estado_Evento_Medico_de_seguimiento__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650784</value>
+    </filters>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Evento_medico__c.Evento_medico_de_seguimiento</value>
+    </filters>
+    <label>Seguimientos San Juan</label>
+    <sharedTo>
+        <roleAndSubordinates>Encargado_Filial_San_Juan</roleAndSubordinates>
+    </sharedTo>
+</ListView>

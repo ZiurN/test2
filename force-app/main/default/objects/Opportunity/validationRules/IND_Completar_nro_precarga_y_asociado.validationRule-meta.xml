@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IND_Completar_nro_precarga_y_asociado</fullName>
+    <active>true</active>
+    <description>No se podrá cambiar la etapa a Cerrada Ganada, cuando los campos &quot;Nro. de Precarga&quot; y &quot;Nro. de asociado&quot;, estén en blanco. Estos campos son solo lectura y los debe completar SS antes de cambiar la etapa de la oportunidad.</description>
+    <errorConditionFormula>AND(
+    $Profile.Name != &apos;Administrador del sistema&apos;,
+				OR(
+       RecordType.Name = &quot;Individuos&quot;,
+				   RecordType.Name = &quot;Individual Corporativo&quot;
+				),
+    ISBLANK( Nro_de_precarga__c ),
+    ISBLANK( Nro_de_asociado__c ),
+    ISPICKVAL(StageName, &quot;Cerrada Ganada&quot;)
+)</errorConditionFormula>
+    <errorMessage>Para Cerrar la oportunidad como Ganada, debe completar los campos Nro. de Precarga y Nro. de Solicitud</errorMessage>
+</ValidationRule>

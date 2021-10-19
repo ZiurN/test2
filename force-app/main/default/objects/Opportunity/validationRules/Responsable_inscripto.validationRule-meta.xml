@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Responsable_inscripto</fullName>
+    <active>true</active>
+    <description>Imposibilitar la carga de una oportunidad de tipo de registro &quot;Individuales&quot; cuando:
+
+el campo segmento de la oportunidad sea OBLDIR o OBLEMP (campo segmento de la opp) y el campo condición IVA sea responsable inscripto</description>
+    <errorConditionFormula>AND(
+RecordType.DeveloperName = &quot;Individuos&quot;,
+$Profile.Name = &quot;Front&quot;,
+NOT($Permission.Usuario_integracion),
+ISPICKVAL(Condicion_IVA__c, &quot;1&quot;),
+OR(
+ISPICKVAL(Segmento_del_Grupo_Familiar__c, &quot;OBLDIR&quot;),
+ISPICKVAL(Segmento_del_Grupo_Familiar__c, &quot;OBLEMP&quot;)
+)
+)</errorConditionFormula>
+    <errorMessage>No se puede cargar un registro cuando el segmento del grupo familiar es &quot;OBLDIR&quot;/OBLEMP&quot; y la condición IVA es &quot;Responsable Inscripto&quot;</errorMessage>
+</ValidationRule>

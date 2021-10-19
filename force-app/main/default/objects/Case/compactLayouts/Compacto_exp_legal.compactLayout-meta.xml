@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Compacto_exp_legal</fullName>
+    <fields>Status</fields>
+    <fields>Type</fields>
+    <fields>Sub_tipo__c</fields>
+    <fields>SLA__c</fields>
+    <fields>Priority</fields>
+    <fields>Motivo_cierre_exped_legales__c</fields>
+    <fields>Propietario_del_caso__c</fields>
+    <fields>OwnerId</fields>
+    <label>Compacto exp legal</label>
+</CompactLayout>

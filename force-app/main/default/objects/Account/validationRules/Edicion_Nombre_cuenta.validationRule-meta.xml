@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Edicion_Nombre_cuenta</fullName>
+    <active>true</active>
+    <description>Front y CDC no pueden editar el campo Name</description>
+    <errorConditionFormula>AND(
+ISCHANGED(Name),
+OR( 
+$Profile.Name = &quot;CDC&quot;,
+$Profile.Name = &quot;Front&quot;
+))</errorConditionFormula>
+    <errorMessage>No posee los permisos para poder modificar el nombre de la Cuenta</errorMessage>
+</ValidationRule>

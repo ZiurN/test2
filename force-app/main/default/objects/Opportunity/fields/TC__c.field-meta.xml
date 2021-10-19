@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TC__c</fullName>
+    <description>Este campo sirve para cuando el valor del campo medio de cobro es &quot;Tarjeta&quot; marca verdadero, este campo se utiliza para el envio de plantillas de Docusign. NO BORRAR</description>
+    <externalId>false</externalId>
+    <formula>ISPICKVAL(Medio_de_cobro__c,&quot;Tarjeta&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>TC</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

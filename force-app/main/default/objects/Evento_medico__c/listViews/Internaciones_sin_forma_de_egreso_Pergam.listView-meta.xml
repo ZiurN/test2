@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Internaciones_sin_forma_de_egreso_Pergam</fullName>
+    <columns>NAME</columns>
+    <columns>Estado__c</columns>
+    <columns>Suspendido__c</columns>
+    <columns>Asociado__c</columns>
+    <columns>Fecha_y_Hora_inicio_EMS__c</columns>
+    <columns>Fecha_y_hora_fin_ems__c</columns>
+    <columns>Dias_de_internacion__c</columns>
+    <columns>Subtipo__c</columns>
+    <columns>Tipo__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <columns>Prestador__c</columns>
+    <columns>descripcion_diagnostico__c</columns>
+    <columns>Diagnostico__c</columns>
+    <columns>Forma_de_egreso__c</columns>
+    <columns>Delegacion__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650330</value>
+    </filters>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Evento_medico__c.Evento_medico_de_internacion</value>
+    </filters>
+    <filters>
+        <field>Forma_de_egreso__c</field>
+        <operation>notContain</operation>
+        <value>ALTA CONTINUA INTERNACION DOMICILIARIA,ALTA MEDICA,ALTA VOLUNTARIA,FALLECIMIENTO DEL PACIENTE,FUGA,TRASLADO A CENTRO DE MAYOR COMPLEJIDAD</value>
+    </filters>
+    <filters>
+        <field>Estado__c</field>
+        <operation>contains</operation>
+        <value>Autorizado,Suspendido,Cerrado</value>
+    </filters>
+    <filters>
+        <field>Subtipo__c</field>
+        <operation>notContain</operation>
+        <value>Idom</value>
+    </filters>
+    <label>Eventos sin forma de egreso Pergamino</label>
+    <sharedTo>
+        <role>Encargado_Filial_Pergamino</role>
+        <role>Filial_Pergamino</role>
+        <role>Lider_Buenos_Aires_Norte</role>
+    </sharedTo>
+</ListView>

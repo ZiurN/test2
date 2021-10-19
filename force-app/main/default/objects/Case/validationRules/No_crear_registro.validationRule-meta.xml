@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_crear_registro</fullName>
+    <active>true</active>
+    <description>Validacion para impedir cargarle un caso a un Asociado que este dado de baja</description>
+    <errorConditionFormula>OR(
+				AND(
+        ISNEW(),  
+        ISPICKVAL(Account.Estado__c, &quot;B&quot;),
+				    OR(
+								    RecordType.DeveloperName= &quot;Autorizacion_previa&quot;,
+								    RecordType.DeveloperName= &quot;Seguimiento&quot;,
+								    RecordType.DeveloperName= &quot;Internacion&quot;
+				    ),
+				    OR(
+								    ISBLANK(Fecha__c),
+				        Fecha__c &gt; DATEVALUE(Account.Fecha_de_baja__c + 90)
+				    )
+    ),
+				AND(
+        ISNEW(),  
+        ISPICKVAL(Account.Estado__c, &quot;B&quot;),
+        RecordType.DeveloperName= &quot;Reintegro&quot;,
+				    OR(
+								    ISBLANK(Fecha__c),
+				        Fecha__c &gt; DATEVALUE(Account.Fecha_de_baja__c)
+				    )
+    ),
+				AND(
+								ISNEW(),
+								Fecha__c &lt; Account.Ultima_alta__c,
+								OR(
+								    RecordType.DeveloperName = &quot;Autorizacion_previa&quot;,
+								    RecordType.DeveloperName = &quot;Seguimiento&quot;,
+												RecordType.DeveloperName = &quot;Reintegro&quot;,
+												RecordType.DeveloperName = &quot;Internacion&quot;
+				    )
+				)
+)</errorConditionFormula>
+    <errorMessage>No se puede crear un Caso si el Asociado está dado de baja o si el caso tiene una fecha menor a la fecha de alta del socio</errorMessage>
+</ValidationRule>

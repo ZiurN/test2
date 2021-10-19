@@ -1,0 +1,27 @@
+<aura:component>
+	<aura:attribute name="clausulas" type="Object"/>
+    <aura:attribute name="mycolumns" type="List"/>
+	
+	<aura:html tag="style">
+        .slds-modal__container{
+			min-width: 0%;
+			max-width: 90%;
+			width: max-content;
+			margin: 0 auto;
+        }
+		.slds-modal__content {
+			display: flex;
+			justify-content: center;
+		}
+		lightning-datatable {
+			overflow-x: auto;
+		}
+	</aura:html>
+
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+
+    <lightning:datatable data="{! v.clausulas }"
+						 columns="{! v.mycolumns }"
+						 keyField="id"
+						 hideCheckboxColumn="true"/>
+</aura:component>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Bloquear_Registro</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+				 NOT($Permission.Usuario_integracion),
+    ISPICKVAL(PRIORVALUE(Estado_de_solicitud__c) ,&quot;Transformada&quot;),
+    NOT(ISPICKVAL( Subestado_de_DDJJ__c ,  &quot;Nueva&quot;)),
+
+    OR(
+  RecordType.Name = &quot;Individuos&quot;,
+  RecordType.Name = &quot;Individual Corporativo&quot;
+      ),
+    
+      Cambio_Manual__c = true,
+    
+    OR(
+       ISPICKVAL(StageName, &quot;En tramitación&quot;),
+       ISPICKVAL(PRIORVALUE(StageName), &quot;En tramitación&quot;),
+       ISPICKVAL(PRIORVALUE(StageName), &quot;Cerrada ganada&quot;)
+      ),
+    OR(
+       NOT(ISPICKVAL( Subestado_de_DDJJ__c ,  &quot;Nueva&quot;)),
+       NOT(ISPICKVAL(Estado_de_solicitud__c ,&quot;Completa&quot;))
+      )
+)</errorConditionFormula>
+    <errorMessage>No se puede modificar el registro porque la etapa es &quot;En Tramitación&quot; y/o el estado de solicitud es &quot;Transformada&quot;</errorMessage>
+</ValidationRule>

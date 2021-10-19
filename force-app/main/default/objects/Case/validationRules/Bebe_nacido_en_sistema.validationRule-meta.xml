@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Bebe_nacido_en_sistema</fullName>
+    <active>true</active>
+    <description>Validación de campos obligatorios si el bebe es nacido en sistema</description>
+    <errorConditionFormula>OR(
+    AND( 
+				    RecordType.DeveloperName = &quot;Solicitud_de_alta_familiar&quot;,
+				    Bebe_nacido_en_sistema__c,
+								ISBLANK(Informacion_al_asociado__c)
+								),
+					AND(
+									RecordType.DeveloperName = &quot;Solicitud_de_alta_familiar&quot;,
+				     NOT(Bebe_nacido_en_sistema__c),
+				     OR( 
+										  NOT(ISBLANK(Informacion_al_asociado__c)),
+										  Informacion_completa__c
+													)
+									),
+				 AND(
+									RecordType.DeveloperName = &quot;Solicitud_de_alta_familiar&quot;,
+									Bebe_sin_DNI__c,
+									ISBLANK(Informacion_al_asociado__c)
+									)
+									
+				)</errorConditionFormula>
+    <errorMessage>El campo &quot;Detalle de documentación faltante&quot; es obligatorios cuando es Bebe con documentación faltante o Bebe sin de DNI de lo contrario los campos &quot;Detalle de documentación faltante&quot; y &quot;Información completa&quot; no se pueden completar</errorMessage>
+</ValidationRule>

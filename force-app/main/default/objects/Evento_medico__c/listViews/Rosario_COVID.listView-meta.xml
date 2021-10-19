@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Rosario_COVID</fullName>
+    <columns>NAME</columns>
+    <columns>Estado__c</columns>
+    <columns>Suspendido__c</columns>
+    <columns>Asociado__c</columns>
+    <columns>Fecha_y_Hora_inicio_EMS__c</columns>
+    <columns>Fecha_y_hora_fin_ems__c</columns>
+    <columns>Dias_de_internacion__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <columns>Prestador__c</columns>
+    <columns>Tipo_de_Evento_Medico_de_seguimiento__c</columns>
+    <columns>descripcion_diagnostico__c</columns>
+    <columns>Delegacion__c</columns>
+    <columns>Forma_de_egreso__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Tipo_de_Evento_Medico_de_seguimiento__c</field>
+        <operation>contains</operation>
+        <value>COVID</value>
+    </filters>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650098,650846,650989</value>
+    </filters>
+    <filters>
+        <field>Forma_de_egreso__c</field>
+        <operation>notEqual</operation>
+        <value>ALTA_MEDICA,FALLECIMIENTO</value>
+    </filters>
+    <label>Rosario COVID</label>
+</ListView>

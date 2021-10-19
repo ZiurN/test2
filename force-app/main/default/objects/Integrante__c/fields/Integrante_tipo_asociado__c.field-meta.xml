@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Integrante_tipo_asociado__c</fullName>
+    <externalId>false</externalId>
+    <label>Integrante tipo asociado</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Voluntario</fullName>
+                <default>false</default>
+                <label>Voluntario</label>
+            </value>
+            <value>
+                <fullName>Relación de Dependencia</fullName>
+                <default>false</default>
+                <label>Relación de Dependencia</label>
+            </value>
+            <value>
+                <fullName>Monotributista</fullName>
+                <default>false</default>
+                <label>Monotributista</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

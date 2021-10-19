@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Completar_Motivo_De_Cierre_para_Cerrar</fullName>
+    <active>true</active>
+    <description>JIRA DES 2366 - En los casos de tipo de Registro Consultos o Reclamos debe completar el Motivo de Cierre para cerrar el caso</description>
+    <errorConditionFormula>AND(
+OR(
+RecordType.DeveloperName = &quot;Reclamos&quot;,
+RecordType.DeveloperName = &quot;Consultas&quot;
+),
+ISBLANK(Motivo_de_Cierre__c),
+ISPICKVAL(Status, &quot;Cerrado&quot;)
+)</errorConditionFormula>
+    <errorMessage>Antes de Cerrar el caso debe completar el campo &quot;Motivo de Cierre&quot;</errorMessage>
+</ValidationRule>

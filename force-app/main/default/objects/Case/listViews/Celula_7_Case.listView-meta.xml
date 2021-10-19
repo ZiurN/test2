@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Celula_7_Case</fullName>
+    <booleanFilter>(1 AND 2 AND 3) OR (1 AND 2 AND 4)</booleanFilter>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>Evento_Medico__c</columns>
+    <columns>CASES.TYPE</columns>
+    <columns>CASES.RECORDTYPE</columns>
+    <columns>Diagnostico__c</columns>
+    <columns>SLA__c</columns>
+    <columns>Contiene_alerta_AM__c</columns>
+    <columns>Sin_alertas_AM_pendientes__c</columns>
+    <columns>Caso_Falseamiento_creado__c</columns>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>Fecha_prescripcion__c</columns>
+    <columns>Usuario__c</columns>
+    <columns>UPDATEDBY_USER.ALIAS</columns>
+    <columns>Responsable_de_presupuesto__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Celula__c</field>
+        <operation>equals</operation>
+        <value>Celula 7</value>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>equals</operation>
+        <value>CA-----G,Generada,CA-----A,Pendiente,En Proceso</value>
+    </filters>
+    <filters>
+        <field>Nivel_de_derivacion__c</field>
+        <operation>equals</operation>
+        <value>Nivel 3</value>
+    </filters>
+    <filters>
+        <field>CASES.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Case.Consultas,Case.Reclamos</value>
+    </filters>
+    <label>Celula 7 - MEDICACION ALTO COSTO</label>
+</ListView>

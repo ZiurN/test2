@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nomenclador</fullName>
+    <fields>Estado__c</fields>
+    <fields>Cdigo_PMO__c</fields>
+    <fields>Tipo_Nomenclador__c</fields>
+    <label>Nomenclador</label>
+</CompactLayout>

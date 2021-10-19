@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IND_Cerrada_no_cambiar_etapa</fullName>
+    <active>true</active>
+    <description>No se podrá cambiar la etapa de una oportunidad que ya está cerrada, a ningún usuario que no sea Organizador o superior y que, además, el futuro asociado no tenga oportunidades abiertas</description>
+    <errorConditionFormula>AND(
+    RecordType.Name =&quot;Individuos&quot;,
+    ISCHANGED( LastModifiedDate ),
+    OR( 
+       $UserRole.Name = &quot;Org. AMBA&quot;,
+       $UserRole.Name = &quot;Org. Buenos Aires Centro&quot;,
+       $UserRole.Name = &quot;Org. Buenos Aires Costa Atlántica&quot;,
+       $UserRole.Name = &quot;Org. Buenos Aires Norte&quot;,
+       $UserRole.Name = &quot;Org. Buenos Aires Sur&quot;,
+       $UserRole.Name = &quot;Org. Córdoba Norte&quot;,
+       $UserRole.Name = &quot;Org. Córdoba Sur&quot;,
+       $UserRole.Name = &quot;Org. Litoral&quot;,
+       $UserRole.Name = &quot;Org. NEA&quot;,
+       $UserRole.Name = &quot;Org. NOA&quot;,
+       $UserRole.Name = &quot;Org. Núcleo&quot;,
+       $UserRole.Name = &quot;Org. Pampeana&quot;,
+       $UserRole.Name = &quot;Org. Patagonia Andina&quot;,
+       $UserRole.Name = &quot;Org. Patagonia Costa Atlántica&quot;,
+       $UserRole.Name = &quot;Org. Rosario&quot;,
+       $UserRole.Name = &quot;Org. Santa Fe Centro&quot;,
+       $UserRole.Name = &quot;Supervisor AMBA&quot;,
+       $UserRole.Name = &quot;Supervisor BAC&quot;,
+       $UserRole.Name = &quot;Supervisor BACA&quot;,
+       $UserRole.Name = &quot;Supervisor BAN&quot;,
+       $UserRole.Name = &quot;Supervisor BAS&quot;,
+       $UserRole.Name = &quot;Supervisor CN&quot;,
+       $UserRole.Name = &quot;Supervisor CS&quot;,
+       $UserRole.Name = &quot;Supervisor L&quot;,
+       $UserRole.Name = &quot;Supervisor N&quot;,
+       $UserRole.Name = &quot;Supervisor NEA&quot;,
+       $UserRole.Name = &quot;Supervisor NOA&quot;,
+       $UserRole.Name = &quot;Supervisor P&quot;,
+       $UserRole.Name = &quot;Supervisor PA&quot;,
+       $UserRole.Name = &quot;Supervisor PCA&quot;,
+       $UserRole.Name = &quot;Supervisor Rosario&quot;,
+       $UserRole.Name = &quot;Supervisor SFC&quot;
+      ),
+    OR(
+       AND(
+           ISPICKVAL( StageName , &quot;Cerrada Perdida&quot;),
+           ISPICKVAL( PRIORVALUE(StageName) , &quot;Cerrada Perdida&quot;)
+          ),
+       AND(
+           ISPICKVAL( StageName , &quot;Cerrada Ganada&quot;),
+           ISPICKVAL( PRIORVALUE(StageName) , &quot;Cerrada Ganada&quot;)
+          )
+      )
+)</errorConditionFormula>
+    <errorMessage>No puede modificar una oportunidad cuando se encuentre en etapa Cerrada</errorMessage>
+</ValidationRule>

@@ -1,0 +1,36 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader,force:appHostable"
+				controller="CaseDeleteMedicoAsignadoCtrl" 
+				access="global"
+>
+	
+	
+	<ltng:require scripts="{!$Resource.LightningUtils}" />
+	<ltng:require styles="{!$Resource.multilineToast}" />
+
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="caseSimpleRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+    
+    <force:recordData 
+		aura:id="recordLoader"
+   		recordId="{! v.recordId }"
+        fields="Status, Nro_AP__c"
+        targetFields="{! v.caseSimpleRecord }"
+        targetError="{! v.recordLoadError }"
+	/>
+	
+	<lightning:button 
+		variant="neutral" 
+		onclick="{! c.handleClickBtn }" 
+  		title="Borrar Médico Asignado" 
+		label="Borrar Médico Asignado"
+		class="slds-size_1-of-1"
+	/>
+
+	<aura:if isTrue="{! v.isLoading }">
+		<lightning:spinner alternativeText="Loading" variant="brand"/>
+	</aura:if>
+
+	<lightning:overlayLibrary aura:id="overlayLib"/>
+
+</aura:component>

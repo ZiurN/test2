@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Motivo_de_perdida__c</fullName>
+    <externalId>false</externalId>
+    <label>Motivo de pérdida</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Cambio de titular</fullName>
+                <default>false</default>
+                <label>Cambio de titular</label>
+            </value>
+            <value>
+                <fullName>Precio</fullName>
+                <default>false</default>
+                <label>Precio</label>
+            </value>
+            <value>
+                <fullName>Falta de contacto</fullName>
+                <default>false</default>
+                <label>Falta de contacto</label>
+            </value>
+            <value>
+                <fullName>Servicio</fullName>
+                <default>false</default>
+                <label>Servicio</label>
+            </value>
+            <value>
+                <fullName>Otro/s</fullName>
+                <default>false</default>
+                <label>Otro/s</label>
+            </value>
+            <value>
+                <fullName>Patolgía preexistente</fullName>
+                <default>false</default>
+                <label>Patolgía preexistente</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

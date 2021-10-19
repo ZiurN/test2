@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>eventos_oxi_lore_2</fullName>
+    <columns>NAME</columns>
+    <columns>Asociado__c</columns>
+    <columns>Codigo_Afiliado__c</columns>
+    <columns>Tipo__c</columns>
+    <columns>Subtipo__c</columns>
+    <columns>Descripcion__c</columns>
+    <columns>Estado__c</columns>
+    <columns>Fecha_y_hora_fin_ems__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Tipo__c</field>
+        <operation>equals</operation>
+        <value>Oxigenoterapia</value>
+    </filters>
+    <filters>
+        <field>Estado__c</field>
+        <operation>equals</operation>
+        <value>Autorizado,En Auditoria</value>
+    </filters>
+    <label>eventos oxi lore 2</label>
+</ListView>

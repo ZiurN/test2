@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Solo_agregar_convenios_a_prestador</fullName>
+    <active>false</active>
+    <description>Solo se podrá agregar convenios a prestadores</description>
+    <errorConditionFormula>AND(
+    Prestador__r.Es_Prestador__c = False,
+    NOT( ISBLANK(Prestador__c) )
+   )</errorConditionFormula>
+    <errorMessage>Sólo los prestadores pueden tener convenios.</errorMessage>
+</ValidationRule>

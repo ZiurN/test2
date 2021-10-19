@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Filtro_Cuenta_personal</fullName>
+    <active>true</active>
+    <description>Debido al acceso de filtros de cuenta, se obliga filtro mediante regla de validacion</description>
+    <errorConditionFormula>OR(
+AND(
+RecordType.Name &lt;&gt; &quot;Caso a tipificar&quot;,
+RecordType.Name &lt;&gt; &quot;Expedientes legales&quot;,
+Account.RecordType.Name &lt;&gt; &quot;Cuenta personal&quot;,
+$Profile.Name &lt;&gt; &quot;Administrador del sistema&quot;
+),
+AND(
+RecordType.Name = &quot;Consultas&quot;,
+RecordType.Name = &quot;Reclamos&quot;,
+Account.RecordType.Name &lt;&gt; &quot;Efector&quot;,
+Account.RecordType.Name &lt;&gt; &quot;Cuenta personal&quot;,
+$Profile.Name &lt;&gt; &quot;Administrador del sistema&quot;
+)
+)</errorConditionFormula>
+    <errorMessage>La cuenta seleccionada es incorrecta</errorMessage>
+</ValidationRule>

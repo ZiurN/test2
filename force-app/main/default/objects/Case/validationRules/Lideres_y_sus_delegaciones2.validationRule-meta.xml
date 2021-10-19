@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lideres_y_sus_delegaciones2</fullName>
+    <active>false</active>
+    <description>Los usuarios front  con función lideres podrán modificar solamente los casos de la delegación correcta</description>
+    <errorConditionFormula>OR(
+
+AND(
+$UserRole.Name = &quot;Lider Litoral&quot;,
+$Profile.Name = &quot;Front&quot;,
+NOT( ISNEW()),
+AND(
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650886&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650887&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650106&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650848&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650190&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650360&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650188&quot;)
+)
+),
+
+AND(
+$UserRole.Name = &quot;Lider NEA&quot;,
+$Profile.Name = &quot;Front&quot;,
+NOT( ISNEW()),
+AND(
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650643&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650433&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650996&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650510&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650757&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650474&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650949&quot;)
+)
+),
+
+AND(
+$UserRole.Name = &quot;Lider NOA&quot;,
+$Profile.Name = &quot;Front&quot;,
+NOT( ISNEW()),
+AND(
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650430&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650713&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650784&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650489&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650393&quot;)
+)
+),
+
+AND(
+$UserRole.Name = &quot;Lider Nucleo&quot;,
+$Profile.Name = &quot;Front&quot;,
+NOT( ISNEW()),
+AND(
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650773&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650989&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650400&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650098&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650846&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650497&quot;)
+)
+),
+
+AND(
+$UserRole.Name = &quot;Lider Patagonia Andina&quot;,
+$Profile.Name = &quot;Front&quot;,
+NOT( ISNEW()),
+AND(
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650783&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650615&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650616&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650771&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650928&quot;)
+)
+),
+
+AND(
+$UserRole.Name = &quot;Lider Patagonia Atlantica&quot;,
+$Profile.Name = &quot;Front&quot;,
+NOT( ISNEW()),
+AND(
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650712&quot;),
+NOT(Delegacion__r.Codigo_de_delegacion__c = &quot;650809&quot;)
+)
+)
+
+)</errorConditionFormula>
+    <errorMessage>Los Lideres podrán modificar solamente los casos de su región correspondiente</errorMessage>
+</ValidationRule>

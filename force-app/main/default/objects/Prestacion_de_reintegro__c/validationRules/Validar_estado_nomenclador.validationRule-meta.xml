@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validar_estado_nomenclador</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR(
+				AND(
+    				NOT(ISBLANK(Prestacional__c)),
+        NOT(ISPICKVAL(Prestacional__r.Estado__c, &apos;A&apos;))
+    ),
+				AND(
+    				NOT(ISBLANK(Prestacion_odonto__c)),
+        NOT(ISPICKVAL(Prestacion_odonto__r.Estado__c, &apos;A&apos;))
+    )
+)</errorConditionFormula>
+    <errorMessage>El estado del nomenclador de la prestacion debe ser: (A) dado de Alta</errorMessage>
+</ValidationRule>

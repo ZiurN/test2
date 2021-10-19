@@ -1,0 +1,80 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global">
+
+	<aura:attribute name="accountSimpleRecord" type="Object"/>
+
+	<force:recordData 
+		aura:id="recordLoader"
+   		recordId="{! v.recordId }"
+        fields="Es_Prestador__c"
+        targetFields="{! v.accountSimpleRecord }"
+	/>
+
+	<aura:html tag="style">
+        .oneUtilityBarContainer {
+			z-index: 98;
+		}
+	</aura:html>
+
+	<article class="slds-card">
+		<div class="slds-card__header slds-grid">
+			<header class="slds-media slds-media--center" style="width: 100%;">
+
+				<div class="flex">
+					<div class="slds-media__figure stencil slds-avatar slds-avatar_small">
+						<span class="slds-icon_container" style="background-color: transparent;">
+							<div class="slds-icon slds-icon_small">
+								<img src="{!$Resource.AcaIcon}"/>
+							</div>
+						</span>
+					</div>
+
+					<div class="slds-media__body">
+						<h2>
+							<div class="title slds-card__header-title">
+								SaludSoft
+							</div>
+						</h2>
+					</div>
+				</div>
+
+				<div class="slds-grid slds-grid_vertical">
+					<lightning:buttonMenu class="slds-dropdown_medium slds-size_1-of-1 slds-m-bottom_small" label="Consultar datos del efector">
+
+						<div class="slds-dropdown__item">
+							<c:efectorDomiciliosBtn recordId="{!v.recordId}"/>
+						</div>
+						<div class="slds-dropdown__item">
+							<c:efectorEspecialidadesBtn recordId="{!v.recordId}"/>
+						</div>
+						<aura:if isTrue="{! v.accountSimpleRecord.Es_Prestador__c }">
+							<div class="slds-dropdown__item">
+								<c:prestadorInterfazFinancieraBtn recordId="{!v.recordId}"/>
+							</div>
+						</aura:if>
+						<div class="slds-dropdown__item">
+							<c:efectorMatriculasBtn recordId="{!v.recordId}"/>
+						</div>
+
+						<aura:if isTrue="{! v.accountSimpleRecord.Es_Prestador__c }">
+							<div class="slds-dropdown__item">
+								<c:efectorPresentacionesBtn recordId="{!v.recordId}"/>
+							</div>
+							<div class="slds-dropdown__item">
+								<c:prestadorPresupuestosBtn recordId="{!v.recordId}"/>
+							</div>
+							<div class="slds-dropdown__item">
+								<c:efectorSuspensionesBtn recordId="{!v.recordId}"/>
+							</div>
+						</aura:if>
+
+					</lightning:buttonMenu>
+
+					<div class="slds-col slds-size_1-of-1 slds-m_1-of-1">
+						<c:efectorPdfConveniosBtn recordId="{!v.recordId}"/>
+					</div>
+				</div>
+
+			</header>
+		</div>
+	</article>
+</aura:component>

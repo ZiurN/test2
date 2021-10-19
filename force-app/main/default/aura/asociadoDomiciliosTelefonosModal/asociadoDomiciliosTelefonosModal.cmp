@@ -1,0 +1,20 @@
+<aura:component>
+	<aura:attribute name="mydata" type="Object"/>
+	
+	
+	<aura:html tag="style">
+		.slds-modal__container{ 
+			min-width: 50%; 
+			max-width: 90%; 
+		}
+	</aura:html>
+	
+	<aura:iteration items="{! v.mydata }" var="telefono">
+		<center>
+			<div>
+				<strong>Tipo: </strong>{! telefono.tipo_telefono }
+				<strong> Número: </strong>{! telefono.numero }
+			</div>
+		</center>
+	</aura:iteration>
+</aura:component>

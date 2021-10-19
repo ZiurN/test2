@@ -1,0 +1,33 @@
+<aura:component controller="LoteEnviarMailAgenciasBtnCtrl" implements="force:hasRecordId" access="global">
+	<ltng:require scripts="{!$Resource.LightningUtils}" />
+	<ltng:require styles="{!$Resource.multilineToast}" />
+
+	<aura:attribute name="isLoading" type="Boolean" default="false"/>
+	<aura:attribute name="accountSimpleRecord" type="Object"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+
+
+    <force:recordData 
+		aura:id="recordLoader"
+		recordId="{!v.recordId}"
+		fields="Id_lote_SS__c"
+		targetFields="{! v.accountSimpleRecord }"
+		targetError="{! v.recordLoadError }"
+    />
+
+	
+	<lightning:button 
+		variant="neutral" 
+		onclick="{! c.handleClickBtn }" 
+  		title="Enviar mail Lotes" 
+		label="Enviar mail Lotes"
+		aura:id="disableEnviarAP"
+	/>
+
+	<aura:if isTrue="{! v.isLoading }">
+		<lightning:spinner alternativeText="Loading" variant="brand"/>
+	</aura:if>
+
+	<lightning:overlayLibrary aura:id="overlayLib"/>
+
+</aura:component>

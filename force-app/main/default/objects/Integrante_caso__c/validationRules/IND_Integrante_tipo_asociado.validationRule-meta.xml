@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IND_Integrante_tipo_asociado</fullName>
+    <active>true</active>
+    <description>Si el segmento del titular es OBLIGATORIO y cargue un integrante debera cargar el integrante tipo asociado del conyuge</description>
+    <errorConditionFormula>ISNULL(TEXT(Integrante_tipo_asociado__c))</errorConditionFormula>
+    <errorMessage>Si el segmento es OBLIGATORIO y es el estado civil del nuevo integrante es Casado o con cubinato deberá completar el tipo de asociado</errorMessage>
+</ValidationRule>

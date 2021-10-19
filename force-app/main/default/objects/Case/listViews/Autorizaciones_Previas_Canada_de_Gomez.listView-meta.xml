@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Autorizaciones_Previas_Canada_de_Gomez</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>CREATEDBY_USER.ALIAS</columns>
+    <columns>Evento_Medico__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>Estado_de_documentacion__c</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>Nivel_de_derivacion__c</columns>
+    <columns>Celula__c</columns>
+    <columns>Delegacion__c</columns>
+    <columns>Codigo_empresa__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650773</value>
+    </filters>
+    <filters>
+        <field>CASES.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Case.Autorizacion_previa,Case.Internacion,Case.Seguimiento</value>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>contains</operation>
+        <value>Generada,Centro Autorizador,Autorizada,Rechazado,En Proceso</value>
+    </filters>
+    <filters>
+        <field>Rechazo_informado_al_socio__c</field>
+        <operation>equals</operation>
+        <value>0</value>
+    </filters>
+    <label>Autorizaciones Previas Cañada de Gomez</label>
+    <sharedTo>
+        <roleAndSubordinates>Encargado_Filial_Canada_de_Gomez</roleAndSubordinates>
+    </sharedTo>
+</ListView>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IND_No_Modificar_Oportunidad</fullName>
+    <active>false</active>
+    <description>Si el estado de la solicitud es TRANSFORMADA, COMPETA &lt;&gt; NUEVA o INCOMPLETA &lt;&gt; NUEVA</description>
+    <errorConditionFormula>AND ( 
+      OR (
+            ISPICKVAL( Estado_de_solicitud__c , &quot;Incompleta&quot;),
+            ISPICKVAL( Estado_de_solicitud__c , &quot;Completa&quot;),
+            ISPICKVAL( Estado_de_solicitud__c , &quot;	Transformada&quot;) 
+           ),
+      OR(   
+            NOT(ISPICKVAL( Subestado_de_DDJJ__c , &quot;NUEVA&quot;)),
+            PRIORVALUE(Subestado_de_DDJJ__c) = &quot;NUEVA&quot;
+         )
+)</errorConditionFormula>
+    <errorMessage>No se puede modificar la oportunidad si el subestado de DDJJ es distinto a NUEVA</errorMessage>
+</ValidationRule>

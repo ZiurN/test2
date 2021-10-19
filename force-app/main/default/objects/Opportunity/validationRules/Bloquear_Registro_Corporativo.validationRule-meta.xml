@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Bloquear_Registro_Corporativo</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    RecordType.Name = &quot;Corporativo&quot;,
+ 
+        OR(
+                ISPICKVAL(Estado_de_solicitud__c,&quot;Completa&quot;),
+                ISPICKVAL(Estado_de_solicitud__c ,&quot;Transformada&quot;)
+                ),
+        ISPICKVAL(StageName, &quot;Contrato Generado&quot;)
+)</errorConditionFormula>
+    <errorMessage>No se puede modificar el registro porque la etapa es &quot;Contrato Generado&quot; y/o el estado de solicitud es &quot;Completa&quot; o &quot;Transformada&quot;</errorMessage>
+</ValidationRule>

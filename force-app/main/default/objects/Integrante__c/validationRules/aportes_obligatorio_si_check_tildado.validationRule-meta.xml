@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>aportes_obligatorio_si_check_tildado</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR(
+				AND(
+				    Indicador_de_aporte__c,
+  		    ISBLANK(Aportes__c) 
+				),
+    AND(
+								NOT(ISBLANK(Aportes__c)),
+								NOT(Indicador_de_aporte__c)
+				)
+)</errorConditionFormula>
+    <errorDisplayField>Aportes__c</errorDisplayField>
+    <errorMessage>Si &quot;Indicador de aporte&quot; está tildado, debe ingresar los aportes, en caso contrario, debe quedar en blanco</errorMessage>
+</ValidationRule>

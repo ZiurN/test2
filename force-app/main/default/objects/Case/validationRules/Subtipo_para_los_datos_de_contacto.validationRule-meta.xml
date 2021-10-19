@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Subtipo_para_los_datos_de_contacto</fullName>
+    <active>true</active>
+    <description>Se debe respetar el Subtipo para los datos de contacto</description>
+    <errorConditionFormula>OR(
+AND(
+RecordType.DeveloperName = &quot;Solicitud_de_datos_particulares&quot;,
+ISPICKVAL(Type,&quot;MODIF_ADDEP&quot;),
+ISPICKVAL(Sub_tipo__c,&quot;DOM&quot;),
+OR(
+NOT(ISPICKVAL(Tipo_de_telefono__c,&quot;&quot;)),
+NOT(ISBLANK(Telefono__c)),
+NOT(ISBLANK(SuppliedEmail)),
+NOT(ISPICKVAL(Tipo_DNI__c,&quot;&quot;)),
+NOT(ISBLANK(DNI__c))
+)),
+AND(
+RecordType.DeveloperName = &quot;Solicitud_de_datos_particulares&quot;,
+ISPICKVAL(Type,&quot;MODIF_ADDEP&quot;),
+ISPICKVAL(Sub_tipo__c,&quot;TEL&quot;),
+OR(
+NOT(ISBLANK(Calle__c)),
+NOT(ISBLANK(Numero__c)),
+NOT(ISBLANK(Piso__c)),
+NOT(ISBLANK(Departamento__c)),
+NOT(ISBLANK(Codigo_postal__c)),
+NOT(ISPICKVAL(Provincia__c,&quot;&quot;)),
+NOT(ISBLANK(SuppliedEmail)),
+NOT(ISPICKVAL(Tipo_DNI__c,&quot;&quot;)),
+NOT(ISBLANK(DNI__c))
+)),
+AND(
+RecordType.DeveloperName = &quot;Solicitud_de_datos_particulares&quot;,
+ISPICKVAL(Type,&quot;MODIF_ADDEP&quot;),
+ISPICKVAL(Sub_tipo__c,&quot;DATOSADICIONALES&quot;),
+OR(
+NOT(ISBLANK(Calle__c)),
+NOT(ISBLANK(Numero__c)),
+NOT(ISBLANK(Piso__c)),
+NOT(ISBLANK(Departamento__c)),
+NOT(ISBLANK(Codigo_postal__c)),
+NOT(ISPICKVAL(Provincia__c,&quot;&quot;)),
+NOT(ISPICKVAL(Tipo_DNI__c,&quot;&quot;)),
+NOT(ISBLANK(DNI__c)),
+NOT(ISPICKVAL(Tipo_de_telefono__c,&quot;&quot;)),
+NOT(ISBLANK(Telefono__c))
+)),
+AND(
+RecordType.DeveloperName = &quot;Solicitud_de_datos_particulares&quot;,
+ISPICKVAL(Type,&quot;MODIF_ADDEP&quot;),
+ISPICKVAL(Sub_tipo__c,&quot;DOC&quot;),
+OR(
+NOT(ISBLANK(Calle__c)),
+NOT(ISBLANK(Numero__c)),
+NOT(ISBLANK(Piso__c)),
+NOT(ISBLANK(Departamento__c)),
+NOT(ISBLANK(Codigo_postal__c)),
+NOT(ISPICKVAL(Provincia__c,&quot;&quot;)),
+NOT(ISPICKVAL(Tipo_de_telefono__c,&quot;&quot;)),
+NOT(ISBLANK(Telefono__c)),
+NOT(ISBLANK(SuppliedEmail))
+))
+)</errorConditionFormula>
+    <errorMessage>Debe completar la sección correspondiente al Subtipo de datos de contacto</errorMessage>
+</ValidationRule>

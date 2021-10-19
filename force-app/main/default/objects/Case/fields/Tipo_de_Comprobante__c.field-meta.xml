@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_Comprobante__c</fullName>
+    <externalId>false</externalId>
+    <label>Tipo de Comprobante</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>FXC</fullName>
+                <default>false</default>
+                <label>FACTURA NUEVA C</label>
+            </value>
+            <value>
+                <fullName>RXC</fullName>
+                <default>false</default>
+                <label>RECIBO C NUEVO</label>
+            </value>
+            <value>
+                <fullName>LIX</fullName>
+                <default>false</default>
+                <label>LIQUIDACION NUEVA</label>
+            </value>
+            <value>
+                <fullName>FXA</fullName>
+                <default>false</default>
+                <label>FACTURA NUEVA A</label>
+            </value>
+            <value>
+                <fullName>FACM</fullName>
+                <default>false</default>
+                <label>FACTURA M</label>
+            </value>
+            <value>
+                <fullName>FACA</fullName>
+                <default>false</default>
+                <label>FACTURA A</label>
+            </value>
+            <value>
+                <fullName>FACB</fullName>
+                <default>false</default>
+                <label>FACTURA B</label>
+            </value>
+            <value>
+                <fullName>FACC</fullName>
+                <default>false</default>
+                <label>FACTURA C</label>
+            </value>
+            <value>
+                <fullName>LIQ</fullName>
+                <default>false</default>
+                <label>LIQUIDACION</label>
+            </value>
+            <value>
+                <fullName>NCA</fullName>
+                <default>false</default>
+                <label>NOTA DE CREDITO A</label>
+            </value>
+            <value>
+                <fullName>NCC</fullName>
+                <default>false</default>
+                <label>NOTA DE CREDITO C</label>
+            </value>
+            <value>
+                <fullName>NDA</fullName>
+                <default>false</default>
+                <label>NOTA DE DEBITO A</label>
+            </value>
+            <value>
+                <fullName>NDC</fullName>
+                <default>false</default>
+                <label>NOTA DE DEBITO C</label>
+            </value>
+            <value>
+                <fullName>RECA</fullName>
+                <default>false</default>
+                <label>RECIBO A</label>
+            </value>
+            <value>
+                <fullName>RECB</fullName>
+                <default>false</default>
+                <label>RECIBO B</label>
+            </value>
+            <value>
+                <fullName>RECC</fullName>
+                <default>false</default>
+                <label>RECIBO C</label>
+            </value>
+            <value>
+                <fullName>RECM</fullName>
+                <default>false</default>
+                <label>RECIBO M</label>
+            </value>
+            <value>
+                <fullName>NCA_DESC</fullName>
+                <default>false</default>
+                <label>NOTA DE CREDITO A DESCUENTO</label>
+            </value>
+            <value>
+                <fullName>AJ_LIQ</fullName>
+                <default>false</default>
+                <label>AJUSTE DE LIQUIDACION</label>
+            </value>
+            <value>
+                <fullName>LIQI</fullName>
+                <default>false</default>
+                <label>LIQUIDACION INTEGRACION</label>
+            </value>
+            <value>
+                <fullName>RCX</fullName>
+                <default>false</default>
+                <label>RECIBO C ELECTRONICO</label>
+            </value>
+            <value>
+                <fullName>FCX</fullName>
+                <default>false</default>
+                <label>FACTURA C ELECTRONICA</label>
+            </value>
+            <value>
+                <fullName>FAL</fullName>
+                <default>false</default>
+                <label>FACTURA A C/LEYENDA (SUJETA A RETENCION)</label>
+            </value>
+            <value>
+                <fullName>NCP</fullName>
+                <default>false</default>
+                <label>NOTA DE CREDITO ELECTRONICA MIPYME</label>
+            </value>
+            <value>
+                <fullName>FCE</fullName>
+                <default>false</default>
+                <label>FACTURA DE CREDITO ELECTRONICA MIPYME</label>
+            </value>
+            <value>
+                <fullName>NDP</fullName>
+                <default>false</default>
+                <label>NOTA DE DEBITO ELECTRONICA MIPYME</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
