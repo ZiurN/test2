@@ -1,5 +1,7 @@
 # GitIgnore for Salesforce Projects
 # Project Settings and MetaData
+.sfdx/
+delta*/
 .project
 .settings/
 .metadata
@@ -9,14 +11,14 @@ config
 # Apex Log as optional
 apex-scripts/log
 
-# Eclipse specific 
+# Eclipse specific
 salesforce.schema
 Referenced Packages
 bin/
 tmp/
 config/
 *.tmp
-*.bak 
+*.bak
 local.properties
 .settings
 .loadpath
