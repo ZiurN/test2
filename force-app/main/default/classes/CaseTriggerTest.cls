@@ -1673,7 +1673,7 @@ private class CaseTriggerTest {
 		
         Date fechaNacimiento = Date.newInstance(1990, 05, 01);
         Date fechaVigencia = Date.newInstance(2020, 08, 01);
-		Case casoSolicitudDespeguesFT = Build.aCaseSolicituddedespegues()
+		Case casoSolicitudDespeguesFT = Build.aCaseSolicitudDedespegues()
 				.withDerivaAportes(true)
 				.withAporte(5000)
 				.withBebeSinDNI(true)
