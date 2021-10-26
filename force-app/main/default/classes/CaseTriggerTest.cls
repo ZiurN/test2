@@ -109,7 +109,7 @@ private class CaseTriggerTest {
         Case upCase = [SELECT SlaStartDate,Entitlement.Name,MilestoneStatus FROM Case];
         System.assertNotEquals(null,upCase.SlaStartDate);
         System.assertEquals('24 STRING',upCase.Entitlement.Name);
-        System.assertEquals('Compatible',upCase.MilestoneStatus);
+        System.assertEquals('Compliant',upCase.MilestoneStatus);
 		List<CaseMilestone> caseMilestones = [ SELECT Id FROM CaseMilestone WHERE CaseId = :upCase.Id ];
         System.assertEquals(1, caseMilestones.size());
     }
@@ -147,7 +147,7 @@ private class CaseTriggerTest {
         Case upCase = [SELECT SlaStartDate,Entitlement.Name,MilestoneStatus FROM Case];
         System.assertNotEquals(null,upCase.SlaStartDate);
         System.assertEquals('72 STRING',upCase.Entitlement.Name);
-        System.assertEquals('Compatible',upCase.MilestoneStatus);
+        System.assertEquals('Compliant',upCase.MilestoneStatus);
 		List<CaseMilestone> caseMilestones = [ SELECT Id FROM CaseMilestone WHERE CaseId = :upCase.Id ];
         System.assertEquals(1, caseMilestones.size());
     }
@@ -185,7 +185,7 @@ private class CaseTriggerTest {
         Case upCase = [SELECT SlaStartDate,Entitlement.Name,MilestoneStatus FROM Case];
         System.assertNotEquals(null,upCase.SlaStartDate);
         System.assertEquals('120 STRING',upCase.Entitlement.Name);
-        System.assertEquals('Compatible',upCase.MilestoneStatus);
+        System.assertEquals('Compliant',upCase.MilestoneStatus);
 		List<CaseMilestone> caseMilestones = [ SELECT Id FROM CaseMilestone WHERE CaseId = :upCase.Id ];
         System.assertEquals(1, caseMilestones.size());
     }
@@ -223,7 +223,7 @@ private class CaseTriggerTest {
         Case upCase = [SELECT SlaStartDate,Entitlement.Name,MilestoneStatus FROM Case];
         System.assertNotEquals(null,upCase.SlaStartDate);
         System.assertEquals('120 STRING',upCase.Entitlement.Name);
-        System.assertEquals('Compatible',upCase.MilestoneStatus);
+        System.assertEquals('Compliant',upCase.MilestoneStatus);
 		List<CaseMilestone> caseMilestones = [ SELECT Id FROM CaseMilestone WHERE CaseId = :upCase.Id ];
         System.assertEquals(1, caseMilestones.size());
     }
