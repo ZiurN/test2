@@ -131,4 +131,28 @@ private class XappiaHelperTest {
 		System.assertEquals(false, hierarchyIds.contains(comercialAmba[0].Id), 'El rol AMBA no debe estar en la respuesta');
 		System.assertEquals(true, hierarchyIds.contains(ind[0].Id), 'El rol ind debe estar en la respuesta');
 	}
+	@isTest
+	static void testgetRecordTypeNameById() {
+		List<RecordType> rts = [SELECT id, DeveloperName, SobjectType FROM RecordType LIMIT 1];
+		if (rts.size() > 0) {
+			Set<String> setRTs = new Set<String>{rts[0].DeveloperName};
+			System.assertNotEquals(null, XappiaHelper.getRecordTypeNameById(rts[0].sObjectType, setRTs), 'Debe retornar info del RT');
+		}
+	}
+	@isTest
+	static void testgetRecordTypes() {
+		System.assertNotEquals(null, XappiaHelper.getRecordTypes('Case'), 'Debe retornar info del RT');
+	}
+	@isTest
+	static void testgetPicklistFieldValues () {
+		System.assertNotEquals(null, XappiaHelper.getPicklistFieldValues('Case', 'Status'), 'Debe retornar info del Campo');
+	}
+	@isTest
+	static void testgetPicklistLabelAndValues () {
+		System.assertNotEquals(null, XappiaHelper.getPicklistLabelAndValues('Case', 'Status'), 'Debe retornar info del Campo');
+	}
+	@isTest
+	static void testgetProfileIdByName () {
+		System.assertNotEquals(null, XappiaHelper.getProfileIdByName('System Administrator'), 'Debe retornar info del profile');
+	}
 }
