@@ -23,7 +23,6 @@ global class Build {
 				obj.Codigo_de_Entidad__c = value;
 				return this;
 			}
-
 			public AccountBuilder withCodigoDeOS(String value) {
 				obj.Codigo_de_obra_social__c = value;
 				return this;

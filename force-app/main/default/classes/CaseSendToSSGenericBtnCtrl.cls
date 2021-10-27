@@ -1,342 +1,85 @@
+/**-----------------------------------------------------------------------------------------------------------------------
+@author			Jeferson Ruiz.
+@description	Clase controladora del botón CaseSendToSSGenericBtn, usado para enviár solicitudes a SS.
+@date			26/10/2021
+------------------------------------------------------------------------------------------------------------------------*/
+@SuppressWarnings('PMD.ApexCRUDViolation, PMD.ExcessiveParameterList')
 public without sharing class CaseSendToSSGenericBtnCtrl {
-    
+	/** Tipos de registro de solicitudes */
+	private static Id solicitudAlta = XappiaHelper.getRecordType('Case', 'Solicitud_de_alta_familiar').Id;
+	private static Id solicitudDespegue = XappiaHelper.getRecordType('Case', 'Solicitud_de_despegues').Id;
+	private static Id solicitudDeBaja = XappiaHelper.getRecordType('Case', 'Solicitud_de_baja').Id;
+	private static Id solicitudCambioSegmento = XappiaHelper.getRecordType('Case', 'Solicitud_de_segmento').Id;
+	private static Id solicitudInterfazFinanciera = XappiaHelper.getRecordType('Case', 'Interfaz_financiera').Id;
+	private static Id solicitudCredencial = XappiaHelper.getRecordType('Case', 'Solicitud_de_nueva_credencial').Id;
+	private static Id solicitudPlan = XappiaHelper.getRecordType('Case', 'Solicitud_de_cambio_de_plan').Id;
+	private static Id solicitudDatosParticulares = XappiaHelper.getRecordType('Case', 'Solicitud_de_datos_particulares').Id;
+	/** Status de los mensajes al front */
+	private static final String SUCCESS = 'success';
+	private static final String ERROR = 'error';
+	private static final String WARNING = 'warning';
+	private static final String INFO = 'info';
+	/** Variables estáticas */
+	private static Case caso;
+	private static List<Nota_de_Auditoria__c> notas;
+	private static User usuario = [SELECT CommunityNickname, Profile.Name, UserRole.DeveloperName, Codigo_delegacion__c
+									FROM User
+									WHERE Id = :UserInfo.getUserId()];
+	private static String userNick = usuario.CommunityNickname != null ? usuario.CommunityNickname.toUpperCase() : null;
+	private static List<ContentVersion> files = new List<ContentVersion>();
+	private static Boolean isAttachmentResend;
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
+	@description	Método para envíar la solicitud a SS desde la interfaz del usuario.
+	@param			recordId - Id del caso.
+	@param			isAttachmentResend - Id del caso.
+					sean creadas.
+	------------------------------------------------------------------------------------------------------------------------*/
     @AuraEnabled
-    public static Response sendToSS(String recordId, Boolean isAttachmentResend) {
-        Case caso;
-        Integer cuantityOfFiles = 0;
-        try {
-			System.debug('isAttachmentResend ' + isAttachmentResend);
-            
-			
-			if(isAttachmentResend) {
-				caso = [
-					SELECT id, RecordTypeId, Type 
-					FROM Case 
-					WHERE id = :recordId 
-				];
-			}
-			else {
-				caso = [
-					SELECT id, RecordTypeId, Type 
-					FROM Case 
-					WHERE id = :recordId 
+    public static Response sendToSS(String recordId, Boolean isAttachmentResendFront) {
+		isAttachmentResend = isAttachmentResendFront;
+		if (isAttachmentResend) {
+			caso = [SELECT id, RecordTypeId, Type FROM Case WHERE id = :recordId];
+		} else {
+			List<Case> casos = [SELECT id, RecordTypeId, Type FROM Case
+					WHERE id = :recordId
 						AND Estado_de_solicitud__c != 'TRANSFORMADA'
-						AND Estado_de_solicitud__c != 'COMPLETA' 
-				];
-			}
-
-        } catch (Exception e) {
-            if(caso == null) return new Response(true, 'Caso invalido, compruebe que el caso no este cerrado.', '{}');
-            return new Response(true, 'Caso invalido', '{}');
-        }
-        Id solicitudAlta = XappiaHelper.getRecordType('Case', 'Solicitud_de_alta_familiar').Id;
-        Id solicitudDespegue = XappiaHelper.getRecordType('Case', 'Solicitud_de_despegues').Id;
-        Id solicitudDeBaja = XappiaHelper.getRecordType('Case', 'Solicitud_de_baja').Id;
-        Id solicitudCambioSegmento = XappiaHelper.getRecordType('Case', 'Solicitud_de_segmento').Id;
-        Id solicitudInterfazFinanciera = XappiaHelper.getRecordType('Case', 'Interfaz_financiera').Id;
-        Id solicitudCredencial = XappiaHelper.getRecordType('Case', 'Solicitud_de_nueva_credencial').Id;
-        Id solicitudPlan = XappiaHelper.getRecordType('Case', 'Solicitud_de_cambio_de_plan').Id;
-        Id solicitudDatosParticulares = XappiaHelper.getRecordType('Case', 'Solicitud_de_datos_particulares').Id;
-        User usuario = [
-			SELECT CommunityNickname, Profile.Name, UserRole.DeveloperName, Codigo_delegacion__c
-			FROM User
-			WHERE Id = :UserInfo.getUserId()
-        ];
-        String userNick = usuario.CommunityNickname != null ? usuario.CommunityNickname.toUpperCase()  : null;
+						AND Estado_de_solicitud__c != 'COMPLETA'];
+			if (casos.size() > 0) {caso = casos[0];}
+		}
+		if (caso == null) return new Response(true, System.Label.Alerta_InvalidCaseClosed, '{}');
         Set<Id> dLinks = new Set<Id>();
-        for(ContentDocumentLink cDL :[SELECT ContentDocumentId, Id 
-                                        FROM ContentDocumentLink 
-                                        WHERE LinkedEntityId = :recordId]) {
+        for (ContentDocumentLink cDL :[SELECT ContentDocumentId, Id FROM ContentDocumentLink WHERE LinkedEntityId = :recordId]) {
             dLinks.add(cDL.ContentDocumentId);
         }
-        List<ContentVersion> generalFiles = [
-			SELECT Id, VersionData, Title,Enviado__c, FileExtension, Description 
-            FROM ContentVersion 
-            WHERE ContentDocumentId 
-                IN :dLinks AND IsLatest = true
-		];
-		List<ContentVersion> files = [
-			SELECT Id, VersionData, Title, Enviado__c, FileExtension, Description 
-            FROM ContentVersion 
-            WHERE ContentDocumentId IN :dLinks 
-				AND IsLatest = true
-				AND Enviado__c = false
-			LIMIT 1
-        ];
-
+        List<ContentVersion> generalFiles = [SELECT Id, VersionData, Title,Enviado__c, FileExtension, Description
+												FROM ContentVersion
+												WHERE ContentDocumentId IN :dLinks AND IsLatest = true];
+		files = [SELECT Id, VersionData, Title, Enviado__c, FileExtension, Description
+				FROM ContentVersion
+				WHERE ContentDocumentId IN :dLinks
+					AND IsLatest = true
+					AND Enviado__c = false
+				LIMIT 1];
 		if(files.size() == 0 && isAttachmentResend) {
-            return new Response(false, '', '');
+            return new Response(false, '', ''); // ??
         }
-
-        //List<ContentVersion> files = new List<ContentVersion>();
-        //if(!generalFiles.isEmpty()){
-            //for(ContentVersion cVer : generalFiles) {
-                //if(!cVer.Enviado__c) {
-                    //if(files.isEmpty()){
-                        //files.add(cVer);
-                    //}
-                    //cuantityOfFiles++;
-                //}
-            //}
-            //if(cuantityOfFiles == 0 && isAttachmentResend) {
-                //return new Response(false, '', '');
-            //}
-        //}
-                                   
-        // Verificar que tenga adjuntos
-        if(generalFiles.isEmpty() && caso.RecordtypeId != solicitudDatosParticulares 
-                           && caso.RecordtypeId != solicitudCredencial) {
-            return new Response(true, 'El caso no se puede enviar sin archivos adjuntos.', '');
-        }
-        
-        if(caso.RecordTypeId == solicitudAlta) {
-            // ==================================[SOLICITUD ALTA ]=====================================================
-            caso = [
-                SELECT Account.Afi_Id_del_Titular__c, Apellido__c, Nombre__c, Tipo_dni__c, DNI__c, Estado_civil__c,
-                    Obra_social2__r.Codigo_de_delegacion__c, Sexo__c, Discapacidad__c, Fecha_de_nacimiento__c, Nacionalidad__c,
-                    Deriva_aportes__c, Aporte__c, Empleador__r.Cuit__c, Empleador__r.Name, Empleador__r.Codigo_de_empresa__c, Cuil__c,
-                    Bebe_sin_DNI__c, Delegacion__r.Codigo_de_delegacion__c, Fecha_de_vigencia__c, Nro_de_solicitud_SS__c,
-                    Obra_social2__r.Codigo_de_obra_social__c, Tipo_de_parentesco__c, Account.Codigo_de_Afiliado__c,
-                    Estado_DDJJ__c, Cuit__c, Cuit_empleador__c, Razon_social__c, RecordTypeId
-                FROM Case 
-                WHERE id = :recordId 
-                LIMIT 1
-            ];
-            List<Nota_de_Auditoria__c> notas = [SELECT id, Nota__c, CreatedBy.CommunityNickname FROM Nota_de_Auditoria__c WHERE APr_Id__c =:recordId  AND (Id_externo_solicitudes__c = null OR Id_externo_solicitudes__c = '')];        
-            String body = parseAltaBody(caso, userNick, files, notas, usuario);
-            WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'alta-familiar');
-            if(!resp.hasError) {
-                processResponse(resp, caso, files, false, isAttachmentResend);
-            }
-            if(files.size() != 0 && !resp.hasError) {
-                System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
-            }
-            return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
-        } else if(caso.RecordTypeId == solicitudDespegue) {
-            // ==================================[SOLICITUD DESPEGUE]=====================================================
-            caso = [
-                SELECT Account.Afi_Id_del_Titular__c, Apellido__c, Nombre__c, Tipo_dni__c, DNI__c, Estado_civil__c,
-                    Obra_social2__r.Codigo_de_delegacion__c, Sexo__c, Discapacidad__c, Fecha_de_nacimiento__c, Nacionalidad__c,
-                    Deriva_aportes__c, Aporte__c, Empleador__r.Cuit__c, Empleador__r.Name, Empleador__r.Codigo_de_empresa__c, Cuil__c,
-                    Bebe_sin_DNI__c, Delegacion__r.Codigo_de_delegacion__c, Fecha_de_vigencia__c, Nro_de_solicitud_SS__c,
-                    Obra_social2__r.Codigo_de_obra_social__c, Tipo_de_parentesco__c, Account.Codigo_de_Afiliado__c,
-                    Estado_DDJJ__c, Type, Plandespegue__c, Agrupacion1__c, Agrupacion3__c, Segmento_de_grupo_familiar__c, Localidad__r.Loc_id__c, Calle__c,
-                    Numero__c, Piso__c, Dpto__c, SuppliedEmail, Condicion_IVA__c, Tarjeta_de_credito__c, Tipo_CBU__c, Tipo_de_debito_por_ACA__c,
-                    Numero_de_tarjeta_de_credito__c, Numero_CBU_cobro_de_cuota__c, Medio_de_cobro__c, Telefono__c, Titular__r.Codigo_de_Afiliado__c,
-                    Cuit_empleador__c, Razon_social__c, Cdigo_debito_por_ACA__c, RecordTypeId, CUIL_del_CBU__c
-                FROM Case 
-                WHERE id = :recordId 
-                LIMIT 1
-            ];
-            List<Nota_de_Auditoria__c> notas = [SELECT id, Nota__c, CreatedBy.CommunityNickname FROM Nota_de_Auditoria__c WHERE APr_Id__c =:recordId  AND (Id_externo_solicitudes__c = null OR Id_externo_solicitudes__c = '')];        
-            List<Integrante_caso__c> integrantes = [
-                SELECT Id, Tipo_de_relacion_con_titular__c, Apellido__c, Nombre__c, Tipo_de_Documento__c, Nro_de_documento__c,
-                    Obra_social_actual__r.Codigo_de_obra_social__c, Estado_Civil__c, Sexo__c, Fecha_de_Nacimiento__c,
-                    Discapacitado__c, Nacionalidad__c, Indicador_de_aporte__c, CUIT_Sin_guiones__c, Aportes__c,
-                    Empleador__r.Cuit__c, Empleador__r.Name, Empleador__r.Codigo_de_empresa__c, Cuit_empleador__c, Razon_social__c
-                FROM Integrante_caso__c 
-                WHERE Caso__c = :recordId];
-            String body = parseDespegueBody(caso, userNick, files, notas, integrantes, usuario);
-            WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'despegue');
-            if(!resp.hasError) {
-                processResponse(resp, caso, files, false, isAttachmentResend);
-            }
-            if(files.size() != 0 && !resp.hasError) {
-                System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
-            }
-            return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
-        } else if(caso.RecordTypeId == SolicitudDeBaja) {
-            // ==================================[SOLICITUD BAJA]=====================================================
-            String body;
-            if(caso.Type == 'Baja Parcial') {
-                caso = [SELECT Id, Delegacion__r.Codigo_de_delegacion__c, Fecha_de_vigencia__c, Type,
-                                Nro_de_solicitud_SS__c
-                            FROM Case 
-                            WHERE id = :recordId];
-                Map<Id, Integrante_caso__c> integrantes = new Map<Id, Integrante_caso__c>([
-						SELECT Id, 
-                            Familiar__r.Codigo_de_Afiliado__c, Integrante_tipo_asociado__c, 
-                            Motivo_de_baja__c, Numero_de_solicitud__c, RecordTypeId
-                        FROM Integrante_caso__c 
-                        WHERE Caso__c = :caso.Id 
-                            //AND Estado_solicitud__c != 'TRANSFORMADA'
-                            //AND Estado_solicitud__c != 'COMPLETA'
-				]);
-                if(integrantes.isEmpty()) {
-                    return new Response(true, 'No puede generar una baja parcial sin integrantes', '');
-                }
-                Map<Id, List<Nota_de_Auditoria__c>> notasByIntegranteId = new Map<Id, List<Nota_de_Auditoria__c>>();
-                for(Nota_de_Auditoria__c nota : [SELECT id, Integrante__c, Nota__c, CreatedBy.CommunityNickname
-                            FROM Nota_de_Auditoria__c 
-                            WHERE Integrante__c 
-                                IN : integrantes.keySet()
-                                AND (Id_externo_solicitudes__c = null OR Id_externo_solicitudes__c = '')
-                            ]){
-                    if(notasByIntegranteId.containsKey(nota.Integrante__c)) {
-                        notasByIntegranteId.get(nota.Integrante__c).add(nota);
-                    } else {
-                        notasByIntegranteId.put(nota.Integrante__c, new List<Nota_de_Auditoria__c> {nota});
-                    }
-                }
-                body = parseBajaPBody(caso, userNick, files, notasByIntegranteId, integrantes, usuario);
-            } else if(caso.Type == 'Baja Total') {
-                caso = [SELECT Id, Delegacion__r.Codigo_de_delegacion__c, Fecha_de_vigencia__c, Account.codigo_de_Afiliado__c,
-                                Tipo__c, Motivo_de_baja__c, Nro_de_solicitud_SS__c, Type
-                            FROM Case 
-                            WHERE Id = :recordId];
-                List<Nota_de_Auditoria__c> notas = [SELECT id, Nota__c, CreatedBy.CommunityNickname FROM Nota_de_Auditoria__c WHERE APr_Id__c =:recordId  AND (Id_externo_solicitudes__c = null OR Id_externo_solicitudes__c = '')];        
-                body = parseBajaTBody(caso, userNick, files, notas, usuario);
-            } else {
-                return new Response(true, 'El caso no tiene un tipo de baja valido.', '');
-            }
-            WSCaseEnviarASSHelper.Response solicitudBaja = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'baja');
-            if(!solicitudBaja.hasError) {
-				if(!isAttachmentResend) {
-					List<WSCaseEnviarASSHelper.Notas> notasToProcess = new List<WSCaseEnviarASSHelper.Notas>();
-					if(caso.Type == 'Baja Parcial') {
-						List<Integrante_caso__c> integrantesToUpdate = new List<Integrante_caso__c>();
-						String caseNroSolicitud = '';
-						for(WSCaseEnviarASSGenericResponse.Data data : solicitudBaja.result.data) {
-							integrantesToUpdate.add(new Integrante_caso__c(Id = data.sf_id, Numero_de_solicitud__c = data.solafi_id, Estado_solicitud__c = data.estado_sol));
-							caseNroSolicitud += data.solafi_id + ' - ';
-							notasToProcess.addAll(data.notas);
-						}
-						if(String.isBlank(caso.Nro_de_solicitud_SS__c)) { 
-							caseNroSolicitud = caseNroSolicitud.left(caseNroSolicitud.length() - 3);
-							caso.Nro_de_solicitud_SS__c = caseNroSolicitud;
-						}
-                    
-						caso.Status = 'En proceso';
-						update caso;
-						update integrantesToUpdate;
-					} else {
-						WSCaseEnviarASSGenericResponse.Data data =  solicitudBaja.result.data.get(0);
-						caso.Estado_de_solicitud__c = data.estado_sol;
-						caso.Nro_de_solicitud_SS__c = data.solafi_id;
-						notasToProcess.addAll(data.notas);
-						caso.Status = 'En proceso';
-						update caso;
-					}
-
-					processNotas(notasToProcess);
-				}
-
-                processFiles(files);
-            }
-            if(files.size() != 0 && !solicitudBaja.hasError) {
-                System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
-            }
-            return new Response(solicitudBaja.hasError, (solicitudBaja.hasError) ? solicitudBaja.message : solicitudBaja.result.message, body);
-        } else if(caso.RecordTypeId == solicitudCambioSegmento) {
-            // ==================================[SOLICITUD CAMBIO SEGMENTO]=====================================================
-            caso = [SELECT Id, Account.Codigo_de_Afiliado__c, Fecha_de_vigencia__c , Delegacion__r.Codigo_de_delegacion__c, 
-                            Obra_social2__r.Codigo_de_obra_social__c, Plandespegue__c, Nuevo_segmento__c, Codigo_Empleador__c, 
-                            Nro_de_solicitud_SS__c , Estado_DDJJ__c, Aporte__c, CUIT__c, Cuit_empleador__c, 
-                            Razon_social__c, Account.CUIT__c, Empleador__c, Empleador__r.Name, Empleador__r.Cuit__c, 
-                            Empleador__r.Codigo_de_empresa__c, RecordTypeId
-                    FROM Case
-                    WHERE id = :recordId
-                    LIMIT 1
-                ];
-            List<Nota_de_Auditoria__c> notas = [SELECT id, Nota__c, CreatedBy.CommunityNickname 
-                                                    FROM Nota_de_Auditoria__c 
-                                                    WHERE APr_Id__c = :recordId  
-                                                        AND (Id_externo_solicitudes__c = null OR Id_externo_solicitudes__c = '')];        
-            String body = parseCambioDeSegmentoBody(caso, userNick, files, notas, usuario);
-            WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'cambio-segmento');
-            if(!resp.hasError) {
-                processResponse(resp, caso, files, true, isAttachmentResend);
-            }
-            if(files.size() != 0 && !resp.hasError) {
-                System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
-            }
-            return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
-        } else if(caso.RecordTypeId == solicitudInterfazFinanciera) {
-            // ==================================[SOLICITUD INTERFAZ FINANCIERA]=====================================================
-            caso = [
-                SELECT Account.Afi_Id_del_Titular__c, Apellido__c, Nombre__c, Tipo_dni__c, DNI__c, Estado_civil__c,
-                    Obra_social2__r.Codigo_de_delegacion__c, Sexo__c, Discapacidad__c, Fecha_de_nacimiento__c, Nacionalidad__c,
-                    Deriva_aportes__c, Aporte__c, Empleador__r.Cuit__c, Empleador__r.Name, Empleador__r.Codigo_de_empresa__c, CUIT_CUIL_Titular_CBU__c,
-                    Bebe_sin_DNI__c, Delegacion__r.Codigo_de_delegacion__c, Fecha_de_vigencia__c, Nro_de_solicitud_SS__c,
-                    Obra_social2__r.Codigo_de_obra_social__c, Tipo_de_parentesco__c, Account.Codigo_de_Afiliado__c,
-                    Estado_DDJJ__c, Type, Plandespegue__c, Agrupacion1__c, Agrupacion3__c, Segmento_de_grupo_familiar__c, Localidad__r.Loc_id__c, Calle__c,
-                    Numero__c, Piso__c, Dpto__c, SuppliedEmail, Condicion_IVA__c, Tarjeta_de_credito__c, Tipo_CBU__c, Tipo_de_debito_por_ACA__c,
-                    Numero_de_tarjeta_de_credito__c, Numero_CBU__c, Medio_de_cobro__c, Telefono__c, Titular__r.Codigo_de_Afiliado__c,
-                    Cuit_empleador__c, Razon_social__c, Cdigo_debito_por_ACA__c, Cuit__c, CBU__c, Borrar_tarjeta_debito_o_cobro_por_CBU__c,
-					RecordTypeId, CUIL_del_CBU__c
-                FROM Case 
-                WHERE id = :recordId 
-                LIMIT 1
-            ];
-            List<Nota_de_Auditoria__c> notas = [SELECT id, Nota__c, CreatedBy.CommunityNickname 
-                                                    FROM Nota_de_Auditoria__c 
-                                                    WHERE APr_Id__c =:recordId  
-                                                        AND (Id_externo_solicitudes__c = null OR Id_externo_solicitudes__c = '')];        
-            String body = parseInterfazFinanciera(caso, userNick, files, notas, usuario);
-            WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'interfaz-financiera');
-            if(!resp.hasError) {
-                processResponse(resp, caso, files, true, isAttachmentResend);
-            }
-            if(files.size() != 0 && !resp.hasError) {
-                System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
-            }
-            return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
-        } else if(caso.RecordTypeId == solicitudCredencial) {
-            // ==================================[SOLICITUD CREDENCIAL]=====================================================
-            caso = [SELECT Codigo_de_asociado__c, RecordTypeId FROM Case WHERE Id = :recordId];
-            Map<String, Object> simpleMap = new Map<String, Object> {
-                'afi_codigo' => caso.Codigo_de_asociado__c 
-            };
-            String body = JSON.serialize(simpleMap);
-            WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'reemision-credencial');
-            if(resp.hasError) {
-                caso.Error__c = resp.message;
-                caso.Status = 'En proceso';
-                update caso;
-            } else {
-                caso.Error__c = '';
-                caso.Estado_de_solicitud__c = 'TRANSFORMADA';
-                caso.Status = 'En proceso';
-                update caso; 
-            }
-            return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
-        } else if(caso.RecordTypeId == solicitudPlan) {
-            // ==================================[SOLICITUD PLAN]=====================================================
-            List<Nota_de_Auditoria__c> notas = [SELECT id, Nota__c, CreatedBy.CommunityNickname 
-                                                    FROM Nota_de_Auditoria__c 
-                                                    WHERE APr_Id__c =:recordId  
-                                                        AND (Id_externo_solicitudes__c = null OR Id_externo_solicitudes__c = '')];        
-            caso = [SELECT Fecha_de_vigencia__c, Delegacion__r.Codigo_de_delegacion__c, Account.Codigo_de_Afiliado__c, 
-                        Plandespegue__c, Estado_DDJJ__c, Nro_de_solicitud_SS__c, RecordTypeId
-                     FROM Case
-                     WHERE Id = :recordId];
-            String body = parseCambioPlanBody(caso, userNick, files, notas, usuario);
-            WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'cambio-plan');
-            if(!resp.hasError) {
-                processResponse(resp, caso, files, true, isAttachmentResend);
-            }
-            if(files.size() != 0 && !resp.hasError) {
-                System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
-            }
-            return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
-        } else if(caso.RecordTypeId == solicitudDatosParticulares) {
-            // ==================================[SOLICITUD DATOS PARTICULARES]=====================================================
-            caso = [SELECT Id, Fecha_de_vigencia__c, Delegacion__r.Codigo_de_delegacion__c, Account.Codigo_de_Afiliado__c, Type, 
-                            Nombre__c, Apellido__c, Nacionalidad__c, Sexo__c, Obra_social2__r.Codigo_de_obra_social__c , 
-                            Tipo_de_parentesco__c, CUIT__C, Localidad__r.Loc_id__c, Envio_de_recibo__c, Fecha_de_nacimiento__c, Tipo__c,
-                            Account.Agencia_codigo__c, Agencia_destino__r.codigo_de_delegacion__c, Estado_civil__c, RecordTypeId, 
-							Nro_de_solicitud_SS__c
-                    FROM Case
-                    WHERE id = :recordId];
-            String body = parseDatosParticularesBody(caso, userNick, usuario);
-            WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'datos-particulares');
-            if(!resp.hasError) {
-                processResponse(resp, caso, files, true, isAttachmentResend);
-            }
-            return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
-        } else {
-            return new Response(true, 'El caso no es compatible con este boton.', '');
-        }
+        if (generalFiles.isEmpty()
+			&& caso.RecordtypeId != solicitudDatosParticulares
+            && caso.RecordtypeId != solicitudCredencial) {
+            return new Response(true, System.Label.Alerta_NoEnviarSInAdjuntos, '');
+		}
+		caso = getCaseInfo(recordId);
+		notas = getNotas(recordId);
+		if (caso.RecordTypeId == solicitudAlta) {return sendSolicitudAlta(recordId);}
+		else if(caso.RecordTypeId == solicitudDespegue) {return sendSolicitudDespegue(recordId);}
+		else if(caso.RecordTypeId == SolicitudDeBaja) {return sendSolicitudBaja(recordId);}
+		else if(caso.RecordTypeId == solicitudCambioSegmento) {return sendSolicitudCambioSegmento(recordId);}
+		else if(caso.RecordTypeId == solicitudInterfazFinanciera) {return sendInterfazFinanciera(recordId);}
+		else if(caso.RecordTypeId == solicitudCredencial) {return sendSolicitudCambioCredencial(recordId);}
+		else if(caso.RecordTypeId == solicitudPlan) {return sendSolicitudCambioPlan(recordId);}
+		else if(caso.RecordTypeId == solicitudDatosParticulares) {return sendSolicitudDatosParticulares();}
+		else {return new Response(true, System.Label.Alerta_CasoNoSolicitud, '');}
     }
 
     //=====================================[ PARSERS ]===========================================\\
@@ -406,7 +149,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
                 'notas' => parseNotas(notasAuditoria)
             });
         } catch (Exception e) {
-            System.debug(e.getMessage());
+
             return '';
         }
     }
@@ -528,7 +271,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
             };
             return JSON.serialize(body);
         } catch(Exception e) {
-            System.debug('ERROR PROCESANDO:' + e.getMessage());
+
             return '';
         }       
     }
@@ -650,7 +393,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
             };
             return JSON.serialize(body);
         } catch (Exception e) {
-            System.debug('ERROR PROCESANDO ' + e.getMessage());
+
             return null;
         }
     }
@@ -769,13 +512,12 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
     
             return JSON.serialize(bodyMap);
         } catch (Exception e) {
-            System.debug('ERROR PROCESANDO:' + e.getMessage());
+
             return '';
         }
     }
 
     //================================[ FUNCIONES REUTILIZABLES ]===============================\\
-    
     private static void processResponse(
 		WSCaseEnviarASSHelper.Response resp, 
 		Case caso, List<ContentVersion> files, 
@@ -791,23 +533,14 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 			if(switchToInProgress) {
 				caso.Status = 'En proceso';
 			}
-
-			/*if(caso.RecordTypeId == solicitudInterfazFinanciera && caso.Borrar_tarjeta_debito_o_cobro_por_CBU__c) {
-				caso.Borrar_tarjeta_debito_o_cobro_por_CBU__c = false;
-			}*/
-
 			update caso;
 			processNotas(data.notas);
 		}
-
         processFiles(files);
     }
-
     private static List<Map<String, Object>> parseFiles ( List<ContentVersion> files) {
         List<Map<String,Object>> archivos = new List<Map<String,Object>> ();
-
         try {
-            //for(ContentVersion data :files) {
 			if(!files.isEmpty()) {
 				ContentVersion data = files[0];
 				String title = Utils.getStringAlphanumericOnly(data.Title);
@@ -815,8 +548,6 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 				if(title.length() > 44) {
 					title = title.substring(0, 44);
 				}
-
-				//if(!data.Enviado__c) {
                     archivos.add(new Map<String, Object>{
                         'datos' => 'data:' + Utils.getTypeAndExtension(data.FileExtension) + 
                                         ';base64,' + EncodingUtil.base64Encode(data.VersionData),
@@ -825,27 +556,21 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
                         'nombre' => title.contains('.' + data.FileExtension) 
                                         ? title : title + '.' + data.FileExtension
                     });
-                    //break;
-                //}
             }
             return archivos;
         } catch (Exception e) {
             return archivos;
         }
     }
-
     private static void processFiles(List<ContentVersion> files) {
         List<ContentVersion> filesToUpdate = new List<ContentVersion>();
         for(ContentVersion file : files) {
 			ContentVersion updateVersion = new ContentVersion(Id = file.Id, Enviado__c = true);
-
             filesToUpdate.add(updateVersion);
         }
         Database.SaveResult[] results = Database.update(filesToUpdate, false);
-		System.debug('results ' + results);
 
     }
-
     private static void processNotas(List<WSCaseEnviarASSHelper.Notas> notasDeAuditoria) {
         List<Nota_de_Auditoria__c> notasAActualizar = new List<Nota_de_Auditoria__c>();
         for(WSCaseEnviarASSHelper.Notas nota : notasDeAuditoria) {
@@ -853,7 +578,6 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
         }
         Database.upsert(notasAActualizar, false);
     }
-
     private static String formatDate(Date fecha) {
         try {
             Datetime dt = Datetime.newInstance(fecha.year(), fecha.month(), fecha.day(),0,0,0);
@@ -861,12 +585,10 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
         } catch(Exception e) {
             return '';
         }
-    } 
-
+    }
     private static Object getValueOf(Object obj) {
         return (obj != null) ? String.valueOf(obj) : '';
-    } 
-
+    }
     private static List<Map<String, Object>> parseNotas (List<Nota_de_Auditoria__c> notasAuditoria) {
         List<Map<String,Object>> notas = new List<Map<String,Object>> ();
         try {
@@ -879,16 +601,262 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
             }
             return notas;
         } catch (Exception e) {
-            System.debug('ERROR EN NOTAS:' + e.getMessage());
+
             return notas;
         }
     }
-
-    public class Response {
+	/** Senders */
+	private static Response sendSolicitudAlta (String recordId) {
+		String body = parseAltaBody(caso, userNick, files, notas, usuario);
+		System.debug(body);
+		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'alta-familiar');
+		if(!resp.hasError) {
+			processResponse(resp, caso, files, false, isAttachmentResend);
+		}
+		if(files.size() != 0 && !resp.hasError) {
+			System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
+		}
+		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
+	}
+	private static Response sendSolicitudDespegue (String recordId) {
+		List<Integrante_caso__c> integrantes = [SELECT Id, Tipo_de_relacion_con_titular__c, Apellido__c, Nombre__c, Tipo_de_Documento__c, Nro_de_documento__c,
+													Obra_social_actual__r.Codigo_de_obra_social__c, Estado_Civil__c, Sexo__c, Fecha_de_Nacimiento__c,
+													Discapacitado__c, Nacionalidad__c, Indicador_de_aporte__c, CUIT_Sin_guiones__c, Aportes__c,
+													Empleador__r.Cuit__c, Empleador__r.Name, Empleador__r.Codigo_de_empresa__c, Cuit_empleador__c, Razon_social__c
+												FROM Integrante_caso__c
+												WHERE Caso__c = :recordId];
+		String body = parseDespegueBody(caso, userNick, files, notas, integrantes, usuario);
+		System.debug(body);
+		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'despegue');
+		if(!resp.hasError) {
+		processResponse(resp, caso, files, false, isAttachmentResend);
+		}
+		if(files.size() != 0 && !resp.hasError) {
+		System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
+		}
+		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
+	}
+	private static Response sendSolicitudBaja (String recordId) {
+		String body;
+		if(caso.Type == 'Baja Parcial') {
+			Map<Id, Integrante_caso__c> integrantes = new Map<Id, Integrante_caso__c>([
+					SELECT Id,
+						Familiar__r.Codigo_de_Afiliado__c, Integrante_tipo_asociado__c,
+						Motivo_de_baja__c, Numero_de_solicitud__c, RecordTypeId
+					FROM Integrante_caso__c
+					WHERE Caso__c = :caso.Id]);
+			if(integrantes.isEmpty()) {
+				return new Response(true, 'No puede generar una baja parcial sin integrantes', '');
+			}
+			Map<Id, List<Nota_de_Auditoria__c>> notasByIntegranteId = new Map<Id, List<Nota_de_Auditoria__c>>();
+			for(Nota_de_Auditoria__c nota : [SELECT id, Integrante__c, Nota__c, CreatedBy.CommunityNickname
+						FROM Nota_de_Auditoria__c
+						WHERE Integrante__c
+							IN : integrantes.keySet()
+							AND (Id_externo_solicitudes__c = null OR Id_externo_solicitudes__c = '')
+						]){
+				if(notasByIntegranteId.containsKey(nota.Integrante__c)) {
+					notasByIntegranteId.get(nota.Integrante__c).add(nota);
+				} else {
+					notasByIntegranteId.put(nota.Integrante__c, new List<Nota_de_Auditoria__c> {nota});
+				}
+			}
+			body = parseBajaPBody(caso, userNick, files, notasByIntegranteId, integrantes, usuario);
+		} else if(caso.Type == 'Baja Total') {
+			body = parseBajaTBody(caso, userNick, files, notas, usuario);
+		} else {
+			return new Response(true, 'El caso no tiene un tipo de baja valido.', '');
+		}
+		System.debug(body);
+		WSCaseEnviarASSHelper.Response solicitudBaja = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'baja');
+		if(!solicitudBaja.hasError) {
+			if(!isAttachmentResend) {
+				List<WSCaseEnviarASSHelper.Notas> notasToProcess = new List<WSCaseEnviarASSHelper.Notas>();
+				if(caso.Type == 'Baja Parcial') {
+					List<Integrante_caso__c> integrantesToUpdate = new List<Integrante_caso__c>();
+					String caseNroSolicitud = '';
+					for(WSCaseEnviarASSGenericResponse.Data data : solicitudBaja.result.data) {
+						integrantesToUpdate.add(new Integrante_caso__c(Id = data.sf_id, Numero_de_solicitud__c = data.solafi_id, Estado_solicitud__c = data.estado_sol));
+						caseNroSolicitud += data.solafi_id + ' - ';
+						notasToProcess.addAll(data.notas);
+					}
+					if(String.isBlank(caso.Nro_de_solicitud_SS__c)) {
+						caseNroSolicitud = caseNroSolicitud.left(caseNroSolicitud.length() - 3);
+						caso.Nro_de_solicitud_SS__c = caseNroSolicitud;
+					}
+					caso.Status = 'En proceso';
+					update caso;
+					update integrantesToUpdate;
+				} else {
+					WSCaseEnviarASSGenericResponse.Data data =  solicitudBaja.result.data.get(0);
+					caso.Estado_de_solicitud__c = data.estado_sol;
+					caso.Nro_de_solicitud_SS__c = data.solafi_id;
+					notasToProcess.addAll(data.notas);
+					caso.Status = 'En proceso';
+					update caso;
+				}
+				processNotas(notasToProcess);
+			}
+			processFiles(files);
+		}
+		if(files.size() != 0 && !solicitudBaja.hasError) {
+			System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
+		}
+		return new Response(solicitudBaja.hasError, (solicitudBaja.hasError) ? solicitudBaja.message : solicitudBaja.result.message, body);
+	}
+	private static Response sendSolicitudCambioSegmento (String recordId) {
+		String body = parseCambioDeSegmentoBody(caso, userNick, files, notas, usuario);
+		System.debug(body);
+		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'cambio-segmento');
+		if(!resp.hasError) {
+			processResponse(resp, caso, files, true, isAttachmentResend);
+		}
+		if(files.size() != 0 && !resp.hasError) {
+			System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
+		}
+		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
+	}
+	private static Response sendInterfazFinanciera (String recordId) {
+		String body = parseInterfazFinanciera(caso, userNick, files, notas, usuario);
+		System.debug(body);
+		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'interfaz-financiera');
+		if(!resp.hasError) {
+			processResponse(resp, caso, files, true, isAttachmentResend);
+		}
+		if(files.size() != 0 && !resp.hasError) {
+			System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
+		}
+		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
+	}
+	private static Response sendSolicitudCambioCredencial (String recordId) {
+		Map<String, Object> simpleMap = new Map<String, Object> {
+			'afi_codigo' => caso.Codigo_de_asociado__c
+		};
+		String body = JSON.serialize(simpleMap);
+		System.debug(body);
+		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'reemision-credencial');
+		if(resp.hasError) {
+			caso.Error__c = resp.message;
+			caso.Status = 'En proceso';
+			update caso;
+		} else {
+			caso.Error__c = '';
+			caso.Estado_de_solicitud__c = 'TRANSFORMADA';
+			caso.Status = 'En proceso';
+			update caso;
+		}
+		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
+	}
+	private static Response sendSolicitudCambioPlan (String recordId) {
+		String body = parseCambioPlanBody(caso, userNick, files, notas, usuario);
+		System.debug(body);
+		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'cambio-plan');
+		if(!resp.hasError) {
+			processResponse(resp, caso, files, true, isAttachmentResend);
+		}
+		if(files.size() != 0 && !resp.hasError) {
+			System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
+		}
+		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
+	}
+	private static Response sendSolicitudDatosParticulares () {
+		String body = parseDatosParticularesBody(caso, userNick, usuario);
+		System.debug(body);
+		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'datos-particulares');
+		if(!resp.hasError) {
+			processResponse(resp, caso, files, true, isAttachmentResend);
+		}
+		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
+	}
+	/** Utils */
+	private static Case getCaseInfo (String recordId) {
+		return [SELECT Account.Afi_Id_del_Titular__c,
+					Account.Agencia_codigo__c,
+					Account.Codigo_de_Afiliado__c,
+					Account.CUIT__c,
+					Agencia_destino__r.codigo_de_delegacion__c,
+					Agrupacion1__c,
+					Agrupacion3__c,
+					Apellido__c,
+					Aporte__c,
+					Bebe_sin_DNI__c,
+					Borrar_tarjeta_debito_o_cobro_por_CBU__c,
+					Calle__c,
+					CBU__c,
+					Cdigo_debito_por_ACA__c,
+					Codigo_de_asociado__c,
+					Codigo_Empleador__c,
+					Condicion_IVA__c,
+					Cuil__c,
+					CUIL_del_CBU__c,
+					Cuit__c,
+					CUIT_CUIL_Titular_CBU__c,
+					Cuit_empleador__c,
+					Delegacion__r.Codigo_de_delegacion__c,
+					Deriva_aportes__c,
+					Discapacidad__c,
+					DNI__c,
+					Dpto__c,
+					Empleador__c,
+					Empleador__r.Codigo_de_empresa__c,
+					Empleador__r.Cuit__c,
+					Empleador__r.Name,
+					Envio_de_recibo__c,
+					Estado_civil__c,
+					Estado_DDJJ__c,
+					Fecha_de_nacimiento__c,
+					Fecha_de_vigencia__c,
+					Id,
+					Localidad__r.Loc_id__c,
+					Medio_de_cobro__c,
+					Motivo_de_baja__c,
+					Nacionalidad__c,
+					Nombre__c,
+					Nro_de_solicitud_SS__c,
+					Nuevo_segmento__c,
+					Numero__c,
+					Numero_CBU__c,
+					Numero_CBU_cobro_de_cuota__c,
+					Numero_de_tarjeta_de_credito__c,
+					Obra_social2__r.Codigo_de_delegacion__c,
+					Obra_social2__r.Codigo_de_obra_social__c,
+					Piso__c,
+					Plandespegue__c,
+					Razon_social__c,
+					RecordTypeId,
+					Segmento_de_grupo_familiar__c,
+					Sexo__c,
+					SuppliedEmail,
+					Tarjeta_de_credito__c,
+					Telefono__c,
+					Tipo__c,
+					Tipo_CBU__c,
+					Tipo_de_debito_por_ACA__c,
+					Tipo_de_parentesco__c,
+					Tipo_dni__c,
+					Titular__r.Codigo_de_Afiliado__c,
+					Type
+				FROM Case WHERE Id =: recordId];
+	}
+	private static List<Nota_de_Auditoria__c> getNotas (String recordId) {
+		return [SELECT id, Nota__c, CreatedBy.CommunityNickname
+				FROM Nota_de_Auditoria__c
+				WHERE APr_Id__c =:recordId
+					AND (Id_externo_solicitudes__c = null
+						OR Id_externo_solicitudes__c = '')];
+	}
+    /**public class Response Extends FrontResponse{
+        @AuraEnabled public String generatedBody;
+        public Response(Boolean hasError, String message, String status, String generatedBody) {
+            this.hasError = hasError;
+			this.auraMessage = new auraMessage(message, status);
+            this.generatedBody = generatedBody;
+        }
+	}*/
+	public class Response {
         @AuraEnabled public Boolean hasError;
         @AuraEnabled public String message;
         @AuraEnabled public String generatedBody;
-
         public Response(Boolean hasError, String message, String generatedBody) {
             this.hasError = hasError;
             this.message = message;
