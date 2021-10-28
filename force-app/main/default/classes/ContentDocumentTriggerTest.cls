@@ -168,31 +168,29 @@ private class ContentDocumentTriggerTest {
 		Lead cand = Build.aLead().build();
 		cand.Phone = '1234567890';
 		insert cand;
-
+		List<ContentNote> contentNotesToInsert = new List<ContentNote>();
 		ContentNote cn = new ContentNote();
 		cn.Title = 'Test';
 		cn.Content = Blob.valueOf('contentNote');
-		insert cn;
-
-		ContentDocumentLink cdl = new ContentDocumentLink();
-		cdl.ContentDocumentId = cn.Id;
-		cdl.LinkedEntityId = cand.Id;
-		insert cdl;
-
+		contentNotesToInsert.add(cn);
 		ContentNote cn2 = new ContentNote();
 		cn2.Title = 'Test';
 		cn2.Content = Blob.valueOf('contentNote2');
-		insert cn2;
-
+		contentNotesToInsert.add(cn2);
+		insert contentNotesToInsert;
+		List<ContentDocumentLink> contentDocLinksToInsert = new List<ContentDocumentLink>();
+		ContentDocumentLink cdl = new ContentDocumentLink();
+		cdl.ContentDocumentId = cn.Id;
+		cdl.LinkedEntityId = cand.Id;
+		contentDocLinksToInsert.add(cdl);
 		ContentDocumentLink cdl2 = new ContentDocumentLink();
 		cdl2.ContentDocumentId = cn2.Id;
 		cdl2.LinkedEntityId = cand.Id;
-		insert cdl2;
-		
+		contentDocLinksToInsert.add(cdl2);
+		insert contentDocLinksToInsert;
 		Test.startTest();
 		delete cn2;
 		Test.stopTest();
-
 		cand = [SELECT Id, Nota__c, (SELECT Id FROM AttachedContentNotes) FROM Lead WHERE Id = :cand.Id];
 		System.assertEquals('contentNote', cand.Nota__c);
 	}
@@ -245,240 +243,4 @@ private class ContentDocumentTriggerTest {
             );
         }
     }
-
-	// @isTest
-	// private static void deleteOpportunityFileFromAWS() {
-	// 	Opportunity opp = [
-	// 		SELECT Id 
-	// 		FROM Opportunity
-	// 	];
-
-	// 	ContentDocumentLink cdl = [
-	// 		SELECT Id, ContentDocumentId, LinkedEntityId 
-	// 		FROM ContentDocumentLink 
-	// 		WHERE LinkedEntityId =: opp.Id
-	// 	];
-
-	// 	ContentDocument cd = [
-	// 		SELECT Id
-	// 		FROM ContentDocument
-	// 		WHERE Id =: cdl.ContentDocumentId 
-	// 	];
-
-	// 	serverMock.buildResponse()
-	// 		.withStatus('No Content')
-	// 		.withStatusCode(204)
-	// 		.addForAddress(AWS.url + 'solicitudes_sf/' + cdl.LinkedEntityId + '/TESTAWSTRIGGER.TXT');
-	// 	Test.setMock(HttpCalloutMock.class, serverMock);
-
-	// 	delete cd;
-
-	// 	Test.startTest();
-	// 	//Database.SaveResult result = Database.insert(cv2, false);
-	// 	Test.stopTest(); 
-
-	// 	Archivo_url__c[] archivos = [
-	// 		SELECT Id 
-	// 		FROM Archivo_url__c
-	// 		WHERE Oportunidad__c =: opp.Id
-	// 	];
-
-	// 	System.assert(archivos.isEmpty());
-	// }
-
-	// @isTest
-	// private static void deleteCaseFileFromAWS() {
-	// 	Case aCase = [
-	// 		SELECT Id 
-	// 		FROM Case
-	// 	];
-
-	// 	ContentDocumentLink cdl = [
-	// 		SELECT Id, ContentDocumentId, LinkedEntityId 
-	// 		FROM ContentDocumentLink 
-	// 		WHERE LinkedEntityId =: aCase.Id
-	// 	];
-
-	// 	ContentDocument cd = [
-	// 		SELECT Id
-	// 		FROM ContentDocument
-	// 		WHERE Id =: cdl.ContentDocumentId 
-	// 	];
-
-	// 	serverMock.buildResponse()
-	// 		.withStatus('No Content')
-	// 		.withStatusCode(204)
-	// 		.addForAddress(AWS.url + 'reintegros/' + cdl.LinkedEntityId + '/TESTAWSTRIGGER.TXT');
-	// 	Test.setMock(HttpCalloutMock.class, serverMock);
-
-	// 	delete cd;
-
-	// 	Test.startTest();
-	// 	//Database.SaveResult result = Database.insert(cv2, false);
-	// 	Test.stopTest(); 
-
-	// 	Archivo_url__c[] archivos = [
-	// 		SELECT Id 
-	// 		FROM Archivo_url__c
-	// 		WHERE Oportunidad__c =: aCase.Id
-	// 	];
-
-	// 	System.assert(archivos.isEmpty());
-	// }
-
-	// @isTest
-	// private static void deleteEventoMedicoFileFromAWS() {
-	// 	Evento_Medico__c em = [
-	// 		SELECT Id 
-	// 		FROM Evento_Medico__c
-	// 	];
-
-	// 	ContentDocumentLink cdl = [
-	// 		SELECT Id, ContentDocumentId, LinkedEntityId 
-	// 		FROM ContentDocumentLink 
-	// 		WHERE LinkedEntityId =: em.Id
-	// 	];
-
-	// 	ContentDocument cd = [
-	// 		SELECT Id
-	// 		FROM ContentDocument
-	// 		WHERE Id =: cdl.ContentDocumentId 
-	// 	];
-
-	// 	serverMock.buildResponse()
-	// 		.withStatus('No Content')
-	// 		.withStatusCode(204)
-	// 		.addForAddress(AWS.url + 'em/' + cdl.LinkedEntityId + '/TESTAWSTRIGGER.TXT');
-	// 	Test.setMock(HttpCalloutMock.class, serverMock);
-
-	// 	delete cd;
-
-	// 	Test.startTest();
-	// 	//Database.SaveResult result = Database.insert(cv2, false);
-	// 	Test.stopTest(); 
-
-	// 	Archivo_url__c[] archivos = [
-	// 		SELECT Id 
-	// 		FROM Archivo_url__c
-	// 		WHERE Evento_Medico__c =: em.Id
-	// 	];
-
-	// 	System.assert(archivos.isEmpty());
-	// }
-
-	// @isTest
-	// private static void avoidDeletionOfOpportunityFile() {
-	// 	Opportunity opp = [
-	// 		SELECT Id 
-	// 		FROM Opportunity
-	// 	];
-
-	// 	ContentDocumentLink cdl = [
-	// 		SELECT Id, ContentDocumentId, LinkedEntityId 
-	// 		FROM ContentDocumentLink 
-	// 		WHERE LinkedEntityId =: opp.Id
-	// 	];
-
-	// 	ContentDocument cd = [
-	// 		SELECT Id
-	// 		FROM ContentDocument
-	// 		WHERE Id =: cdl.ContentDocumentId 
-	// 	];
-
-	// 	Archivo_url__c[] archivos = [
-	// 		SELECT Id 
-	// 		FROM Archivo_url__c
-	// 		WHERE Oportunidad__c =: opp.Id
-	// 	];
-
-	// 	archivos[0].Enviado__c = true;
-	// 	update archivos;
-
-	// 	Database.DeleteResult result = Database.delete(cd, false);
-
-	// 	Test.startTest();
-	// 	//Database.SaveResult result = Database.insert(cv2, false);
-	// 	Test.stopTest(); 
-
-	// 	System.assert(!result.isSuccess());
-    //     System.assert(result.getErrors().size() > 0);
-    //     System.assertEquals('No se puede eliminar el archivo, ya fue enviado a SaludSoft', result.getErrors()[0].getMessage());
-	// }
-
-	// private static void avoidDeletionOfCaseFile() {
-	// 	Case aCase = [
-	// 		SELECT Id 
-	// 		FROM Case
-	// 	];
-
-	// 	ContentDocumentLink cdl = [
-	// 		SELECT Id, ContentDocumentId, LinkedEntityId 
-	// 		FROM ContentDocumentLink 
-	// 		WHERE LinkedEntityId =: aCase.Id
-	// 	];
-
-	// 	ContentDocument cd = [
-	// 		SELECT Id
-	// 		FROM ContentDocument
-	// 		WHERE Id =: cdl.ContentDocumentId 
-	// 	];
-
-	// 	Archivo_url__c[] archivos = [
-	// 		SELECT Id 
-	// 		FROM Archivo_url__c
-	// 		WHERE Caso__c =: aCase.Id
-	// 	];
-
-	// 	archivos[0].Enviado__c = true;
-	// 	update archivos;
-
-	// 	Database.DeleteResult result = Database.delete(cd, false);
-
-	// 	Test.startTest();
-	// 	//Database.SaveResult result = Database.insert(cv2, false);
-	// 	Test.stopTest(); 
-
-	// 	System.assert(!result.isSuccess());
-    //     System.assert(result.getErrors().size() > 0);
-    //     System.assertEquals('No se puede eliminar el archivo, ya fue enviado a SaludSoft', result.getErrors()[0].getMessage());
-	// }
-
-	// @isTest
-	// private static void avoidDeletionOfEventoMedicoFile() {
-	// 	Evento_Medico__c em = [
-	// 		SELECT Id 
-	// 		FROM Evento_Medico__c
-	// 	];
-
-	// 	ContentDocumentLink cdl = [
-	// 		SELECT Id, ContentDocumentId, LinkedEntityId 
-	// 		FROM ContentDocumentLink 
-	// 		WHERE LinkedEntityId =: em.Id
-	// 	];
-
-	// 	ContentDocument cd = [
-	// 		SELECT Id
-	// 		FROM ContentDocument
-	// 		WHERE Id =: cdl.ContentDocumentId 
-	// 	];
-
-	// 	Archivo_url__c[] archivos = [
-	// 		SELECT Id 
-	// 		FROM Archivo_url__c
-	// 		WHERE Evento_Medico__c =: em.Id
-	// 	];
-
-	// 	archivos[0].Enviado__c = true;
-	// 	update archivos;
-
-	// 	Database.DeleteResult result = Database.delete(cd, false);
-
-	// 	Test.startTest();
-	// 	//Database.SaveResult result = Database.insert(cv2, false);
-	// 	Test.stopTest(); 
-
-	// 	System.assert(!result.isSuccess());
-    //     System.assert(result.getErrors().size() > 0);
-    //     System.assertEquals('No se puede eliminar el archivo, ya fue enviado a SaludSoft', result.getErrors()[0].getMessage());
-	// }
 }

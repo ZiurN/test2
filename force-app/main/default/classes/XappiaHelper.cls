@@ -1,14 +1,20 @@
-global class XappiaHelper {
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
+public without sharing class XappiaHelper {
 	static Map<String, Map<String, RecordTypeInfo>> mapRecordTypesBySObjectName = new Map<String, Map<String, RecordTypeInfo>>();
-
-	global static RecordType getRecordType(String sObjectTypeStr, String recordTypeName) {
-		if(mapRecordTypesBySObjectName.containsKey(sObjectTypeStr) 
-			&& mapRecordTypesBySObjectName.get(sObjectTypeStr).containsKey(recordTypeName)
-		){
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Método para retornar información del tipo de registro.
+	@param			sObjectTypeStr - Nombre del objecto.
+	@param			recordTypeName - Nombre del tipo de registro.
+	@param			encodedName - Si el objeto y el RT vienen en un String conjunto, se entrega dicho string.
+	@return			RecordType - El objeto RT.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static RecordType getRecordType(String sObjectTypeStr, String recordTypeName) {
+		if(mapRecordTypesBySObjectName.containsKey(sObjectTypeStr)
+			&& mapRecordTypesBySObjectName.get(sObjectTypeStr).containsKey(recordTypeName)){
 			RecordTypeInfo rtInfo = mapRecordTypesBySObjectName.get(sObjectTypeStr).get(recordTypeName);
 			return new RecordType(Id = rtInfo.getRecordTypeId(), DeveloperName = rtInfo.getDeveloperName());
-		}		
+		}
 		SObjectType sObjecytType = Schema.getGlobalDescribe().get(sObjectTypeStr);
 		if(sObjecytType == null){
 			return null;
@@ -17,15 +23,30 @@ global class XappiaHelper {
 		RecordTypeInfo rtInfo = mapRecordTypesBySObjectName.get(sObjectTypeStr).get(recordTypeName);
 		return new RecordType(Id = rtInfo.getRecordTypeId(), DeveloperName = rtInfo.getDeveloperName());
 	}
-
-	global static Map<Id, String> getRecordTypeNameById(String sObjectTypeStr, Set<String> recordTypeNames) {
+	public static RecordType getRecordType(String encodedName) {
+		List<String> parameters = encodedName.split('-');
+		system.debug(parameters);
+		if (parameters.size() == 2) {
+			return getRecordType(parameters[0], parameters[1]);
+		} else {
+			return null;
+		}
+	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Método para retornar información del tipos de registro en base al Id.
+	@param			sObjectTypeStr - Nombre del objecto.
+	@param			recordTypeNames - Lista de nombre de los tipos de registro.
+	@return			Map<Id, String> - DeveloperName del RT por Id.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static Map<Id, String> getRecordTypeNameById(String sObjectTypeStr, Set<String> recordTypeNames) {
 		if(!mapRecordTypesBySObjectName.containsKey(sObjectTypeStr)) {
 			SObjectType sObjecytType = Schema.getGlobalDescribe().get(sObjectTypeStr);
 			if(sObjecytType == null){
 				return null;
 			}
 			mapRecordTypesBySObjectName.put(
-				sObjectTypeStr, 
+				sObjectTypeStr,
 				sObjecytType.getDescribe().getRecordTypeInfosByDeveloperName()
 			);
 		}
@@ -36,11 +57,16 @@ global class XappiaHelper {
 				continue;
 			}
 			mapRecordTypes.put(rtInfo.getRecordTypeId(), rtInfo.getDeveloperName());
-		}	
-		return mapRecordTypes;	
+		}
+		return mapRecordTypes;
 	}
-		
-	global static Map<String, RecordTypeInfo> getRecordTypes(String sObjectTypeStr) {
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Método para retornar información del tipos de registro de un objeto.
+	@param			sObjectTypeStr - Nombre del objecto.
+	@return			Map<String, RecordTypeInfo> - Info de los RTs por Objeto.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static Map<String, RecordTypeInfo> getRecordTypes(String sObjectTypeStr) {
 		if(!mapRecordTypesBySObjectName.containsKey(sObjectTypeStr)) {
 			SObjectType sObjecytType = Schema.getGlobalDescribe().get(sObjectTypeStr);
 			if(sObjecytType == null){
@@ -53,28 +79,17 @@ global class XappiaHelper {
 		}
 		return mapRecordTypesBySObjectName.get(sObjectTypeStr);
 	}
-	
-	/*******************************************************************************************************	
-	* it use format 'sObjectType-recordTypeName'
-	*/		
-	global static RecordType getRecordType(String encodedName) {
-		List<String> parameters = encodedName.split('-');
-		system.debug(parameters);
-		if (parameters.size() == 2) {
-			return getRecordType(parameters[0], parameters[1]);			
-		} else {
-			return null;
-		}
-	}	
-
-	/*******************************************************************************************************	
-	* return CUIT in format xy-DNI-z. If it's not a valid DNI, return ''. Works only to fisical person.
-	*/	
-	global static String generateCUITFromDNI(String DNI, boolean isMale) {
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	return CUIT in format xy-DNI-z. If it's not a valid DNI, return ''. Works only to fisical person.
+	@param			DNI - DNI to format.
+	@param			isMale - Boolean to indicate the gender of the DNI's owner.
+	@return			String - return CUIT in format xy-DNI-z. If it's not a valid DNI, return ''
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static String generateCUITFromDNI(String DNI, boolean isMale) {
 		if (String.isBlank(dni)
-				||!dni.isNumeric() || DNI.length() < 7 
-				|| DNI.length() > 8 || isMale == null
-		) {
+				||!dni.isNumeric() || DNI.length() < 7
+				|| DNI.length() > 8 || isMale == null) {
 			return '';
 		}
 		if (DNI.length() == 7) {
@@ -87,7 +102,6 @@ global class XappiaHelper {
 		else {
 			XY = '27';
 		}
-
 		String XYWithDNI = XY + DNI;
 		Integer[] serie = new Integer[] { 5, 4, 3, 2, 7, 6, 5, 4, 3, 2 };
 		Integer aux = 0;
@@ -95,7 +109,7 @@ global class XappiaHelper {
 			String simbol = XYWithDNI.subString(i, i + 1);
 			aux += Integer.valueOf(simbol) * serie[i];
 		}
-		aux = (Math.mod(aux, 11));		
+		aux = (Math.mod(aux, 11));
 		String Z = '';
 		if (aux == 0) {
 			Z = '0';
@@ -110,14 +124,16 @@ global class XappiaHelper {
 		}
 		else {
 			Z = String.valueOf(11 - aux);
-		}		
+		}
 		return XY + dni + Z;
 	}
-
-	/*******************************************************************************************************
-	* accept both formats: xx-xxxxxxxx-x and xxxxxxxxxxx
-	*/
-	global static Boolean isItValidCUIT(String CUIT) {
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Método para validar el CUIT entregado.
+	@param			CUIT - Cuit a validar. accept both formats: xx-xxxxxxxx-x and xxxxxxxxxxx
+	@return			Boolean - Indicar si el CUIT es válido o no.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static Boolean isItValidCUIT(String CUIT) {
 		if (String.isBlank(CUIT)) {
 			return false;
 		}
@@ -125,11 +141,10 @@ global class XappiaHelper {
 		if (numericCUIT.length() != 11) {
 			return false;
 		}
-		if (CUIT.length() == 13 
+		if (CUIT.length() == 13
 				&& (CUIT.subString(2,3)!='-'
-					|| CUIT.subString(11,12)!='-')
-		) {
-			return false;		
+					|| CUIT.subString(11,12)!='-')) {
+			return false;
 		}
 		CUIT = StringToNumericString(CUIT);
 		if (CUIT.subString(0,2)!='34'
@@ -138,27 +153,28 @@ global class XappiaHelper {
 				&& CUIT.subString(0,2)!='27'
 				&& CUIT.subString(0,2)!='24'
 				&& CUIT.subString(0,2)!='23'
-				&& CUIT.subString(0,2)!='20'
-		) {
+				&& CUIT.subString(0,2)!='20') {
 			return false;
 		}
 		Integer[] serie = new Integer[] { 5, 4, 3, 2, 7, 6, 5, 4, 3, 2 };
 		Integer aux = 0;
 		for (Integer i = 0; i < 10; i++) {
 			String simbol = CUIT.subString(i, i + 1);
-			aux += Integer.valueOf(simbol) * serie[i];			
+			aux += Integer.valueOf(simbol) * serie[i];
 		}
-		aux = 11 - (Math.mod(aux, 11));		
+		aux = 11 - (Math.mod(aux, 11));
 		if (aux == 11) {
 			aux = 0;
 		}
 		return Integer.valueOf(CUIT.subString(10, 11)) == aux;
 	}
-	
-	/*******************************************************************************************************	
-	* its validation for most credit cards and other stuff
-	*/
-	public static boolean isItValidLuhnCode(String creditCardNumber) {		
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Método para validar el número de tarjeta de crédito entregado.
+	@param			creditCardNumber - Número de tarjeta a validar. its validation for most credit cards and other stuff
+	@return			Boolean - Indicar si el número es válido o no.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static boolean isItValidLuhnCode(String creditCardNumber) {
 		if (String.isBlank(creditCardNumber)) {
 			return false;
 		}
@@ -174,14 +190,16 @@ global class XappiaHelper {
 				}
 			}
 			sumOfDigits += d;
-		}				
+		}
 		return Math.mod(sumOfDigits, 10) == 0;
 	}
-
-	/*******************************************************************************************************
-	* 's2w3df41'->'2341'
-	*/
-	global static String stringToNumericString(String str) {
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Método que retorna los valores númericos encontrados en una cadena de texto.
+	@param			str - Cadena para filtrar o limpiar.
+	@return			String - La cadena de números encontrada.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static String stringToNumericString(String str) {
 		if (String.isBlank(str)) {
 			return '';
 		}
@@ -195,105 +213,116 @@ global class XappiaHelper {
 		}
 		return numericString;
 	}
-	/*******************************************************************************************************
-	* @description validate if CBU is well formed - Validation provided by Mauricio Closa - Adapted by Xappia
-	*/
-	global static Boolean isItValidCBU(String CBU) {
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	validate if CBU is well formed - Validation provided by Mauricio Closa - Adapted by Xappia
+	@param			CBU - CBU to validate.
+	@return			Boolean - Indicate if the CBU is valid or not.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static Boolean isItValidCBU(String CBU) {
 		List<Integer> VEC1 = new List<Integer> {7, 1, 3, 9, 7, 1, 3};
-		List<Integer> VEC2 = new List<Integer> {3, 9, 7, 1, 3, 9, 7, 1, 3, 9, 7, 1, 3};		
+		List<Integer> VEC2 = new List<Integer> {3, 9, 7, 1, 3, 9, 7, 1, 3, 9, 7, 1, 3};
 		if(String.isBlank(CBU)) {
-			return false;		
+			return false;
 		}
 		CBU = CBU.replace('-', '');
 		if (CBU.length() == 22 && CBU.isNumeric()) {
 			Integer acum = 0;
-			for (Integer i = 0; i < 7; i++) {				
+			for (Integer i = 0; i < 7; i++) {
 				acum += Integer.valueOf(CBU.subString(0, 7).subString(i, i + 1)) * VEC1[i];
-			}						
+			}
 			Integer verificador2 = Integer.valueOf(CBU.subString(7, 8));
-			Integer diferencia1 = math.mod(10 - (math.mod(acum, 10)), 10);						
+			Integer diferencia1 = math.mod(10 - (math.mod(acum, 10)), 10);
 			boolean primerBloqueCbuOk = (verificador2 == diferencia1);
 			acum = 0;
 			for (Integer i = 0; i < 13; i++) {
 				acum += Integer.valueOf(CBU.subString(8, 21).subString(i, i + 1)) * VEC2[i];
-			}			
-			Integer diferencia2 = math.mod(10 - (math.mod(acum, 10)), 10);						
-			boolean segundoBloqueCbuOk = (Integer.valueOf(CBU.subString(21)) == diferencia2);			
+			}
+			Integer diferencia2 = math.mod(10 - (math.mod(acum, 10)), 10);
+			boolean segundoBloqueCbuOk = (Integer.valueOf(CBU.subString(21)) == diferencia2);
 			return (primerBloqueCbuOk && segundoBloqueCbuOk);
 		}
 		else {
 			return false;
 		}
 	}
-	
-	/*******************************************************************************************************
-	* Obtener todos los valores de una picklist
-	*/
-	
-	global static List<String> getPicklistFieldValues(String objectName, String pickListFieldName) {
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Método para obtener todos los valores de una picklist
+	@param			objectName - Nombre del objeto.
+	@param			pickListFieldName - Nombre del campo picklist.
+	@return			List<String> - Lista de valores posibles para el campo buscado.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static List<String> getPicklistFieldValues(String objectName, String pickListFieldName) {
         List<String> picklistValues = new List<String>();
         SObjectType objectType = Schema.getGlobalDescribe().get(objectName);
         List<Schema.PicklistEntry> pick_list_values = objectType.getDescribe()
                                                        .fields.getMap()
                                                        .get(pickListFieldName)
                                                        .getDescribe().getPickListValues();
-        for (Schema.PicklistEntry aPickListValue : pick_list_values) {                   
-            picklistValues.add(aPickListValue.getValue()); 
+        for (Schema.PicklistEntry aPickListValue : pick_list_values) {
+            picklistValues.add(aPickListValue.getValue());
         }
         return picklistValues;
-    }	
-
-	global static Map<String, String> getPicklistLabelAndValues(String objectName, String pickListFieldName) {
+    }
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Método para obtener todos los valores de una picklist
+	@param			objectName - Nombre del objeto.
+	@param			pickListFieldName - Nombre del campo picklist.
+	@return			Map<String, String> - Lista de Labels posibles para el campo buscado por su valor correspondiente.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static Map<String, String> getPicklistLabelAndValues(String objectName, String pickListFieldName) {
         Map<String, String> picklistValues = new Map<String, String>();
         SObjectType objectType = Schema.getGlobalDescribe().get(objectName);
         List<Schema.PicklistEntry> pick_list_values = objectType.getDescribe()
                                                        .fields.getMap()
                                                        .get(pickListFieldName)
                                                        .getDescribe().getPickListValues();
-        for (Schema.PicklistEntry aPickListValue : pick_list_values) {                   
-            picklistValues.put(aPickListValue.getValue(), aPickListValue.getLabel()); 
+        for (Schema.PicklistEntry aPickListValue : pick_list_values) {
+            picklistValues.put(aPickListValue.getValue(), aPickListValue.getLabel());
         }
         return picklistValues;
     }
-
-
-	//--------------------------------------------------------------------------------------------------------
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Método para Todos los roles hijo de un conjunto de roles.
+	@param			roleIds - Conjunto de Ids de roles padre para buscar.
+	@return			Set<ID>> - Conjunto de Ids de los roles hijos encontrados.
+	------------------------------------------------------------------------------------------------------------------------*/
 	public static Set<ID> getAllSubRoleIds(Set<ID> roleIds) {
-
         Set<ID> currentRoleIds = new Set<ID>();
-    
-        // get all of the roles underneath the passed roles
-        for(UserRole userRole :[select Id from UserRole where ParentRoleId 
-             IN :roleIds AND ParentRoleID != null]) {
+        for(UserRole userRole :[SELECT Id FROM UserRole WHERE ParentRoleId IN :roleIds AND ParentRoleID != null]){
             currentRoleIds.add(userRole.Id);
         }
-    
-        // go fetch some more rolls!
         if(currentRoleIds.size() > 0) {
             currentRoleIds.addAll(XappiaHelper.getAllSubRoleIds(currentRoleIds));
         }
-    
         return currentRoleIds;
     }
-
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Método para Todos los roles padre de un conjunto de roles.
+	@param			roleIds - Conjunto de Ids de roles hijo para buscar.
+	@return			Set<ID>> - Conjunto de Ids de los roles padre encontrados.
+	------------------------------------------------------------------------------------------------------------------------*/
 	public static Set<ID> getParentRoleId(Set<ID> roleIds) {
-
         Set<ID> currentRoleIds = new Set<ID>();
-    
-        
-        // get all of the parent roles.
-        for(UserRole ur :[select Id, ParentRoleId from UserRole where Id IN: roleIds]) {
+        for(UserRole ur :[SELECT Id, ParentRoleId FROM UserRole WHERE Id IN: roleIds]) {
             currentRoleIds.add(ur.ParentRoleId);
         }
-    
         // go fetch some more rolls!
         if(currentRoleIds.size() > 0) {
             currentRoleIds.addAll(getParentRoleId(currentRoleIds));
         }
-    
         return currentRoleIds;
     }
-	
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Método para obtener el ID de un perfil por su nombre;
+	@param			prof -Nombre del perfil a buscar.
+	@return			Id - Id encontrado para el perfil.
+	------------------------------------------------------------------------------------------------------------------------*/
 	public static Id getProfileIdByName(String prof){
 		List<Profile> profiles = [SELECT Id FROM Profile WHERE Name = :prof];
 		if(!profiles.isEmpty()){
