@@ -7,15 +7,16 @@
 public class CaseSendToSSGenericBtnCtrlTest {
 	/** Constants Variables */
 	public static final Webservice_endpoint_setting__mdt SERVICE_CONFIG = ConfigUtils.getWebServiceConfig('SALUDSOFT.TEST');
+	public static Map<String, Webservice_endpoint__mdt> endpoints = ConfigUtils.getEndpointsByTipo('solicitudes-afiliados');
 	public static final String AUTH_TOKEN_URL = SERVICE_CONFIG.URL__c + '/oauth/token';
-	public static final String SOLICITUD_DESPEGUE_URL = SERVICE_CONFIG.URL__c + '/v1/salud/solicitudes-afiliados/despegue';
-	public static final String SOLICITUD_ALTA_FAMILIAR_URL = SERVICE_CONFIG.URL__c + '/v1/salud/solicitudes-afiliados/alta-familiar';
-	public static final String SOLICITUD_CAMBIO_SEGMENTO_URL = SERVICE_CONFIG.URL__c + '/v1/salud/solicitudes-afiliados/cambio-segmento';
-	public static final String SOLICITUD_BAJA_URL = SERVICE_CONFIG.URL__c + '/v1/salud/solicitudes-afiliados/baja';
-	public static final String INTERFAZ_FINANCIERA_URL = SERVICE_CONFIG.URL__c + '/v1/salud/solicitudes-afiliados/interfaz-financiera';
-	public static final String SOLICITUD_NUEVA_CREDENCIAL_URL = SERVICE_CONFIG.URL__c + '/v1/salud/solicitudes-afiliados/reemision-credencial';
-	public static final String SOLICITUD_CAMBIO_PLAN_URL = SERVICE_CONFIG.URL__c + '/v1/salud/solicitudes-afiliados/cambio-plan';
-	public static final String SOLICITUD_DATOS_PARTICULARES_URL = SERVICE_CONFIG.URL__c + '/v1/salud/solicitudes-afiliados/datos-particulares';
+	public static final String SOLICITUD_DESPEGUE_URL = SERVICE_CONFIG.URL__c + endpoints.get('despegue').Endpoint__c;
+	public static final String SOLICITUD_ALTA_FAMILIAR_URL = SERVICE_CONFIG.URL__c + endpoints.get('alta-familiar').Endpoint__c;
+	public static final String SOLICITUD_CAMBIO_SEGMENTO_URL = SERVICE_CONFIG.URL__c + endpoints.get('cambio-segmento').Endpoint__c;
+	public static final String SOLICITUD_BAJA_URL = SERVICE_CONFIG.URL__c + endpoints.get('baja').Endpoint__c;
+	public static final String INTERFAZ_FINANCIERA_URL = SERVICE_CONFIG.URL__c + endpoints.get('interfaz-financiera').Endpoint__c;
+	public static final String SOLICITUD_NUEVA_CREDENCIAL_URL = SERVICE_CONFIG.URL__c + endpoints.get('reemision-credencial').Endpoint__c;
+	public static final String SOLICITUD_CAMBIO_PLAN_URL = SERVICE_CONFIG.URL__c + endpoints.get('cambio-plan').Endpoint__c;
+	public static final String SOLICITUD_DATOS_PARTICULARES_URL = SERVICE_CONFIG.URL__c + endpoints.get('datos-particulares').Endpoint__c;
 	public static final Date fechaNacimiento = Date.newInstance(1990, 05, 01);
 	public static final Date fechaVigencia = Date.newInstance(2020, 08, 01);
 	public static final Account delegacion = Build.anAccountDelegacion()
