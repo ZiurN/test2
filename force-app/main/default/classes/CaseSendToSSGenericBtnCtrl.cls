@@ -19,6 +19,8 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 	private static final String ERROR = 'error';
 	private static final String WARNING = 'warning';
 	private static final String INFO = 'info';
+	/** Tipo de Servicio SS */
+	private static final String SOLICITUDES_AFILIADOS = 'solicitudes-afiliados';
 	/** Variables estáticas */
 	private static Case caso;
 	private static List<Nota_de_Auditoria__c> notas;
@@ -49,7 +51,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 						AND Estado_de_solicitud__c != 'COMPLETA'];
 			if (casos.size() > 0) {caso = casos[0];}
 		}
-		if (caso == null) return new Response(true, System.Label.Alerta_InvalidCaseClosed, '{}');
+		if (caso == null) return new Response(true, System.Label.Alerta_InvalidCaseClosed, WARNING, '{}');
 		Set<Id> dLinks = new Set<Id>();
 		for (ContentDocumentLink cDL :[SELECT ContentDocumentId, Id FROM ContentDocumentLink WHERE LinkedEntityId = :recordId]) {
 			dLinks.add(cDL.ContentDocumentId);
@@ -64,12 +66,12 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 					AND Enviado__c = false
 				LIMIT 1];
 		if(files.size() == 0 && isAttachmentResend) {
-			return new Response(false, '', ''); // ??
+			return new Response(false, '', INFO, ''); // ??
 		}
 		if (generalFiles.isEmpty()
 			&& caso.RecordtypeId != solicitudDatosParticulares
 			&& caso.RecordtypeId != solicitudCredencial) {
-			return new Response(true, System.Label.Alerta_NoEnviarSInAdjuntos, '');
+			return new Response(true, System.Label.Alerta_NoEnviarSInAdjuntos, WARNING, '');
 		}
 		caso = getCaseInfo(recordId);
 		notas = getNotas(recordId);
@@ -81,41 +83,40 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 		else if(caso.RecordTypeId == solicitudCredencial) {return sendSolicitudCambioCredencial(recordId);}
 		else if(caso.RecordTypeId == solicitudPlan) {return sendSolicitudCambioPlan(recordId);}
 		else if(caso.RecordTypeId == solicitudDatosParticulares) {return sendSolicitudDatosParticulares();}
-		else {return new Response(true, System.Label.Alerta_CasoNoSolicitud, '');}
+		else {return new Response(true, System.Label.Alerta_CasoNoSolicitud, WARNING, '');}
 	}
 	/** Senders */
 	private static Response sendSolicitudAlta (String recordId) {
 		parser = new Parser(caso, userNick, files, notas, usuario);
 		String body = parser.parseAltaBody();
-		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'alta-familiar');
+		WSCaseEnviarASSHelper.Response resp = (WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, SOLICITUDES_AFILIADOS, 'alta-familiar');
 		if(!resp.hasError) {
 			processResponse(resp, caso, files, false, isAttachmentResend);
 		}
 		if(files.size() != 0 && !resp.hasError) {
 			System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
 		}
-		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
+		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, (resp.hasError) ? ERROR : SUCCESS , body);
 	}
 	private static Response sendSolicitudDespegue (String recordId) {
 		List<Integrante_caso__c> integrantes = getIntegrantes(recordId);
 		parser = new Parser(caso, userNick, files, notas, integrantes, usuario);
 		String body = parser.parseDespegueBody();
-		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'despegue');
+		WSCaseEnviarASSHelper.Response resp = (WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, SOLICITUDES_AFILIADOS, 'despegue');
 		if(!resp.hasError) {
 		processResponse(resp, caso, files, false, isAttachmentResend);
 		}
 		if(files.size() != 0 && !resp.hasError) {
 		System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
 		}
-		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
+		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, (resp.hasError) ? ERROR : SUCCESS, body);
 	}
 	private static Response sendSolicitudBaja (String recordId) {
-		String body;
 		if(caso.Type == 'Baja Parcial') {
 			List<Integrante_caso__c> integrantes = getIntegrantes(recordId);
 			Map<Id, Integrante_caso__c> integrantesById = new Map<Id, Integrante_caso__c>(integrantes);
 			if(integrantes.isEmpty()) {
-				return new Response(true, System.Label.Alerta_BajaParcialSinIntegrantes, '');
+				return new Response(true, System.Label.Alerta_BajaParcialSinIntegrantes, WARNING, '');
 			}
 			notas = getNotas(integrantesById.keySet());
 			parser = new Parser(caso, userNick, files, notas, integrantes, usuario);
@@ -124,12 +125,12 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 			parser = new Parser(caso, userNick, files, notas, usuario);
 			body = parser.parseBajaTotalBody();
 		} else {
-			return new Response(true, System.Label.Alerta_CasoBajaTipoInvalido, '');
+			return new Response(true, System.Label.Alerta_CasoBajaTipoInvalido, WARNING, '');
 		}
-		WSCaseEnviarASSHelper.Response solicitudBaja = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'baja');
+		WSCaseEnviarASSHelper.Response solicitudBaja = (WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, SOLICITUDES_AFILIADOS, 'baja');
 		if(!solicitudBaja.hasError) {
 			if(!isAttachmentResend) {
-				List<WSCaseEnviarASSHelper.Notas> notasToProcess = new List<WSCaseEnviarASSHelper.Notas>();
+				List<WSCaseEnviarASSGenericResponse.Notas> notasToProcess = new List<WSCaseEnviarASSGenericResponse.Notas>();
 				if(caso.Type == 'Baja Parcial') {
 					List<Integrante_caso__c> integrantesToUpdate = new List<Integrante_caso__c>();
 					String caseNroSolicitud = '';
@@ -160,38 +161,38 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 		if(files.size() != 0 && !solicitudBaja.hasError) {
 			System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
 		}
-		return new Response(solicitudBaja.hasError, (solicitudBaja.hasError) ? solicitudBaja.message : solicitudBaja.result.message, body);
+		return new Response(solicitudBaja.hasError, (solicitudBaja.hasError) ? solicitudBaja.message : solicitudBaja.result.message, (solicitudBaja.hasError) ? ERROR : SUCCESS, body);
 	}
 	private static Response sendSolicitudCambioSegmento (String recordId) {
 		parser = new Parser(caso, userNick, files, notas, usuario);
 		body = parser.parseCambioDeSegmentoBody();
-		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'cambio-segmento');
+		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, SOLICITUDES_AFILIADOS, 'cambio-segmento');
 		if(!resp.hasError) {
 			processResponse(resp, caso, files, true, isAttachmentResend);
 		}
 		if(files.size() != 0 && !resp.hasError) {
 			System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
 		}
-		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
+		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, (resp.hasError) ? ERROR : SUCCESS, body);
 	}
 	private static Response sendInterfazFinanciera (String recordId) {
 		parser = new Parser(caso, userNick, files, notas, usuario);
 		body = parser.parseInterfazFinanciera();
-		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'interfaz-financiera');
+		WSCaseEnviarASSHelper.Response resp = (WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, SOLICITUDES_AFILIADOS, 'interfaz-financiera');
 		if(!resp.hasError) {
 			processResponse(resp, caso, files, true, isAttachmentResend);
 		}
 		if(files.size() != 0 && !resp.hasError) {
 			System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
 		}
-		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
+		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, (resp.hasError) ? ERROR : SUCCESS, body);
 	}
 	private static Response sendSolicitudCambioCredencial (String recordId) {
 		Map<String, Object> simpleMap = new Map<String, Object> {
 			'afi_codigo' => caso.Codigo_de_asociado__c
 		};
 		String body = JSON.serialize(simpleMap);
-		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'reemision-credencial');
+		WSCaseEnviarASSHelper.Response resp = (WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, SOLICITUDES_AFILIADOS, 'reemision-credencial');
 		if(resp.hasError) {
 			caso.Error__c = resp.message;
 			caso.Status = 'En proceso';
@@ -202,28 +203,61 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 			caso.Status = 'En proceso';
 			update caso;
 		}
-		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
+		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, (resp.hasError) ? ERROR : SUCCESS, body);
 	}
 	private static Response sendSolicitudCambioPlan (String recordId) {
 		parser = new Parser(caso, userNick, files, notas, usuario);
 		body = parser.parseCambioPlanBody();
-		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'cambio-plan');
+		WSCaseEnviarASSHelper.Response resp = (WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, SOLICITUDES_AFILIADOS, 'cambio-plan');
 		if(!resp.hasError) {
 			processResponse(resp, caso, files, true, isAttachmentResend);
 		}
 		if(files.size() != 0 && !resp.hasError) {
 			System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
 		}
-		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
+		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, (resp.hasError) ? ERROR : SUCCESS, body);
 	}
 	private static Response sendSolicitudDatosParticulares () {
 		parser = new Parser(caso, userNick, usuario);
 		body = parser.parseDatosParticularesBody();
-		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, 'datos-particulares');
+		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, SOLICITUDES_AFILIADOS, 'datos-particulares');
 		if(!resp.hasError) {
 			processResponse(resp, caso, files, true, isAttachmentResend);
 		}
-		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, body);
+		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, (resp.hasError) ? ERROR : SUCCESS, body);
+	}
+	/** Processors */
+	private static void processResponse(WSCaseEnviarASSHelper.Response resp,
+										Case caso, List<ContentVersion> files,
+										Boolean switchToInProgress,
+										Boolean isAttachmentResend) {
+		if(!isAttachmentResend) {
+			WSCaseEnviarASSGenericResponse.Data data =  resp.result.data.get(0);
+			caso.Estado_de_solicitud__c = data.estado_sol;
+			caso.Estado_DDJJ__c = data.estado_dj;
+			caso.Nro_de_solicitud_SS__c = data.solafi_id;
+			if(switchToInProgress) {
+				caso.Status = 'En proceso';
+			}
+			Database.update(caso);
+			processNotas(data.notas);
+		}
+		processFiles(files);
+	}
+	private static void processFiles(List<ContentVersion> files) {
+		List<ContentVersion> filesToUpdate = new List<ContentVersion>();
+		for(ContentVersion file : files) {
+			ContentVersion updateVersion = new ContentVersion(Id = file.Id, Enviado__c = true);
+			filesToUpdate.add(updateVersion);
+		}
+		Database.SaveResult[] results = Database.update(filesToUpdate, false);
+	}
+	private static void processNotas(List<WSCaseEnviarASSGenericResponse.Notas> notasDeAuditoria) {
+		List<Nota_de_Auditoria__c> notasAActualizar = new List<Nota_de_Auditoria__c>();
+		for(WSCaseEnviarASSGenericResponse.Notas nota : notasDeAuditoria) {
+			notasAActualizar.add(new Nota_de_Auditoria__c(Id = nota.sf_id, Id_externo_solicitudes__c = nota.nota_id, Nota__c = nota.texto_nota));
+		}
+		Database.upsert(notasAActualizar, false);
 	}
 	/** Utils */
 	private static Case getCaseInfo (String recordId) {
@@ -340,61 +374,11 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 		FROM Integrante_caso__c
 		WHERE Caso__c =: recordId];
 	}
-
-
-	private static void processResponse(
-		WSCaseEnviarASSHelper.Response resp, 
-		Case caso, List<ContentVersion> files, 
-		Boolean switchToInProgress,
-		Boolean isAttachmentResend
-	) {
-		if(!isAttachmentResend) {
-			Id solicitudInterfazFinanciera = XappiaHelper.getRecordType('Case', 'Interfaz_financiera').Id;
-			WSCaseEnviarASSGenericResponse.Data data =  resp.result.data.get(0);    
-			caso.Estado_de_solicitud__c = data.estado_sol;
-			caso.Estado_DDJJ__c = data.estado_dj;
-			caso.Nro_de_solicitud_SS__c = data.solafi_id;
-			if(switchToInProgress) {
-				caso.Status = 'En proceso';
-			}
-			update caso;
-			processNotas(data.notas);
-		}
-		processFiles(files);
-	}
-
-	private static void processFiles(List<ContentVersion> files) {
-		List<ContentVersion> filesToUpdate = new List<ContentVersion>();
-		for(ContentVersion file : files) {
-			ContentVersion updateVersion = new ContentVersion(Id = file.Id, Enviado__c = true);
-			filesToUpdate.add(updateVersion);
-		}
-		Database.SaveResult[] results = Database.update(filesToUpdate, false);
-
-	}
-	private static void processNotas(List<WSCaseEnviarASSHelper.Notas> notasDeAuditoria) {
-		List<Nota_de_Auditoria__c> notasAActualizar = new List<Nota_de_Auditoria__c>();
-		for(WSCaseEnviarASSHelper.Notas nota : notasDeAuditoria) {
-			notasAActualizar.add(new Nota_de_Auditoria__c(Id = nota.sf_id, Id_externo_solicitudes__c = nota.nota_id, Nota__c = nota.texto_nota));
-		}
-		Database.upsert(notasAActualizar, false);
-	}
-
-	/**public class Response Extends FrontResponse{
+	public class Response Extends FrontResponse {
 		@AuraEnabled public String generatedBody;
 		public Response(Boolean hasError, String message, String status, String generatedBody) {
 			this.hasError = hasError;
 			this.auraMessage = new auraMessage(message, status);
-			this.generatedBody = generatedBody;
-		}
-	}*/
-	public class Response {
-		@AuraEnabled public Boolean hasError;
-		@AuraEnabled public String message;
-		@AuraEnabled public String generatedBody;
-		public Response(Boolean hasError, String message, String generatedBody) {
-			this.hasError = hasError;
-			this.message = message;
 			this.generatedBody = generatedBody;
 		}
 	}

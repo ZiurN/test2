@@ -57,7 +57,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(caso.Id,false);
 			Test.stopTest();
-			System.assertEquals(true, response.hasError, response.message);
+			System.assertEquals(true, response.hasError, response.auraMessage.message);
 		}
 		@isTest
 		private static void bad_tryToSubmitACaseWithoutFilesShouldReturnError() {
@@ -66,14 +66,14 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(caso.Id,false);
 			Test.stopTest();
-			System.assertEquals(true, response.hasError, response.message);
+			System.assertEquals(true, response.hasError, response.auraMessage.message);
 		}
 		@isTest
 		private static void bad_tryAddInvalidCaseInButtonShouldReturnError () {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS('Holis',false);
 			Test.stopTest();
-			System.assertEquals(true, response.hasError, response.message);
+			System.assertEquals(true, response.hasError, response.auraMessage.message);
 		}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	 * Casos de Solicitud de Despegue
@@ -104,7 +104,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudDespeguesFT.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 			Case updatedCase = [SELECT Estado_de_solicitud__c, Nro_de_solicitud_SS__c  FROM Case WHERE id =:casoSolicitudDespeguesFT.Id];
 			System.assertEquals('725187', updatedCase.Nro_de_solicitud_SS__c, 'El número de solicitud debe ser 725197');
 			System.assertEquals('COMPLETA', updatedCase.Estado_de_solicitud__c, 'El estado de la solicitud debe ser COMPLETA');
@@ -132,7 +132,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudDespeguesFT.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 			Case updatedCase = [SELECT Estado_DDJJ__c, Nro_de_solicitud_SS__c  FROM Case WHERE id =:casoSolicitudDespeguesFT.Id];
 			System.assertEquals('NUEVA', updatedCase.Estado_DDJJ__c, 'El estado DDJJ debe ser NUEVA');
 			System.assertEquals('725187', updatedCase.Nro_de_solicitud_SS__c, 'El núermo de la solicitud debe ser 725187');
@@ -164,7 +164,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudDespeguesCT.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 			Case updatedCase = [SELECT Estado_DDJJ__c, Nro_de_solicitud_SS__c  FROM Case WHERE id =:casoSolicitudDespeguesCT.Id];
 			System.assertEquals('NUEVA', updatedCase.Estado_DDJJ__c, 'El estado DDJJ debe ser NUEVA');
 			System.assertEquals('725187', updatedCase.Nro_de_solicitud_SS__c, 'El número de la solicitud debe ser 725187');
@@ -201,7 +201,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudDespeguesTF.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 			Case updatedCase = [SELECT Estado_DDJJ__c, Nro_de_solicitud_SS__c  FROM Case WHERE id =:casoSolicitudDespeguesTF.Id];
 			System.assertEquals('NUEVA', updatedCase.Estado_DDJJ__c, 'El estado DDJJ debe ser NUEVA');
 			System.assertEquals('725187', updatedCase.Nro_de_solicitud_SS__c, 'El número de la solicitud debe ser 725187');
@@ -228,7 +228,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudDespeguesTF.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 			Case updatedCase = [SELECT Estado_DDJJ__c, Nro_de_solicitud_SS__c  FROM Case WHERE id =:casoSolicitudDespeguesTF.Id];
 			System.assertEquals('NUEVA', updatedCase.Estado_DDJJ__c, 'El estado DDJJ debe ser NUEVA');
 			System.assertEquals('725187', updatedCase.Nro_de_solicitud_SS__c, 'El número de la solicitud debe ser 725187');
@@ -252,7 +252,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudDespeguesTF.Id,false);
 			Test.stopTest();
-			System.assertEquals(true, response.hasError, response.message);
+			System.assertEquals(true, response.hasError, response.auraMessage.message);
 		}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	 * Casos Alta Familiar
@@ -275,7 +275,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudAltaFamiliar.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 			Case updatedCase = [SELECT Estado_DDJJ__c, Nro_de_solicitud_SS__c  FROM Case WHERE id =:casoSolicitudAltaFamiliar.Id];
 			System.assertEquals('NUEVA', updatedCase.Estado_DDJJ__c, 'El estado DDJJ debe ser NUEVA');
 			System.assertEquals('725187', updatedCase.Nro_de_solicitud_SS__c, 'El número de la solicitud debe ser 725187');
@@ -300,7 +300,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudAltaFamiliar.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 			Case updatedCase = [SELECT Estado_DDJJ__c, Nro_de_solicitud_SS__c, Estado_de_solicitud__c  FROM Case WHERE id =:casoSolicitudAltaFamiliar.Id];
 			System.assertEquals('NUEVA', updatedCase.Estado_DDJJ__c, 'El estado DDJJ debe ser NUEVA');
 			System.assertEquals('COMPLETA', updatedCase.Estado_de_solicitud__c, 'El estado de la solicitud debe ser COMPLETA' );
@@ -322,7 +322,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudAltaFamiliar.Id,false);
 			Test.stopTest();
-			System.assertEquals(true, response.hasError, response.message);
+			System.assertEquals(true, response.hasError, response.auraMessage.message);
 		}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	 * Casos Cambio Segmento
@@ -342,7 +342,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudCambioSegmento.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 			Case updatedCase = [SELECT Estado_DDJJ__c, Nro_de_solicitud_SS__c  FROM Case WHERE id =:casoSolicitudCambioSegmento.Id];
 			System.assertEquals('NUEVA', updatedCase.Estado_DDJJ__c, 'El estado DDJJ debe ser NUEVA');
 			System.assertEquals('725187', updatedCase.Nro_de_solicitud_SS__c, 'El número de la solicitud debe ser 725187');
@@ -364,7 +364,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudCambioSegmento.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 			Case updatedCase = [SELECT Estado_de_solicitud__c, Nro_de_solicitud_SS__c  FROM Case WHERE id =:casoSolicitudCambioSegmento.Id];
 			System.assertEquals('COMPLETA', updatedCase.Estado_de_solicitud__c, 'El estado de la solicitud debe ser COMPLETA');
 		}
@@ -390,7 +390,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoBajaParcial.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 		}
 		@isTest
 		private static void BajaParcial_sendWithoutIntegranteShouldReturnError() {
@@ -402,7 +402,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoBajaParcial.Id,false);
 			Test.stopTest();
-			System.assertEquals(true, response.hasError, response.message);
+			System.assertEquals(true, response.hasError, response.auraMessage.message);
 		}
 		@isTest
 		private static void BajaParcial_sendThrowBatchWithCorrectDataShouldUpdateCase() {
@@ -438,7 +438,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoBajaTotal.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 		}
 		@isTest
 		private static void BajaTotal_sendUpdateWithCorrectDataShouldTransformToComplete() {
@@ -455,7 +455,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoBajaTotal.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 		}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	 * Casos Interfaz Financiera
@@ -474,7 +474,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(caseIF.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 		}
 		@isTest
 		private static void InterfazFinanciera_sendUpdateWithCorrectDataShouldTransformCaseToComplete() {
@@ -492,7 +492,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(caseIF.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 			caseIF = [SELECT Estado_de_solicitud__c FROM Case WHERE Id = :caseIF.Id];
 			System.assertEquals('COMPLETA', caseIF.Estado_de_solicitud__c, 'No se esta completando la actualizacion');
 		}
@@ -511,7 +511,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(caseIF.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 		}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	 * Casos Nueva Credencial
@@ -527,7 +527,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoCredencial.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 		}
 		@isTest
 		private static void sendCredentialRequestShouldToAnInvalidAccountShouldReturnError() {
@@ -540,7 +540,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoCredencial.Id,false);
 			Test.stopTest();
-			System.assertEquals(true, response.hasError, response.message);
+			System.assertEquals(true, response.hasError, response.auraMessage.message);
 		}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	 * Casos Cambio de Plan
@@ -561,7 +561,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoCambioPlan.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 		}
 		@isTest
 		private static void SolicitudCambioPlan_sendUpdateWithCorrectDataShouldTransformToComplete() {
@@ -582,7 +582,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoCambioPlan.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 			casoCambioPlan = [SELECT Estado_de_solicitud__c FROM Case WHERE Id = :casoCambioPlan.Id];
 			System.assertEquals('COMPLETA', casoCambioPlan.Estado_de_solicitud__c, 'No se esta completando la actualizacion');
 		}
@@ -611,7 +611,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoDatosParticulares.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 			Case updatedCase = [SELECT Estado_DDJJ__c, Nro_de_solicitud_SS__c  FROM Case WHERE id =:casoDatosParticulares.Id];
 			System.assertEquals('725187', updatedCase.Nro_de_solicitud_SS__c, 'El número de la solicitud debe ser 725187');
 		}
@@ -638,7 +638,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoDatosParticulares.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 			Case updatedCase = [SELECT Estado_DDJJ__c, Nro_de_solicitud_SS__c  FROM Case WHERE id =:casoDatosParticulares.Id];
 			System.assertEquals('725187', updatedCase.Nro_de_solicitud_SS__c, 'El número de la solicitud debe ser 725187');
 		}
@@ -658,7 +658,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoDatosParticulares.Id,false);
 			Test.stopTest();
-			System.assertEquals(false, response.hasError, response.message);
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 			Case updatedCase = [SELECT Estado_DDJJ__c, Nro_de_solicitud_SS__c  FROM Case WHERE id =:casoDatosParticulares.Id];
 			System.assertEquals('725187', updatedCase.Nro_de_solicitud_SS__c, 'El número de la solicitud debe ser 725187');
 		}

@@ -1,6 +1,6 @@
 /**-----------------------------------------------------------------------------------------------------------------------
 @author			Jeferson Ruiz.
-@description	Clase deserializadora para los llamados a SS.
+@description	Clase deserializadora para las solicitudes de llamados a SS.
 @date			26/10/2021
 ------------------------------------------------------------------------------------------------------------------------*/
 @SuppressWarnings('PMD.ExcessiveParameterList')
