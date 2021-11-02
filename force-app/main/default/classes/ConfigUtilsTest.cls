@@ -28,5 +28,7 @@ public class ConfigUtilsTest  {
 		System.assertEquals('/v1/salud/solicitudes-afiliados/despegue', result.get('despegue').Endpoint__c, 'El endpoint no es el esperado');
 		System.assertEquals('/v1/salud/solicitudes-afiliados/interfaz-financiera', result.get('interfaz-financiera').Endpoint__c, 'El endpoint no es el esperado');
 		System.assertEquals('/v1/salud/solicitudes-afiliados/reemision-credencial', result.get('reemision-credencial').Endpoint__c, 'El endpoint no es el esperado');
+		result = ConfigUtils.getEndpointsByTipo('autorizaciones');
+		System.assertEquals('/v1/salud/autorizaciones', result.get('autorizaciones').Endpoint__c, 'El endpoint no es el esperado');
 	}
 }

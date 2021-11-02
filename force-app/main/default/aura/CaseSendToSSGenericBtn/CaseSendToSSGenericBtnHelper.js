@@ -10,19 +10,21 @@
 				"sendToSS",
 				function (succeed, result, errors) {
 					if (succeed) {
-						if (!result.hasError) {
+						let hasError = result.hasError;
+						let auraMessage = result.auraMessage;
+						if (!hasError) {
 							let operacion = "";
-							if (result.message.includes("error")) {
+							if (auraMessage.message.includes("error")) {
 								operacion = "Operación incompleta";
 							}
 							else {
 								operacion = "Operación exitosa";
 							}
-							LightningUtils.showToast(operacion, result.message, { "type": "success", "duration": 50000 });
+							LightningUtils.showToast(operacion, auraMessage.message, { "type": auraMessage.status, "duration": 50000 });
 							component.set('v.isLoading', false);
 							$A.get('e.force:refreshView').fire();
 						} else {
-							LightningUtils.showToast("Se encontro un error procesando...", result.message, { "type": "error", "duration": 60000 });
+							LightningUtils.showToast("Se encontro un error procesando...", auraMessage.message, { "type": auraMessage.status, "duration": 60000 });
 							component.set('v.isLoading', false);
 							$A.get('e.force:refreshView').fire();
 						}
@@ -34,7 +36,7 @@
 				},
 				{
 					recordId: caseId,
-					isAttachmentResend: false
+					isAttachmentResendFront: false
 				}
 			);
 		}

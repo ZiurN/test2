@@ -7,13 +7,21 @@ public class CasoEnviarASSBtnCtrl  {
 
 	@AuraEnabled
     public static Boolean hasAttachments(Id caseId, Id emId) {
-
-        List<ContentDocumentLink> dbLinks = [
-                SELECT LinkedEntityId,ContentDocumentId,ContentDocument.LatestPublishedVersionId
-                FROM ContentDocumentLink
-                WHERE LinkedEntityId =: caseId OR LinkedEntityId =: emId
+        List<EmailMessage> emailMessages = [
+            SELECT Id 
+            FROM 
+            EmailMessage 
+            WHERE ParentId = :caseId
         ];
-
+        system.debug(emailMessages);
+        List<ContentDocumentLink> dbLinks = [
+            SELECT LinkedEntityId,ContentDocumentId,ContentDocument.LatestPublishedVersionId
+            FROM ContentDocumentLink
+            WHERE LinkedEntityId =: caseId 
+            OR LinkedEntityId =: emId 
+            OR LinkedEntityId IN :emailMessages
+        ];
+		system.debug(dbLinks);
         return !dbLinks.isEmpty();
     }
 	
@@ -326,11 +334,18 @@ public class CasoEnviarASSBtnCtrl  {
 		}
 		String msg = '';
 		List<String> idContentVersionList = new List<String>(); 
+        List<EmailMessage> emailMessagesCase = [
+            SELECT Id 
+            FROM EmailMessage
+            WHERE ParentId = :caseFromSf.Id
+        ];
+        
 		List<ContentDocumentLink> linksList = [
 				SELECT LinkedEntityId, ContentDocumentId, ContentDocument.LatestPublishedVersionId, ContentDocument.Title, ShareType,
 					ContentDocument.FileType, ContentDocument.FileExtension
 				FROM ContentDocumentLink
 				WHERE LinkedEntityId =: caseFromSf.Id
+            	OR LinkedEntityId IN :emailMessagesCase
 		];
 
 		for(ContentDocumentLink cdl : linksList) {
