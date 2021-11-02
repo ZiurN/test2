@@ -248,4 +248,36 @@
         <shortDescription>PDFIngresoYDDJJ</shortDescription>
         <value>Avalian - Solicitud de ingreso y DDJJ completa.pdf</value>
     </labels>
+    <labels>
+        <fullName>Alerta_CasoNoSolicitud</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_CasoNoSolicitud</shortDescription>
+        <value>El caso no es una solicitud</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_InvalidCaseClosed</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_InvalidCaseClosed</shortDescription>
+        <value>Caso inválido, compruebe que el caso no este cerrado</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoEnviarSInAdjuntos</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoEnviarSInAdjuntos</shortDescription>
+        <value>El caso no se puede enviar sin archivos adjuntos</value>
+    </labels>
+    <labels>
+        <fullName>Error_NoPuedeEliminarCoberturaEnviadaSS</fullName>
+        <categories>Error</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Error_NoPuedeEliminarCoberturaEnviadaSS</shortDescription>
+        <value>No se puede eliminar la Cobertura Especial porque ya fue enviada a SaludSoft</value>
+    </labels>
 </CustomLabels>
