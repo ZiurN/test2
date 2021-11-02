@@ -36,7 +36,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 	@author			Jeferson Ruiz.
 	@description	Método para envíar la solicitud a SS desde la interfaz del usuario.
 	@param			recordId - Id del caso.
-	@param			isAttachmentResend - Id del caso.
+	@param			isAttachmentResend - Indica si ahi que reenviar archivos.
 					sean creadas.
 	------------------------------------------------------------------------------------------------------------------------*/
 	@AuraEnabled
@@ -104,10 +104,10 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 		String body = parser.parseDespegueBody();
 		WSCaseEnviarASSHelper.Response resp = (WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, SOLICITUDES_AFILIADOS, 'despegue');
 		if(!resp.hasError) {
-		processResponse(resp, caso, files, false, isAttachmentResend);
+			processResponse(resp, caso, files, false, isAttachmentResend);
 		}
 		if(files.size() != 0 && !resp.hasError) {
-		System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
+			System.enqueueJob(new CaseSendToSSAttachmentQueueable(recordId));
 		}
 		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, (resp.hasError) ? ERROR : SUCCESS, body);
 	}
@@ -227,7 +227,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, (resp.hasError) ? ERROR : SUCCESS, body);
 	}
 	/** Processors */
-	private static void processResponse(WSCaseEnviarASSHelper.Response resp,
+	private static void processResponse (WSCaseEnviarASSHelper.Response resp,
 										Case caso, List<ContentVersion> files,
 										Boolean switchToInProgress,
 										Boolean isAttachmentResend) {
@@ -244,7 +244,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 		}
 		processFiles(files);
 	}
-	private static void processFiles(List<ContentVersion> files) {
+	private static void processFiles (List<ContentVersion> files) {
 		List<ContentVersion> filesToUpdate = new List<ContentVersion>();
 		for(ContentVersion file : files) {
 			ContentVersion updateVersion = new ContentVersion(Id = file.Id, Enviado__c = true);
@@ -252,7 +252,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 		}
 		Database.SaveResult[] results = Database.update(filesToUpdate, false);
 	}
-	private static void processNotas(List<WSCaseEnviarASSGenericResponse.Notas> notasDeAuditoria) {
+	private static void processNotas (List<WSCaseEnviarASSGenericResponse.Notas> notasDeAuditoria) {
 		List<Nota_de_Auditoria__c> notasAActualizar = new List<Nota_de_Auditoria__c>();
 		for(WSCaseEnviarASSGenericResponse.Notas nota : notasDeAuditoria) {
 			notasAActualizar.add(new Nota_de_Auditoria__c(Id = nota.sf_id, Id_externo_solicitudes__c = nota.nota_id, Nota__c = nota.texto_nota));

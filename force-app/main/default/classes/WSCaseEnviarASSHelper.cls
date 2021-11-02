@@ -19,8 +19,8 @@ public with sharing class WSCaseEnviarASSHelper {
 			result = WSCaseEnviarASSGenericResponse.parse(response.getBody());
 		}
 		public override void processError(HttpResponse response) {
-			result = new WSCaseEnviarASSGenericResponse(response.getBody());
-			this.message = result.processMessage(response.getBody());
+			result = WSCaseEnviarASSGenericResponse.parse(response.getBody());
+			this.message = result.processMessage();
 		}
 	}
 }

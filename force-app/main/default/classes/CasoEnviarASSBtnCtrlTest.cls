@@ -96,15 +96,15 @@ private class CasoEnviarASSBtnCtrlTest {
 		prest1.Tipo__c = 'N';
 		insert prest1;
         getResponseFound = new XHttpCalloutMock();
-		setMockResponse (getResponseFound, AUTORIZACION_URL, WSCaseAPGenerarCentroMock.getFound(caso.Id));
+		setMockResponse (getResponseFound, AUTORIZACION_URL, WSCaseAPGenerarCentroMock.getFound(caso.Id), 200);
 		getResponsePresupuestoFound = new XHttpCalloutMock();
-		setMockResponse (getResponsePresupuestoFound, AUTORIZACION_URL, WSCaseAPGenerarCentroMock.getFoundPresupuesto(caso.Id));
+		setMockResponse (getResponsePresupuestoFound, AUTORIZACION_URL, WSCaseAPGenerarCentroMock.getFoundPresupuesto(caso.Id), 200);
 		getResponseMaterialFound = new XHttpCalloutMock();
-		setMockResponse (getResponseMaterialFound, AUTORIZACION_URL, WSCaseAPGenerarCentroMock.getFoundMaterial(caso.Id));
+		setMockResponse (getResponseMaterialFound, AUTORIZACION_URL, WSCaseAPGenerarCentroMock.getFoundMaterial(caso.Id), 200);
 		getResponseFoundWithEM = new XHttpCalloutMock();
-		setMockResponse (getResponseFoundWithEM, AUTORIZACION_URL, WSCaseAPGenerarCentroMock.getFoundWithEM(caso.Id));
+		setMockResponse (getResponseFoundWithEM, AUTORIZACION_URL, WSCaseAPGenerarCentroMock.getFoundWithEM(caso.Id), 200);
 		getErrorResponse = new XHttpCalloutMock();
-		setMockResponse (getErrorResponse, AUTORIZACION_URL, WSCaseAPGenerarCentroMock.getError());
+		setMockResponse (getErrorResponse, AUTORIZACION_URL, WSCaseAPGenerarCentroMock.getError(), 422);
     }
 	@isTest
 	private static void whenACaseWithPresupuestoIsSentToSSWithCorrectData_ItShouldReturnAValidResponse() {
@@ -284,14 +284,14 @@ private class CasoEnviarASSBtnCtrlTest {
 		System.assertEquals('Autorizado', seg.Estado__c, 'El evento médico debe estar autorizado');
 	}
 	/** Utils */
-	private static void setMockResponse (XHttpCalloutMock mock, String url, String body) {
+	private static void setMockResponse (XHttpCalloutMock mock, String url, String body, Integer statusCode) {
 		mock.buildResponse()
 			.withStatus('OK')
 			.withStatusCode(200)
 			.withBody(WSAuthTokenMock.getTokenSuccess())
 			.addForAddress(AUTH_TOKEN_URL);
 		mock.buildResponse().withStatus('OK')
-			.withStatusCode(200).withBody(body)
+			.withStatusCode(statusCode).withBody(body)
 			.addForAddress(url);
 	}
 	private static Case getCase (Id casoId) {
