@@ -8,8 +8,8 @@
     <columns>Estado__c</columns>
     <columns>Forma_de_egreso__c</columns>
     <columns>AP_presupuesto__c</columns>
-    <columns>Fecha_y_hora_fin_ems__c</columns>
     <columns>Fecha_y_Hora_inicio_EMS__c</columns>
+    <columns>Fecha_y_hora_fin_ems__c</columns>
     <columns>AP_material__c</columns>
     <columns>Emitido__c</columns>
     <filterScope>Everything</filterScope>

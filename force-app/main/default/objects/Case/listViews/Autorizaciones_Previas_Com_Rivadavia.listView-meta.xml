@@ -20,19 +20,19 @@
         <value>650712</value>
     </filters>
     <filters>
-        <field>CASES.RECORDTYPE</field>
+        <field>Nivel_de_derivacion__c</field>
         <operation>equals</operation>
-        <value>Case.Autorizacion_previa,Case.Internacion,Case.Seguimiento,Case.Solicitud_de_baja</value>
-    </filters>
-    <filters>
-        <field>CASES.STATUS</field>
-        <operation>notContain</operation>
-        <value>Orden Emitida,Anulada</value>
+        <value>Nivel 1</value>
     </filters>
     <filters>
         <field>CASES.STATUS</field>
         <operation>notEqual</operation>
-        <value>Rechazado</value>
+        <value>CA-----E</value>
+    </filters>
+    <filters>
+        <field>CASES.STATUS</field>
+        <operation>notEqual</operation>
+        <value>CA-----N,Anulada</value>
     </filters>
     <label>Autorizaciones Previas  Com Rivadavia</label>
 </ListView>

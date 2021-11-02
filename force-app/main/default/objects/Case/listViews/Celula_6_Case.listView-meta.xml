@@ -6,7 +6,6 @@
     <columns>CASES.CASE_NUMBER</columns>
     <columns>Evento_Medico__c</columns>
     <columns>ACCOUNT.NAME</columns>
-    <columns>CASES.STATUS</columns>
     <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
     <columns>SLA__c</columns>
     <columns>Caso_Falseamiento_creado__c</columns>
@@ -17,6 +16,7 @@
     <columns>Usuario__c</columns>
     <columns>Diagnostico__c</columns>
     <columns>UPDATEDBY_USER.ALIAS</columns>
+    <columns>Sub_tipo__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>Celula__c</field>

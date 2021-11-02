@@ -42,5 +42,10 @@
         <operation>notContain</operation>
         <value>,ABULLERI,MAZZO,VISON,LUQUE,CGANEM,prina,vega,jnavarro</value>
     </filters>
+    <filters>
+        <field>CASES.CREATED_DATE_DATE_ONLY</field>
+        <operation>greaterThan</operation>
+        <value>6/30/2021 12:00 AM</value>
+    </filters>
     <label>Precargas Rosario</label>
 </ListView>

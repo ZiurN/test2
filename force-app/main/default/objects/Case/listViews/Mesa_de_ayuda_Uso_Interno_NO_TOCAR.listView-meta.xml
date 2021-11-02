@@ -62,6 +62,11 @@
         <operation>notContain</operation>
         <value>aldana,dianela,viviana</value>
     </filters>
+    <filters>
+        <field>Sin_alertas_AM_pendientes__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
     <label>Mesa de ayuda -  Uso Interno NO TOCAR</label>
     <queue>Mesa_de_ayuda</queue>
 </ListView>

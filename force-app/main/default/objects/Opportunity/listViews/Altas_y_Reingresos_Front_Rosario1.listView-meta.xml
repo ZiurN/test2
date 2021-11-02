@@ -18,6 +18,11 @@
         <operation>contains</operation>
         <value>650098</value>
     </filters>
+    <filters>
+        <field>OPPORTUNITY.CREATED_DATE</field>
+        <operation>greaterThan</operation>
+        <value>6/30/2021 12:00 AM</value>
+    </filters>
     <label>Altas y Reingresos Front Rosario</label>
     <sharedTo>
         <role>Filial_Rosario</role>

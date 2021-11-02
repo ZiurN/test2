@@ -22,14 +22,14 @@
         <value>front</value>
     </filters>
     <filters>
-        <field>Delegacion__c</field>
-        <operation>contains</operation>
-        <value>650175</value>
-    </filters>
-    <filters>
         <field>CASES.STATUS</field>
         <operation>notContain</operation>
         <value>Cerrado,Anulada</value>
+    </filters>
+    <filters>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650175</value>
     </filters>
     <label>Casos a tipificar Rio Cuarto</label>
 </ListView>

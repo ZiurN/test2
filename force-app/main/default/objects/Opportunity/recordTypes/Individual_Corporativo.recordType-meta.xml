@@ -617,6 +617,10 @@
     <picklistValues>
         <picklist>Plan_Grupo_Corporativo__c</picklist>
         <values>
+            <fullName>AS100</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>AS200</fullName>
             <default>false</default>
         </values>
@@ -639,6 +643,10 @@
     </picklistValues>
     <picklistValues>
         <picklist>Plan_del_grupo_familiar__c</picklist>
+        <values>
+            <fullName>AS100</fullName>
+            <default>false</default>
+        </values>
         <values>
             <fullName>AS200</fullName>
             <default>false</default>

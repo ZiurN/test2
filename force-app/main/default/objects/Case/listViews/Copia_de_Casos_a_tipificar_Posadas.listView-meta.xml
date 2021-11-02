@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Copia_de_Internaciones_Rio_cuarto_IV</fullName>
+    <fullName>Copia_de_Casos_a_tipificar_Posadas</fullName>
+    <columns>iOrigen__c</columns>
     <columns>CASES.CASE_NUMBER</columns>
+    <columns>CASES.RECORDTYPE</columns>
     <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+    <columns>CREATEDBY_USER.ALIAS</columns>
     <columns>Usuario__c</columns>
     <columns>CASES.SUBJECT</columns>
     <columns>CASES.STATUS</columns>
-    <columns>Correo_asociado__c</columns>
-    <columns>Correo_enviado__c</columns>
-    <columns>Delegacion__c</columns>
+    <columns>CASES.EMAIL</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>CASES.LAST_UPDATE_DATE_ONLY</columns>
+    <columns>UPDATEDBY_USER.ALIAS</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>CASES.RECORDTYPE</field>
         <operation>equals</operation>
-        <value>Case.Caso_a_tipificar</value>
+        <value>Case.Caso_a_tipificar,Case.Consultas,Case.Reclamos</value>
     </filters>
     <filters>
-        <field>CORE.USERS.ALIAS</field>
-        <operation>equals</operation>
-        <value>front</value>
+        <field>Delegacion__c</field>
+        <operation>contains</operation>
+        <value>650510</value>
     </filters>
     <filters>
         <field>CASES.STATUS</field>
@@ -26,12 +30,9 @@
         <value>Cerrado,Anulada</value>
     </filters>
     <filters>
-        <field>Usuario__c</field>
+        <field>CORE.USERS.ALIAS</field>
         <operation>equals</operation>
-        <value>GEORGINA TEDESCO</value>
+        <value>front,jguckert,mcaparar,earmango,cbarfuss</value>
     </filters>
-    <label>Casos a tipificar asignados a Georgina</label>
-    <sharedTo>
-        <roleAndSubordinates>Encargado_Filial_Rio_Cuarto_IV</roleAndSubordinates>
-    </sharedTo>
+    <label>Copia de Casos a tipificar Posadas</label>
 </ListView>
