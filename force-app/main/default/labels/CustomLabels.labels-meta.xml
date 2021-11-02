@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Alerta_AuthBackIfResponsableAsignado</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_AuthBackIfResponsableAsignado</shortDescription>
+        <value>Solo se pueden autorizar alertas Back si hay un responsable asignado al caso</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_AuthComprasIfResponsableAsignado</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_AuthComprasIfResponsableAsignado</shortDescription>
+        <value>Solo se pueden autorizar alertas de Compras Tecnicas si hay un responsable asignado al caso</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_AuthDiscapacidadIfResponsableAsignado</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_AuthDiscapacidadIfResponsableAsignado</shortDescription>
+        <value>Solo se pueden autorizar alertas de Discapacidad si hay un responsable asignado al caso</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_AuthIDIfResponsableAsignado</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_AuthIDIfResponsableAsignado</shortDescription>
+        <value>Solo se pueden autorizar alertas ID si hay un responsable asignado al caso</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_AlertAM</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_AlertAM</shortDescription>
+        <value>No se permite autorizar alerta AM</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_AlertBack</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_AlertBack</shortDescription>
+        <value>No se permite autorizar alerta Back</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_AlertComprasTecnicas</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_AlertComprasTecnicas</shortDescription>
+        <value>No se permite autorizar alerta de Compras Tecnicas</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_AlertDiscapacidad</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_AlertDiscapacidad</shortDescription>
+        <value>No se permite autorizar alerta de Discapacidad</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_AlertFront</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_AlertFront</shortDescription>
+        <value>No se permite autorizar alerta Front</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_AlertID</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_AlertID</shortDescription>
+        <value>No se permite autorizar alerta ID</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_AlertPresupuesto</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_AlertPresupuesto</shortDescription>
+        <value>No se permite autorizar alerta de Presupuesto</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_ApodoCMVacio</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_ApodoCMVacio</shortDescription>
+        <value>- El apodo (CommunityNickname) del usuario está vacío</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_AuditoriaMenor</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_AuditoriaMenor</shortDescription>
+        <value>No se puede autorizar porque hay una alerta, con un nivel de auditoría menor, sin resolver aún</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_EstadoOrdenDebeSerEmitida</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_EstadoOrdenDebeSerEmitida</shortDescription>
+        <value>- El estado debe ser Orden Emitida</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_NoId</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_NoId</shortDescription>
+        <value>El id externo está vacío</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_UsuarioNoEquipoCaso</fullName>
+        <categories>Solución de pago</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_UsuarioNoEquipoCaso</shortDescription>
+        <value>- El usuario no pertenece al equipo del caso</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_UsuarioNoFront</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_UsuarioNoFront</shortDescription>
+        <value>- El usuario no pertenece a Front</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_UsuarioNoMesaAyuda</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_UsuarioNoMesaAyuda</shortDescription>
+        <value>- El usuario no pertenece a Mesa de Ayuda</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_UsuarioNoPropietario</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_UsuarioNoPropietario</shortDescription>
+        <value>El usuario no es el propietario</value>
+    </labels>
+    <labels>
+        <fullName>Email_EnvioCorrecto</fullName>
+        <categories>Email Class</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Email_EnvioCorrecto</shortDescription>
+        <value>Mail enviado correctamente</value>
+    </labels>
+    <labels>
+        <fullName>Email_NoAddressesNoFiles</fullName>
+        <categories>Email Class</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Email_NoAddressesNoFiles</shortDescription>
+        <value>Debe haber al menos una direccion de mail y un archivo para adjuntar</value>
+    </labels>
+    <labels>
+        <fullName>Email_NoTemplate</fullName>
+        <categories>Email Class</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Email_NoTemplate</shortDescription>
+        <value>No se encontro una plantilla para el envio de mail</value>
+    </labels>
+    <labels>
+        <fullName>LA_PreChat_Base_LiveChat_04I1U0000008Wy8_3750225</fullName>
+        <categories>Snap-ins</categories>
+        <language>es</language>
+        <protected>false</protected>
+        <shortDescription>LA_PreChat_Base_LiveChat_04I1U0000008Wy8_3750225</shortDescription>
+        <value>Ava</value>
+    </labels>
+    <labels>
+        <fullName>LA_Waiting_WithoutQueuePos_WaitingGreeting_04I1U0000008Wy8_8928851</fullName>
+        <categories>Snap-ins</categories>
+        <language>es</language>
+        <protected>false</protected>
+        <shortDescription>LA_Waiting_WithoutQueuePos_WaitingGreeting_04I1U0000008Wy8_8928851</shortDescription>
+        <value>¡Hola!</value>
+    </labels>
+    <labels>
+        <fullName>PDFIngresoYDDJJ</fullName>
+        <categories>Labels documentos</categories>
+        <language>es</language>
+        <protected>false</protected>
+        <shortDescription>PDFIngresoYDDJJ</shortDescription>
+        <value>Avalian - Solicitud de ingreso y DDJJ completa.pdf</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_CasoNoSolicitud</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_CasoNoSolicitud</shortDescription>
+        <value>El caso no es una solicitud</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_InvalidCaseClosed</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_InvalidCaseClosed</shortDescription>
+        <value>Caso inválido, compruebe que el caso no este cerrado</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoEnviarSInAdjuntos</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoEnviarSInAdjuntos</shortDescription>
+        <value>El caso no se puede enviar sin archivos adjuntos</value>
+    </labels>
+    <labels>
+        <fullName>Error_NoPuedeEliminarCoberturaEnviadaSS</fullName>
+        <categories>Error</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Error_NoPuedeEliminarCoberturaEnviadaSS</shortDescription>
+        <value>No se puede eliminar la Cobertura Especial porque ya fue enviada a SaludSoft</value>
+    </labels>
+</CustomLabels>

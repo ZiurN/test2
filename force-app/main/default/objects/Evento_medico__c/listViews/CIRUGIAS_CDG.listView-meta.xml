@@ -16,7 +16,7 @@
     <filters>
         <field>OWNER.ALIAS</field>
         <operation>equals</operation>
-        <value>VISASA,NSANTONI</value>
+        <value>VISASA,JOLMEDO</value>
     </filters>
     <filters>
         <field>Estado__c</field>

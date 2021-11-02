@@ -11,6 +11,7 @@ tipo de solicitud nuevo (	REINGRESO, REING_GFAM)</description>
             ISPICKVAL(Plan_del_grupo_familiar__c, &quot;AS500&quot;),
             ISPICKVAL(Plan_del_grupo_familiar__c, &quot;AS400&quot;),
             ISPICKVAL(Plan_del_grupo_familiar__c, &quot;AS300&quot;),
+            ISPICKVAL(Plan_del_grupo_familiar__c, &quot;AS100&quot;),
             ISPICKVAL(Segmento_del_Grupo_Familiar__c, &quot;OBLEMP&quot;),
             ISPICKVAL(Segmento_del_Grupo_Familiar__c, &quot;VOLEMP&quot;),
             ISPICKVAL(Segmento_del_Grupo_Familiar__c, &quot;OBLDIR&quot;),

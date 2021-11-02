@@ -6,7 +6,7 @@
     <errorConditionFormula>AND(
 	    ISPICKVAL(Type,&apos;Medicamento&apos;),
 	    NOT(ISPICKVAL(Status,&apos;CA-----G&apos;)),
-					ISCHANGED(Urgente__c) 
+					ISCHANGED(Urgente__c)
 	)</errorConditionFormula>
-    <errorMessage>La urgencia de un caso de tipo medicamento solo podra ser cambiada cuando el caso este en estado Generado</errorMessage>
+    <errorMessage>La urgencia de un caso de tipo medicamento sólo podrá ser cambiada cuando el caso este en estado Generado</errorMessage>
 </ValidationRule>

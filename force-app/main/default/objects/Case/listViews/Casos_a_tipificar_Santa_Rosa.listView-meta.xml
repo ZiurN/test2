@@ -13,7 +13,7 @@
     <filters>
         <field>CASES.RECORDTYPE</field>
         <operation>equals</operation>
-        <value>Case.Caso_a_tipificar</value>
+        <value>Case.Caso_a_tipificar,Case.Consultas,Case.Reclamos</value>
     </filters>
     <filters>
         <field>CASES.STATUS</field>

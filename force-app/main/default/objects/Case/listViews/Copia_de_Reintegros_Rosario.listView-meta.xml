@@ -29,7 +29,7 @@
     <filters>
         <field>Lote__c</field>
         <operation>contains</operation>
-        <value>222</value>
+        <value>223</value>
     </filters>
     <label>Copia de Reintegros Rosario</label>
 </ListView>
