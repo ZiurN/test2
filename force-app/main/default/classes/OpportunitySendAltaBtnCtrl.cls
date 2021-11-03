@@ -660,6 +660,8 @@ public without sharing class OpportunitySendAltaBtnCtrl {
 
             encabezado.put('dom_numero', oppFromSF.Numero__c != null ? String.valueOf(oppFromSF.Numero__c) : null);
             encabezado.put('dom_calle', oppFromSF.Calle__c);
+			encabezado.put('dom_piso', oppFromSF.Piso__c);
+			encabezado.put('dom_dpto', oppFromSF.Dpto__c);
             encabezado.put('tipo_reingreso', 'TIT');
             encabezado.put('aa_codigo', oppFromSF.Segmento_del_Grupo_Familiar__c);
             encabezado.put('acti_codigo', oppFromSF.ActividadProfesion_del_titular__c);
@@ -856,6 +858,8 @@ public without sharing class OpportunitySendAltaBtnCtrl {
                 'tel_tipo' => 'TEL',
                 'dom_numero' => oppFromSF.Numero__c != null ? String.valueOf(oppFromSF.Numero__c) : null,
                 'dom_calle' => oppFromSF.Calle__c,
+				'dom_piso' => oppFromSF.Piso__c,
+				'dom_dpto' => oppFromSF.Dpto__c,
                 'localidad' => loc,
                 'nacionalidad' => oppFromSF.Nacionalidad__c,
                 'fecha_nac' => oppFromSF.Fecha_de_Nacimiento__c != null ? oppFromSF.Fecha_de_Nacimiento__c.format() : null,
