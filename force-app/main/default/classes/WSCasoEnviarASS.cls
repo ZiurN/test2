@@ -23,11 +23,8 @@ public class WSCasoEnviarASS  {
     public class Response extends WSResult {
         public WSCaseAPGenerarCentroResp result ;
         public override void processResponse(HttpResponse response) {
-            //result = (WSCasoEnviarASSResp)
-                    //JSON.deserialize(response.getBody(), WSCasoEnviarASSResp.class);
 			result = WSCaseAPGenerarCentroResp.parse(response.getBody());
         }
-
         public override void processError(HttpResponse response) {
             Map<String,Object> body = (Map<String,Object>) JSON.deserializeUntyped(response.getBody());
             Map<String,Object> data = (Map<String,Object>) body.get('data');
@@ -39,10 +36,6 @@ public class WSCasoEnviarASS  {
             else{
                 message = UtilsDisplayErrorMessageFromWS.showErrorMessage(body);
             }
-
-
-//            message = UtilsDisplayErrorMessageFromWS.showErrorMessage(body);
         }
-
     }
 }

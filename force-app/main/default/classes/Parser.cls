@@ -11,6 +11,7 @@ public with sharing class Parser {
 	public List<Nota_de_Auditoria__c> notas {get; set;}
 	public List<Integrante_caso__c> integrantes {get; set;}
 	public User usuario {get; set;}
+	public List<Prestacion__c> prestaciones {get; set;}
 	/** Constructors */
 	public Parser (Case caso,
 					String userNick,
@@ -42,10 +43,17 @@ public with sharing class Parser {
 		this.notas = notas;
 		this.usuario = usuario;
 	}
+	public Parser (Case caso,
+					List<Prestacion__c> prestaciones,
+					String userNick) {
+		this.caso = caso;
+		this.prestaciones = prestaciones;
+		this.userNick = userNick;
+	}
 	/**-----------------------------------------------------------------------------------------------------------------------
  	@author			Jeferson Ruiz
  	@company		Xappia
-	@description	Deserializador para solicitudes de SS.
+	@description	Deserializador para solicitudes de SS a las APIS de solicitudes de afiliados.
 	------------------------------------------------------------------------------------------------------------------------*/
 		public class SolicitudSS {
 			public List<Notas> notas {get;set;}
@@ -162,420 +170,534 @@ public with sharing class Parser {
 				public String motivo_baja {get;set;}
 				public List<Notas> notas {get;set;}
 			}
-	/**-----------------------------------------------------------------------------------------------------------------------
-	@author			Jeferson Ruiz
-	@company		Xappia
-	@description	Método para entregar el body de la solicitud a la API para una solicitud de alta.
-	------------------------------------------------------------------------------------------------------------------------*/
-	public String parseAltaBody () {
-		SolicitudSS solicitud = new SolicitudSS();
-		try {
-			Encabezado encabezado = new Encabezado();
-				encabezado.sf_id = getValueOf(this.caso.Id);
-				encabezado.fecha_vigencia = formatDate(this.caso.Fecha_de_vigencia__c);
-				encabezado.agencia_codigo = this.usuario.Codigo_delegacion__c;
-				encabezado.usuario = getValueOf(this.userNick);
-				encabezado.bebe_sin_doc = (this.caso.Bebe_sin_DNI__c != null) ? (this.caso.Bebe_sin_DNI__c) ? 'V' : 'F' : '';
-				if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
-					encabezado.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
-					encabezado.estado_dj = this.caso.Estado_DDJJ__c;
-				}
-			solicitud.encabezado = new List<Encabezado>{encabezado};
-			Familiar familiar = new Familiar();
-				familiar.codigo_afi_titular = (!String.isBlank(this.caso.Account.Codigo_de_Afiliado__c))
-												? getValueOf(this.caso.Account.Codigo_de_Afiliado__c) : '';
-				familiar.apellido = getValueOf(this.caso.Apellido__c);
-				familiar.nombres =  getValueOf(this.caso.Nombre__c);
-				familiar.doc_tipo = getValueOf(this.caso.Tipo_dni__c);
-				familiar.doc_numero = getValueOf(this.caso.DNI__c);
-				familiar.e_civil = getValueOf(this.caso.Estado_civil__c);
-				familiar.codigo_obrasocial = (!String.isBlank(this.caso.Obra_social2__c)) ? this.caso.Obra_social2__r.Codigo_de_obra_social__c : '' ;
-				familiar.sexo = (!String.isBlank(this.caso.Sexo__c)) ? this.caso.Sexo__c.left(1).toUppercase() : '';
-				familiar.discapacitado = this.caso.Discapacidad__c ? 'V' : 'F';
-				familiar.fecha_nac = formatDate(this.caso.Fecha_de_nacimiento__c);
-				familiar.nacionalidad = getValueOf(this.caso.Nacionalidad__c);
-				familiar.parentesco = getValueOf(this.caso.Tipo_de_parentesco__c);
-				familiar.deriva_aportes = this.caso.Deriva_aportes__c ? 'V' : 'F';
-				if(this.caso.Deriva_aportes__c) {
-					familiar.cuit = getValueOf(this.caso.Cuit__c);
-					familiar.importe_aportes = getValueOf(this.caso.Aporte__c);
-					familiar.cuit_empleador = (!String.isBlank(this.caso.Empleador__c))
-												? this.caso.Empleador__r.Cuit__c
-												: (!String.isBlank(this.caso.Cuit_empleador__c)) ? this.caso.Cuit_empleador__c : '';
-					familiar.nombre_empleador = (!String.isBlank(this.caso.Empleador__c))
-												? this.caso.Empleador__r.Name
-												: (!String.isBlank(this.caso.Razon_social__c)) ? this.caso.Razon_social__c : '';
-					familiar.codigo_empleador = (!String.isBlank(this.caso.Empleador__c)) ? this.caso.Empleador__r.Codigo_de_empresa__c : '';
-				}
-			solicitud.familiar = new List<Familiar>{familiar};
-			solicitud.archivos = parseFiles();
-			solicitud.notas = parseNotas();
-		} catch (Exception err) {
-			System.debug(err.getMessage());
-		}
-		return JSON.serialize(solicitud, true);
-	}
-	/**-----------------------------------------------------------------------------------------------------------------------
-	@author			Jeferson Ruiz
-	@company		Xappia
-	@description	Método para entregar el body de la solicitud a la API para una solicitud de Despegue.
-	------------------------------------------------------------------------------------------------------------------------*/
-	public String parseDespegueBody () {
-		SolicitudSS solicitud = new SolicitudSS();
-		try {
-			Encabezado encabezado = new Encabezado();
-				encabezado.sf_id = getValueOf(this.caso.Id);
-				encabezado.fecha_vigencia = formatDate(this.caso.Fecha_de_vigencia__c);
-				encabezado.agencia_codigo = this.usuario.Codigo_delegacion__c;
-				encabezado.usuario = getValueOf(this.userNick);
-				encabezado.bebe_sin_doc = (this.caso.Bebe_sin_DNI__c != null) ? (this.caso.Bebe_sin_DNI__c) ? 'V' : 'F' : '';
-				encabezado.tipo_despegue = getValueOf(this.caso.Type);
-				encabezado.codigo_obrasocial = (!String.isBlank(this.caso.Obra_social2__c)) ? this.caso.Obra_social2__r.Codigo_de_obra_social__c : '';
-				encabezado.codigo_plan = getValueOf(this.caso.Plandespegue__c);
-				encabezado.aa1_codigo = getValueOf(this.caso.Agrupacion1__c);
-				encabezado.aa2_codigo = getValueOf(this.caso.Medio_de_cobro__c);
-				encabezado.aa3_codigo = getValueOf(this.caso.Agrupacion3__c);
-				encabezado.aa_codigo = getValueOf(this.caso.Segmento_de_grupo_familiar__c);
-				encabezado.tel_tipo = 'TEL';
-				encabezado.deriva_aportes = ((this.caso.Type == 'FT' || this.caso.Type == 'CT')
-											&& this.caso.Segmento_de_grupo_familiar__c.startsWith('OBL'))
-												? 'V' : (this.caso.deriva_aportes__c) ? 'V' : 'F';
-				encabezado.tel_numero = getValueOf(this.caso.Telefono__c);
-				encabezado.email = getValueOf(this.caso.SuppliedEmail);
-				encabezado.codigo_empleador = (!String.isBlank(this.caso.Empleador__c)) ? this.caso.Empleador__r.Codigo_de_empresa__c : '';
-				encabezado.civa_codigo = XappiaHelper.stringToNumericString(String.valueOf(getValueOf(this.caso.Condicion_IVA__c)));
-				Boolean derivaAportes = ((this.caso.Type == 'FT' || this.caso.Type == 'CT')
-											&& this.caso.Segmento_de_grupo_familiar__c.startsWith('OBL'))
-										|| (this.caso.deriva_aportes__c);
-				String civacodigo = XappiaHelper.stringToNumericString(String.valueOf(getValueOf(this.caso.Condicion_IVA__c)));
-				if(civacodigo == '1' || civacodigo == '4' || derivaAportes) {
-					encabezado.cuit = this.caso.Cuil__c;
-				}
-				if(derivaAportes) {
-					encabezado.cuit_empleador = (!String.isBlank(this.caso.Empleador__c))
-												? this.caso.Empleador__r.Cuit__c
-													: (!String.isBlank(this.caso.Cuit_empleador__c))
-														? this.caso.Cuit_empleador__c : '';
-					encabezado.nombre_empleador = (!String.isBlank(this.caso.Empleador__c))
-												? this.caso.Empleador__r.Name
-													: (!String.isBlank(this.caso.Razon_social__c))
-														? this.caso.Razon_social__c : '';
-					encabezado.importe_aportes = getValueOf(this.caso.Aporte__c);
-				}
-				switch on this.caso.Type {
-					when 'FT', 'CT' {
-						encabezado.codigo_afi_a_titular = (!String.isBlank(this.caso.Account.Codigo_de_Afiliado__c))
-															? getValueOf(this.caso.Account.Codigo_de_Afiliado__c) : '';
-						encabezado.localidad = (!String.isBlank(this.caso.Localidad__c)) ? getValueOf(this.caso.Localidad__r.Loc_id__c) : '';
-						encabezado.dom_calle = getValueOf(this.caso.Calle__c);
-						encabezado.dom_numero = getValueOf(this.caso.numero__c);
-						encabezado.dom_piso = getValueOf(this.caso.piso__c);
-						encabezado.dom_dpto = getValueOf(this.caso.dpto__c);
+		/**-----------------------------------------------------------------------------------------------------------------------
+		@author			Jeferson Ruiz
+		@company		Xappia
+		@description	Método para entregar el body de la solicitud a la API para una solicitud de alta.
+		------------------------------------------------------------------------------------------------------------------------*/
+		public String parseAltaBody () {
+			SolicitudSS solicitud = new SolicitudSS();
+			try {
+				Encabezado encabezado = new Encabezado();
+					encabezado.sf_id = getValueOf(this.caso.Id);
+					encabezado.fecha_vigencia = formatDate(this.caso.Fecha_de_vigencia__c);
+					encabezado.agencia_codigo = this.usuario.Codigo_delegacion__c;
+					encabezado.usuario = getValueOf(this.userNick);
+					encabezado.bebe_sin_doc = (this.caso.Bebe_sin_DNI__c != null) ? (this.caso.Bebe_sin_DNI__c) ? 'V' : 'F' : '';
+					if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
+						encabezado.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
+						encabezado.estado_dj = this.caso.Estado_DDJJ__c;
 					}
-					when 'FF', 'TF' {
-						encabezado.codigo_afi_a_familiar = getValueOf(this.caso.Account.Codigo_de_Afiliado__c);
-						encabezado.codigo_afi_titular = (!String.isBlank(this.caso.Titular__c)) ? getValueOf(this.caso.Titular__r.Codigo_de_Afiliado__c) : '';
-						encabezado.parentesco = getValueOf(this.caso.Tipo_de_parentesco__c);
-					}
-				}
-				if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
-					encabezado.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
-					encabezado.estado_dj = this.caso.Estado_DDJJ__c;
-				}
-				if(this.caso.Medio_de_cobro__c == 'CBUVOL') {
-					encabezado.cobro_medio = this.caso.Tipo_CBU__c;
-					encabezado.cobro_numero = this.caso.Numero_CBU_cobro_de_cuota__c;
-					encabezado.cuil_cbu = this.caso.CUIL_del_CBU__c;
-				} else if(this.caso.Medio_de_cobro__c == 'DEBAUT') {
-					encabezado.cobro_medio = (this.caso.Tarjeta_de_credito__c != null)
-												? this.caso.Tarjeta_de_credito__c : this.caso.Tipo_de_debito_por_ACA__c;
-					encabezado.cobro_numero = (!String.isBlank(this.caso.Numero_de_tarjeta_de_credito__c))
-												? this.caso.Numero_de_tarjeta_de_credito__c : this.caso.Cdigo_debito_por_ACA__c;
-				}
-			solicitud.encabezado = new List<Encabezado>{encabezado};
-			List<Familiar> familiares =  new List<Familiar>();
-			for(Integrante_caso__c integrante : this.integrantes) {
+				solicitud.encabezado = new List<Encabezado>{encabezado};
 				Familiar familiar = new Familiar();
-					familiar.sf_id = integrante.Id;
-					familiar.parentesco = integrante.Tipo_de_relacion_con_titular__c;
-					familiar.apellido = integrante.Apellido__c;
-					familiar.nombres = integrante.Nombre__c;
-					familiar.doc_tipo = integrante.Tipo_de_Documento__c;
-					familiar.doc_numero = integrante.Nro_de_documento__c;
-					familiar.codigo_obrasocial = (String.isBlank(integrante.Obra_social_actual__c))
-												? integrante.Obra_social_actual__r.Codigo_de_obra_social__c : '';
-					familiar.e_civil = integrante.Estado_Civil__c;
-					familiar.sexo = integrante.Sexo__c;
-					familiar.fecha_nac = formatDate(integrante.Fecha_de_Nacimiento__c);
-					familiar.discapacitado = (integrante.Discapacitado__c == 'Si') ? 'V' : 'F';
-					familiar.nacionalidad = integrante.Nacionalidad__c;
-					familiar.deriva_aportes = (integrante.Indicador_de_aporte__c) ? 'V' : 'F';
-						if(integrante.Indicador_de_aporte__c) {
-						familiar.cuit = getValueOf(integrante.CUIT_Sin_guiones__c);
-						familiar.importe_aportes = getValueOf(integrante.Aportes__c);
-						familiar.cuit_empleador = (!String.isBlank(integrante.Empleador__c)) ? integrante.Empleador__r.Cuit__c : integrante.Cuit_empleador__c;
-						familiar.nombre_empleador = (!String.isBlank(integrante.Empleador__c)) ? integrante.Empleador__r.Name : integrante.Razon_social__c;
-						familiar.codigo_empleador = (!String.isBlank(integrante.Empleador__c)) ? integrante.Empleador__r.Codigo_de_empresa__c : '';
-					}
-				familiares.add(familiar);
-			}
-			solicitud.familiares = familiares;
-			solicitud.archivos = parseFiles();
-			solicitud.notas = parseNotas();
-		} catch (Exception err) {
-			System.debug(err.getMessage());
-		}
-		return JSON.serialize(solicitud, true);
-	}
-	/**-----------------------------------------------------------------------------------------------------------------------
-	@author			Jeferson Ruiz
-	@company		Xappia
-	@description	Método para entregar el body de la solicitud a la API para una solicitud de Baja Total.
-	------------------------------------------------------------------------------------------------------------------------*/
-	public String parseBajaTotalBody () {
-		SolicitudSS solicitudSS = new SolicitudSS();
-		try {
-			Encabezado encabezado = new Encabezado();
-				encabezado.sf_id = this.caso.Id;
-				encabezado.agencia_codigo = this.usuario.Codigo_delegacion__c;
-				encabezado.fecha_vigencia = formatDate(this.caso.Fecha_de_vigencia__c);
-				encabezado.usuario = this.userNick;
-			solicitudSS.encabezado = new List<Encabezado>{encabezado};
-			Solicitudes solicitud = new Solicitudes();
-				solicitud.sf_id = this.caso.Id;
-				solicitud.codigo_afi = (!String.isBlank(this.caso.Account.codigo_de_Afiliado__c)) ? this.caso.Account.Codigo_de_Afiliado__c : '';
-				solicitud.tipo_asociado = 'TIT';
-				solicitud.motivo_baja = this.caso.Motivo_de_baja__c;
-				solicitud.notas = parseNotas();
-			if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
-				solicitud.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
-			}
-			solicitudSS.solicitudes = new List<Solicitudes>{solicitud};
-			solicitudSS.archivos = parseFiles();
-		} catch (Exception err) {
-			System.debug(err.getMessage());
-		}
-		return JSON.serialize(solicitudSS, true);
-	}
-	/**-----------------------------------------------------------------------------------------------------------------------
-	@author			Jeferson Ruiz
-	@company		Xappia
-	@description	Método para entregar el body de la solicitud a la API para una solicitud de Baja Parcial.
-	------------------------------------------------------------------------------------------------------------------------*/
-	public String parseBajaParcialBody () {
-		SolicitudSS solicitudSS = new SolicitudSS();
-		try {
-			Encabezado encabezado = new Encabezado();
-				encabezado.sf_id = this.caso.Id;
-				encabezado.agencia_codigo =  this.usuario.Codigo_delegacion__c;
-				encabezado.fecha_vigencia = formatDate(caso.Fecha_de_vigencia__c);
-				encabezado.usuario = this.userNick;
-				if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
-					encabezado.solicitud_id =caso.Nro_de_solicitud_SS__c;
-				}
-			solicitudSS.encabezado = new List<Encabezado>{encabezado};
-			Map<Id, List<Nota_de_Auditoria__c>> notasByIntegranteId = new Map<Id, List<Nota_de_Auditoria__c>>();
-			for(Nota_de_Auditoria__c nota : this.notas){
-				if(notasByIntegranteId.containsKey(nota.Integrante__c)) {
-					notasByIntegranteId.get(nota.Integrante__c).add(nota);
-				} else {
-					notasByIntegranteId.put(nota.Integrante__c, new List<Nota_de_Auditoria__c> {nota});
-				}
-			}
-			List<Solicitudes> solicitudes = new List<Solicitudes>();
-			for (Integrante_caso__c integrante : this.integrantes){
-				List<Nota_de_Auditoria__c> integranteNotas = notasByIntegranteId.containsKey(integrante.Id)
-																? notasByIntegranteId.get(integrante.Id)
-																: new List<Nota_de_Auditoria__c>();
-				Solicitudes solicitud = new Solicitudes();
-				solicitud.sf_id = integrante.Id;
-				solicitud.codigo_afi = (!String.isBlank(integrante.Familiar__c))
-										? integrante.Familiar__r.Codigo_de_Afiliado__c : '';
-				solicitud.tipo_asociado = 'FAM';
-				solicitud.motivo_baja = integrante.Motivo_de_baja__c;
-				solicitud.notas = parseNotas(integranteNotas);
-				if(!String.isBlank(integrante.Numero_de_solicitud__c)) {
-					solicitud.solicitud_id = integrante.Numero_de_solicitud__c;
-				}
-				solicitudes.add(solicitud);
-			}
-			solicitudSS.solicitudes = solicitudes;
-			solicitudSS.archivos = parseFiles();
-		} catch (Exception err) {
-			System.debug(err.getMessage());
-		}
-		return JSON.serialize(solicitudSS, true);
-	}
-	/**-----------------------------------------------------------------------------------------------------------------------
-	@author			Jeferson Ruiz
-	@company		Xappia
-	@description	Método para entregar el body de la solicitud a la API para una solicitud de Cambio de segmento.
-	------------------------------------------------------------------------------------------------------------------------*/
-	public String parseCambioDeSegmentoBody () {
-		SolicitudSS solicitudSS = new SolicitudSS();
-		try {
-			Encabezado encabezado = new Encabezado();
-				encabezado.sf_id = this.caso.id;
-				encabezado.codigo_afi_titular = (!String.isBlank(this.caso.Account.Codigo_de_Afiliado__c))
-												? getValueOf(this.caso.Account.Codigo_de_Afiliado__c) : '';
-				encabezado.fecha_vigencia = formatDate(caso.Fecha_de_vigencia__c);
-				encabezado.agencia_codigo = this.usuario.Codigo_delegacion__c;
-				encabezado.usuario = this.userNick;
-				encabezado.codigo_obrasocial = (!String.isBlank(caso.Obra_social2__c))
-												? this.caso.Obra_social2__r.Codigo_de_obra_social__c : '';
-				encabezado.codigo_plan = this.caso.Plandespegue__c;
-				encabezado.nuevo_segmento = this.caso.Nuevo_segmento__c;
-				encabezado.codigo_empleador = (!String.isBlank(caso.Empleador__c))
-												? this.caso.Empleador__r.Codigo_de_empresa__c : '';
-				if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
-					encabezado.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
-					encabezado.estado_dj = this.caso.Estado_DDJJ__c;
-				}
-				if(caso.Nuevo_segmento__c.contains('OBL') || this.caso.Nuevo_segmento__c == 'DTCAP') {
-					encabezado.importe_aportes = getValueOf(this.caso.Aporte__c);
-					encabezado.cuit = this.caso.Cuit__c;
-					encabezado.cuit_empleador = (!String.isBlank(this.caso.Empleador__c))
-												? this.caso.Empleador__r.Cuit__c
+					familiar.codigo_afi_titular = (!String.isBlank(this.caso.Account.Codigo_de_Afiliado__c))
+													? getValueOf(this.caso.Account.Codigo_de_Afiliado__c) : '';
+					familiar.apellido = getValueOf(this.caso.Apellido__c);
+					familiar.nombres =  getValueOf(this.caso.Nombre__c);
+					familiar.doc_tipo = getValueOf(this.caso.Tipo_dni__c);
+					familiar.doc_numero = getValueOf(this.caso.DNI__c);
+					familiar.e_civil = getValueOf(this.caso.Estado_civil__c);
+					familiar.codigo_obrasocial = (!String.isBlank(this.caso.Obra_social2__c)) ? this.caso.Obra_social2__r.Codigo_de_obra_social__c : '' ;
+					familiar.sexo = (!String.isBlank(this.caso.Sexo__c)) ? this.caso.Sexo__c.left(1).toUppercase() : '';
+					familiar.discapacitado = this.caso.Discapacidad__c ? 'V' : 'F';
+					familiar.fecha_nac = formatDate(this.caso.Fecha_de_nacimiento__c);
+					familiar.nacionalidad = getValueOf(this.caso.Nacionalidad__c);
+					familiar.parentesco = getValueOf(this.caso.Tipo_de_parentesco__c);
+					familiar.deriva_aportes = this.caso.Deriva_aportes__c ? 'V' : 'F';
+					if(this.caso.Deriva_aportes__c) {
+						familiar.cuit = getValueOf(this.caso.Cuit__c);
+						familiar.importe_aportes = getValueOf(this.caso.Aporte__c);
+						familiar.cuit_empleador = (!String.isBlank(this.caso.Empleador__c))
+													? this.caso.Empleador__r.Cuit__c
 													: (!String.isBlank(this.caso.Cuit_empleador__c)) ? this.caso.Cuit_empleador__c : '';
-					encabezado.nombre_empleador = (!String.isBlank(this.caso.Empleador__c))
+						familiar.nombre_empleador = (!String.isBlank(this.caso.Empleador__c))
 													? this.caso.Empleador__r.Name
-														: (!String.isBlank(this.caso.Razon_social__c)) ? this.caso.Razon_social__c : '';
-				}
-			solicitudSS.encabezado = new List<Encabezado>{encabezado};
-			solicitudSS.archivos = parseFiles();
-			solicitudSS.notas = parseNotas();
-		} catch (Exception err) {
-			System.debug(err.getMessage());
-		}
-		return JSON.serialize(solicitudSS, true);
-	}
-	/**-----------------------------------------------------------------------------------------------------------------------
-	@author			Jeferson Ruiz
-	@company		Xappia
-	@description	Método para entregar el body de la solicitud a la API para una solicitud de Interfaz financiera.
-	------------------------------------------------------------------------------------------------------------------------*/
-	public String parseInterfazFinanciera () {
-		SolicitudSS solicitudSS = new SolicitudSS();
-		try {
-			Encabezado encabezado = new Encabezado();
-				encabezado.sf_id = this.caso.Id;
-				encabezado.fecha_vigencia = formatDate(this.caso.Fecha_de_vigencia__c);
-				encabezado.agencia_codigo = this.usuario.Codigo_delegacion__c;
-				encabezado.usuario = this.userNick;
-				encabezado.tipo_if = this.caso.Type;
-				encabezado.afi_codigo = (!String.isBlank(this.caso.Account.Codigo_de_Afiliado__c))
-										? getValueOf(this.caso.Account.Codigo_de_Afiliado__c) : '';
-				if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
-					encabezado.solicitud_id = caso.Nro_de_solicitud_SS__c;
-					encabezado.estado_dj = caso.Estado_DDJJ__c;
-				}
-				//Reintegros
-				if(this.caso.Type == 'T') {
-						encabezado.cbu_reintegros = caso.Numero_CBU__c;
-						encabezado.cuit = caso.CUIT_CUIL_Titular_CBU__c;
-				}
-				//Facturacion
-				if(this.caso.Type == 'C') {
-					encabezado.civa_codigo = XappiaHelper.stringToNumericString(String.valueOf(getValueOf(this.caso.Condicion_IVA__c)));
-					if(this.caso.Borrar_tarjeta_debito_o_cobro_por_CBU__c) {
-						encabezado.cobro_medio = '';
-						encabezado.cobro_numero = '';
+													: (!String.isBlank(this.caso.Razon_social__c)) ? this.caso.Razon_social__c : '';
+						familiar.codigo_empleador = (!String.isBlank(this.caso.Empleador__c)) ? this.caso.Empleador__r.Codigo_de_empresa__c : '';
 					}
-					else {
-						if(!String.isBlank(this.caso.Tipo_CBU__c) && !String.isBlank(this.caso.CBU__c)) {
-							encabezado.cobro_medio = caso.Tipo_CBU__c;
-							encabezado.cobro_numero = caso.CBU__c;
-							encabezado.cuil_cbu = caso.CUIL_del_CBU__c;
-						} else if(!String.isBlank(caso.Tarjeta_de_credito__c) && !String.isBlank(caso.Numero_de_tarjeta_de_credito__c)) {
-							encabezado.cobro_medio = caso.Tarjeta_de_credito__c;
-							encabezado.cobro_numero = caso.Numero_de_tarjeta_de_credito__c;
-						} else if(!String.isBlank(caso.Tipo_de_debito_por_ACA__c) && !String.isBlank(caso.Cdigo_debito_por_ACA__c)) {
-							encabezado.cobro_medio = caso.Tipo_de_debito_por_ACA__c;
-							encabezado.cobro_numero = caso.Cdigo_debito_por_ACA__c;
+				solicitud.familiar = new List<Familiar>{familiar};
+				solicitud.archivos = parseFiles();
+				solicitud.notas = parseNotas();
+			} catch (Exception err) {
+				System.debug(err.getMessage());
+			}
+			return JSON.serialize(solicitud, true);
+		}
+		/**-----------------------------------------------------------------------------------------------------------------------
+		@author			Jeferson Ruiz
+		@company		Xappia
+		@description	Método para entregar el body de la solicitud a la API para una solicitud de Despegue.
+		------------------------------------------------------------------------------------------------------------------------*/
+		public String parseDespegueBody () {
+			SolicitudSS solicitud = new SolicitudSS();
+			try {
+				Encabezado encabezado = new Encabezado();
+					encabezado.sf_id = getValueOf(this.caso.Id);
+					encabezado.fecha_vigencia = formatDate(this.caso.Fecha_de_vigencia__c);
+					encabezado.agencia_codigo = this.usuario.Codigo_delegacion__c;
+					encabezado.usuario = getValueOf(this.userNick);
+					encabezado.bebe_sin_doc = (this.caso.Bebe_sin_DNI__c != null) ? (this.caso.Bebe_sin_DNI__c) ? 'V' : 'F' : '';
+					encabezado.tipo_despegue = getValueOf(this.caso.Type);
+					encabezado.codigo_obrasocial = (!String.isBlank(this.caso.Obra_social2__c)) ? this.caso.Obra_social2__r.Codigo_de_obra_social__c : '';
+					encabezado.codigo_plan = getValueOf(this.caso.Plandespegue__c);
+					encabezado.aa1_codigo = getValueOf(this.caso.Agrupacion1__c);
+					encabezado.aa2_codigo = getValueOf(this.caso.Medio_de_cobro__c);
+					encabezado.aa3_codigo = getValueOf(this.caso.Agrupacion3__c);
+					encabezado.aa_codigo = getValueOf(this.caso.Segmento_de_grupo_familiar__c);
+					encabezado.tel_tipo = 'TEL';
+					encabezado.deriva_aportes = ((this.caso.Type == 'FT' || this.caso.Type == 'CT')
+												&& this.caso.Segmento_de_grupo_familiar__c.startsWith('OBL'))
+													? 'V' : (this.caso.deriva_aportes__c) ? 'V' : 'F';
+					encabezado.tel_numero = getValueOf(this.caso.Telefono__c);
+					encabezado.email = getValueOf(this.caso.SuppliedEmail);
+					encabezado.codigo_empleador = (!String.isBlank(this.caso.Empleador__c)) ? this.caso.Empleador__r.Codigo_de_empresa__c : '';
+					encabezado.civa_codigo = XappiaHelper.stringToNumericString(getValueOf(getValueOf(this.caso.Condicion_IVA__c)));
+					Boolean derivaAportes = ((this.caso.Type == 'FT' || this.caso.Type == 'CT')
+												&& this.caso.Segmento_de_grupo_familiar__c.startsWith('OBL'))
+											|| (this.caso.deriva_aportes__c);
+					String civacodigo = XappiaHelper.stringToNumericString(getValueOf(getValueOf(this.caso.Condicion_IVA__c)));
+					if(civacodigo == '1' || civacodigo == '4' || derivaAportes) {
+						encabezado.cuit = this.caso.Cuil__c;
+					}
+					if(derivaAportes) {
+						encabezado.cuit_empleador = (!String.isBlank(this.caso.Empleador__c))
+													? this.caso.Empleador__r.Cuit__c
+														: (!String.isBlank(this.caso.Cuit_empleador__c))
+															? this.caso.Cuit_empleador__c : '';
+						encabezado.nombre_empleador = (!String.isBlank(this.caso.Empleador__c))
+													? this.caso.Empleador__r.Name
+														: (!String.isBlank(this.caso.Razon_social__c))
+															? this.caso.Razon_social__c : '';
+						encabezado.importe_aportes = getValueOf(this.caso.Aporte__c);
+					}
+					switch on this.caso.Type {
+						when 'FT', 'CT' {
+							encabezado.codigo_afi_a_titular = (!String.isBlank(this.caso.Account.Codigo_de_Afiliado__c))
+																? getValueOf(this.caso.Account.Codigo_de_Afiliado__c) : '';
+							encabezado.localidad = (!String.isBlank(this.caso.Localidad__c)) ? getValueOf(this.caso.Localidad__r.Loc_id__c) : '';
+							encabezado.dom_calle = getValueOf(this.caso.Calle__c);
+							encabezado.dom_numero = getValueOf(this.caso.numero__c);
+							encabezado.dom_piso = getValueOf(this.caso.piso__c);
+							encabezado.dom_dpto = getValueOf(this.caso.dpto__c);
+						}
+						when 'FF', 'TF' {
+							encabezado.codigo_afi_a_familiar = getValueOf(this.caso.Account.Codigo_de_Afiliado__c);
+							encabezado.codigo_afi_titular = (!String.isBlank(this.caso.Titular__c)) ? getValueOf(this.caso.Titular__r.Codigo_de_Afiliado__c) : '';
+							encabezado.parentesco = getValueOf(this.caso.Tipo_de_parentesco__c);
 						}
 					}
-					if(XappiaHelper.stringToNumericString(String.valueOf(getValueOf(this.caso.Condicion_IVA__c))) == '1') {
-						encabezado.cuit = caso.Cuit__c;
+					if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
+						encabezado.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
+						encabezado.estado_dj = this.caso.Estado_DDJJ__c;
+					}
+					if(this.caso.Medio_de_cobro__c == 'CBUVOL') {
+						encabezado.cobro_medio = this.caso.Tipo_CBU__c;
+						encabezado.cobro_numero = this.caso.Numero_CBU_cobro_de_cuota__c;
+						encabezado.cuil_cbu = this.caso.CUIL_del_CBU__c;
+					} else if(this.caso.Medio_de_cobro__c == 'DEBAUT') {
+						encabezado.cobro_medio = (this.caso.Tarjeta_de_credito__c != null)
+													? this.caso.Tarjeta_de_credito__c : this.caso.Tipo_de_debito_por_ACA__c;
+						encabezado.cobro_numero = (!String.isBlank(this.caso.Numero_de_tarjeta_de_credito__c))
+													? this.caso.Numero_de_tarjeta_de_credito__c : this.caso.Cdigo_debito_por_ACA__c;
+					}
+				solicitud.encabezado = new List<Encabezado>{encabezado};
+				List<Familiar> familiares =  new List<Familiar>();
+				for(Integrante_caso__c integrante : this.integrantes) {
+					Familiar familiar = new Familiar();
+						familiar.sf_id = integrante.Id;
+						familiar.parentesco = integrante.Tipo_de_relacion_con_titular__c;
+						familiar.apellido = integrante.Apellido__c;
+						familiar.nombres = integrante.Nombre__c;
+						familiar.doc_tipo = integrante.Tipo_de_Documento__c;
+						familiar.doc_numero = integrante.Nro_de_documento__c;
+						familiar.codigo_obrasocial = (String.isBlank(integrante.Obra_social_actual__c))
+													? integrante.Obra_social_actual__r.Codigo_de_obra_social__c : '';
+						familiar.e_civil = integrante.Estado_Civil__c;
+						familiar.sexo = integrante.Sexo__c;
+						familiar.fecha_nac = formatDate(integrante.Fecha_de_Nacimiento__c);
+						familiar.discapacitado = (integrante.Discapacitado__c == 'Si') ? 'V' : 'F';
+						familiar.nacionalidad = integrante.Nacionalidad__c;
+						familiar.deriva_aportes = (integrante.Indicador_de_aporte__c) ? 'V' : 'F';
+							if(integrante.Indicador_de_aporte__c) {
+							familiar.cuit = getValueOf(integrante.CUIT_Sin_guiones__c);
+							familiar.importe_aportes = getValueOf(integrante.Aportes__c);
+							familiar.cuit_empleador = (!String.isBlank(integrante.Empleador__c)) ? integrante.Empleador__r.Cuit__c : integrante.Cuit_empleador__c;
+							familiar.nombre_empleador = (!String.isBlank(integrante.Empleador__c)) ? integrante.Empleador__r.Name : integrante.Razon_social__c;
+							familiar.codigo_empleador = (!String.isBlank(integrante.Empleador__c)) ? integrante.Empleador__r.Codigo_de_empresa__c : '';
+						}
+					familiares.add(familiar);
+				}
+				solicitud.familiares = familiares;
+				solicitud.archivos = parseFiles();
+				solicitud.notas = parseNotas();
+			} catch (Exception err) {
+				System.debug(err.getMessage());
+			}
+			return JSON.serialize(solicitud, true);
+		}
+		/**-----------------------------------------------------------------------------------------------------------------------
+		@author			Jeferson Ruiz
+		@company		Xappia
+		@description	Método para entregar el body de la solicitud a la API para una solicitud de Baja Total.
+		------------------------------------------------------------------------------------------------------------------------*/
+		public String parseBajaTotalBody () {
+			SolicitudSS solicitudSS = new SolicitudSS();
+			try {
+				Encabezado encabezado = new Encabezado();
+					encabezado.sf_id = this.caso.Id;
+					encabezado.agencia_codigo = this.usuario.Codigo_delegacion__c;
+					encabezado.fecha_vigencia = formatDate(this.caso.Fecha_de_vigencia__c);
+					encabezado.usuario = this.userNick;
+				solicitudSS.encabezado = new List<Encabezado>{encabezado};
+				Solicitudes solicitud = new Solicitudes();
+					solicitud.sf_id = this.caso.Id;
+					solicitud.codigo_afi = (!String.isBlank(this.caso.Account.codigo_de_Afiliado__c)) ? this.caso.Account.Codigo_de_Afiliado__c : '';
+					solicitud.tipo_asociado = 'TIT';
+					solicitud.motivo_baja = this.caso.Motivo_de_baja__c;
+					solicitud.notas = parseNotas();
+				if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
+					solicitud.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
+				}
+				solicitudSS.solicitudes = new List<Solicitudes>{solicitud};
+				solicitudSS.archivos = parseFiles();
+			} catch (Exception err) {
+				System.debug(err.getMessage());
+			}
+			return JSON.serialize(solicitudSS, true);
+		}
+		/**-----------------------------------------------------------------------------------------------------------------------
+		@author			Jeferson Ruiz
+		@company		Xappia
+		@description	Método para entregar el body de la solicitud a la API para una solicitud de Baja Parcial.
+		------------------------------------------------------------------------------------------------------------------------*/
+		public String parseBajaParcialBody () {
+			SolicitudSS solicitudSS = new SolicitudSS();
+			try {
+				Encabezado encabezado = new Encabezado();
+					encabezado.sf_id = this.caso.Id;
+					encabezado.agencia_codigo =  this.usuario.Codigo_delegacion__c;
+					encabezado.fecha_vigencia = formatDate(caso.Fecha_de_vigencia__c);
+					encabezado.usuario = this.userNick;
+					if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
+						encabezado.solicitud_id =caso.Nro_de_solicitud_SS__c;
+					}
+				solicitudSS.encabezado = new List<Encabezado>{encabezado};
+				Map<Id, List<Nota_de_Auditoria__c>> notasByIntegranteId = new Map<Id, List<Nota_de_Auditoria__c>>();
+				for(Nota_de_Auditoria__c nota : this.notas){
+					if(notasByIntegranteId.containsKey(nota.Integrante__c)) {
+						notasByIntegranteId.get(nota.Integrante__c).add(nota);
+					} else {
+						notasByIntegranteId.put(nota.Integrante__c, new List<Nota_de_Auditoria__c> {nota});
 					}
 				}
-			solicitudSS.encabezado = new List<Encabezado>{encabezado};
-			solicitudSS.archivos = parseFiles();
-			solicitudSS.notas = parseNotas();
-		} catch (Exception err) {
-			System.debug(err.getMessage());
+				List<Solicitudes> solicitudes = new List<Solicitudes>();
+				for (Integrante_caso__c integrante : this.integrantes){
+					List<Nota_de_Auditoria__c> integranteNotas = notasByIntegranteId.containsKey(integrante.Id)
+																	? notasByIntegranteId.get(integrante.Id)
+																	: new List<Nota_de_Auditoria__c>();
+					Solicitudes solicitud = new Solicitudes();
+					solicitud.sf_id = integrante.Id;
+					solicitud.codigo_afi = (!String.isBlank(integrante.Familiar__c))
+											? integrante.Familiar__r.Codigo_de_Afiliado__c : '';
+					solicitud.tipo_asociado = 'FAM';
+					solicitud.motivo_baja = integrante.Motivo_de_baja__c;
+					solicitud.notas = parseNotas(integranteNotas);
+					if(!String.isBlank(integrante.Numero_de_solicitud__c)) {
+						solicitud.solicitud_id = integrante.Numero_de_solicitud__c;
+					}
+					solicitudes.add(solicitud);
+				}
+				solicitudSS.solicitudes = solicitudes;
+				solicitudSS.archivos = parseFiles();
+			} catch (Exception err) {
+				System.debug(err.getMessage());
+			}
+			return JSON.serialize(solicitudSS, true);
 		}
-		return JSON.serialize(solicitudSS, true);
-	}
+		/**-----------------------------------------------------------------------------------------------------------------------
+		@author			Jeferson Ruiz
+		@company		Xappia
+		@description	Método para entregar el body de la solicitud a la API para una solicitud de Cambio de segmento.
+		------------------------------------------------------------------------------------------------------------------------*/
+		public String parseCambioDeSegmentoBody () {
+			SolicitudSS solicitudSS = new SolicitudSS();
+			try {
+				Encabezado encabezado = new Encabezado();
+					encabezado.sf_id = this.caso.id;
+					encabezado.codigo_afi_titular = (!String.isBlank(this.caso.Account.Codigo_de_Afiliado__c))
+													? getValueOf(this.caso.Account.Codigo_de_Afiliado__c) : '';
+					encabezado.fecha_vigencia = formatDate(caso.Fecha_de_vigencia__c);
+					encabezado.agencia_codigo = this.usuario.Codigo_delegacion__c;
+					encabezado.usuario = this.userNick;
+					encabezado.codigo_obrasocial = (!String.isBlank(caso.Obra_social2__c))
+													? this.caso.Obra_social2__r.Codigo_de_obra_social__c : '';
+					encabezado.codigo_plan = this.caso.Plandespegue__c;
+					encabezado.nuevo_segmento = this.caso.Nuevo_segmento__c;
+					encabezado.codigo_empleador = (!String.isBlank(caso.Empleador__c))
+													? this.caso.Empleador__r.Codigo_de_empresa__c : '';
+					if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
+						encabezado.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
+						encabezado.estado_dj = this.caso.Estado_DDJJ__c;
+					}
+					if(caso.Nuevo_segmento__c.contains('OBL') || this.caso.Nuevo_segmento__c == 'DTCAP') {
+						encabezado.importe_aportes = getValueOf(this.caso.Aporte__c);
+						encabezado.cuit = this.caso.Cuit__c;
+						encabezado.cuit_empleador = (!String.isBlank(this.caso.Empleador__c))
+													? this.caso.Empleador__r.Cuit__c
+														: (!String.isBlank(this.caso.Cuit_empleador__c)) ? this.caso.Cuit_empleador__c : '';
+						encabezado.nombre_empleador = (!String.isBlank(this.caso.Empleador__c))
+														? this.caso.Empleador__r.Name
+															: (!String.isBlank(this.caso.Razon_social__c)) ? this.caso.Razon_social__c : '';
+					}
+				solicitudSS.encabezado = new List<Encabezado>{encabezado};
+				solicitudSS.archivos = parseFiles();
+				solicitudSS.notas = parseNotas();
+			} catch (Exception err) {
+				System.debug(err.getMessage());
+			}
+			return JSON.serialize(solicitudSS, true);
+		}
+		/**-----------------------------------------------------------------------------------------------------------------------
+		@author			Jeferson Ruiz
+		@company		Xappia
+		@description	Método para entregar el body de la solicitud a la API para una solicitud de Interfaz financiera.
+		------------------------------------------------------------------------------------------------------------------------*/
+		public String parseInterfazFinanciera () {
+			SolicitudSS solicitudSS = new SolicitudSS();
+			try {
+				Encabezado encabezado = new Encabezado();
+					encabezado.sf_id = this.caso.Id;
+					encabezado.fecha_vigencia = formatDate(this.caso.Fecha_de_vigencia__c);
+					encabezado.agencia_codigo = this.usuario.Codigo_delegacion__c;
+					encabezado.usuario = this.userNick;
+					encabezado.tipo_if = this.caso.Type;
+					encabezado.afi_codigo = (!String.isBlank(this.caso.Account.Codigo_de_Afiliado__c))
+											? getValueOf(this.caso.Account.Codigo_de_Afiliado__c) : '';
+					if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
+						encabezado.solicitud_id = caso.Nro_de_solicitud_SS__c;
+						encabezado.estado_dj = caso.Estado_DDJJ__c;
+					}
+					//Reintegros
+					if(this.caso.Type == 'T') {
+							encabezado.cbu_reintegros = caso.Numero_CBU__c;
+							encabezado.cuit = caso.CUIT_CUIL_Titular_CBU__c;
+					}
+					//Facturacion
+					if(this.caso.Type == 'C') {
+						encabezado.civa_codigo = XappiaHelper.stringToNumericString(getValueOf(getValueOf(this.caso.Condicion_IVA__c)));
+						if(this.caso.Borrar_tarjeta_debito_o_cobro_por_CBU__c) {
+							encabezado.cobro_medio = '';
+							encabezado.cobro_numero = '';
+						}
+						else {
+							if(!String.isBlank(this.caso.Tipo_CBU__c) && !String.isBlank(this.caso.CBU__c)) {
+								encabezado.cobro_medio = caso.Tipo_CBU__c;
+								encabezado.cobro_numero = caso.CBU__c;
+								encabezado.cuil_cbu = caso.CUIL_del_CBU__c;
+							} else if(!String.isBlank(caso.Tarjeta_de_credito__c) && !String.isBlank(caso.Numero_de_tarjeta_de_credito__c)) {
+								encabezado.cobro_medio = caso.Tarjeta_de_credito__c;
+								encabezado.cobro_numero = caso.Numero_de_tarjeta_de_credito__c;
+							} else if(!String.isBlank(caso.Tipo_de_debito_por_ACA__c) && !String.isBlank(caso.Cdigo_debito_por_ACA__c)) {
+								encabezado.cobro_medio = caso.Tipo_de_debito_por_ACA__c;
+								encabezado.cobro_numero = caso.Cdigo_debito_por_ACA__c;
+							}
+						}
+						if(XappiaHelper.stringToNumericString(getValueOf(getValueOf(this.caso.Condicion_IVA__c))) == '1') {
+							encabezado.cuit = caso.Cuit__c;
+						}
+					}
+				solicitudSS.encabezado = new List<Encabezado>{encabezado};
+				solicitudSS.archivos = parseFiles();
+				solicitudSS.notas = parseNotas();
+			} catch (Exception err) {
+				System.debug(err.getMessage());
+			}
+			return JSON.serialize(solicitudSS, true);
+		}
+		/**-----------------------------------------------------------------------------------------------------------------------
+		@author			Jeferson Ruiz
+		@company		Xappia
+		@description	Método para entregar el body de la solicitud a la API para una solicitud de Datos particulares.
+		------------------------------------------------------------------------------------------------------------------------*/
+		public String parseDatosParticularesBody () {
+			SolicitudSS solicitud = new SolicitudSS();
+			try {
+				Encabezado encabezado = new Encabezado();
+					encabezado.sf_id = this.caso.Id;
+					encabezado.fecha_vigencia = formatDate(this.caso.Fecha_de_vigencia__c);
+					encabezado.agencia_codigo = this.usuario.Codigo_delegacion__c;
+					encabezado.usuario = this.userNick;
+					encabezado.afi_codigo = (!String.isBlank(this.caso.Account.Codigo_de_Afiliado__c))
+											? getValueOf(this.caso.Account.Codigo_de_Afiliado__c) : '';
+					encabezado.tipo_solicitud = this.caso.Type;
+					switch on this.caso.Type {
+						when 'MODIF_DPART' {
+							encabezado.nombres = this.caso.Nombre__c;
+							encabezado.apellido = this.caso.Apellido__c;
+							encabezado.nacionalidad = getValueOf(this.caso.Nacionalidad__c);
+							encabezado.sexo = (!String.isBlank(this.caso.Sexo__c)) ? this.caso.Sexo__c.left(1).toUppercase() : '';
+							encabezado.e_civil = getValueOf(this.caso.Estado_civil__c);
+							encabezado.fecha_nac = formatDate(this.caso.Fecha_de_nacimiento__c);
+							encabezado.codigo_obrasocial = (!String.isBlank(this.caso.Obra_social2__c))
+															? this.caso.Obra_social2__r.Codigo_de_obra_social__c : '';
+							encabezado.parentesco = getValueOf(this.caso.Tipo_de_parentesco__c);
+							encabezado.cuit = this.caso.CUIT__C;
+						}
+						when 'MODIF_DELEG' {
+							encabezado.agencia_destino = (this.caso.Delegacion__c != null)
+														? this.caso.Agencia_destino__r.codigo_de_delegacion__c : '';
+						}
+					}
+					if (this.caso.Type != 'MODIF_DELEG') encabezado.afi_tipo = this.caso.Tipo__c;
+					if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) encabezado.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
+				solicitud.encabezado = new List<Encabezado>{encabezado};
+			} catch (Exception err) {
+				System.debug(err.getMessage());
+			}
+			return JSON.serialize(solicitud, true);
+		}	/**-----------------------------------------------------------------------------------------------------------------------
+		@author			Jeferson Ruiz
+		@company		Xappia
+		@description	Método para entregar el body de la solicitud a la API para una solicitud de Cambio de Plan.
+		------------------------------------------------------------------------------------------------------------------------*/
+		public String parseCambioPlanBody () {
+			SolicitudSS solicitudSS = new SolicitudSS();
+			try {
+				Encabezado encabezado = new Encabezado();
+					encabezado.sf_id = this.caso.Id;
+					encabezado.fecha_vigencia = formatDate(this.caso.Fecha_de_vigencia__c);
+					encabezado.agencia_codigo = this.usuario.Codigo_delegacion__c;
+					encabezado.usuario = this.userNick;
+					encabezado.codigo_afi_titular = (!String.isBlank(this.caso.Account.Codigo_de_Afiliado__c))
+													? getValueOf(this.caso.Account.Codigo_de_Afiliado__c) : '' ;
+					encabezado.codigo_plan = this.caso.Plandespegue__c;
+					if (!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
+						encabezado.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
+						encabezado.estado_dj = this.caso.Estado_DDJJ__c;
+					}
+				solicitudSS.encabezado = new List<Encabezado>{encabezado};
+				solicitudSS.archivos = parseFiles();
+				solicitudSS.notas = parseNotas();
+			} catch (Exception err) {
+				System.debug(err.getMessage());
+			}
+			return JSON.serialize(solicitudSS, true);
+		}
 	/**-----------------------------------------------------------------------------------------------------------------------
-	@author			Jeferson Ruiz
-	@company		Xappia
-	@description	Método para entregar el body de la solicitud a la API para una solicitud de Datos particulares.
+ 	@author			Jeferson Ruiz
+ 	@company		Xappia
+	@description	Deserializador para solicitudes de SS a la API de autorizaciones AP.
 	------------------------------------------------------------------------------------------------------------------------*/
-	public String parseDatosParticularesBody () {
-		SolicitudSS solicitud = new SolicitudSS();
-		try {
-			Encabezado encabezado = new Encabezado();
-				encabezado.sf_id = this.caso.Id;
-				encabezado.fecha_vigencia = formatDate(this.caso.Fecha_de_vigencia__c);
-				encabezado.agencia_codigo = this.usuario.Codigo_delegacion__c;
-				encabezado.usuario = this.userNick;
-				encabezado.afi_codigo = (!String.isBlank(this.caso.Account.Codigo_de_Afiliado__c))
-										? getValueOf(this.caso.Account.Codigo_de_Afiliado__c) : '';
-				encabezado.tipo_solicitud = this.caso.Type;
-				switch on this.caso.Type {
-					when 'MODIF_DPART' {
-						encabezado.nombres = this.caso.Nombre__c;
-						encabezado.apellido = this.caso.Apellido__c;
-						encabezado.nacionalidad = getValueOf(this.caso.Nacionalidad__c);
-						encabezado.sexo = (!String.isBlank(this.caso.Sexo__c)) ? this.caso.Sexo__c.left(1).toUppercase() : '';
-						encabezado.e_civil = getValueOf(this.caso.Estado_civil__c);
-						encabezado.fecha_nac = formatDate(this.caso.Fecha_de_nacimiento__c);
-						encabezado.codigo_obrasocial = (!String.isBlank(this.caso.Obra_social2__c))
-														? this.caso.Obra_social2__r.Codigo_de_obra_social__c : '';
-						encabezado.parentesco = getValueOf(this.caso.Tipo_de_parentesco__c);
-						encabezado.cuit = this.caso.CUIT__C;
-					}
-					when 'MODIF_DELEG' {
-						encabezado.agencia_destino = (this.caso.Delegacion__c != null)
-													? this.caso.Agencia_destino__r.codigo_de_delegacion__c : '';
-					}
-				}
-				if (this.caso.Type != 'MODIF_DELEG') encabezado.afi_tipo = this.caso.Tipo__c;
-				if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) encabezado.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
-			solicitud.encabezado = new List<Encabezado>{encabezado};
-		} catch (Exception err) {
-			System.debug(err.getMessage());
+		public class AutorizacionAPSS {
+			public String numero_ap {get;set;}
+			public String fecha {get;set;}
+			public String fecha_prob {get;set;}
+			public String agencia_codigo {get;set;}
+			public String user_insert {get;set;}
+			public String codigo_afiliado {get;set;}
+			public Object evento_medico_id {get;set;}
+			public String fecha_pres {get;set;}
+			public String codigo_diagnostico {get;set;}
+			public String efectores_prestador {get;set;}
+			public String prestador {get;set;}
+			public String consultorio {get;set;}
+			public String observaciones {get;set;}
+			public String mail {get;set;}
+			public Object otros_mail {get;set;}
+			public String forma_pago {get;set;}
+			public String contexto {get;set;}
+			public String chk_material {get;set;}
+			public String chk_presupuesto {get;set;}
+			public String numero_sf {get;set;}
+			public List<Prestaciones> prestaciones {get;set;}
+			public String urgente {get; set;}
+			public Double importe_presupuesto {get;set;}
 		}
-		return JSON.serialize(solicitud, true);
-	}	/**-----------------------------------------------------------------------------------------------------------------------
-	@author			Jeferson Ruiz
-	@company		Xappia
-	@description	Método para entregar el body de la solicitud a la API para una solicitud de Cambio de Plan.
-	------------------------------------------------------------------------------------------------------------------------*/
-	public String parseCambioPlanBody () {
-		SolicitudSS solicitudSS = new SolicitudSS();
-		try {
-			Encabezado encabezado = new Encabezado();
-				encabezado.sf_id = this.caso.Id;
-				encabezado.fecha_vigencia = formatDate(this.caso.Fecha_de_vigencia__c);
-				encabezado.agencia_codigo = this.usuario.Codigo_delegacion__c;
-				encabezado.usuario = this.userNick;
-				encabezado.codigo_afi_titular = (!String.isBlank(this.caso.Account.Codigo_de_Afiliado__c))
-												? getValueOf(this.caso.Account.Codigo_de_Afiliado__c) : '' ;
-				encabezado.codigo_plan = this.caso.Plandespegue__c;
-				if (!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
-					encabezado.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
-					encabezado.estado_dj = this.caso.Estado_DDJJ__c;
+		/** Objecto Prestaciones */
+			public class Prestaciones {
+				public Integer cantidad {get;set;}
+				public String nom_prestacion_pdh {get;set;}
+				public String contexto {get;set;}
+				public String tipo_prestacion {get;set;}
+				public String observaciones {get;set;}
+				public String alerta {get;set;}
+				public String importe_g_convenio_aud {get;set;}
+				public String importe_g_plan_aud {get;set;}
+				public String importe_cargo_al_socio_aud {get;set;}
+				public String grupo_prestaciones {get;set;}
+			}
+			/**-----------------------------------------------------------------------------------------------------------------------
+			@author			Jeferson Ruiz
+			@company		Xappia
+			@description	Método para entregar el body de la solicitud a la API para una autorización AP.
+			------------------------------------------------------------------------------------------------------------------------*/
+			public String parseAutorizacionAPBody () {
+				AutorizacionAPSS autorizacion = new AutorizacionAPSS();
+				try {
+					String contextoAP = prestaciones.isEmpty() ? null : prestaciones[0].Contexto__c;
+					String chkMaterial = this.caso.AP_Material__c ? 'V' : 'F';
+					String chkPresupuesto = this.caso.AP_Presupuesto__c ? 'V' : 'F';
+					String formaPago = this.caso.Orden_de_Compra__r.Estado_OC__c == 'Desestimada' ? 'D'
+									: this.caso.Orden_de_Compra__r.forma_de_Pago__c;
+					System.debug(this.caso.Fecha__c);
+					autorizacion.fecha = getValueOf(this.caso.Fecha__c);
+					autorizacion.forma_pago = formaPago;
+					System.debug(this.caso.Fecha_probable__c);
+					autorizacion.fecha_prob = this.caso.Fecha_probable__c == null ? null : getValueOf(this.caso.Fecha_probable__c);
+					autorizacion.agencia_codigo = this.caso.Delegacion__r.Codigo_de_delegacion__c;
+					autorizacion.user_insert = this.userNick;
+					autorizacion.codigo_afiliado = this.caso.Account.Codigo_de_Afiliado__c;
+					autorizacion.evento_medico_id = this.caso.Evento_Medico__r.Nro_de_Evento_Medico_SS__c;
+					System.debug(this.caso.Fecha_prescripcion__c);
+					autorizacion.fecha_pres = this.caso.Fecha_prescripcion__c == null ? null : getValueOf(this.caso.Fecha_prescripcion__c);
+					autorizacion.codigo_diagnostico = this.caso.Diagnostico__r.Codigo_del_Diagnostico__c;
+					autorizacion.efectores_prestador = this.caso.Prescriptor__r.Codigo_de_efector__c;
+					autorizacion.prestador = this.caso.Prestador__r.Codigo_de_efector__c;
+					System.debug(this.caso.Consultorio__r.Secuencia__c);
+					autorizacion.consultorio = this.caso.Consultorio__r.Secuencia__c != null
+											? getValueOf(this.caso.Consultorio__r.Secuencia__c) : null;
+					autorizacion.observaciones = this.caso.Observaciones__c;
+					autorizacion.mail = this.caso.Mail__c;
+					autorizacion.otros_mail = this.caso.Otros_Mail__c;
+					autorizacion.contexto = contextoAP;
+					autorizacion.chk_material = chkMaterial;
+					autorizacion.chk_presupuesto = chkPresupuesto;
+					autorizacion.numero_sf = this.caso.Id;
+					autorizacion.urgente = this.caso.Urgente__c;
+					if(chkPresupuesto == 'V'){
+						autorizacion.importe_presupuesto = this.caso.Importe_presupuesto__c;
+					}
+					if(this.caso.Nro_AP__c != null){
+						autorizacion.numero_ap = this.caso.Nro_AP__c;
+					}
+					List<Prestaciones> prestacionesList = new List<Prestaciones>();
+					for (Prestacion__c prestacion : this.prestaciones) {
+						Prestaciones prestacionToSend = new Prestaciones();
+							prestacionToSend.importe_g_plan_aud = prestacion.Importe_plan_auditor__c != null
+														? getValueOf(prestacion.Importe_plan_auditor__c) : null;
+							prestacionToSend.importe_cargo_al_socio_aud = prestacion.Importe_cargo_al_socio_auditor__c != null
+														? getValueOf(prestacion.Importe_cargo_al_socio_auditor__c) : null;
+							prestacionToSend.importe_g_convenio_aud = prestacion.Importe_convenio_auditor__c != null
+														? getValueOf(prestacion.Importe_convenio_auditor__c) : null;
+							prestacionToSend.cantidad = Integer.valueOf(prestacion.Cantidad__c);
+							prestacionToSend.nom_prestacion_pdh = codigoPrestacion(prestacion);
+							prestacionToSend.tipo_prestacion = prestacion.Tipo__c;
+							prestacionToSend.observaciones = prestacion.Observaciones__c;
+							prestacionToSend.contexto = prestacion.Contexto__c;
+							prestacionToSend.alerta = prestacion.Alerta__c;
+							if(prestacion.Tipo__c == 'G') {
+								prestacionToSend.grupo_prestaciones = codigoPrestacion(prestacion);
+								prestacionToSend.nom_prestacion_pdh = null;
+							}
+						prestacionesList.add(prestacionToSend);
+					}
+					autorizacion.prestaciones = prestacionesList;
+				} catch (Exception err) {
+					System.debug(err.getMessage());
 				}
-			solicitudSS.encabezado = new List<Encabezado>{encabezado};
-			solicitudSS.archivos = parseFiles();
-			solicitudSS.notas = parseNotas();
-		} catch (Exception err) {
-			System.debug(err.getMessage());
-		}
-		return JSON.serialize(solicitudSS, true);
-	}
-	/** Utils */
+				return JSON.serialize(autorizacion, true);
+			}
+		/** Utils */
 	private List<Archivos> parseFiles () {
 		List<Archivos> archivosToReturn = new List<Archivos>();
 		try {
@@ -635,6 +757,22 @@ public with sharing class Parser {
 		}
 	}
 	private static String getValueOf(Object obj) {
-		return (obj != null) ? String.valueOf(obj) : '';
+		return (obj != null) ? String.ValueOf(obj) : '';
+	}
+	private static String codigoPrestacion(Prestacion__c pres){
+		switch on pres.Tipo__c {
+			when 'N'{
+				return pres.Prestacion__r.Codigo__c;
+			}
+			when 'G'{
+				return pres.Grupo_de_Prestaciones__r.Codigo__c;
+			}
+			when 'M' {
+				return pres.Medicamento__r.Codigo_medicamento__c;
+			}
+			when else {
+				return '';
+			}
+		}
 	}
 }

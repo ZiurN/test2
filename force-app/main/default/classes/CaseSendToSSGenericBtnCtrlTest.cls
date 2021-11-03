@@ -254,6 +254,38 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.stopTest();
 			System.assertEquals(true, response.hasError, response.auraMessage.message);
 		}
+		@isTest
+		private static void Despegue_EmailWithCDL_sendCTToSSShouldReturnSuccessAndUpdateCase() {
+			insert new List<SObject> {delegacion, entidad, familiar, obraSocial, loc};
+			Case casoSolicitudDespeguesCT = Build.aCaseSolicitudDedespegues(true)
+				.withType('CT')
+				.withFechaDeNacimiento(fechaNacimiento)
+				.withFechaDeVigencia(fechaVigencia)
+				.withObraSocial2(obraSocial.Id)
+				.withEmpleador(entidad.Id)
+				.withAccountId(familiar.Id)
+				.withDelegacionId(delegacion.Id)
+				.withLocalidad(loc.Id)
+				.withCalle('1')
+				.withNumero(1)
+				.withPiso('1')
+				.withDpto('1')
+				.withCondicionIva('RI-1')
+				.withMedioDeCobro('OTROS')
+				.withFacturaSinPapel('Verdadero')
+				.build();
+			setInitialDataWithEmail(casoSolicitudDespeguesCT);
+			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoSolicitudDespeguesCT.Id);
+			insert nota;
+			setMockResponse(SOLICITUD_DESPEGUE_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			Test.startTest();
+			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudDespeguesCT.Id,false);
+			Test.stopTest();
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
+			Case updatedCase = [SELECT Estado_DDJJ__c, Nro_de_solicitud_SS__c  FROM Case WHERE id =:casoSolicitudDespeguesCT.Id];
+			System.assertEquals('NUEVA', updatedCase.Estado_DDJJ__c, 'El estado DDJJ debe ser NUEVA');
+			System.assertEquals('725187', updatedCase.Nro_de_solicitud_SS__c, 'El número de la solicitud debe ser 725187');
+		}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	 * Casos Alta Familiar
 	------------------------------------------------------------------------------------------------------------------------*/
@@ -324,6 +356,29 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.stopTest();
 			System.assertEquals(true, response.hasError, response.auraMessage.message);
 		}
+		@isTest
+		private static void AltaFamiliar_EmailWithCDL_sendWithAllDataToSSShouldReturnSuccessAndUpdateCase() {
+			insert new List<SObject> {delegacion, entidad, cuenta, obraSocial};
+			Case casoSolicitudAltaFamiliar = Build.aCaseSolicituddealtafamiliar()
+				.withFechaDeNacimiento(fechaNacimiento)
+				.withFechaDeVigencia(fechaVigencia)
+				.withObraSocial2(obraSocial.Id)
+				.withEmpleador(entidad.Id)
+				.withAccountId(cuenta.Id)
+				.withDelegacionId(delegacion.Id)
+				.build();
+			setInitialDataWithEmail(casoSolicitudAltaFamiliar);
+			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoSolicitudAltaFamiliar.Id);
+			insert nota;
+			setMockResponse(SOLICITUD_ALTA_FAMILIAR_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			Test.startTest();
+			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudAltaFamiliar.Id,false);
+			Test.stopTest();
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
+			Case updatedCase = [SELECT Estado_DDJJ__c, Nro_de_solicitud_SS__c  FROM Case WHERE id =:casoSolicitudAltaFamiliar.Id];
+			System.assertEquals('NUEVA', updatedCase.Estado_DDJJ__c, 'El estado DDJJ debe ser NUEVA');
+			System.assertEquals('725187', updatedCase.Nro_de_solicitud_SS__c, 'El número de la solicitud debe ser 725187');
+		}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	 * Casos Cambio Segmento
 	------------------------------------------------------------------------------------------------------------------------*/
@@ -367,6 +422,26 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			System.assertEquals(false, response.hasError, response.auraMessage.message);
 			Case updatedCase = [SELECT Estado_de_solicitud__c, Nro_de_solicitud_SS__c  FROM Case WHERE id =:casoSolicitudCambioSegmento.Id];
 			System.assertEquals('COMPLETA', updatedCase.Estado_de_solicitud__c, 'El estado de la solicitud debe ser COMPLETA');
+		}
+		@isTest
+		private static void CambioSegmento_EmailWithCDL_sendWithCorrectDataToSSShouldReturnSuccessAndUpdateCase() {
+			insert new List<SObject> {entidad, obraSocial};
+			Case casoSolicitudCambioSegmento = Build.aCaseSolicitudDeCambioSegmento()
+				.withFechaDeVigencia(Date.newInstance(2020, 05, 01))
+				.withObraSocial2(obraSocial.Id)
+				.withEmpleador(entidad.Id)
+				.build();
+			setInitialDataWithEmail(casoSolicitudCambioSegmento);
+			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoSolicitudCambioSegmento.Id);
+			insert nota;
+			setMockResponse(SOLICITUD_CAMBIO_SEGMENTO_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			Test.startTest();
+			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudCambioSegmento.Id,false);
+			Test.stopTest();
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
+			Case updatedCase = [SELECT Estado_DDJJ__c, Nro_de_solicitud_SS__c  FROM Case WHERE id =:casoSolicitudCambioSegmento.Id];
+			System.assertEquals('NUEVA', updatedCase.Estado_DDJJ__c, 'El estado DDJJ debe ser NUEVA');
+			System.assertEquals('725187', updatedCase.Nro_de_solicitud_SS__c, 'El número de la solicitud debe ser 725187');
 		}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	 * Casos Bajas
@@ -457,6 +532,27 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.stopTest();
 			System.assertEquals(false, response.hasError, response.auraMessage.message);
 		}
+		@isTest
+		private static void BajaParcial_EmailWithCDL_sendWithCorrectDataShouldUpdateCase() {
+			insert new List<SObject>{familiar, cuenta};
+			Case casoBajaParcial = Build.aCaseSolicitudDeBajaParcial()
+				.withAccountId(cuenta.Id)
+				.build();
+			setInitialDataWithEmail(casoBajaParcial);
+			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoBajaParcial.Id);
+			insert nota;
+			Integrante_caso__c integrante = Build.anIntegranteCasoBajas()
+				.withFamiliar(familiar.Id)
+				.withMotivoDeLaBaja('2')
+				.withCase(casoBajaParcial.Id)
+				.build();
+			insert integrante;
+			setMockResponse(SOLICITUD_BAJA_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id, integrante.Id), 200);
+			Test.startTest();
+			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoBajaParcial.Id,false);
+			Test.stopTest();
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
+		}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	 * Casos Interfaz Financiera
 	------------------------------------------------------------------------------------------------------------------------*/
@@ -513,6 +609,22 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			Test.stopTest();
 			System.assertEquals(false, response.hasError, response.auraMessage.message);
 		}
+		@isTest
+		private static void InterfazFinanciera_EmailWithCDL_sendType_C_WithCorrectDataShouldUpdateCase() {
+			Case caseIF = Build.aCaseSolicitudInterfazFinanciera()
+				.withType('C')
+				.withCuit('20123456789')
+				.withFechaDeVigencia(Date.newInstance(2020, 01, 01))
+				.build();
+			setInitialDataWithEmail(caseIF);
+			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = caseIF.Id);
+			insert nota;
+			setMockResponse(INTERFAZ_FINANCIERA_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			Test.startTest();
+			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(caseIF.Id,false);
+			Test.stopTest();
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
+		}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	 * Casos Nueva Credencial
 	------------------------------------------------------------------------------------------------------------------------*/
@@ -530,7 +642,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			System.assertEquals(false, response.hasError, response.auraMessage.message);
 		}
 		@isTest
-		private static void sendCredentialRequestShouldToAnInvalidAccountShouldReturnError() {
+		private static void Credential_sendRequestShouldToAnInvalidAccountShouldReturnError() {
 			insert cuenta;
 			Case casoCredencial = Build.aCaseSolicitudDeCredencial()
 											.withAccountId(cuenta.Id)
@@ -585,6 +697,24 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			System.assertEquals(false, response.hasError, response.auraMessage.message);
 			casoCambioPlan = [SELECT Estado_de_solicitud__c FROM Case WHERE Id = :casoCambioPlan.Id];
 			System.assertEquals('COMPLETA', casoCambioPlan.Estado_de_solicitud__c, 'No se esta completando la actualizacion');
+		}
+		@isTest
+		private static void SolicitudCambioPlan_EmailWithCDL_sendWithCorrectDataShouldUpdateCase() {
+			insert new List<SObject> {delegacion, cuenta};
+			Case casoCambioPlan = Build.aCaseSolicitudCambioPlan()
+				.withPlanDespegue('AS300')
+				.withFechaDeVigencia(Date.newInstance(2020, 01, 01))
+				.withAccountId(cuenta.Id)
+				.withDelegacionId(delegacion.Id)
+				.build();
+			setInitialDataWithEmail(casoCambioPlan);
+			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoCambioPlan.Id);
+			insert nota;
+			setMockResponse(SOLICITUD_CAMBIO_PLAN_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			Test.startTest();
+			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoCambioPlan.Id,false);
+			Test.stopTest();
+			System.assertEquals(false, response.hasError, response.auraMessage.message);
 		}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	 * Casos Datos Particulares
@@ -668,6 +798,18 @@ public class CaseSendToSSGenericBtnCtrlTest {
 		cv = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id];
 		insert caso;
 		ContentDocumentLink contentlink = new ContentDocumentLink(LinkedEntityId = caso.id,
+																	ContentDocumentId = cv.contentDocumentId,
+																	Visibility = 'AllUsers');
+		insert contentlink;
+	}
+	private static void setInitialDataWithEmail (Case caso) {
+		insert cv;
+		cv = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id];
+		insert caso;
+		EmailMessage relatedEmail = new EmailMessage();
+		relatedEmail.ParentId = caso.Id;
+		insert relatedEmail;
+		ContentDocumentLink contentlink = new ContentDocumentLink(LinkedEntityId = relatedEmail.id,
 																	ContentDocumentId = cv.contentDocumentId,
 																	Visibility = 'AllUsers');
 		insert contentlink;

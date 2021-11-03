@@ -107,7 +107,7 @@ private class CasoEnviarASSBtnCtrlTest {
 		setMockResponse (getErrorResponse, AUTORIZACION_URL, WSCaseAPGenerarCentroMock.getError(), 422);
     }
 	@isTest
-	private static void whenACaseWithPresupuestoIsSentToSSWithCorrectData_ItShouldReturnAValidResponse() {
+	private static void whenACaseWithPresupuestoIsSentToSSWithCorrectData_ItShouldReturnAValidResponse () {
 		caso.AP_Presupuesto__c = true;
 		caso.Importe_presupuesto__c = 200;
 		update caso;
@@ -117,9 +117,12 @@ private class CasoEnviarASSBtnCtrlTest {
         CasoEnviarASSBtnCtrl.Response responseToAssert = CasoEnviarASSBtnCtrl.sendCaseToSS(caso.Id);
         Test.stopTest();
 		System.assertEquals(2, [SELECT COUNT() FROM Prestacion__c WHERE Ap__c = :caso.Id], 'Deben haber dos prestaciones');
+		System.assert(!responseToAssert.hasError, 'No deben haber errores');
+		System.assertEquals('success', responseToAssert.auraMessage.status, 'El estado debe ser éxitoso');
+		System.assertEquals('Ok', responseToAssert.auraMessage.message, 'El estado debe ser éxitoso');
 	}
 	@isTest
-	private static void whenACaseWithMaterialIsSentToSSWithCorrectData_ItShouldReturnAValidResponse() {
+	private static void whenACaseWithMaterialIsSentToSSWithCorrectData_ItShouldReturnAValidResponse () {
 		caso.AP_Material__c = true;
 		update caso;
 		Test.setMock(HttpCalloutMock.class, getResponseMaterialFound);
@@ -137,14 +140,19 @@ private class CasoEnviarASSBtnCtrlTest {
 		System.assertEquals('Celula 1', casoMaterial.Celula__c, 'La célula debe ser 1');
 		System.assertEquals('Material', casoMaterial.Sub_tipo__c, 'El subtipo debe ser Material');
 		System.assertEquals('48', casoMaterial.Tiempo_SLA__c, 'El tiempo SLA debe ser 48');
+		System.assert(!responseToAssert.hasError, 'No deben haber errores');
+		System.assertEquals('success', responseToAssert.auraMessage.status, 'El estado debe ser éxitoso');
+		System.assertEquals('Ok', responseToAssert.auraMessage.message, 'El estado debe ser éxitoso');
 	}
 	@isTest
-	private static void whenACaseIsSentToSSWithCorrectData_ItShouldReturnAValidResponse() {
+	private static void whenACaseIsSentToSSWithCorrectData_ItShouldReturnAValidResponse () {
 		Test.setMock(HttpCalloutMock.class, getResponseFound);
         Test.startTest();
         CasoEnviarASSBtnCtrl.Response responseToAssert = CasoEnviarASSBtnCtrl.sendCaseToSS(caso.Id);
         Test.stopTest();
-		System.assert(!responseToAssert.hasError, 'No debe haber mensaje de error');
+		System.assert(!responseToAssert.hasError, 'No deben haber errores');
+		System.assertEquals('success', responseToAssert.auraMessage.status, 'El estado debe ser éxitoso');
+		System.assertEquals('Ok', responseToAssert.auraMessage.message, 'El estado debe ser éxitoso');
 		Case updatedCase = getCase(caso.Id);
 		Prestacion__c[] prests = getPrestacion(updatedCase.Id);
 		System.assertEquals('1014010015', updatedCase.Nro_AP__c, 'El número AP debe ser 1014010015');
@@ -181,7 +189,7 @@ private class CasoEnviarASSBtnCtrlTest {
 		System.assertEquals('16461179', alerts[0].idalerta__c, 'El id de la alerta debe ser 16461179');
 	}
 	@isTest
-	private static void whenACaseIsSentToSSWithIncorrectData_ItShouldReturnAnInvalidResponse() {
+	private static void whenACaseIsSentToSSWithIncorrectData_ItShouldReturnAnInvalidResponse () {
 		Test.setMock(HttpCalloutMock.class, getErrorResponse);
 		Case caso2 = new Case();
 		caso.Fecha__c = Date.newInstance(2020, 2, 2);
@@ -203,10 +211,12 @@ private class CasoEnviarASSBtnCtrlTest {
         Test.startTest();
         CasoEnviarASSBtnCtrl.Response responseToAssert = CasoEnviarASSBtnCtrl.sendCaseToSS(caso2.Id);
         Test.stopTest();
-		System.assert(responseToAssert.hasError, 'Debe haber un error');
+		System.assert(responseToAssert.hasError, 'Deben haber errores');
+		System.assertEquals('error', responseToAssert.auraMessage.status, 'El estado debe ser error');
+		System.assertEquals('The given data was invalid.', responseToAssert.auraMessage.message, 'Mensaje debe indicar el error');
 	}
 	@isTest
-	private static void whenACaseHasAttachments_ReturnTrue() {
+	private static void whenACaseHasAttachments_ReturnTrue () {
 		Case caso = new Case();
 		insert caso;
 		ContentVersion contentVersion = new ContentVersion(Title = 'test',
@@ -215,7 +225,7 @@ private class CasoEnviarASSBtnCtrlTest {
 			IsMajorVersion = true);
 		insert contentVersion;
 		List<ContentDocument> documents = [SELECT Id, Title, LatestPublishedVersionId FROM ContentDocument];
-		ContentDocumentLink cdl = New ContentDocumentLink();
+		ContentDocumentLink cdl = new ContentDocumentLink();
 		cdl.LinkedEntityId = caso.Id;
 		cdl.ContentDocumentId = documents[0].Id;
 		cdl.shareType = 'V';
@@ -227,7 +237,7 @@ private class CasoEnviarASSBtnCtrlTest {
 		System.assert(resp, 'La respuesta debe ser positiva');
 	}
 	@isTest
-	private static void whenTheResponseHasAnEmAuthorizedUpdateTheEMStatus() {
+	private static void whenTheResponseHasAnEmAuthorizedUpdateTheEMStatus () {
 		Evento_medico__c em = new Evento_medico__c();
 		em.RecordTypeId = XappiaHelper.getRecordType('Evento_medico__c', 'Evento_medico_de_seguimiento').Id;
 		em.Estado__c = 'En Auditoria';
@@ -243,7 +253,9 @@ private class CasoEnviarASSBtnCtrlTest {
         Test.startTest();
         CasoEnviarASSBtnCtrl.Response responseToAssert = CasoEnviarASSBtnCtrl.sendCaseToSS(caso.Id);
         Test.stopTest();
-		System.assert(!responseToAssert.hasError, 'No debe haber errores');
+		System.assert(!responseToAssert.hasError, 'No deben haber errores');
+		System.assertEquals('success', responseToAssert.auraMessage.status, 'El estado debe ser éxitoso');
+		System.assertEquals('Ok', responseToAssert.auraMessage.message, 'El estado debe ser éxitoso');
 		Case updatedCase = getCase(caso.Id);
 		Prestacion__c[] prests = getPrestacion(updatedCase.Id);
 		System.assertEquals('1014010015', updatedCase.Nro_AP__c, 'El número AP debe ser 1014010015');
@@ -282,6 +294,30 @@ private class CasoEnviarASSBtnCtrlTest {
 		System.assertEquals('Autorizado', em.Estado__c, 'El evento médico debe estar autorizado');
 		seg = [SELECT Id, Estado__c FROM Segmentos__c WHERE Id = :seg.Id];
 		System.assertEquals('Autorizado', seg.Estado__c, 'El evento médico debe estar autorizado');
+	}
+	@isTest
+	private static void ifSomeCaseHaveNotAttachmentsButEmailMessageRelateHasItSendTrue () {
+		Case caso = new Case();
+		insert caso;
+		EmailMessage relatedEmail = new EmailMessage();
+		relatedEmail.ParentId = caso.Id;
+		insert relatedEmail;
+		ContentVersion contentVersion = new ContentVersion(Title = 'test',
+			PathOnClient = '/test.pdf',
+			VersionData = Blob.valueOf('Test Content'),
+			IsMajorVersion = true);
+		insert contentVersion;
+		List<ContentDocument> documents = [SELECT Id, Title, LatestPublishedVersionId FROM ContentDocument];
+		ContentDocumentLink cdl = new ContentDocumentLink();
+		cdl.LinkedEntityId = relatedEmail.Id;
+		cdl.ContentDocumentId = documents[0].Id;
+		cdl.shareType = 'V';
+		insert cdl;
+		Test.setMock(HttpCalloutMock.class, getResponseFound);
+		Test.startTest();
+		Boolean resp = CasoEnviarASSBtnCtrl.hasAttachments(caso.Id, null);
+		Test.stopTest();
+		System.assert(resp, 'La respuesta debe ser positiva');
 	}
 	/** Utils */
 	private static void setMockResponse (XHttpCalloutMock mock, String url, String body, Integer statusCode) {

@@ -662,21 +662,21 @@ public class WSCaseEnviarASSGenericResponse {
 	/** Para enviar y determinar el mensaje de error */
 	public String processMessage () {
 		String message = '';
-        if (this.data[0].httpCode > 400 && this.data[0].httpCode <= 500) {
+		if (this.data[0].httpCode > 400 && this.data[0].httpCode <= 500) {
 			if (!String.isBlank(this.message) && this.error) {
 				message = this.message;
-            } else if (!String.isBlank(this.data[0].message) && this.data[0].error) {
-                message = this.data[0].message;
-            }
-        }
-        else{
-            List<List<String>> errorLists = new List<List<String>>(this.data[0].errors.values());
+			} else if (!String.isBlank(this.data[0].message) && this.data[0].error) {
+				message = this.data[0].message;
+			}
+		}
+		else{
+			List<List<String>> errorLists = new List<List<String>>(this.data[0].errors.values());
 			for (Integer i = 0; i < errorLists.size(); i++) {
 				message += errorLists[0][0] + (i == errorLists.size()-1 ? '' : ', ' );
 			}
-        }
+		}
 		return message;
-    }
+	}
 	public static String translateNivel(String lvl){
 		switch on lvl{
 			when 'N1'{

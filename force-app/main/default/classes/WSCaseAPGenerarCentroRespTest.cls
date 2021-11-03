@@ -4,7 +4,6 @@
 
 @IsTest
 public class WSCaseAPGenerarCentroRespTest {
-	
 	// This test method should give 100% coverage
 	static testMethod void testParse() {
 		String json = '{'+

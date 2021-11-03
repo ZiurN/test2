@@ -86,6 +86,7 @@ public class RestWS {
 			result.response = response;
 			result.hasError = response.getStatusCode() < 200 || response.getStatusCode() >= 300;
 			if(!result.hasError) {
+				result.message = 'Ok';
 				result.processResponse(response);
 			}
 			else{

@@ -53,7 +53,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 		}
 		if (caso == null) return new Response(true, System.Label.Alerta_InvalidCaseClosed, WARNING, '{}');
 		Set<Id> dLinks = new Set<Id>();
-		for (ContentDocumentLink cDL :[SELECT ContentDocumentId, Id FROM ContentDocumentLink WHERE LinkedEntityId = :recordId]) {
+		for (ContentDocumentLink cDL : getContentDocumentLinks(recordId)) {
 			dLinks.add(cDL.ContentDocumentId);
 		}
 		List<ContentVersion> generalFiles = [SELECT Id, VersionData, Title,Enviado__c, FileExtension, Description
@@ -260,6 +260,13 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 		Database.upsert(notasAActualizar, false);
 	}
 	/** Utils */
+	private static  List<ContentDocumentLink> getContentDocumentLinks (String recordId) {
+		List<EmailMessage> emailMessagesCase = [SELECT Id FROM EmailMessage WHERE ParentId = :recordId];
+		return [SELECT ContentDocumentId, Id
+				FROM ContentDocumentLink
+				WHERE LinkedEntityId = :recordId
+				OR LinkedEntityId IN :emailMessagesCase];
+	}
 	private static Case getCaseInfo (String recordId) {
 		return [SELECT Account.Afi_Id_del_Titular__c,
 					Account.Agencia_codigo__c,
