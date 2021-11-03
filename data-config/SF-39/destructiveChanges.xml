@@ -5,6 +5,10 @@
 		<members>WSCaseAPGenerarCentroRespTest</members>
 		<members>WSCasoEnviarASS</members>
 		<members>WSCasoEnviarASSTest</members>
+		<members>CaseReintegroEnviarASSBtnCtrl</members>
+		<members>CaseReintegroEnviarASSBtnCtrlTest</members>
+		<members>WSSendSSResponsesMock</members>
+		<members>WSCaseReintegroEnviarASSMock</members>
         <name>ApexClass</name>
     </types>
 </Package>

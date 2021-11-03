@@ -4,7 +4,7 @@
 @date			02/11/2021
 ------------------------------------------------------------------------------------------------------------------------*/
 @SuppressWarnings('PMD.ApexCRUDViolation, PMD.ExcessiveParameterList, PMD.AvoidDeeplyNestedIfStmts')
-public without sharing class CasoEnviarASSBtnCtrl  {
+public without sharing class CasoEnviarASSBtnCtrl {
 	private static final String[] ADMIN_PROFILES = new List<String> {'Administrador del sistema',
 																	'System Administrator',
 																	'Administrador de Servicio',

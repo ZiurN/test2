@@ -30,5 +30,7 @@ public class ConfigUtilsTest  {
 		System.assertEquals('/v1/salud/solicitudes-afiliados/reemision-credencial', result.get('reemision-credencial').Endpoint__c, 'El endpoint no es el esperado');
 		result = ConfigUtils.getEndpointsByTipo('autorizaciones');
 		System.assertEquals('/v1/salud/autorizaciones', result.get('autorizaciones').Endpoint__c, 'El endpoint no es el esperado');
+		result = ConfigUtils.getEndpointsByTipo('reintegros');
+		System.assertEquals('/v1/salud/reintegros', result.get('reintegros').Endpoint__c, 'El endpoint no es el esperado');
 	}
 }

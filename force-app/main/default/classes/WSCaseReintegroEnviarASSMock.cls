@@ -1,6 +1,5 @@
 public class WSCaseReintegroEnviarASSMock  {
-
-	public String getFound(String prestId) {
+	public static String getFound(String prestId) {
 		return
 			'{' +
                 '"error": false,' +
@@ -149,8 +148,7 @@ public class WSCaseReintegroEnviarASSMock  {
                 '}' +
             '}';
 	}
-
-	public static String getError() { 
+	public static String getError() {
 		return
             '{' +
                 '"data": {' +

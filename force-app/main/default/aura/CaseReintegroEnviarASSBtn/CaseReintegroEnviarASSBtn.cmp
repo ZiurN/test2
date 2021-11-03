@@ -1,31 +1,27 @@
 <aura:component controller="CaseReintegroEnviarASSBtnCtrl" implements="force:hasRecordId" access="global">
+	<!-- External Resources -->
 	<ltng:require scripts="{!$Resource.LightningUtils}" />
 	<ltng:require styles="{!$Resource.multilineToast}" />
-
-    <aura:attribute name="isLoading" type="Boolean" default="false"/>
-    <aura:attribute name="caseSimpleRecord" type="Object"/>
-    <aura:attribute name="recordLoadError" type="String"/>
-    
-    <force:recordData 
+	<!-- Attributes -->
+	<aura:attribute name="isLoading" type="Boolean" default="false"/>
+	<aura:attribute name="caseSimpleRecord" type="Object"/>
+	<aura:attribute name="recordLoadError" type="String"/>
+	<!-- recordData -->
+	<force:recordData
 		aura:id="recordLoader"
-   		recordId="{! v.recordId }"
-        fields="Status, Nro_AP__c, Evento_Medico__c"
-        targetFields="{! v.caseSimpleRecord }"
-        targetError="{! v.recordLoadError }"
-	/>
-	
-	<lightning:button 
-		variant="neutral" 
-		onclick="{! c.handleClickBtn }" 
-  		title="Enviar a SaludSoft" 
+   		recordId="{!v.recordId}"
+		fields="Status, Nro_AP__c, Evento_Medico__c"
+		targetFields="{!v.caseSimpleRecord}"
+		targetError="{!v.recordLoadError}"/>
+	<!-- Component -->
+	<lightning:button
+		variant="neutral"
+		onclick="{!c.handleClickBtn}"
+  		title="Enviar a SaludSoft"
 		label="Enviar a SaludSoft"
-		aura:id="disableEnviarAP"
-	/>
-
+		aura:id="disableEnviarAP" />
 	<aura:if isTrue="{! v.isLoading }">
 		<lightning:spinner alternativeText="Loading" variant="brand"/>
 	</aura:if>
-
 	<lightning:overlayLibrary aura:id="overlayLib"/>
-
 </aura:component>
