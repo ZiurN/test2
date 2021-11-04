@@ -50,6 +50,10 @@ public with sharing class Parser {
 		this.prestaciones = prestaciones;
 		this.userNick = userNick;
 	}
+	public Parser (Case caso, String userNick) {
+		this.caso = caso;
+		this.userNick = userNick;
+	}
 	/**-----------------------------------------------------------------------------------------------------------------------
  	@author			Jeferson Ruiz
  	@company		Xappia
@@ -625,6 +629,14 @@ public with sharing class Parser {
 				public String importe_g_plan_aud {get;set;}
 				public String importe_cargo_al_socio_aud {get;set;}
 				public String grupo_prestaciones {get;set;}
+				public String numero_sf {get;set;}
+				public String nom_prestacion {get;set;}
+				public String importe_total {get;set;}
+				public String importe_a_pagar {get;set;}
+				public String honorarios {get;set;}
+				public Object pieza_dental {get;set;}
+				public Object cara {get;set;}
+				public String fecha {get;set;}
 			}
 			/**-----------------------------------------------------------------------------------------------------------------------
 			@author			Jeferson Ruiz
@@ -697,7 +709,102 @@ public with sharing class Parser {
 				}
 				return JSON.serialize(autorizacion, true);
 			}
-		/** Utils */
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz
+	@company		Xappia
+	@description	Deserializador para solicitudes de SS a la API Reintegros.
+	------------------------------------------------------------------------------------------------------------------------*/
+			public class ReintegroSS {
+				public String fecha {get;set;}
+				public String lote {get;set;}
+				public String agencia_codigo {get;set;}
+				public String codigo_afiliado {get;set;}
+				public String cuit {get;set;}
+				public String razon_social {get;set;}
+				public String tipo_comprobante {get;set;}
+				public String numero_comprobante {get;set;}
+				public String fecha_comprobante {get;set;}
+				public String importe {get;set;}
+				public String observaciones {get;set;}
+				public String codigo_diagnostico {get;set;}
+				public String fecha_prescripcion {get;set;}
+				public String efector_prescriptor {get;set;}
+				public String efector_realizador {get;set;}
+				public String cobro {get;set;}
+				public String em_id {get;set;}
+				public String numero_sf {get;set;}
+				public String usuario {get;set;}
+				public String rein_id {get;set;}
+				public List<Prestaciones> prestaciones {get;set;}
+			}
+			public String parseReintegroBody () {
+				String medicamentoRTId = XappiaHelper.getRecordType('Prestacion_de_reintegro__c', 'Medicamento').Id;
+				String odontologicaRTId = XappiaHelper.getRecordType('Prestacion_de_reintegro__c', 'Odontologica').Id;
+				String prestacionalRTId = XappiaHelper.getRecordType('Prestacion_de_reintegro__c', 'Prestacional').Id;
+				String razonSocial60Char = this.caso.Razon_social__c?.length() > 60
+								? this.caso.Razon_social__c?.substring(0, 60) : this.caso.Razon_social__c;
+				ReintegroSS reintegro = new ReintegroSS();
+				try {
+					reintegro.usuario = this.userNick;
+					reintegro.numero_sf = this.caso.Id;
+					reintegro.em_id = this.caso.Evento_Medico__r.Nro_de_Evento_Medico_SS__c;
+					reintegro.cobro = this.caso.Cobro_indebido__c ? 'S' : 'N';
+					reintegro.efector_realizador = this.caso.Efector_realizador__r.Codigo_de_efector__c;
+					reintegro.efector_prescriptor = this.caso.Prescriptor__r.Codigo_de_efector__c;
+					reintegro.fecha_prescripcion = this.caso.Fecha_prescripcion__c != null
+													? String.valueOf(this.caso.Fecha_prescripcion__c) : null;
+					reintegro.codigo_diagnostico = this.caso.Diagnostico__r.Codigo_del_Diagnostico__c;
+					reintegro.observaciones = this.caso.Observaciones__c;
+					reintegro.importe = this.caso.Importe_reintegro__c != null
+										? String.valueOf(this.caso.Importe_reintegro__c) : null;
+					reintegro.fecha_comprobante = null;
+					reintegro.numero_comprobante = null;
+					reintegro.tipo_comprobante = this.caso.Tipo_de_Comprobante__c;
+					reintegro.razon_social = razonSocial60Char;
+					reintegro.cuit = this.caso.CUIT__c;
+					reintegro.codigo_afiliado = this.caso.Account.Codigo_de_Afiliado__c;
+					reintegro.agencia_codigo = this.caso.Delegacion__r.Codigo_de_delegacion__c;
+					reintegro.lote = this.caso.Lote__r.Id_lote_SS__c;
+					reintegro.fecha = this.caso.Fecha__c != null
+									? String.valueOf(this.caso.Fecha__c) : null;
+					if(this.caso.Codigo_reintegro_SS__c != null) {
+						reintegro.rein_id = this.caso.Codigo_reintegro_SS__c;
+					}
+					List<Prestaciones> prestacionesToSend = new List<Prestaciones>();
+					for (Prestacion_de_reintegro__c prestacion : this.caso.Prestaciones_de_reintegros__r) {
+						String tipoPrestacion = getTypeCodeFromRT(prestacion);
+						String fecha;
+						if(tipoPrestacion == 'M') {
+							fecha = prestacion.Fecha_de_dispensa__c != null ? String.valueOf(prestacion.Fecha_de_dispensa__c) : null;
+						}
+						else {
+							fecha = prestacion.Fecha_de_realizacion__c != null ? String.valueOf(prestacion.Fecha_de_realizacion__c) : null;
+						}
+						Prestaciones prestacionToSend = new Prestaciones();
+							prestacionToSend.observaciones = prestacion.Observaciones__c;
+							prestacionToSend.alerta = prestacion.Alerta__c;
+							prestacionToSend.fecha = fecha;
+							prestacionToSend.cara = prestacion.Caras__c;
+							prestacionToSend.pieza_dental = prestacion.Pieza_dental__c;
+							prestacionToSend.honorarios = prestacion.HD__c;
+							prestacionToSend.importe_a_pagar = prestacion.Importe_a_pagar__c != null
+														? String.valueOf(prestacion.Importe_a_pagar__c) : null;
+							prestacionToSend.importe_total = prestacion.Importe_total__c != null
+														? String.valueOf(prestacion.Importe_total__c) : null;
+							prestacionToSend.tipo_prestacion = getTypeCodeFromRT(prestacion);
+							prestacionToSend.cantidad = Integer.valueOf(prestacion.Cantidad__c);
+							prestacionToSend.contexto = prestacion.Contexto__c;
+							prestacionToSend.nom_prestacion = getCodigoPrestacion(prestacion);
+							prestacionToSend.numero_sf = prestacion.Id;
+						prestacionesToSend.add(prestacionToSend);
+					}
+					reintegro.prestaciones = prestacionesToSend;
+				}catch (Exception err) {
+					System.debug(err.getMessage());
+				}
+				return JSON.serialize(reintegro, true);
+			}
+	/** Utils */
 	private List<Archivos> parseFiles () {
 		List<Archivos> archivosToReturn = new List<Archivos>();
 		try {
@@ -758,6 +865,36 @@ public with sharing class Parser {
 	}
 	private static String getValueOf(Object obj) {
 		return (obj != null) ? String.ValueOf(obj) : '';
+	}
+	public static String getTypeCodeFromRT(Prestacion_de_reintegro__c prestacion) {
+		String medicamentoRTId = XappiaHelper.getRecordType('Prestacion_de_reintegro__c', 'Medicamento').Id;
+		String odontologicaRTId = XappiaHelper.getRecordType('Prestacion_de_reintegro__c', 'Odontologica').Id;
+		String prestacionalRTId = XappiaHelper.getRecordType('Prestacion_de_reintegro__c', 'Prestacional').Id;
+		if(prestacion.RecordTypeId == medicamentoRTId) {
+			return 'M';
+		} else if(prestacion.RecordTypeId == odontologicaRTId) {
+			return 'O';
+		} else if(prestacion.RecordTypeId == prestacionalRTId) {
+			return 'N';
+		}
+		return null;
+	}
+	public static String getCodigoPrestacion(Prestacion_de_reintegro__c prestacion) {
+		String tipo = getTypeCodeFromRT(prestacion);
+		switch on tipo {
+			when 'N'{
+				return prestacion.Prestacional__r.Codigo__c;
+			}
+			when 'O'{
+				return prestacion.Prestacion_odonto__r.Codigo__c;
+			}
+			when 'M' {
+				return prestacion.Medicamento__r.Codigo_medicamento__c;
+			}
+			when else {
+				return null;
+			}
+		}
 	}
 	private static String codigoPrestacion(Prestacion__c pres){
 		switch on pres.Tipo__c {

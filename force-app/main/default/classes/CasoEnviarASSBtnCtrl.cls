@@ -16,6 +16,14 @@ public without sharing class CasoEnviarASSBtnCtrl {
 	private static final String INFO = 'info';
 	/** Tipo de Servicio SS */
 	private static final String AUTORIZACION = 'autorizaciones';
+	private static final String REINTEGROS = 'reintegros';
+	/** Variables estáticas */
+	private static Case caseFromSF;
+	private static User usuario;
+	private static String userNick;
+	private static Parser parser;
+	private static String body;
+	private static String caseType;
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Matias Moll
 	@description	Método para verificar si existen archivos adjuntos en el caso.
@@ -24,7 +32,11 @@ public without sharing class CasoEnviarASSBtnCtrl {
 	@return         Boolean - Indica si hay o no archivos en el caso.
 	------------------------------------------------------------------------------------------------------------------------*/
 	@AuraEnabled
-	public static Boolean hasAttachments (Id caseId, Id emId) {
+	public static Boolean hasAttachments (String caseId) {
+		return hasAttachments(caseId, '');
+	}
+	@AuraEnabled
+	public static Boolean hasAttachments (String caseId, String emId) {
 		List<ContentDocumentLink> dbLinks = getContentDocumentLinks(caseId, emId);
 		return !dbLinks.isEmpty();
 	}
@@ -36,19 +48,48 @@ public without sharing class CasoEnviarASSBtnCtrl {
 	------------------------------------------------------------------------------------------------------------------------*/
 	@AuraEnabled
 	public static Response sendCaseToSS (Id caseToSend) {
-		Case caseFromSF = [SELECT Id,Fecha__c,Fecha_probable__c,Delegacion__r.Codigo_de_delegacion__c, Consultorio__r.Secuencia__c,
-								Account.Codigo_de_Afiliado__c,Fecha_prescripcion__c,Diagnostico__r.Codigo_del_Diagnostico__c,
-								Prestador__r.Codigo_de_efector__c,Consultorio__r.Codigo_externo__c,Observaciones__c,Mail__c,
-								Otros_Mail__c,Evento_Medico__r.Nro_de_Evento_Medico_SS__c,AP_Material__c,AP_Presupuesto__c,Prescriptor__r.Codigo_de_efector__c,
-								Status,Nro_AP__c,Categorizacion_SS__c,Nivel_de_derivacion__c,Importe_presupuesto__c, OwnerId, Evento_Medico__c,
-								Orden_de_Compra__r.forma_de_Pago__c, Orden_de_Compra__r.Estado_OC__c, Evento_Medico__r.Estado__c, Urgente__c
-							FROM Case
-							WHERE Id = :caseToSend];
+		caseType = 'AP';
+		caseFromSF = getCase(caseToSend);
+		usuario = getUsuario();
+		Response validation = validations();
+		if(validation.auraMessage.message != 'ok') {
+			return validation;
+		}
 		Segmentos__c[] segmentos = [SELECT Id, Estado__c
 									FROM Segmentos__c
 									WHERE Evento_Medico__c = :caseFromSF.Evento_Medico__c
 										AND Segmento_actual__c = true];
-		return sendToSS(caseFromSF, segmentos);
+		return sendAPToSS(segmentos);
+	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz
+	@description	Método para enviar la info del caso deReintegro a SS desde la interfaz del usuario.
+	@param			caseToSend - Id del caso.
+	@return         Response - Un objeto de respuesta al front.
+	------------------------------------------------------------------------------------------------------------------------*/
+	@AuraEnabled
+	public static Response sendReintegroToSS (Id caseToSend) {
+		caseType = 'Reintegro';
+		caseFromSF = getCase(caseToSend);
+		usuario = getUsuario();
+		Response validation = validations();
+		if(validation.auraMessage.message != 'ok') {
+			return validation;
+		}
+		parser =  new Parser(caseFromSF, userNick);
+		body = parser.parseReintegroBody();
+		WSCaseEnviarASSHelper.Response resp = WSCaseEnviarASSHelper.enviarASS(body, REINTEGROS, 'reintegros');
+		Response response;
+		if (!resp.hasError) {
+			response = updateReintegro(resp.result.data[0].reintegro);
+			if (response.hasError) {
+				return response;
+			}
+			sendFiles (resp.result.data[0].reintegro.rei_id);
+		} else {
+			response = new Response (resp.hasError, resp.message, resp.hasError ? ERROR : SUCCESS);
+		}
+		return response;
 	}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Matias Moll
@@ -57,61 +98,44 @@ public without sharing class CasoEnviarASSBtnCtrl {
 	@param			segmentos - Conjunto de segmentos.
 	@return         Response - Un objeto de respuesta al front.
 	------------------------------------------------------------------------------------------------------------------------*/
-	private static Response sendToSS (Case caseFromSF, Segmentos__c[] segmentos) {
+	private static Response sendAPToSS (Segmentos__c[] segmentos) {
+		Response response;
 		List<Prestacion__c> prestaciones = getPrestaciones(caseFromSF.Id);
-		String strObjPrefix = String.valueOf(caseFromSF.OwnerId).substring(0, 3);
-		Boolean isUserInqueue = false;
-		if(strObjPrefix == Group.sObjectType.getDescribe().getKeyPrefix()){
-			Group cola = [SELECT Id FROM Group WHERE Type = 'Queue' AND Id = :caseFromSF.OwnerId];
-			if(cola != null){
-				for(GroupMember gm : [SELECT Id,UserOrGroupId FROM GroupMember WHERE GroupId = :cola.Id]){
-					if (gm.UserOrGroupId == UserInfo.getUserId()) {
-						isUserInqueue = true;
-						break;
-					}
-				}
-			}
-		}
-		User usuario = [SELECT CommunityNickname, Profile.Name, UserRole.DeveloperName, Codigo_delegacion__c
-						FROM User
-						WHERE Id = :UserInfo.getUserId()];
-		String nick =  usuario.CommunityNickname != null ? usuario.CommunityNickname.toUppercase() : null;
-		Boolean propietario = ADMIN_PROFILES.contains(usuario.Profile.Name) || (isUserInqueue ? isUserInqueue : caseFromSF.OwnerId == usuario.Id);
-		if(caseFromSF.Nivel_de_derivacion__c == null && !propietario) {
-			return new Response(true, System.Label.Alerta_NoAuth_UsuarioNoPropietario, WARNING);
-		}
-		Parser parser = new Parser (caseFromSF, prestaciones, nick);
-		String body = parser.parseAutorizacionAPBody();
+		parser = new Parser (caseFromSF, prestaciones, userNick);
+		body = parser.parseAutorizacionAPBody();
 		WSCaseEnviarASSHelper.Response wsResp = WSCaseEnviarASSHelper.enviarASS(body, AUTORIZACION, 'autorizaciones');
 		Boolean updateSucc = true;
-		if(wsResp.hasError) {
+		if (wsResp.hasError) {
 			return new Response(wsResp.hasError, wsResp.message, (wsResp.hasError ? ERROR : SUCCESS));
 		}
-		String msg = '';
-		List<String> idContentVersionList = new List<String>();
-		List<ContentDocumentLink> linksList =  getContentDocumentLinks(caseFromSf.Id, '');
-		for(ContentDocumentLink cdl : linksList) {
-			idContentVersionList.add(cdl.ContentDocument.LatestPublishedVersionId);
-		}
-		List<ContentVersion> cvList = [SELECT Id FROM ContentVersion WHERE Id IN :idContentVersionList AND Enviado__c = false];
-		List<Id> docIds = new List<Id>();
-		for(ContentVersion cv : cvList){
-			docIds.add(cv.Id);
-		}
-		WSCaseEnviarASSGenericResponse.Data data = wsResp.result.data[0];
-		for(WSCaseEnviarASSGenericResponse.Ap caso : data.ap){
-			if(caso.nro_sf == caseFromSF.Id){
-				msg = msg + updateCase(caseFromSF, caso, segmentos);
-				System.enqueueJob(new ArchivosCargaQueueable(caso.apr_id, 'autorizacion', nick, docIds));
+		List<Response> tempResponses = new List<Response>();
+		for(WSCaseEnviarASSGenericResponse.Ap wsCaso : wsResp.result.data[0].ap) {
+			Response tempResponse;
+			if(wsCaso.nro_sf == caseFromSF.Id){
+				tempResponse = updateAPCase(wsCaso, segmentos);
+				sendFiles(wsCaso.apr_id);
 			}
 			else {
-				msg = msg + createCase(caso, caseFromSF);
+				tempResponse = createAPCase(wsCaso);
 			}
+			tempResponses.add(tempResponse);
 		}
-		return new Response(wsResp.hasError && !updateSucc, updateSucc ? wsResp.message : msg, updateSucc ? SUCCESS : ERROR);
+		if (tempResponses.size() > 0 && tempResponses.size() == 1) {
+			response = tempResponses[0];
+		} else if (tempResponses.size() > 1) {
+			Boolean hasError = false;
+			String msg = '';
+			for (Response tempResponse : tempResponses){
+				hasError = hasError || tempResponse.hasError;
+				if (hasError) {
+					msg += tempResponse.auraMessage.message + '\n';
+				}
+			}
+			response = new Response(hasError, hasError ? msg : 'Ok', hasError ? ERROR : SUCCESS);
+		}
+		return response;
 	}
-	private static String updateCase(Case caseFromSF, WSCaseEnviarASSGenericResponse.Ap ap, Segmentos__c[] segmentos) {
-		String msg = '';
+	private static Response updateAPCase (WSCaseEnviarASSGenericResponse.Ap ap, Segmentos__c[] segmentos) {
 		List<Prestacion__c> prestaciones = getPrestaciones (caseFromSF.Id);
 		Map<String,Prestacion__c> prestacionesMap = new Map<String,Prestacion__c>();
 		Map<String,Prestacion__c> medicamentosMap = new Map<String,Prestacion__c>();
@@ -142,9 +166,12 @@ public without sharing class CasoEnviarASSBtnCtrl {
 			caseFromSF.Celula__c = ap.celula;
 		}
 		Database.SaveResult result = Database.update(caseFromSF);
+		String msg = '';
+		Boolean hasError = false;
 		if(!result.isSuccess()){
 			for(Database.Error err : result.getErrors()){
 				msg = msg + err.getMessage() + '\n';
+				hasError = hasError || !result.isSuccess();
 			}
 		}
 		List<Prestacion__c> prestacionesToUpdate = new List<Prestacion__c>();
@@ -265,6 +292,7 @@ public without sharing class CasoEnviarASSBtnCtrl {
 			if(!res.isSuccess()){
 				for(Database.Error err : res.getErrors()){
 					msg = msg + err.getMessage() + '\n';
+					hasError = hasError || !result.isSuccess();
 				}
 			}
 		}
@@ -273,6 +301,7 @@ public without sharing class CasoEnviarASSBtnCtrl {
 			if(!res.isSuccess()){
 				for(Database.Error err : res.getErrors()){
 					msg = msg + err.getMessage() + '\n';
+					hasError = hasError || !result.isSuccess();
 				}
 			}
 		}
@@ -282,48 +311,50 @@ public without sharing class CasoEnviarASSBtnCtrl {
 		if(segToUpdate != null) {
 			Database.SaveResult resultSegmento = Database.update(segToUpdate);
 		}
-		return msg;
+		return new Response(hasError, hasError ? msg : 'Ok', hasError ? ERROR : SUCCESS);
 	}
-	private static String createCase(WSCaseEnviarASSGenericResponse.Ap ap, Case parentCase) {
-		String msg = '';
+	private static Response createAPCase (WSCaseEnviarASSGenericResponse.Ap ap) {
 		Map<String,Prestacion__c> prestacionesMap = new Map<String,Prestacion__c>();
 		Map<String,Prestacion__c> medicamentosMap = new Map<String,Prestacion__c>();
 		Map<String,Prestacion__c> grupoPresMap = new Map<String,Prestacion__c>();
-		Case caseFromSF = new Case();
+		Case caseToSF = new Case();
 		if(ap.ap_material == 'V') {
-			caseFromSF.RecordTypeId = XappiaHelper.getRecordType('Case', 'Autorizacion_previa').Id;
-			caseFromSF.Sub_tipo__c = 'Material';
+			caseToSF.RecordTypeId = XappiaHelper.getRecordType('Case', 'Autorizacion_previa').Id;
+			caseToSF.Sub_tipo__c = 'Material';
 		}
 		else if(ap.ap_presupuesto == 'V') {
-			caseFromSF.RecordTypeId = XappiaHelper.getRecordType('Case', 'Autorizacion_previa').Id;
-			caseFromSF.Sub_tipo__c = 'Presupuesto';
+			caseToSF.RecordTypeId = XappiaHelper.getRecordType('Case', 'Autorizacion_previa').Id;
+			caseToSF.Sub_tipo__c = 'Presupuesto';
 		}
-		caseFromSF.Cambio_Manual__c = false;
-		caseFromSF.Nro_AP__c = ap.apr_id;
-		caseFromSF.Status = ap.estado;
-		caseFromSF.Nivel_de_derivacion__c = ap.nivel;
-		caseFromSF.Categorizacion_SS__c = ap.clasificacion;
-		caseFromSF.Type = ap.tipo_ap_sf;
-		caseFromSF.ParentId = parentCase.Id;
-		caseFromSF.Fecha_probable__c = Date.valueOf(ap.fecha_probable);
-		caseFromSF.Fecha__c = Date.valueOf(ap.fecha);
-		caseFromSF.Mail__c = ap.mail;
-		caseFromSF.Observaciones__c = ap.observaciones;
-		caseFromSF.Otros_Mail__c = ap.otros_mail;
-		caseFromSF.Delegacion__c = parentCase.Delegacion__c;
-		caseFromSF.Prescriptor__c = parentCase.Prescriptor__c;
-		caseFromSF.Fecha_prescripcion__c = parentCase.Fecha_prescripcion__c;
-		caseFromSF.Evento_Medico__c = parentCase.Evento_Medico__c;
-		caseFromSF.Tiempo_SLA__c = ap.sla;
-		caseFromSF.AccountId = parentCase.AccountId;
-		caseFromSF.Diagnostico__r = ap.diagnostico != null ? new Diagnostico__c(Codigo_del_Diagnostico__c = ap.diagnostico) : null;
+		caseToSF.Cambio_Manual__c = false;
+		caseToSF.Nro_AP__c = ap.apr_id;
+		caseToSF.Status = ap.estado;
+		caseToSF.Nivel_de_derivacion__c = ap.nivel;
+		caseToSF.Categorizacion_SS__c = ap.clasificacion;
+		caseToSF.Type = ap.tipo_ap_sf;
+		caseToSF.ParentId = caseFromSF.Id;
+		caseToSF.Fecha_probable__c = Date.valueOf(ap.fecha_probable);
+		caseToSF.Fecha__c = Date.valueOf(ap.fecha);
+		caseToSF.Mail__c = ap.mail;
+		caseToSF.Observaciones__c = ap.observaciones;
+		caseToSF.Otros_Mail__c = ap.otros_mail;
+		caseToSF.Delegacion__c = caseFromSF.Delegacion__c;
+		caseToSF.Prescriptor__c = caseFromSF.Prescriptor__c;
+		caseToSF.Fecha_prescripcion__c = caseFromSF.Fecha_prescripcion__c;
+		caseToSF.Evento_Medico__c = caseFromSF.Evento_Medico__c;
+		caseToSF.Tiempo_SLA__c = ap.sla;
+		caseToSF.AccountId = caseFromSF.AccountId;
+		caseToSF.Diagnostico__r = ap.diagnostico != null ? new Diagnostico__c(Codigo_del_Diagnostico__c = ap.diagnostico) : null;
 		if(String.isNotBlank(ap.celula)) {
-			caseFromSF.Celula__c = ap.celula;
+			caseToSF.Celula__c = ap.celula;
 		}
-		Database.SaveResult result = Database.insert(caseFromSF);
+		String msg = '';
+		Boolean hasError = false;
+		Database.SaveResult result = Database.insert(caseToSF);
 		if(!result.isSuccess()){
 			for(Database.Error err : result.getErrors()){
 				msg = msg + err.getMessage() + '\n';
+				hasError = !result.isSuccess();
 			}
 		}
 		List<Prestacion__c> prestacionesToUpdate = new List<Prestacion__c>();
@@ -416,6 +447,7 @@ public without sharing class CasoEnviarASSBtnCtrl {
 			if(!res.isSuccess()){
 				for(Database.Error err : res.getErrors()){
 					msg = msg + err.getMessage() + '\n';
+					hasError = hasError || !result.isSuccess();
 				}
 			}
 		}
@@ -424,10 +456,134 @@ public without sharing class CasoEnviarASSBtnCtrl {
 			if(!res.isSuccess()){
 				for(Database.Error err : res.getErrors()){
 					msg = msg + err.getMessage() + '\n';
+					hasError = hasError || !result.isSuccess();
 				}
 			}
 		}
-		return msg;
+		return new Response(hasError, hasError ? msg : 'Ok', hasError ? ERROR : SUCCESS);
+	}
+	private static Response updateReintegro (WSCaseEnviarASSGenericResponse.Reintegro reintegroWS) {
+		String nivel = reintegroWS.nivel;
+		caseFromSF.Cambio_Manual__c = false;
+		caseFromSF.Nivel_de_derivacion__c = nivel == 'N1' ? 'Nivel 1'
+												: nivel == 'N2' ? 'Nivel 2'
+													: nivel == 'N3' ? 'Nivel 3'
+														: null;
+		caseFromSF.Celula__c = reintegroWS.celula;
+		caseFromSF.Tiempo_SLA__c = reintegroWS.sla;
+		caseFromSF.Codigo_reintegro_SS__c = reintegroWS.rei_id;
+		caseFromSF.Existente_SS__c = true;
+		caseFromSF.Status = Utils.translateStateReintegroToAP(reintegroWS.vda_drv_estado);
+		List<Prestacion_de_reintegro__c> prestacionesToUpsert = new List<Prestacion_de_reintegro__c>();
+		List<Alerta__c> alertasToUpsert = new List<Alerta__c>();
+		for(WSCaseEnviarASSGenericResponse.Prestaciones prestWS : reintegroWS.prestaciones) {
+			Prestacion_de_reintegro__c pres = new Prestacion_de_reintegro__c();
+			pres.Id = prestWS.nro_sf;
+			pres.Caso__c = caseFromSF.Id;
+			pres.Id_Externo__c = prestWS.pca_id;
+			pres.Estado__c = prestWS.estado_prestacion;
+			pres.Importe_cargo_al_socio_auditor__c = prestWS.importe_cargo_al_socio_aud != null
+														? Decimal.valueOf(prestWS.importe_cargo_al_socio_aud) : null;
+			pres.Importe_cargo_al_socio_sys__c = prestWS.importe_cargo_al_socio_sys != null
+													? Decimal.valueOf(prestWS.importe_cargo_al_socio_sys) : null;
+			pres.Importe_Reintegro_auditor__c = prestWS.importe_rein_aud != null
+													? Decimal.valueOf(prestWS.importe_rein_aud) : null;
+			pres.Importe_Reintegro_sys__c = prestWS.importe_rein_sys != null
+												? Decimal.valueOf(prestWS.importe_rein_sys) : null;
+			prestacionesToUpsert.add(pres);
+			for(WSCaseEnviarASSGenericResponse.Alertas alert : prestWS.alertas) {
+				Alerta__c alertPres = new Alerta__c();
+				alertPres.Prestacion_de_reintegro__r = new Prestacion_de_reintegro__c(Id_Externo__c = prestWS.pca_id);
+				alertPres.Control__c = alert.control;
+				alertPres.Funcion__c = alert.funcion;
+				alertPres.Texto_aclarativo__c = alert.texto_aclarativo;
+				alertPres.Nivel_de_auditoria__c = alert.nivel_auditoria == null ? null : Decimal.valueOf(alert.nivel_auditoria);
+				alertPres.Fecha_de_generacion_de_Alerta__c = alert.fecha_generacion != null ?
+						Date.valueOf(alert.fecha_generacion.substringBefore(' ')) :
+						null;
+				alertPres.Lectura_de_alerta_auditor__c = alert.auditor_lee;
+				alertPres.Resolucion_de_alerta_auditor__c = alert.auditor_resuelve;
+				alertPres.Fecha_resolucion_de_Alerta__c = alert.fecha_resolucion != null ?
+						Date.valueOf(alert.fecha_resolucion.substringBefore(' ')) :
+						null;
+				alertPres.idalerta__c = alert.aca_id;
+				alertPres.Estado__c = alert.estado_alerta;
+				if(reintegroWS.em_em_id != null) {
+					alertPres.Evento_Medico__r = new Evento_medico__c(Nro_de_Evento_Medico_SS__c = reintegroWS.em_em_id);
+				}
+				alertasToUpsert.add(alertPres);
+			}
+		}
+		if(reintegroWS.link_rein != null) {
+			attachPDF(reintegroWS);
+		}
+		String msg = '';
+		Boolean hasError = false;
+		Database.SaveResult resReintegro = Database.update(caseFromSF);
+		if(!resReintegro.isSuccess()){
+			for(Database.Error err : resReintegro.getErrors()){
+				msg = msg + err.getMessage() + '\n';
+				hasError = hasError || !resReintegro.isSuccess();
+			}
+		}
+		List<Database.SaveResult> resPrestaciones = Database.update(prestacionesToUpsert);
+		for(Database.SaveResult res : resPrestaciones){
+			if(!res.isSuccess()){
+				for(Database.Error err : res.getErrors()){
+					msg = msg + err.getMessage() + '\n';
+					hasError = hasError || !res.isSuccess();
+				}
+			}
+		}
+		List<Database.UpsertResult> resAlertas = Database.upsert(alertasToUpsert,
+				Alerta__c.Fields.idalerta__c);
+		for(Database.UpsertResult res : resAlertas){
+			if(!res.isSuccess()){
+				for(Database.Error err : res.getErrors()){
+					msg = msg + err.getMessage() + '\n';
+					hasError = hasError || !res.isSuccess();
+				}
+			}
+		}
+		return new Response(hasError, hasError ? msg : 'Ok', hasError ? ERROR : SUCCESS);
+	}
+	private static Response validations () {
+		String strObjPrefix = String.valueOf(caseFromSF.OwnerId).substring(0, 3);
+		Boolean isUserInqueue = false;
+		if(strObjPrefix == Group.sObjectType.getDescribe().getKeyPrefix()){
+			Group cola = [SELECT Id FROM Group WHERE Type = 'Queue' AND Id = :caseFromSF.OwnerId];
+			if (cola != null) {
+				List<GroupMember> gms = [SELECT Id,UserOrGroupId FROM GroupMember WHERE GroupId = :cola.Id];
+				for(GroupMember gm : gms){
+					if(gm.UserOrGroupId == usuario.Id){
+						isUserInqueue = true;
+						break;
+					}
+				}
+			}
+		}
+		Boolean propietario = ADMIN_PROFILES.contains(usuario.Profile.Name) || (isUserInqueue ? isUserInqueue : caseFromSF.OwnerId == usuario.Id);
+		if (caseFromSF.Nivel_de_derivacion__c == null && !propietario) {
+			return new Response(true, System.Label.Alerta_NoAuth_UsuarioNoPropietario, WARNING);
+		}
+		if(!hasAttachments(caseFromSF.Id) && caseType == 'Reintegro') {
+			return new Response(false, System.Label.Alerta_NoEnviarSInAdjuntos, WARNING);
+		}else {
+			return new Response(false, 'ok', SUCCESS);
+		}
+	}
+	private static void sendFiles (String wsResponseId) {
+		List<String> idContentVersionList = new List<String>();
+		List<ContentDocumentLink> linksList = getContentDocumentLinks(caseFromSf.Id, '');
+		for (ContentDocumentLink cdl : linksList) {
+			idContentVersionList.add(cdl.ContentDocument.LatestPublishedVersionId);
+		}
+		List<ContentVersion> cvList = [SELECT Id FROM ContentVersion WHERE Id IN :idContentVersionList AND Enviado__c = false];
+		List<Id> docsList = new List<Id>();
+		for (ContentVersion cv : cvList) {
+			docsList.add(cv.Id);
+		}
+		System.enqueueJob(new ArchivosCargaQueueable(wsResponseId, caseType == 'Reintegro' ? caseType.toLowerCase() : 'autorizacion', userNick, docsList));
 	}
 	/** Utils */
 	private static List<ContentDocumentLink> getContentDocumentLinks (String caseId, String eventoMedicoId) {
@@ -446,7 +602,6 @@ public without sharing class CasoEnviarASSBtnCtrl {
 			CDLinksQuery += 'OR LinkedEntityId =: eventoMedicoId ';
 		}
 		CDLinksQuery += CDLinksQueryEmailCondition;
-		System.debug(CDLinksQuery);
 		List<ContentDocumentLink> contentDocsLinksFromQuery = new List<ContentDocumentLink>();
 		Database.QueryLocatorIterator iterator = Database.getQueryLocator(CDLinksQuery).iterator();
 		while (iterator .hasNext()) {
@@ -454,6 +609,86 @@ public without sharing class CasoEnviarASSBtnCtrl {
 			contentDocsLinksFromQuery.add(CDLink);
 		}
 		return contentDocsLinksFromQuery;
+	}
+	private static Case getCase (String caseId) {
+		String queryInit = 'SELECT Id, ' +
+								'Fecha__c, ' +
+								'Fecha_probable__c, ' +
+								'Delegacion__r.Codigo_de_delegacion__c, ' +
+								'Consultorio__r.Secuencia__c, ' +
+								'Account.Codigo_de_Afiliado__c, ' +
+								'Fecha_prescripcion__c, ' +
+								'Diagnostico__r.Codigo_del_Diagnostico__c, ' +
+								'Prestador__r.Codigo_de_efector__c, ' +
+								'Consultorio__r.Codigo_externo__c, ' +
+								'Observaciones__c, ' +
+								'Mail__c, ' +
+								'Otros_Mail__c, ' +
+								'Evento_Medico__r.Nro_de_Evento_Medico_SS__c, ' +
+								'AP_Material__c, ' +
+								'AP_Presupuesto__c, ' +
+								'Prescriptor__r.Codigo_de_efector__c, ' +
+								'Status, ' +
+								'Nro_AP__c, ' +
+								'Categorizacion_SS__c, ' +
+								'Nivel_de_derivacion__c, ' +
+								'Importe_presupuesto__c, ' +
+								'Cobro_indebido__c, ' +
+								'Efector_realizador__r.Codigo_de_efector__c, ' +
+								'Razon_social__c, ' +
+								'Lote__r.Id_lote_SS__c, ' +
+								'CUIT__c, ' +
+								'Importe_reintegro__c, ' +
+								'OwnerId, ' +
+								'Tipo_de_Comprobante__c, ' +
+								'Evento_Medico__c, ' +
+								'Codigo_reintegro_SS__c, ' +
+								'Orden_de_Compra__r.forma_de_Pago__c, ' +
+								'Orden_de_Compra__r.Estado_OC__c, ' +
+								'Evento_Medico__r.Estado__c, ' +
+								'Urgente__c';
+		String queryEnd = ' FROM Case WHERE Id = : caseId ';
+		String queryPrestacionesSubQuery = '(SELECT Id, ' +
+												'Cantidad__c, ' +
+												'Importe_total__c, ' +
+												'Importe_a_pagar__c, ' +
+												'Fecha_de_realizacion__c, ' +
+												'Contexto__c, ' +
+												'Pieza_dental__c, ' +
+												'Caras__c, ' +
+												'RecordTypeId, ' +
+												'Observaciones__c, ' +
+												'Alerta__c, ' +
+												'Medicamento__r.Codigo_medicamento__c, ' +
+												'Prestacion_odonto__r.Codigo__c, ' +
+												'Prestacional__r.Codigo__c, ' +
+												'Fecha_de_dispensa__c, ' +
+												'HD__c ' +
+											'FROM Prestaciones_de_reintegros__r)';
+		String finalQuery = queryInit;
+		if (caseType == 'Reintegro') {
+			finalQuery += ', ' + queryPrestacionesSubQuery;
+		}
+		finalQuery += queryEnd;
+		List<Case> casesFromQuery = new List<Case>();
+		System.debug(finalQuery);
+		Database.QueryLocatorIterator iterator = Database.getQueryLocator(finalQuery).iterator();
+		while (iterator .hasNext()) {
+			Case caseFromQuery = (Case) iterator.next();
+			casesFromQuery.add(caseFromQuery);
+		}
+		if (casesFromQuery.size() > 0) {return casesFromQuery[0];}
+		else {return null;}
+	}
+	private static User getUsuario () {
+		User userToReturn = [SELECT CommunityNickname,
+								Profile.Name,
+								UserRole.DeveloperName,
+								Codigo_delegacion__c
+							FROM User
+							WHERE Id = :UserInfo.getUserId()];
+		userNick = userToReturn.CommunityNickname != null ? userToReturn.CommunityNickname.toUpperCase() : null;
+		return userToReturn;
 	}
 	private static List<Prestacion__c> getPrestaciones (String caseId) {
 		return [SELECT Id,
@@ -474,6 +709,56 @@ public without sharing class CasoEnviarASSBtnCtrl {
 					Importe_plan_auditor__c
 				FROM Prestacion__c
 				WHERE Ap__c = :caseId];
+	}
+	private static void attachPDF(WSCaseEnviarASSGenericResponse.Reintegro reintegroWS) {
+		List<ContentDocumentLink> links = [SELECT LinkedEntityId,
+											ContentDocumentId,
+											ContentDocument.LatestPublishedVersionId,
+											ContentDocument.Title,
+											ShareType,
+											ContentDocument.FileType,
+											ContentDocument.FileExtension
+										FROM ContentDocumentLink
+										WHERE LinkedEntityId =: caseFromSF.Id
+											AND ContentDocument.Title =: reintegroWS.rei_id];
+		if (String.isBlank(reintegroWS.link_rein)) {
+			return;
+		}
+		if (!links.isEmpty()) {
+			ContentVersion version = buildPDF(reintegroWS.link_rein, reintegroWS.rei_id, links[0].ContentDocumentId);
+			insert version;
+		} else {
+			ContentVersion version = buildPDF(reintegroWS.link_rein, reintegroWS.rei_id, null);
+			insert version;
+			List<ContentVersion> versionsUpdated = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =: version.Id];
+			links.add(new ContentDocumentLink(
+				LinkedEntityId = caseFromSF.Id,
+				ShareType = 'V',
+				ContentDocumentId = versionsUpdated[0].ContentDocumentId
+			));
+			Database.SaveResult[] resultLinks = Database.insert(links, false);
+		}
+	}
+	private static ContentVersion buildPDF(String link, String idRein, String cdId){
+		ContentVersion version = new ContentVersion();
+		String formattedLink = link;
+		PageReference pdf = new PageReference(formattedLink);
+		Blob pdfBody;
+		if(cdId != null) {
+			version.ContentDocumentId = cdId;
+		}
+		version.PathOnClient = '/REIN_' + idRein + '.pdf';
+		version.origin = 'H';
+		version.Title = idRein;
+		try {
+			pdfBody = pdf.getContentAsPDF();
+		} catch (Exception e) {
+			pdfBody = Blob.valueOf('No se pudo generar el archivo pdf');
+			System.debug('WTF');
+			System.debug(e.getMessage());
+		}
+		version.VersionData = pdfBody;
+		return version;
 	}
 	public class Response Extends FrontResponse {
 		public Response(Boolean hasError, String message, String status) {

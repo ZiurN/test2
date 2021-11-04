@@ -1,4 +1,4 @@
-<aura:component controller="CaseReintegroEnviarASSBtnCtrl" implements="force:hasRecordId" access="global">
+<aura:component controller="CasoEnviarASSBtnCtrl" implements="force:hasRecordId" access="global">
 	<!-- External Resources -->
 	<ltng:require scripts="{!$Resource.LightningUtils}" />
 	<ltng:require styles="{!$Resource.multilineToast}" />
@@ -20,7 +20,7 @@
   		title="Enviar a SaludSoft"
 		label="Enviar a SaludSoft"
 		aura:id="disableEnviarAP" />
-	<aura:if isTrue="{! v.isLoading }">
+	<aura:if isTrue="{!v.isLoading}">
 		<lightning:spinner alternativeText="Loading" variant="brand"/>
 	</aura:if>
 	<lightning:overlayLibrary aura:id="overlayLib"/>

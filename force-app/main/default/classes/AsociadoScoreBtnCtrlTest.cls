@@ -4,8 +4,7 @@ public class AsociadoScoreBtnCtrlTest {
     static XHttpCalloutMock getResponseError;
 
     static {
-		WSCaseReintegroEnviarASSMock mock = new WSCaseReintegroEnviarASSMock();
-		
+
 		getResponseFound = new XHttpCalloutMock();
 		getResponseFound.buildResponse()
 			.withStatus('OK')

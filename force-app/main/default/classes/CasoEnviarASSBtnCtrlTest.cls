@@ -275,9 +275,12 @@ private class CasoEnviarASSBtnCtrlTest {
 			Test.startTest();
 			CasoEnviarASSBtnCtrl.Response responseToAssert = CasoEnviarASSBtnCtrl.sendCaseToSS(caso2.Id);
 			Test.stopTest();
+			String msg = 'El campo user insert es obligatorio.\n' + 'El campo chk material debe estar presente.\n';
+			msg += 'El campo chk presupuesto debe estar presente.\n' + 'El campo observaciones debe estar presente.\n';
+			msg += 'El campo contexto debe estar presente.\n' + 'El campo alerta debe estar presente.\n';
 			System.assert(responseToAssert.hasError, 'Deben haber errores');
 			System.assertEquals('error', responseToAssert.auraMessage.status, 'El estado debe ser error');
-			System.assertEquals('The given data was invalid.', responseToAssert.auraMessage.message, 'Mensaje debe indicar el error');
+			System.assertEquals(msg, responseToAssert.auraMessage.message, 'Mensaje debe indicar el error');
 		}
 		@isTest
 		private static void whenACaseHasAttachments_ReturnTrue () {
@@ -379,7 +382,7 @@ private class CasoEnviarASSBtnCtrlTest {
 			prestacion.Prestacional__c = nom.Id;
 			update prestacion;
 			Test.startTest();
-			CasoEnviarASSBtnCtrl.Response resp; // = CasoEnviarASSBtnCtrl.sendReintegroToSS(reintegro.Id);
+			CasoEnviarASSBtnCtrl.Response resp = CasoEnviarASSBtnCtrl.sendReintegroToSS(reintegro.Id);
 			Test.stopTest();
 			Case reintegroToAssert = [SELECT Codigo_reintegro_SS__c, Status, Existente_SS__c, Celula__c, Tiempo_SLA__c
 										FROM Case
@@ -400,47 +403,11 @@ private class CasoEnviarASSBtnCtrlTest {
 		private static void whenTheResponseIsInvalid_ShowTheErrorMsgFromWs () {
 			Test.setMock(HttpCalloutMock.class, getErrorReintegroResponse);
 			Test.startTest();
-			CasoEnviarASSBtnCtrl.Response resp; // = CasoEnviarASSBtnCtrl.sendReintegroToSS(reintegro.Id);
+			CasoEnviarASSBtnCtrl.Response resp = CasoEnviarASSBtnCtrl.sendReintegroToSS(reintegro.Id);
 			Test.stopTest();
 			String msg = 'El campo lote es obligatorio.\n' + 'El campo agencia codigo es obligatorio.\n';
 			System.assertEquals(true, resp.hasError, 'Debe haber un error');
 			System.assertEquals(msg, resp.auraMessage.message, 'El mensaje indicar que el cambio lote y agencia es obligatorio');
-		}
-		@isTest
-		private static void getCodigoFromMedicamento () {
-			System.debug(medicamentoRTId);
-			System.debug(odontologicaRTId);
-			System.debug(prestacionalRTId);
-			Medicamento__c medicamento = new Medicamento__c();
-			medicamento.Codigo_medicamento__c = '12345';
-			medicamento.Estado_Presentacion__c = 'A';
-			insert medicamento;
-			prestacion.RecordTypeId = medicamentoRTId;
-			prestacion.Medicamento__c = medicamento.Id;
-			update prestacion;
-			Test.startTest();
-			Prestacion_de_reintegro__c prestQuery = [SELECT Medicamento__r.Codigo_medicamento__c, RecordTypeId
-				FROM Prestacion_de_reintegro__c WHERE Id =: prestacion.Id];
-			String codigo;// = CaseReintegroEnviarASSBtnCtrl.getCodigoPrestacion(prestQuery);
-			Test.stopTest();
-			System.assertEquals('12345', codigo, 'El código debe ser 12345');
-		}
-		@isTest
-		private static void getCodigoFromNomencladorWhenRTIsOdontologica () {
-			Nomenclador_de_Prestacion__c nom = new Nomenclador_de_Prestacion__c();
-			nom.Codigo__c = '2222';
-			nom.Descripcion_tipo_nomenclador__c = 'ODONTOLOGICAS';
-			nom.Estado__c = 'A';
-			insert nom;
-			prestacion.RecordTypeId = odontologicaRTId;
-			prestacion.Prestacion_odonto__c = nom.Id;
-			update prestacion;
-			Test.startTest();
-			Prestacion_de_reintegro__c prestQuery = [SELECT Prestacion_odonto__r.Codigo__c, RecordTypeId
-				FROM Prestacion_de_reintegro__c WHERE Id =: prestacion.Id];
-			String codigo;// = CaseReintegroEnviarASSBtnCtrl.getCodigoPrestacion(prestQuery);
-			Test.stopTest();
-			System.assertEquals('2222', codigo, 'El código debe ser 2222');
 		}
 		@isTest
 		private static void whenAnEMHasNotAttachments_ShowErrorMessage () {
@@ -448,7 +415,7 @@ private class CasoEnviarASSBtnCtrlTest {
 			reintegro.RecordTypeId = XappiaHelper.getRecordType('Case', 'Reintegro').Id;
 			insert reintegro;
 			Test.startTest();
-			CasoEnviarASSBtnCtrl.Response resp; // = CasoEnviarASSBtnCtrl.sendReintegroToSS(reintegro.Id);
+			CasoEnviarASSBtnCtrl.Response resp = CasoEnviarASSBtnCtrl.sendReintegroToSS(reintegro.Id);
 			Test.stopTest();
 			System.assertEquals('No se puede enviar porque no tiene archivos adjuntos', resp.auraMessage.message, 'El mensaje debe indicar que no se puede enviar sin archivos adjuntos');
 		}

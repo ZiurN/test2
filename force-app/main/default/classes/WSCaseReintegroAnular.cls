@@ -22,9 +22,9 @@ public class WSCaseReintegroAnular  {
     } 
 
     public class Response extends WSResult {
-        public WSCaseReintegroEnviarASSResp result;
+        public WSCaseEnviarASSGenericResponse result;
         public override void processResponse(HttpResponse response) {
-            result = WSCaseReintegroEnviarASSResp.parse(response.getBody());
+            result = WSCaseEnviarASSGenericResponse.parse(response.getBody());
         }
 
         public override void processError(HttpResponse response) {

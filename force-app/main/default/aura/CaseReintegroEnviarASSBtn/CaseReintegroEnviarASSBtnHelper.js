@@ -13,25 +13,23 @@
 							$A.get('e.force:refreshView').fire();
 						}
 						else {
-							LightningUtils.showToast("Info", result.message);
+							LightningUtils.showToast("Info", result.auraMessage.message);
 							$A.get('e.force:refreshView').fire();
 						}
 					}
 					else {
-						LightningUtils.showToast("Error", result.message, {"type":"error"});
-                        component.set('v.isLoading', false);
+						LightningUtils.showToast("Error", result.auraMessage.message, {"type":result.auraMessage.status});
+						component.set('v.isLoading', false);
 					}
 				} else {
-					let errorMsg = errors[0]['message'] != undefined && errors[0]['message'] != null ? errors[0]['message'] : 'Contacte con un administrador'; 
-				    
-				    LightningUtils.showToast("Info", errorMsg , {"type":"error"});
-                }
+					let errorMsg = errors[0]['message'] != undefined && errors[0]['message'] != null ? errors[0]['message'] : 'Contacte con un administrador';
+					LightningUtils.showToast("Info", errorMsg , {"type":"error"});
+				}
 				component.set('v.isLoading', false);
 			},
 			{
-				idReintegro : idReintegro
+				caseToSend : idReintegro
 			}
 		);
-		
 	}
 })

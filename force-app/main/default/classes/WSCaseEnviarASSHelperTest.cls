@@ -15,10 +15,10 @@ public with sharing class WSCaseEnviarASSHelperTest {
                 .withStatus('OK')
                 .withStatusCode(200)
                 .withBody(WSCaseAPGenerarCentroMock.getFound(ap.Id))
-                .addForAddress(WSCasoEnviarASS.SERVICE_CONFIG.URL__c + '/v1/salud/autorizaciones');
+                .addForAddress(WSCaseEnviarASSHelper.SERVICE_CONFIG.URL__c + '/v1/salud/autorizaciones');
     }
     @IsTest
-    private static void whenTheWSIsConsume_APUpdated(){
+    private static void whenTheWSIsConsume_APUpdated() {
         Test.setMock(HttpCalloutMock.class, getResponseFound);
         String body = '{'+
 					'"fecha": "2019-05-05",'+
@@ -45,7 +45,7 @@ public with sharing class WSCaseEnviarASSHelperTest {
 					'}]'+
 				'}';
         Test.startTest();
-        WSCasoEnviarASS.Response responseToAssert = WSCasoEnviarASS.enviarCaso(body);
+        WSCaseEnviarASSHelper.Response responseToAssert = WSCaseEnviarASSHelper.enviarASS(body, 'autorizaciones', 'autorizaciones');
         Test.stopTest();
         System.assertEquals(false, responseToAssert.hasError);
         System.assertEquals(200, responseToAssert.response.getStatusCode());
