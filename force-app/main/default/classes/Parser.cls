@@ -652,22 +652,22 @@ public with sharing class Parser {
 					String formaPago = this.caso.Orden_de_Compra__r.Estado_OC__c == 'Desestimada' ? 'D'
 									: this.caso.Orden_de_Compra__r.forma_de_Pago__c;
 					System.debug(this.caso.Fecha__c);
-					autorizacion.fecha = getValueOf(this.caso.Fecha__c);
+					autorizacion.fecha = String.valueOf(this.caso.Fecha__c);
 					autorizacion.forma_pago = formaPago;
 					System.debug(this.caso.Fecha_probable__c);
-					autorizacion.fecha_prob = this.caso.Fecha_probable__c == null ? null : getValueOf(this.caso.Fecha_probable__c);
+					autorizacion.fecha_prob = this.caso.Fecha_probable__c == null ? '' : String.valueOf(this.caso.Fecha_probable__c);
 					autorizacion.agencia_codigo = this.caso.Delegacion__r.Codigo_de_delegacion__c;
 					autorizacion.user_insert = this.userNick;
 					autorizacion.codigo_afiliado = this.caso.Account.Codigo_de_Afiliado__c;
 					autorizacion.evento_medico_id = this.caso.Evento_Medico__r.Nro_de_Evento_Medico_SS__c;
 					System.debug(this.caso.Fecha_prescripcion__c);
-					autorizacion.fecha_pres = this.caso.Fecha_prescripcion__c == null ? null : getValueOf(this.caso.Fecha_prescripcion__c);
+					autorizacion.fecha_pres = this.caso.Fecha_prescripcion__c == null ? '' : String.valueOf(this.caso.Fecha_prescripcion__c);
 					autorizacion.codigo_diagnostico = this.caso.Diagnostico__r.Codigo_del_Diagnostico__c;
 					autorizacion.efectores_prestador = this.caso.Prescriptor__r.Codigo_de_efector__c;
 					autorizacion.prestador = this.caso.Prestador__r.Codigo_de_efector__c;
 					System.debug(this.caso.Consultorio__r.Secuencia__c);
 					autorizacion.consultorio = this.caso.Consultorio__r.Secuencia__c != null
-											? getValueOf(this.caso.Consultorio__r.Secuencia__c) : null;
+											? getValueOf(this.caso.Consultorio__r.Secuencia__c) : '';
 					autorizacion.observaciones = this.caso.Observaciones__c;
 					autorizacion.mail = this.caso.Mail__c;
 					autorizacion.otros_mail = this.caso.Otros_Mail__c;
@@ -686,15 +686,15 @@ public with sharing class Parser {
 					for (Prestacion__c prestacion : this.prestaciones) {
 						Prestaciones prestacionToSend = new Prestaciones();
 							prestacionToSend.importe_g_plan_aud = prestacion.Importe_plan_auditor__c != null
-														? getValueOf(prestacion.Importe_plan_auditor__c) : null;
+														? getValueOf(prestacion.Importe_plan_auditor__c) : '';
 							prestacionToSend.importe_cargo_al_socio_aud = prestacion.Importe_cargo_al_socio_auditor__c != null
-														? getValueOf(prestacion.Importe_cargo_al_socio_auditor__c) : null;
+														? getValueOf(prestacion.Importe_cargo_al_socio_auditor__c) : '';
 							prestacionToSend.importe_g_convenio_aud = prestacion.Importe_convenio_auditor__c != null
-														? getValueOf(prestacion.Importe_convenio_auditor__c) : null;
+														? getValueOf(prestacion.Importe_convenio_auditor__c) : '';
 							prestacionToSend.cantidad = Integer.valueOf(prestacion.Cantidad__c);
 							prestacionToSend.nom_prestacion_pdh = codigoPrestacion(prestacion);
 							prestacionToSend.tipo_prestacion = prestacion.Tipo__c;
-							prestacionToSend.observaciones = prestacion.Observaciones__c;
+							prestacionToSend.observaciones = prestacion.Observaciones__c == null ? '' : prestacion.Observaciones__c;
 							prestacionToSend.contexto = prestacion.Contexto__c;
 							prestacionToSend.alerta = prestacion.Alerta__c;
 							if(prestacion.Tipo__c == 'G') {
@@ -752,11 +752,11 @@ public with sharing class Parser {
 					reintegro.efector_realizador = this.caso.Efector_realizador__r.Codigo_de_efector__c;
 					reintegro.efector_prescriptor = this.caso.Prescriptor__r.Codigo_de_efector__c;
 					reintegro.fecha_prescripcion = this.caso.Fecha_prescripcion__c != null
-													? String.valueOf(this.caso.Fecha_prescripcion__c) : null;
+													? String.valueOf(this.caso.Fecha_prescripcion__c) : '';
 					reintegro.codigo_diagnostico = this.caso.Diagnostico__r.Codigo_del_Diagnostico__c;
 					reintegro.observaciones = this.caso.Observaciones__c;
 					reintegro.importe = this.caso.Importe_reintegro__c != null
-										? String.valueOf(this.caso.Importe_reintegro__c) : null;
+										? String.valueOf(this.caso.Importe_reintegro__c) : '';
 					reintegro.fecha_comprobante = null;
 					reintegro.numero_comprobante = null;
 					reintegro.tipo_comprobante = this.caso.Tipo_de_Comprobante__c;
@@ -766,7 +766,7 @@ public with sharing class Parser {
 					reintegro.agencia_codigo = this.caso.Delegacion__r.Codigo_de_delegacion__c;
 					reintegro.lote = this.caso.Lote__r.Id_lote_SS__c;
 					reintegro.fecha = this.caso.Fecha__c != null
-									? String.valueOf(this.caso.Fecha__c) : null;
+									? String.valueOf(this.caso.Fecha__c) : '';
 					if(this.caso.Codigo_reintegro_SS__c != null) {
 						reintegro.rein_id = this.caso.Codigo_reintegro_SS__c;
 					}
@@ -775,10 +775,10 @@ public with sharing class Parser {
 						String tipoPrestacion = getTypeCodeFromRT(prestacion);
 						String fecha;
 						if(tipoPrestacion == 'M') {
-							fecha = prestacion.Fecha_de_dispensa__c != null ? String.valueOf(prestacion.Fecha_de_dispensa__c) : null;
+							fecha = prestacion.Fecha_de_dispensa__c != null ? String.valueOf(prestacion.Fecha_de_dispensa__c) : '';
 						}
 						else {
-							fecha = prestacion.Fecha_de_realizacion__c != null ? String.valueOf(prestacion.Fecha_de_realizacion__c) : null;
+							fecha = prestacion.Fecha_de_realizacion__c != null ? String.valueOf(prestacion.Fecha_de_realizacion__c) : '';
 						}
 						Prestaciones prestacionToSend = new Prestaciones();
 							prestacionToSend.observaciones = prestacion.Observaciones__c;
@@ -788,9 +788,9 @@ public with sharing class Parser {
 							prestacionToSend.pieza_dental = prestacion.Pieza_dental__c;
 							prestacionToSend.honorarios = prestacion.HD__c;
 							prestacionToSend.importe_a_pagar = prestacion.Importe_a_pagar__c != null
-														? String.valueOf(prestacion.Importe_a_pagar__c) : null;
+														? String.valueOf(prestacion.Importe_a_pagar__c) : '';
 							prestacionToSend.importe_total = prestacion.Importe_total__c != null
-														? String.valueOf(prestacion.Importe_total__c) : null;
+														? String.valueOf(prestacion.Importe_total__c) : '';
 							prestacionToSend.tipo_prestacion = getTypeCodeFromRT(prestacion);
 							prestacionToSend.cantidad = Integer.valueOf(prestacion.Cantidad__c);
 							prestacionToSend.contexto = prestacion.Contexto__c;
@@ -815,8 +815,8 @@ public with sharing class Parser {
 				Archivos archivo = new Archivos();
 				archivo.datos = 'data:' + Utils.getTypeAndExtension(data.FileExtension) +
 								';base64,' + EncodingUtil.base64Encode(data.VersionData);
-				archivo.observaciones = null;
-				archivo.descripcion = data.Description;
+				archivo.observaciones = '';
+				archivo.descripcion = data.Description == null ? '' : data.Description;
 				archivo.nombre = title.contains('.' + data.FileExtension) ? title : title + '.' + data.FileExtension;
 				archivosToReturn.add(archivo);
 			}

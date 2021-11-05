@@ -39,7 +39,7 @@
 						$A.get('e.force:refreshView').fire();
 					}
 					else {
-						LightningUtils.showToast("Info", result.AuraMessage.message, {"type":result.AuraMessage.status});
+						LightningUtils.showToast("Info", result.auraMessage.message, {"type":result.auraMessage.status});
 						component.set('v.isLoading', false);
 					}
 				} else {

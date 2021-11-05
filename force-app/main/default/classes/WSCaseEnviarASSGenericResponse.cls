@@ -177,9 +177,9 @@ public class WSCaseEnviarASSGenericResponse {
 		/** Objecto Reintegro */
 			public class Reintegro {
 				public String lote {get;set;}
-				public Object lote_original {get;set;}
+				public String lote_original {get;set;}
 				public String rei_id {get;set;}
-				public Object orei_orei_id {get;set;}
+				public String orei_orei_id {get;set;}
 				public String fecha {get;set;}
 				public String del_os_codigo {get;set;}
 				public String afi_afi_id {get;set;}
@@ -215,13 +215,13 @@ public class WSCaseEnviarASSGenericResponse {
 										lote = parser.getText();
 									}
 									when 'lote_original' {
-										lote_original = parser.readValueAs(Object.class);
+										lote_original = parser.getText();
 									}
 									when 'rei_id' {
 										rei_id = parser.getText();
 									}
 									when 'orei_orei_id' {
-										orei_orei_id = parser.readValueAs(Object.class);
+										orei_orei_id = parser.getText();
 									}
 									when 'fecha' {
 										fecha = parser.getText();
