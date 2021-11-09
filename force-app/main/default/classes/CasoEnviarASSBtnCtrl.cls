@@ -671,7 +671,6 @@ public without sharing class CasoEnviarASSBtnCtrl {
 		}
 		finalQuery += queryEnd;
 		List<Case> casesFromQuery = new List<Case>();
-		System.debug(finalQuery);
 		Database.QueryLocatorIterator iterator = Database.getQueryLocator(finalQuery).iterator();
 		while (iterator .hasNext()) {
 			Case caseFromQuery = (Case) iterator.next();
@@ -754,7 +753,6 @@ public without sharing class CasoEnviarASSBtnCtrl {
 			pdfBody = pdf.getContentAsPDF();
 		} catch (Exception e) {
 			pdfBody = Blob.valueOf('No se pudo generar el archivo pdf');
-			System.debug('WTF');
 			System.debug(e.getMessage());
 		}
 		version.VersionData = pdfBody;

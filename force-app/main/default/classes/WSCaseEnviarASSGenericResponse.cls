@@ -88,7 +88,7 @@ public class WSCaseEnviarASSGenericResponse {
 			public String suc_empresa {get;set;}
 			public List<Notas> notas {get;set;}
 			public Boolean error {get;set;}
-			public Map<String, String[]> errors {get;set;}
+			public Errors errors {get;set;}
 			public String errorType {get; set;}
 			public Integer httpCode {get; set;}
 			public String message {get; set;}
@@ -97,7 +97,6 @@ public class WSCaseEnviarASSGenericResponse {
 			public Integer line {get; set;}
 			public Data(JSONParser parser) {
 				while (parser.nextToken() != System.JSONToken.END_OBJECT) {
-					System.debug(parser.getText());
 					if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
 						String text = parser.getText();
 						if (parser.nextToken() != System.JSONToken.VALUE_NULL) {
@@ -139,8 +138,16 @@ public class WSCaseEnviarASSGenericResponse {
 									error = parser.getBooleanValue();
 								}
 								when 'errors' {
-									Map<String, String[]> errMap = (Map<String, String[]>) parser.readValueAs(Map<String, String[]>.class);
-									errors = errMap;
+									try {
+										Map<String, String[]> errMap = (Map<String, String[]>) parser.readValueAs(Map<String, String[]>.class);
+										errors = new Errors(errMap);
+									} catch (JSONException err) {
+										String mgs = parser.getText();
+										System.debug(err.getMessage());
+										/** Por alguna razón, se 'salta' la propiedad message y la lee como el valor de errors */
+										errors = new Errors(parser);
+										errors.message = mgs;
+									}
 								}
 								when 'errorType' {
 									errorType = parser.getText();
@@ -174,6 +181,37 @@ public class WSCaseEnviarASSGenericResponse {
 				}
 			}
 		}
+		/** Objecto Errors */
+			public class Errors {
+				public String message {get;set{
+					this.message = value;
+					this.errors = new Map<String, String[]>{'message' => new String[] {value}};
+				}}
+				public Map<String, String[]> debug_message {get; set;}
+				public Map<String, String[]> errors {get;set;}
+				public Errors (System.JSONParser parser) {
+					while (parser.nextToken() != System.JSONToken.END_OBJECT) {
+						if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
+							String text = parser.getText();
+							if (parser.nextToken() != System.JSONToken.VALUE_NULL) {
+								switch on text {
+									when 'message' {
+										message = parser.getText();
+									}
+									when 'debug_message' {
+										Map<String, String[]> errMap = (Map<String, String[]>) parser.readValueAs(Map<String, String[]>.class);
+										debug_message = errMap;
+									}
+								}
+							}
+						}
+					}
+					errors = new Map<String, String[]>{'message' => new String[] {message}};
+				}
+				public Errors (Map<String, String[]> errors) {
+					this.errors = errors;
+				}
+			}
 		/** Objecto Reintegro */
 			public class Reintegro {
 				public String lote {get;set;}
@@ -294,6 +332,9 @@ public class WSCaseEnviarASSGenericResponse {
 									}
 									when 'prestaciones' {
 										prestaciones = arrayOfPrestaciones(parser);
+									}
+									when 'nivel' {
+										nivel = parser.getText();
 									}
 									when else {
 										System.debug(LoggingLevel.WARN, 'Reintegro consuming unrecognized property: '+text);
@@ -730,7 +771,6 @@ public class WSCaseEnviarASSGenericResponse {
 							error = parser.getBooleanValue();
 						}
 						when 'data' {
-							System.debug(parser.getCurrentToken());
 							if (parser.getCurrentToken() == System.JSONToken.START_ARRAY) {
 								data = arrayofDatas(parser);
 							} else if (parser.getCurrentToken() == System.JSONToken.START_OBJECT) {
@@ -820,7 +860,7 @@ public class WSCaseEnviarASSGenericResponse {
 		if (this.data[0].httpCode > 400 && this.data[0].httpCode <= 500) {
 			if (!String.isBlank(this.message) && this.error) {
 				message = this.message;
-			}else if (!String.isBlank(this.data[0].message) && this.data[0].errors.values().size() > 0) {
+			}else if (!String.isBlank(this.data[0].message) && this.data[0].errors.errors.values().size() > 0) {
 				message = processErrorMessages();
 			}
 			else if (!String.isBlank(this.data[0].message) && this.data[0].error) {
@@ -834,7 +874,7 @@ public class WSCaseEnviarASSGenericResponse {
 	}
 	private String processErrorMessages () {
 		String message = '';
-		List<List<String>> errorLists = new List<List<String>>(this.data[0].errors.values());
+		List<List<String>> errorLists = new List<List<String>>(this.data[0].errors.errors.values());
 			for (Integer i = 0; i < errorLists.size(); i++) {
 				String err = errorLists[i][0].replaceAll('\\w*\\.0\\.', '');
 				message += err + '\n';

@@ -651,21 +651,17 @@ public with sharing class Parser {
 					String chkPresupuesto = this.caso.AP_Presupuesto__c ? 'V' : 'F';
 					String formaPago = this.caso.Orden_de_Compra__r.Estado_OC__c == 'Desestimada' ? 'D'
 									: this.caso.Orden_de_Compra__r.forma_de_Pago__c;
-					System.debug(this.caso.Fecha__c);
 					autorizacion.fecha = String.valueOf(this.caso.Fecha__c);
 					autorizacion.forma_pago = formaPago;
-					System.debug(this.caso.Fecha_probable__c);
 					autorizacion.fecha_prob = this.caso.Fecha_probable__c == null ? '' : String.valueOf(this.caso.Fecha_probable__c);
 					autorizacion.agencia_codigo = this.caso.Delegacion__r.Codigo_de_delegacion__c;
 					autorizacion.user_insert = this.userNick;
 					autorizacion.codigo_afiliado = this.caso.Account.Codigo_de_Afiliado__c;
 					autorizacion.evento_medico_id = this.caso.Evento_Medico__r.Nro_de_Evento_Medico_SS__c;
-					System.debug(this.caso.Fecha_prescripcion__c);
 					autorizacion.fecha_pres = this.caso.Fecha_prescripcion__c == null ? '' : String.valueOf(this.caso.Fecha_prescripcion__c);
 					autorizacion.codigo_diagnostico = this.caso.Diagnostico__r.Codigo_del_Diagnostico__c;
 					autorizacion.efectores_prestador = this.caso.Prescriptor__r.Codigo_de_efector__c;
 					autorizacion.prestador = this.caso.Prestador__r.Codigo_de_efector__c;
-					System.debug(this.caso.Consultorio__r.Secuencia__c);
 					autorizacion.consultorio = this.caso.Consultorio__r.Secuencia__c != null
 											? getValueOf(this.caso.Consultorio__r.Secuencia__c) : '';
 					autorizacion.observaciones = this.caso.Observaciones__c;

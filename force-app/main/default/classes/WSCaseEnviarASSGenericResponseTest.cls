@@ -216,7 +216,7 @@ public class WSCaseEnviarASSGenericResponseTest {
 		WSCaseEnviarASSGenericResponse.Data data = obj.data[0];
 		System.assert(data.error, 'Debe haber un error');
 		System.assertEquals('exception', data.errorType, 'El error debe ser de tipo excepción');
-		Map<String, String[]> errors = data.errors;
+		Map<String, String[]> errors = data.errors.errors;
 		System.assertEquals('El campo familiar.0.nombres es obligatorio.', errors.get('familiar.0.nombres')[0], 'El mensaje debe indicar el error');
 	}
 	@isTest
@@ -454,7 +454,6 @@ public class WSCaseEnviarASSGenericResponseTest {
 	@isTest
 	static void testParseAPErrorResponse () {
 		String json = WSCaseAPGenerarCentroMock.getError();
-		System.debug(json);
 		WSCaseEnviarASSGenericResponse obj = WSCaseEnviarASSGenericResponse.parse(json);
 		System.assert(obj != null, 'No debe ser nulo');
 		System.assert(obj.data != null, 'No debe ser nulo');
@@ -618,5 +617,33 @@ public class WSCaseEnviarASSGenericResponseTest {
 		'}';
 		WSCaseEnviarASSGenericResponse r = WSCaseEnviarASSGenericResponse.parse(json);
 		System.assert(r != null, 'No debe ser nulo');
+	}
+	/** El cuerpo de la propiedad Errors cambia */
+	@isTest
+	static void testParseReintegroAltaError () {
+		String jsonError = '{' +
+							'"data": {' +
+							'"error": true,' +
+							'"errors": {' +
+								'"message": "ERROR AL DAR DE ALTA REINTEGRO . reintegro 636550 no tiene CBU y la modalidad de pago es transferencia",' +
+								'"debug_message": {' +
+								'"ERROR AL DAR DE ALTA REINTEGRO ORA-20002": [' +
+									'"El reintegro 636550 no tiene CBU y la modalidad de pago es transferencia",' +
+									'"ORA-06512: at LIBRERIA.LIB_ERROR, line 421",' +
+									'"ORA-06512: at LIBRERIA.LIB_ERROR, line 527",' +
+									'"ORA-06512: at SALUD.SA_REI_TRG3, line 50",' +
+									'"ORA-04088: error during execution of trigger \'SALUD.SA_REI_TRG3\'"' +
+								']' +
+								'}' +
+							'},' +
+							'"data": null,' +
+							'"httpCode": 400,' +
+							'"message": "No se pudo generar el reintegro."' +
+							'}' +
+						'}';
+		String errorMsg = 'ERROR AL DAR DE ALTA REINTEGRO . reintegro 636550 no tiene CBU y la modalidad de pago es transferencia\n';
+		WSCaseEnviarASSGenericResponse r = WSCaseEnviarASSGenericResponse.parse(jsonError);
+		System.assert(r != null, 'No debe ser nulo');
+		System.assertEquals(errorMsg, r.processMessage(), 'El mensaje de error debe ser claro y estar dentro del objeto');
 	}
 }

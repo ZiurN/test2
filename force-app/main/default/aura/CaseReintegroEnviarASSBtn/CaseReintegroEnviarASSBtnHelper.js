@@ -7,8 +7,8 @@
 			function(succeed, result, errors) {
 				if(succeed) {
 					if(!result.hasError){
-						if(result.message == 'ok') {
-							LightningUtils.showToast("Operacioón exitosa", "Carga de reintegro exitosa", {"type":"success"});
+						if(result.auraMessage.message == 'Ok') {
+							LightningUtils.showToast("Operación exitosa", "Carga de reintegro exitosa", {"type":"success"});
 							component.set('v.isLoading', false);
 							$A.get('e.force:refreshView').fire();
 						}
