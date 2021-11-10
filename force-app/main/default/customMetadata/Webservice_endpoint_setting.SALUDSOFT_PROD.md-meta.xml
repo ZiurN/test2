@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>SALUDSOFT.TEST</label>
+    <protected>false</protected>
+    <values>
+        <field>Client_Id__c</field>
+        <value xsi:type="xsd:string">201</value>
+    </values>
+    <values>
+        <field>Client_Secret__c</field>
+        <value xsi:type="xsd:string">xT0Y69tvNSKO5TOEldXPc9nd543h7ILhGTzrP5Ac</value>
+    </values>
+    <values>
+        <field>Is_Production__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Password__c</field>
+        <value xsi:type="xsd:string">AcaSaludXappia%262020</value>
+    </values>
+    <values>
+        <field>URL__c</field>
+        <value xsi:type="xsd:string">https://api.acasalud.com.ar/aca_salud/public</value>
+    </values>
+    <values>
+        <field>User__c</field>
+        <value xsi:type="xsd:string">XappiaIntegracion@acasalud.com.ar</value>
+    </values>
+</CustomMetadata>
