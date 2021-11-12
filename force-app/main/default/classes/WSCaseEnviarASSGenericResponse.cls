@@ -92,7 +92,6 @@ public class WSCaseEnviarASSGenericResponse {
 			public String errorType {get; set;}
 			public Integer httpCode {get; set;}
 			public String message {get; set;}
-			public List<String> debug_message {get; set;}
 			public String exception_text {get; set;}
 			public Integer line {get; set;}
 			public Data(JSONParser parser) {
@@ -155,10 +154,6 @@ public class WSCaseEnviarASSGenericResponse {
 								when 'httpCode' {
 									httpCode = parser.getIntegerValue();
 								}
-								when 'debug_message' {
-									List<String> debugList = (List<String>) parser.readValueAs(List<String>.class);
-									debug_message = debugList;
-								}
 								when 'exception' {
 									exception_text = parser.getText();
 								}
@@ -187,7 +182,6 @@ public class WSCaseEnviarASSGenericResponse {
 					this.message = value;
 					this.errors = new Map<String, String[]>{'message' => new String[] {value}};
 				}}
-				public Map<String, String[]> debug_message {get; set;}
 				public Map<String, String[]> errors {get;set;}
 				public Errors (System.JSONParser parser) {
 					while (parser.nextToken() != System.JSONToken.END_OBJECT) {
@@ -197,10 +191,6 @@ public class WSCaseEnviarASSGenericResponse {
 								switch on text {
 									when 'message' {
 										message = parser.getText();
-									}
-									when 'debug_message' {
-										Map<String, String[]> errMap = (Map<String, String[]>) parser.readValueAs(Map<String, String[]>.class);
-										debug_message = errMap;
 									}
 								}
 							}
