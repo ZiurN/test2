@@ -3,6 +3,7 @@ public with sharing class WSCaseEnviarASSHelper {
 	public static final Webservice_endpoint_setting__mdt SERVICE_CONFIG = ConfigUtils.getWebServiceConfig('SALUDSOFT.TEST');
 	public static Map<String,Webservice_endpoint__mdt> ENDPOINTS;
 	public static Response enviarASS (String body, String serviceType, String service) {
+		System.debug('BODY SOLICITUD: ');System.debug(body);
 		ENDPOINTS = ConfigUtils.getEndpointsByTipo(serviceType);
 		String url = SERVICE_CONFIG.URL__c + ENDPOINTS.get(service).Endpoint__c;
 		RestWS ws = new RestWS(url, 'POST', null, body);
@@ -16,9 +17,11 @@ public with sharing class WSCaseEnviarASSHelper {
 	public class Response extends WSResult {
 		public WSCaseEnviarASSGenericResponse result;
 		public override void processResponse(HttpResponse response) {
+			System.debug('BODY Respuesta: ');System.debug(response.getBody());
 			result = WSCaseEnviarASSGenericResponse.parse(response.getBody());
 		}
 		public override void processError(HttpResponse response) {
+			System.debug('BODY Respuesta: ');System.debug(response.getBody());
 			result = WSCaseEnviarASSGenericResponse.parse(response.getBody());
 			this.message = result.processMessage();
 		}

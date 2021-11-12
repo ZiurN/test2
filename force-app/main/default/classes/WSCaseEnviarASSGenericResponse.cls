@@ -393,6 +393,9 @@ public class WSCaseEnviarASSGenericResponse {
 				public String celula {get;set;}
 				public String sla {get;set;}
 				public String estado_em {get;set;}
+				public String aca_nro_sf {get;set;}
+				public String imp_presu {get;set;}
+				public String ap_anestesia {get;set;}
 				public List<Prestaciones> prestaciones {get;set;}
 				public Ap(JSONParser parser) {
 					while (parser.nextToken() != System.JSONToken.END_OBJECT) {
@@ -537,6 +540,15 @@ public class WSCaseEnviarASSGenericResponse {
 									}
 									when 'prestaciones' {
 										prestaciones = arrayOfPrestaciones(parser);
+									}
+									when 'aca_nro_sf' {
+										aca_nro_sf = parser.getText();
+									}
+									when 'imp_presu' {
+										imp_presu = parser.getText();
+									}
+									when 'ap_anestesia' {
+										ap_anestesia = parser.getText();
 									}
 									when else {
 										System.debug(LoggingLevel.WARN, 'Ap consuming unrecognized property: '+text);
