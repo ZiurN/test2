@@ -152,14 +152,14 @@ private class ContentDocumentLinkTriggerTest {
 		System.assertEquals(System.Label.Alerta_ArchivoDeOportunidad, result.getErrors()[0].getMessage() , 'El errro debe indicar que el archivo es de oportundades');
 	}
 	@isTest
-	private static void avoidDeleteAFileAlreadySendedToSSInSalesCases() {
+	private static void avoidDeleteAFileAlreadySendedToSSInSalesCases () {
 		String uniqueUserName = 'standarduser' + DateTime.now().getTime() + '@testorg.com';
         Profile perfil = [SELECT Id FROM Profile WHERE Name='Front'];
         User front = new User(Alias = 'standt', Email='standarduser@testorg.com',
             EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US',
             LocaleSidKey='en_US', ProfileId = perfil.Id, TimeZoneSidKey='America/Los_Angeles',
             UserName=uniqueUserName);
-		Case aCase = Build.anCaseSolicitudDatosParticulares().build();
+		Case aCase = Build.aCaseSolicitudDatosParticulares().build();
         aCase.Nro_de_solicitud_SS__c = '123456';
 		insert aCase;
         Database.DeleteResult result;
@@ -180,6 +180,93 @@ private class ContentDocumentLinkTriggerTest {
 			Test.stopTest();
 			System.assert(!result.isSuccess(), 'Debe ocurrir un error al tratar de guardar el cdLink');
 			System.assertEquals(System.Label.Alerta_ArchivoEnviadoASS,result.getErrors()[0].getMessage(), 'El error debe indicar que el archivo ya fue enviado a SS');
+		}
+	}
+	@isTest
+	private static void ifEmailToCase_ChangeContentDocOwnerAndContentDocLinkParent () {
+		Integer numberOfCases = [SELECT count () FROM Case];
+		System.assertEquals(0, numberOfCases, 'No deben haber casos');
+		List<User> platIntUsers = [SELECT Id FROM User WHERE isActive = true AND UserName LIKE 'automatedcase%'];
+		System.assertEquals(1, platIntUsers.size(), 'Debe haber un usuario para los casos Email-to-Case');
+		Case emailToCaseCase = Build.aCaseFromEmail().build();
+		ContentVersion cv;
+		ContentDocumentLink cDLink;
+		Group fromQueue = [SELECT Id FROM Group WHERE Type = 'Queue' AND Name = 'Front'];
+		System.runAs (platIntUsers[0]) {
+			insert emailToCaseCase;
+			emailToCaseCase.OwnerId = fromQueue.Id;
+			update emailToCaseCase;
+			EmailMessage email = new EmailMessage();
+			email.ParentId = emailToCaseCase.Id;
+			email.TextBody = 'Test message';
+			insert email;
+			cv = new ContentVersion();
+			cv.Title = 'Email-to-Case File';
+			cv.VersionData = Blob.valueOf('Email-to-Case File');
+			cv.PathOnClient = '/EmailToCaseFile';
+			cv.Enviado__c = false;
+			insert cv;
+			cv = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id];
+			cDLink = new ContentDocumentLink();
+			cDLink.ContentDocumentId = cv.ContentDocumentId;
+			cDLink.LinkedEntityId = email.Id;
+			insert cDLink;
+		}
+		emailToCaseCase = [SELECT OwnerId FROM Case WHERE id =: emailToCaseCase.Id];
+		System.assertEquals(fromQueue.Id, emailToCaseCase.OwnerId, 'El dueño del caso debe ser el usuario');
+		cv = [SELECT ContentDocumentId, OwnerId FROM ContentVersion WHERE Id = :cv.Id];
+		System.assertEquals(emailToCaseCase.OwnerId, cv.OwnerId, 'El dueño del CV debe ser el mismo dueño del caso');
+		List<ContentDocumentLink> cDLinks = [SELECT LinkedEntityId FROM ContentDocumentLink WHERE ContentDocumentId =: cv.ContentDocumentId];
+		System.assertEquals(2, cDLinks.size(), 'Debe haber dos CDLink');
+		for (ContentDocumentLink cDL: cDLinks) {
+			if (cDL.LinkedEntityId.getSObjectType().getDescribe().getName() == 'Case') {
+				System.assertEquals(emailToCaseCase.Id, cDL.LinkedEntityId, 'Un CDLink debe ser estar asociado al caso');
+			} else {
+				System.assertEquals('User', cDL.LinkedEntityId.getSObjectType().getDescribe().getName(), 'Un CDLink debe estar asociado al usuario');
+				System.assertEquals(fromQueue.Id, cDL.LinkedEntityId, 'Un CDLink debe estar asociado al caso');
+			}
+		}
+	}
+	@isTest
+	private static void ifNotEmailToCase_DoNothing () {
+		Integer numberOfCases = [SELECT count () FROM Case];
+		System.assertEquals(0, numberOfCases, 'No deben haber casos');
+		Account testAccount = Build.anAccountCuentapersonal().build();
+		insert testAccount;
+		Case emailToCaseCase;
+		ContentVersion cv;
+		ContentDocumentLink cDLink;
+		Group fromQueue = [SELECT Id FROM Group WHERE Type = 'Queue' AND Name = 'Front'];
+		List<GroupMember> fromUsers = [SELECT UserOrGroupId From GroupMember where GroupId =: fromQueue.Id];
+		System.runAs (new User(Id = fromUsers[0].UserOrGroupId)) {
+			emailToCaseCase = Build.aCaseAP().build();
+			emailToCaseCase.AccountId = testAccount.Id;
+			insert emailToCaseCase;
+			cv = new ContentVersion();
+			cv.Title = 'Email-to-Case File';
+			cv.VersionData = Blob.valueOf('Email-to-Case File');
+			cv.PathOnClient = '/EmailToCaseFile';
+			cv.Enviado__c = false;
+			insert cv;
+			cv = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id];
+			cDLink = new ContentDocumentLink();
+			cDLink.ContentDocumentId = cv.ContentDocumentId;
+			cDLink.LinkedEntityId = emailToCaseCase.Id;
+			insert cDLink;
+		}
+		emailToCaseCase = [SELECT OwnerId FROM Case WHERE id =: emailToCaseCase.Id];
+		System.assertEquals(fromUsers[0].UserOrGroupId, emailToCaseCase.OwnerId, 'El dueño del caso debe ser el usuario');
+		cv = [SELECT ContentDocumentId, OwnerId FROM ContentVersion WHERE Id = :cv.Id];
+		System.assertEquals(emailToCaseCase.OwnerId, cv.OwnerId, 'El dueño del CV debe ser el mismo dueño del caso');
+		List<ContentDocumentLink> cDLinks = [SELECT LinkedEntityId FROM ContentDocumentLink WHERE ContentDocumentId =: cv.ContentDocumentId];
+		System.assertEquals(2, cDLinks.size(), 'Debe haber dos CDLink');
+		for (ContentDocumentLink cDL: cDLinks) {
+			if (cDL.LinkedEntityId.getSObjectType().getDescribe().getName() == 'Case') {
+				System.assertEquals(emailToCaseCase.Id, cDL.LinkedEntityId, 'Un CDLink debe estar asociado al caso');
+			} else {
+				System.assertEquals('User', cDL.LinkedEntityId.getSObjectType().getDescribe().getName(), 'Un CDLink debe ser estar asociado al usuario');
+				System.assertEquals(fromUsers[0].UserOrGroupId, cDL.LinkedEntityId, 'Un CDLink debe estar asociado al usuario');
+			}
 		}
 	}
 }

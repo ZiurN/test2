@@ -248,4 +248,36 @@
         <shortDescription>PDFIngresoYDDJJ</shortDescription>
         <value>Avalian - Solicitud de ingreso y DDJJ completa.pdf</value>
     </labels>
+    <labels>
+        <fullName>Alerta_ArchivoDeOportunidad</fullName>
+        <categories>Alertas CDLink</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_ArchivoDeOportunidad</shortDescription>
+        <value>No se pueden eliminar archivos de oportunidades</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_ArchivoEnviadoASS</fullName>
+        <categories>Alertas CDLink</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_ArchivoEnviadoASS</shortDescription>
+        <value>No se pueden eliminar archivos si el caso ya fue enviado a Salud Soft</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_ArchivoMayor3MB</fullName>
+        <categories>Alertas CDLink</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_ArchivoMayor3MB</shortDescription>
+        <value>El tamaño del archivo no debe superar los 3MB</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_YaExisteArchivoMismoNombre</fullName>
+        <categories>Alertas CDLink</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_YaExisteArchivoMismoNombre</shortDescription>
+        <value>Ya existe un archivo, adjunto a este registro, con el mismo nombre</value>
+    </labels>
 </CustomLabels>
