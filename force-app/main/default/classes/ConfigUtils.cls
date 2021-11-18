@@ -53,9 +53,9 @@ public without sharing class ConfigUtils  {
 	}
 	public static AWS_settings__mdt getAWSConfig(String name) {
 		List<AWS_settings__mdt> result = [SELECT Name_Credential__c, Bucket__c, File_Directory__c, Region__c
-									FROM AWS_settings__mdt
-									WHERE DeveloperName = :name
-									LIMIT 1];
+											FROM AWS_settings__mdt
+											WHERE DeveloperName = :name
+											LIMIT 1];
 		if(!result.isEmpty()) {return result[0];}
 		return null;
 	}

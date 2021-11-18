@@ -722,7 +722,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 		@isTest
 		private static void SolicitudCasoDatosParticulares_sendWithCorrectDataAndType_P_ShouldUpdateCase() {
 			insert obraSocial;
-			Case casoDatosParticulares = Build.anCaseSolicitudDatosParticulares()
+			Case casoDatosParticulares = Build.aCaseSolicitudDatosParticulares()
 				.withFechaDeVigencia(Date.newInstance(2020, 01, 01))
 				.withFirstName('test')
 				.withLastName('test')
@@ -748,7 +748,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 		@isTest
 		private static void SolicitudCasoDatosParticulares_sendDPARTWithCorrectDataShouldUpdateCase() {
 			insert new List<SObject> {cuenta, obraSocial};
-			Case casoDatosParticulares = Build.anCaseSolicitudDatosParticulares()
+			Case casoDatosParticulares = Build.aCaseSolicitudDatosParticulares()
 				.withFechaDeVigencia(Date.newInstance(2020, 01, 01))
 				.withAccountId(cuenta.Id)
 				.withFirstName('test')
@@ -775,7 +775,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 		@isTest
 		private static void sendSolicitudCasoDatosParticularesDELEGWithCorrectDataShouldUpdateCase() {
 			insert new List<SObject> {obraSocial, delegacion, cuenta};
-			Case casoDatosParticulares = Build.anCaseSolicitudDatosParticulares()
+			Case casoDatosParticulares = Build.aCaseSolicitudDatosParticulares()
 				.withFechaDeVigencia(Date.newInstance(2020, 01, 01))
 				.withAccountId(cuenta.Id)
 				.withType('MODIF_DELEG')

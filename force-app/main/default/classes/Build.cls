@@ -721,6 +721,14 @@ global class Build {
 				obj.CUIL_del_CBU__c =  val;
 				return this;
 			}
+			public CaseBuilder withRecordType (String rTDeveloperName) {
+				obj.RecordTypeId = XappiaHelper.getRecordType('Case', rTDeveloperName).Id;
+				return this;
+			}
+			public CaseBuilder withOrigin (String value) {
+				obj.Origin = value;
+				return this;
+			}
 			public Case build() {
 				return obj;
 			}
@@ -731,11 +739,7 @@ global class Build {
 			val.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Solicitud_de_alta_familiar').Id;
 			val.withDerivaAportes(true)
 			.withAporte(5000)
-			.withBebeNacidoEnElSistema(true)
-			.withBebeSinDNI(true)
 			.withCuit('20414624416')
-			.withInformacionAlAsociado('Sin DNI')
-			.withInformacionCompleta(true)
 			.withCuitEmpleador('20434624726')
 			.withDiscapacidad(false)
 			.withDNI('41462441')

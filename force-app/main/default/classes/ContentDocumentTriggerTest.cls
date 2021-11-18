@@ -208,7 +208,7 @@ private class ContentDocumentTriggerTest {
             LocaleSidKey='en_US', ProfileId = perfil.Id, TimeZoneSidKey='America/Los_Angeles',
             UserName=uniqueUserName);
 
-		Case aCase = Build.anCaseSolicitudDatosParticulares().build();
+		Case aCase = Build.aCaseSolicitudDatosParticulares().build();
         aCase.Nro_de_solicitud_SS__c = '123456';
 		insert aCase;
         
