@@ -6,6 +6,9 @@
 public without sharing class ContentDocumentLinkTriggerHelper {
 	public static Boolean canDelete = false;
 	private static User usuario = [SELECT Id, Profile.Name FROM User WHERE Id = :UserInfo.getUserId()];
+	/** Para Email-to-Case */
+	private static Map<Id, List<ContentDocumentLink>> cDLinksByParentCaseId = new Map<Id, List<ContentDocumentLink>>();
+	private static List<ContentDocumentLink> newDocuments;
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Matias Molly.
 	@description	Método para validar que los archivos no se encuentren con nombres duplicados en casos, eventos médidos y
@@ -318,6 +321,60 @@ public without sharing class ContentDocumentLinkTriggerHelper {
 			}
 		}
     }
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
+	@description	Método para cambiar la entidad a la que se asocia el CDLink para que se asocie al caso en aquellos creados
+					vía Email-to-Case.
+	@param			newDocumentsFromTrigger - Lista de los documentos nuevos.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static void modifyLinkedEntityForEmailToCaseCases (List<ContentDocumentLink> newDocumentsFromTrigger) {
+		cDLinksByParentCaseId = new Map<Id, List<ContentDocumentLink>>();
+		newDocuments = newDocumentsFromTrigger;
+		setCDLinksToEdit(false);
+		if (!cDLinksByParentCaseId.isEmpty()) {
+			Map<Id,Case> casesById = new Map<Id, Case>([SELECT OwnerId FROM Case WHERE Id IN: cDLinksByParentCaseId.keySet()]);
+			for (Id caseId : casesById.keySet()) {
+				for (ContentDocumentLink cDLink : cDLinksByParentCaseId.get(caseId)) {
+					String sobjectType = cDLink.LinkedEntityId.getSObjectType().getDescribe().getName();
+					if (sobjectType == 'EmailMessage') {
+						cDLink.LinkedEntityId = caseId;
+					}
+				}
+			}
+		}
+	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
+	@description	
+	@param			newDocumentsFromTrigger - Lista de los documentos nuevos.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static void modifyParentIdFromCDocumentsForEmailToCaseCases (List<ContentDocumentLink> newDocumentsFromTrigger) {
+		cDLinksByParentCaseId = new Map<Id, List<ContentDocumentLink>>();
+		newDocuments = newDocumentsFromTrigger;
+		setCDLinksToEdit(true);
+		if (!cDLinksByParentCaseId.isEmpty()) {
+			Map<Id,Case> casesById = new Map<Id, Case>([SELECT OwnerId FROM Case WHERE Id IN: cDLinksByParentCaseId.keySet()]);
+			Set<Id> caseIdByContentDocumentId = new Set<Id>();
+			for (Id caseId : casesById.keySet()) {
+				for (ContentDocumentLink cDLink : cDLinksByParentCaseId.get(caseId)) {
+					caseIdByContentDocumentId.add(cDLink.contentDocumentId);
+				}
+			}
+			ContentWorkspace frontPGLibrary = [SELECT Id, DeveloperName FROM ContentWorkspace WHERE DeveloperName = 'Front_PG_Library'];
+			List<ContentDocument> cDocs = [SELECT ParentId FROM ContentDocument WHERE Id IN: caseIdByContentDocumentId];
+			List<ContentWorkspaceDoc> cwDocsToInsert =  new List<ContentWorkspaceDoc>();
+			for (ContentDocument cDoc : cDocs) {
+				cDoc.ParentId = frontPGLibrary.Id;
+				ContentWorkspaceDoc cwDoc = new ContentWorkspaceDoc(
+					ContentWorkspaceId = frontPGLibrary.Id,
+					ContentDocumentId = cDoc.Id
+				);
+				cwDocsToInsert.add(cwDoc);
+			}
+			insert cwDocsToInsert;
+			update cDocs;
+		}
+    }
 	/** Utils */
 	private static List<ContentDocumentLink> getContentDocumentLinks (Set<Id> LinkedEntityIds, Set<Id> ContentDocumentIds) {
 		return [SELECT Id,
@@ -351,5 +408,36 @@ public without sharing class ContentDocumentLinkTriggerHelper {
 		cDLinkToAdd.LinkedEntityId = linkedEntityId; // you can use objectId,GroupId etc
 		cDLinkToAdd.ShareType = 'I'; // Inferred permission, checkout description of ContentDocumentLink object for more details
 		cDLinkToAdd.Visibility = 'AllUsers';
+	}
+	private static void setCDLinksToEdit (Boolean isAfter) {
+		Map<Id, ContentDocumentLink> cDLinksFromEmailToCaseByLinkedEntityIds = new Map<Id, ContentDocumentLink>();
+		List<Id> cDocsIds = new List<Id>();
+		for (ContentDocumentLink cdl : newDocuments) {
+			cDocsIds.add(cdl.ContentDocumentId);
+		}
+		Map<Id, ContentDocument> cDocsToCheckById = new Map<Id, ContentDocument>([SELECT Owner.Alias FROM ContentDocument WHERE Id IN: cDocsIds]);
+		for (ContentDocumentLink cdl : newDocuments) {
+			String sobjectType = cdl.LinkedEntityId.getSObjectType().getDescribe().getName();
+			if (cDocsToCheckById.get(cdl.ContentDocumentId).Owner.Alias == 'platint' && sobjectType == 'EmailMessage' && !isAfter) {
+				cDLinksFromEmailToCaseByLinkedEntityIds.put(cdl.LinkedEntityId, cdl);
+			} else if (cDocsToCheckById.get(cdl.ContentDocumentId).Owner.Alias == 'platint' && sobjectType == 'Case' && isAfter) {
+				if (!cDLinksByParentCaseId.containsKey(cdl.LinkedEntityId)) {
+					cDLinksByParentCaseId.put(cdl.LinkedEntityId, new List<ContentDocumentLink>{cdl});
+				} else {
+					cDLinksByParentCaseId.get(cdl.LinkedEntityId).add(cdl);
+				}
+			}
+		}
+		if (!isAfter) {
+			List<EmailMessage> emails = [SELECT ParentId FROM EmailMessage WHERE Id IN: cDLinksFromEmailToCaseByLinkedEntityIds.keySet()];
+			for (EmailMessage email : emails) {
+				String sobjectType = email.ParentId.getSObjectType().getDescribe().getName();
+				if (sobjectType == 'Case' && !cDLinksByParentCaseId.containsKey(email.ParentId)) {
+					cDLinksByParentCaseId.put(email.ParentId, new List<ContentDocumentLink>{cDLinksFromEmailToCaseByLinkedEntityIds.get(email.Id)});
+				} else if (cDLinksByParentCaseId.containsKey(email.ParentId)) {
+					cDLinksByParentCaseId.get(email.ParentId).add(cDLinksFromEmailToCaseByLinkedEntityIds.get(email.Id));
+				}
+			}
+		}
 	}
 }

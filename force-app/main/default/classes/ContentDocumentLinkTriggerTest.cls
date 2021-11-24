@@ -1,4 +1,4 @@
-@isTest 
+@isTest
 private class ContentDocumentLinkTriggerTest {
 	private static XHttpCalloutMock serverMock;
 	private static String duplicateMessage = System.Label.Alerta_YaExisteArchivoMismoNombre;
@@ -191,12 +191,19 @@ private class ContentDocumentLinkTriggerTest {
 		Case emailToCaseCase = Build.aCaseFromEmail().build();
 		ContentVersion cv;
 		ContentDocumentLink cDLink;
-		Group fromQueue = [SELECT Id FROM Group WHERE Type = 'Queue' AND Name = 'Front'];
+		Group fromQueue = [SELECT Id FROM Group WHERE Type = 'Queue' AND Name = 'CDC'];
+		Account delegacion = new Account();
+		delegacion.RecordTypeId = XappiaHelper.getRecordType('Account', 'Delegacion').Id;
+		delegacion.Name = 'Test';
+		delegacion.Codigo_de_delegacion__c = '650078';
+		insert  delegacion;
 		System.runAs (platIntUsers[0]) {
+			Test.startTest();
 			insert emailToCaseCase;
 			emailToCaseCase.OwnerId = fromQueue.Id;
 			update emailToCaseCase;
 			EmailMessage email = new EmailMessage();
+			email.ToAddress = 'test@example.com';
 			email.ParentId = emailToCaseCase.Id;
 			email.TextBody = 'Test message';
 			insert email;
@@ -204,6 +211,8 @@ private class ContentDocumentLinkTriggerTest {
 			cv.Title = 'Email-to-Case File';
 			cv.VersionData = Blob.valueOf('Email-to-Case File');
 			cv.PathOnClient = '/EmailToCaseFile';
+			cv.FirstPublishLocationId = platIntUsers[0].Id;
+			cv.ContentLocation = 'S';
 			cv.Enviado__c = false;
 			insert cv;
 			cv = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id];
@@ -211,19 +220,24 @@ private class ContentDocumentLinkTriggerTest {
 			cDLink.ContentDocumentId = cv.ContentDocumentId;
 			cDLink.LinkedEntityId = email.Id;
 			insert cDLink;
+			Test.stopTest();
 		}
 		emailToCaseCase = [SELECT OwnerId FROM Case WHERE id =: emailToCaseCase.Id];
 		System.assertEquals(fromQueue.Id, emailToCaseCase.OwnerId, 'El dueño del caso debe ser el usuario');
-		cv = [SELECT ContentDocumentId, OwnerId FROM ContentVersion WHERE Id = :cv.Id];
-		System.assertEquals(emailToCaseCase.OwnerId, cv.OwnerId, 'El dueño del CV debe ser el mismo dueño del caso');
+		cv = [SELECT ContentDocumentId, OwnerId, ContentDocument.ParentId FROM ContentVersion WHERE Id = :cv.Id];
+		String libraryId = [SELECT Id FROM ContentWorkspace WHERE DeveloperName = 'Front_PG_Library'].Id;
+		System.assertEquals(libraryId, cv.ContentDocument.ParentId, 'El parent Id del CV debe ser la libreria de la cola');
 		List<ContentDocumentLink> cDLinks = [SELECT LinkedEntityId FROM ContentDocumentLink WHERE ContentDocumentId =: cv.ContentDocumentId];
-		System.assertEquals(2, cDLinks.size(), 'Debe haber dos CDLink');
+		System.assertEquals(3, cDLinks.size(), 'Debe haber tres CDLink');
 		for (ContentDocumentLink cDL: cDLinks) {
-			if (cDL.LinkedEntityId.getSObjectType().getDescribe().getName() == 'Case') {
+			String sObjectType = cDL.LinkedEntityId.getSObjectType().getDescribe().getName();
+			if (sObjectType == 'Case') {
 				System.assertEquals(emailToCaseCase.Id, cDL.LinkedEntityId, 'Un CDLink debe ser estar asociado al caso');
+			} else if (sObjectType == 'User') {
+				System.assertEquals(platIntUsers[0].Id, cDL.LinkedEntityId, 'Un CDLink debe estar asociado al usuario de integración');
 			} else {
-				System.assertEquals('User', cDL.LinkedEntityId.getSObjectType().getDescribe().getName(), 'Un CDLink debe estar asociado al usuario');
-				System.assertEquals(fromQueue.Id, cDL.LinkedEntityId, 'Un CDLink debe estar asociado al caso');
+				System.assertEquals('ContentWorkspace', sObjectType, 'Un CDLink debe estar asociado a la libreria');
+				System.assertEquals(libraryId, cDL.LinkedEntityId, 'Un CDLink debe estar asociado a la libreria');
 			}
 		}
 	}
