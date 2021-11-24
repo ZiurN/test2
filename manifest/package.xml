@@ -30,6 +30,8 @@
     </types>
     <types>
         <members>Permisos_MFA</members>
+        <members>Permisos_Adicionales_Informes_y_Tableros_Marketing</members>
+        <members>Permisos_Adicionales_Marketing</members>
         <name>PermissionSet</name>
     </types>
     <types>
