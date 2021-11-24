@@ -4,11 +4,11 @@
     <protected>false</protected>
     <values>
         <field>Client_Id__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">201</value>
     </values>
     <values>
         <field>Client_Secret__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">xT0Y69tvNSKO5TOEldXPc9nd543h7ILhGTzrP5Ac</value>
     </values>
     <values>
         <field>Is_Production__c</field>
@@ -16,7 +16,7 @@
     </values>
     <values>
         <field>Password__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">AcaSaludXappia%262020</value>
     </values>
     <values>
         <field>URL__c</field>
@@ -24,6 +24,6 @@
     </values>
     <values>
         <field>User__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">XappiaIntegracion@acasalud.com.ar</value>
     </values>
 </CustomMetadata>
