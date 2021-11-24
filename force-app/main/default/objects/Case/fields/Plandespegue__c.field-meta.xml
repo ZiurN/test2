@@ -12,6 +12,11 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
+                <fullName>AS100</fullName>
+                <default>false</default>
+                <label>AS100</label>
+            </value>
+            <value>
                 <fullName>AS200</fullName>
                 <default>false</default>
                 <label>AS200</label>

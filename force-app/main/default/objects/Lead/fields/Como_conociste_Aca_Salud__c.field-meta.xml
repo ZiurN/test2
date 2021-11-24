@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Como_conociste_Aca_Salud__c</fullName>
+    <externalId>false</externalId>
+    <label>¿Cómo conociste Avalian?</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Television</fullName>
+                <default>false</default>
+                <label>Televisión</label>
+            </value>
+            <value>
+                <fullName>Diario/Revista</fullName>
+                <default>false</default>
+                <label>Diario/Revista</label>
+            </value>
+            <value>
+                <fullName>Radio</fullName>
+                <default>false</default>
+                <label>Radio</label>
+            </value>
+            <value>
+                <fullName>Cartel en la calle/Ruta</fullName>
+                <default>false</default>
+                <label>Cartel en la calle/Ruta</label>
+            </value>
+            <value>
+                <fullName>Folleto, Promocion</fullName>
+                <default>false</default>
+                <label>Folleto, Promoción</label>
+            </value>
+            <value>
+                <fullName>Redes sociales</fullName>
+                <default>false</default>
+                <label>Redes sociales</label>
+            </value>
+            <value>
+                <fullName>Banner web</fullName>
+                <default>false</default>
+                <label>Banner web</label>
+            </value>
+            <value>
+                <fullName>Me lo recomendo un conocido</fullName>
+                <default>false</default>
+                <label>Me lo recomendó un conocido</label>
+            </value>
+            <value>
+                <fullName>Otro</fullName>
+                <default>false</default>
+                <label>Otro</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
