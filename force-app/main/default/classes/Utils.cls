@@ -1,4 +1,4 @@
-public class Utils {
+public without sharing class Utils {
 	public static String getTypeAndExtension(String extension) {
 		switch on extension {
 			when 'png' {
@@ -33,7 +33,7 @@ public class Utils {
 			}
 			when 'webp' {
 				return 'image/webp';
-			} 
+			}
 			when 'docx' {
 				return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 			}
@@ -370,7 +370,9 @@ public class Utils {
 	}
 	public static Boolean isEncargado () {
 		User usuario = [SELECT Id, Profile.Name, UserRole.DeveloperName FROM User WHERE Id =: UserInfo.getUserId()];
-		Boolean hasEncargadoRole = usuario.UserRole.DeveloperName?.toUpperCase().contains('ENCARGADO');
+		Boolean hasEncargadoRole = usuario.UserRole.DeveloperName?.toUpperCase().contains('ENCARGADO') != null
+										? usuario.UserRole.DeveloperName?.toUpperCase().contains('ENCARGADO')
+										: false;
 		return hasEncargadoRole;
 	}
 	public static String getStringAlphanumericOnly(String text) {
