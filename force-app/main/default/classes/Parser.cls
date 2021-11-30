@@ -41,6 +41,7 @@ public with sharing class Parser {
 		this.userNick = userNick;
 		this.files = files;
 		this.notas = notas;
+		this.integrantes = integrantes;
 		this.usuario = usuario;
 	}
 	public Parser (Case caso,
