@@ -66,11 +66,6 @@
 		let estado = component.get('v.caseSimpleRecord').Status;
 		let canRevertOrders = component.get('v.canRevertOrders');
 		console.log('canRevertOrders: ' + canRevertOrders);
-		if(canRevertOrders && estado == 'CA-----E') {
-			button.set('v.disabled', false);
-		}
-		else {
-			button.set('v.disabled', true);
-		}
+		button.set('v.disabled', !(canRevertOrders && estado == 'CA-----E'));
 	}
 })
