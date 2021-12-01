@@ -4,6 +4,7 @@ private class CaseAPRevertirOrdenCtrlTest {
 	private static XHttpCalloutMock getResponseError;
 	private static User usuarioFront;
 	private static User usuarioMesa;
+	private static User userEncargado;
 	private static CaseTeamRole caseRole;
 	private static Case caso;
 	private static Prestacion__c prestacion;
@@ -28,6 +29,15 @@ private class CaseAPRevertirOrdenCtrlTest {
 					LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
 					UserName=uniqueUserName + 'Mesa', ProfileId = pMesa.Id, UserRole = role);
 			insert usuarioMesa;
+			UserRole roleEncargado = [SELECT Id,Name, DeveloperName FROM UserRole WHERE DeveloperName = 'Encargado_Filial_Mar_del_Plata'];
+			userEncargado = new User(Alias = 'standtEn', Email='standarduser@testorg.com',
+				EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='es',
+				LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
+				UserName=uniqueUserName + 'EncargadoFilial', ProfileId = pFront.Id, UserRoleId = roleEncargado.Id
+			);
+			System.runAs(new User(Id = UserInfo.getUserId())) {
+				insert userEncargado;
+			}
 			List<Group> groupFront = [SELECT Id, Name FROM Group WHERE DeveloperName = 'Front'];
 			GroupMember groupMemberF = new GroupMember(groupId = groupFront[0].Id, UserOrGroupId = usuarioFront.Id);
 			insert groupMemberF;
@@ -216,8 +226,18 @@ private class CaseAPRevertirOrdenCtrlTest {
 	@isTest
 	private static void whenTheUserIsLeaderReturnTrue() {
 		Test.startTest();
-		Boolean resp = CaseAPRevertirOrdenCtrl.isLeader();
+		Boolean resp = CaseAPRevertirOrdenCtrl.canRevertOrders();
 		Test.stopTest();
+		System.assert(resp, 'La respuesta debe ser verdadera');
+	}
+	@isTest
+	private static void whenTheUserIsEncargadoReturnTrue() {
+		Boolean resp;
+		System.runAs(userEncargado) {
+			Test.startTest();
+			resp = CaseAPRevertirOrdenCtrl.canRevertOrders();
+			Test.stopTest();
+		}
 		System.assert(resp, 'La respuesta debe ser verdadera');
 	}
 	@isTest
@@ -225,7 +245,7 @@ private class CaseAPRevertirOrdenCtrlTest {
 		Boolean resp;
 		System.runAs(usuarioFront) {
 			Test.startTest();
-			resp = CaseAPRevertirOrdenCtrl.isLeader();
+			resp = CaseAPRevertirOrdenCtrl.canRevertOrders();
 			Test.stopTest();
 		}
 		System.assert(!resp, 'La respuesta debe ser falsa');
