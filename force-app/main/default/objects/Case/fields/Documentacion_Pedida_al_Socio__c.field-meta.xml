@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Documentacion_Pedida_al_Socio__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>JIRA DES-5052-SF-378. Campo utilizado para marcar el pedido de documentación efectuado al Asociados para casos de Solicitud de Baja</description>
+    <externalId>false</externalId>
+    <label>Documentacion Pedida al Socio</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
