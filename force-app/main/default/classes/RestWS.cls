@@ -1,12 +1,10 @@
-public class RestWS {			
+public class RestWS {
 	private String endpoint = '';
 	public WSParameter[] parameters;
 	public WSParameter bodyParameter;
 	public HttpRequest request;
-	
 	public Boolean hasError = false;
 	public String errorMessage = '';
-	
 	public RestWS(String endpoint, String method, WSParameter[] urlParameters, WSParameter bodyParameter) {
 		request = new HttpRequest();
 		request.setMethod(method);
@@ -15,20 +13,16 @@ public class RestWS {
 		this.endpoint = endpoint;
 		this.parameters = urlParameters;
 	}
-
 	public RestWS(String endpoint, String method, WSParameter[] urlParameters, String bodyParameter) {
 		this(endpoint, method, urlParameters, new WSParameter('body', bodyParameter, false, false));
 	}
-
 	public RestWS(String endpoint, String method, WSParameter[] urlParameters) {
 		this(endpoint, method, urlParameters, '');
 	}
-
 	private String getMissingParametersMessage() {
 		if (parameters == null && bodyParameter == null) {
 			return '';
 		}
-
 		WSParameter[] parametersToCheck = new WSParameter[]{};
 		if (parameters != null) {
 			parametersToCheck.addAll(parameters);
@@ -36,14 +30,12 @@ public class RestWS {
 		if (bodyParameter != null) {
 			parametersToCheck.add(bodyParameter);
 		}
-
 		String[] missingParms = new String[]{};
 		for (WSParameter parameter: parametersToCheck) {
 			if (parameter.isRequired && String.isBlank(parameter.value)) {
 				missingParms.add(parameter.name);
-			}			
+			}
 		}
-
 		if (missingParms.size() > 0) {
 			String message = String.format(
 					'Faltan parametros para realizar la operacion: {0} .',
@@ -53,8 +45,7 @@ public class RestWS {
 		} else {
 			return '';
 		}
-	}	
-
+	}
 	private String formatEndpoint() {
 		if (parameters == null || parameters.isEmpty()) {
 			return endpoint;
@@ -65,60 +56,46 @@ public class RestWS {
 		}
 		return String.format(endpoint, paramValues);
 	}
-	
 	private String getBody() {
-		
 		if (request.getMethod() == 'GET' || request.getMethod() == 'OPTIONS' || bodyParameter == null) {
 			return '';
 		}
-		
 		return bodyParameter.toString();
 	}
-
-	public WSResult invoke(WSResult result) {	
+	public WSResult invoke(WSResult result) {
 		result.request = request;
-		
 		if (hasError) {
 			result.hasError = true;
 			result.message = errorMessage;
 			return result;
 		}
-
-		String missingParamsMessage = getMissingParametersMessage();		
-		
+		String missingParamsMessage = getMissingParametersMessage();
 		if (String.isNotBlank(missingParamsMessage)) {
 			result.hasError = true;
 			result.message = missingParamsMessage;
 			return result;
-		}				
-		
+		}
 		request.setEndpoint(formatEndpoint());
 		String body = getBody();
 		if (String.isNotBlank(body)) {
 			request.setBody(body);
 		}
 		result.request = request;
-		
 		try {
 			HttpResponse response = new Http().send(request);
 			result.response = response;
-			
-			System.debug(LoggingLevel.DEBUG, response.getBody());
-			
 			result.hasError = response.getStatusCode() < 200 || response.getStatusCode() >= 300;
-			
-			if(!result.hasError) {				
+			if(!result.hasError) {
+				result.message = 'OK';
 				result.processResponse(response);
 			}
 			else{
 				result.processError(response);
 			}
-	
 		} catch(Exception ex) {
 			result.hasError = true;
 			result.message = ex.getMessage();
 		}
-		System.debug('This is Result: ' + result);	
 		return result;
 	}
 }
