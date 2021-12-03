@@ -6,7 +6,7 @@
 				helper.toggleToEnableButton(component);
 			}
 			else {
-				helper.isLeader(component)
+				helper.canCancelAPs(component)
 					.then(function(result) {
 						helper.toggleToEnableButton(component);
 				});
