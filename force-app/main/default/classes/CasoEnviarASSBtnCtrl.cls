@@ -109,7 +109,7 @@ public without sharing class CasoEnviarASSBtnCtrl {
 			return new Response(wsResp.hasError, wsResp.message, (wsResp.hasError ? ERROR : SUCCESS));
 		}
 		List<Response> tempResponses = new List<Response>();
-		for(WSCaseEnviarASSGenericResponse.Ap wsCaso : wsResp.result.data[0].ap) {
+		for(WSSSGenericResponse.Ap wsCaso : wsResp.result.data[0].ap) {
 			Response tempResponse;
 			if(wsCaso.nro_sf == caseFromSF.Id){
 				tempResponse = updateAPCase(wsCaso, segmentos);
@@ -135,7 +135,7 @@ public without sharing class CasoEnviarASSBtnCtrl {
 		}
 		return response;
 	}
-	private static Response updateAPCase (WSCaseEnviarASSGenericResponse.Ap ap, Segmentos__c[] segmentos) {
+	private static Response updateAPCase (WSSSGenericResponse.Ap ap, Segmentos__c[] segmentos) {
 		List<Prestacion__c> prestaciones = getPrestaciones (caseFromSF.Id);
 		Map<String,Prestacion__c> prestacionesMap = new Map<String,Prestacion__c>();
 		Map<String,Prestacion__c> medicamentosMap = new Map<String,Prestacion__c>();
@@ -179,7 +179,7 @@ public without sharing class CasoEnviarASSBtnCtrl {
 		Map<String, Nomenclador_de_Prestacion__c> nomencladoresToUpsert = new Map<String, Nomenclador_de_Prestacion__c>();
 		Map<String, Medicamento__c> medicamentosToUpsert = new Map<String, Medicamento__c>();
 		Map<String, Grupo_de_Prestaciones__c> gruposToUpsert = new Map<String, Grupo_de_Prestaciones__c>();
-		for(WSCaseEnviarASSGenericResponse.Prestaciones prestWS : ap.prestaciones){
+		for(WSSSGenericResponse.Prestaciones prestWS : ap.prestaciones){
 			Prestacion__c prestToUpdate;
 			switch on prestWS.tipo_prestacion{
 				when 'M'{
@@ -245,7 +245,7 @@ public without sharing class CasoEnviarASSBtnCtrl {
 			prestToUpdate.Importe_cargo_al_socio_auditor__c = prestWS.importe_cargo_al_socio_aud!= null
 														? Decimal.valueOf(prestWS.importe_cargo_al_socio_aud) : null;
 			prestacionesToUpdate.add(prestToUpdate);
-			for(WSCaseEnviarASSGenericResponse.Alertas alert : prestWS.alertas){
+			for(WSSSGenericResponse.Alertas alert : prestWS.alertas){
 				Alerta__c alertPres = new Alerta__c();
 				alertPres.Prestacion__r = new Prestacion__c(Prestacion_CA__c = prestWS.pca_id);
 				alertPres.Control__c = alert.control;
@@ -313,7 +313,7 @@ public without sharing class CasoEnviarASSBtnCtrl {
 		}
 		return new Response(hasError, hasError ? msg : 'Ok', hasError ? ERROR : SUCCESS);
 	}
-	private static Response createAPCase (WSCaseEnviarASSGenericResponse.Ap ap) {
+	private static Response createAPCase (WSSSGenericResponse.Ap ap) {
 		Map<String,Prestacion__c> prestacionesMap = new Map<String,Prestacion__c>();
 		Map<String,Prestacion__c> medicamentosMap = new Map<String,Prestacion__c>();
 		Map<String,Prestacion__c> grupoPresMap = new Map<String,Prestacion__c>();
@@ -362,7 +362,7 @@ public without sharing class CasoEnviarASSBtnCtrl {
 		Map<String, Nomenclador_de_Prestacion__c> nomencladoresToUpsert = new Map<String, Nomenclador_de_Prestacion__c>();
 		Map<String, Medicamento__c> medicamentosToUpsert = new Map<String, Medicamento__c>();
 		Map<String, Grupo_de_Prestaciones__c> gruposToUpsert = new Map<String, Grupo_de_Prestaciones__c>();
-		for(WSCaseEnviarASSGenericResponse.Prestaciones prestWS : ap.prestaciones){
+		for(WSSSGenericResponse.Prestaciones prestWS : ap.prestaciones){
 			Prestacion__c prestToUpdate = new Prestacion__c();
 			prestToUpdate.Cambio_automatico__c = true;
 			prestToUpdate.Cantidad__c = Decimal.valueOf(prestWS.cantidad);
@@ -413,7 +413,7 @@ public without sharing class CasoEnviarASSBtnCtrl {
 			prestToUpdate.Importe_cargo_al_socio_auditor__c = prestWS.importe_cargo_al_socio_aud!= null
 														? Decimal.valueOf(prestWS.importe_cargo_al_socio_aud) : null;
 			prestacionesToUpdate.add(prestToUpdate);
-			for(WSCaseEnviarASSGenericResponse.Alertas alert : prestWS.alertas){
+			for(WSSSGenericResponse.Alertas alert : prestWS.alertas){
 				Alerta__c alertPres = new Alerta__c();
 				alertPres.Prestacion__r = new Prestacion__c(Prestacion_CA__c = prestWS.pca_id);
 				alertPres.Control__c = alert.control;
@@ -462,7 +462,7 @@ public without sharing class CasoEnviarASSBtnCtrl {
 		}
 		return new Response(hasError, hasError ? msg : 'Ok', hasError ? ERROR : SUCCESS);
 	}
-	private static Response updateReintegro (WSCaseEnviarASSGenericResponse.Reintegro reintegroWS) {
+	private static Response updateReintegro (WSSSGenericResponse.Reintegro reintegroWS) {
 		String nivel = reintegroWS.nivel;
 		caseFromSF.Cambio_Manual__c = false;
 		caseFromSF.Nivel_de_derivacion__c = nivel == 'N1' ? 'Nivel 1'
@@ -476,7 +476,7 @@ public without sharing class CasoEnviarASSBtnCtrl {
 		caseFromSF.Status = Utils.translateStateReintegroToAP(reintegroWS.vda_drv_estado);
 		List<Prestacion_de_reintegro__c> prestacionesToUpsert = new List<Prestacion_de_reintegro__c>();
 		List<Alerta__c> alertasToUpsert = new List<Alerta__c>();
-		for(WSCaseEnviarASSGenericResponse.Prestaciones prestWS : reintegroWS.prestaciones) {
+		for(WSSSGenericResponse.Prestaciones prestWS : reintegroWS.prestaciones) {
 			Prestacion_de_reintegro__c pres = new Prestacion_de_reintegro__c();
 			pres.Id = prestWS.nro_sf;
 			pres.Caso__c = caseFromSF.Id;
@@ -491,7 +491,7 @@ public without sharing class CasoEnviarASSBtnCtrl {
 			pres.Importe_Reintegro_sys__c = prestWS.importe_rein_sys != null
 												? Decimal.valueOf(prestWS.importe_rein_sys) : null;
 			prestacionesToUpsert.add(pres);
-			for(WSCaseEnviarASSGenericResponse.Alertas alert : prestWS.alertas) {
+			for(WSSSGenericResponse.Alertas alert : prestWS.alertas) {
 				Alerta__c alertPres = new Alerta__c();
 				alertPres.Prestacion_de_reintegro__r = new Prestacion_de_reintegro__c(Id_Externo__c = prestWS.pca_id);
 				alertPres.Control__c = alert.control;
@@ -709,7 +709,7 @@ public without sharing class CasoEnviarASSBtnCtrl {
 				FROM Prestacion__c
 				WHERE Ap__c = :caseId];
 	}
-	private static void attachPDF(WSCaseEnviarASSGenericResponse.Reintegro reintegroWS) {
+	private static void attachPDF(WSSSGenericResponse.Reintegro reintegroWS) {
 		List<ContentDocumentLink> links = [SELECT LinkedEntityId,
 											ContentDocumentId,
 											ContentDocument.LatestPublishedVersionId,

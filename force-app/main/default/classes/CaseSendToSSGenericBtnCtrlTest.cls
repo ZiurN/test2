@@ -53,7 +53,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 		private static void bad_tryToSubmitInvalidCaseTypeShouldGetError() {
 			Case caso = new Case();
 			setInitialData(caso);
-			setMockResponse(SOLICITUD_DESPEGUE_URL, WSCaseEnviarASSGenericResponseTest.json(''), 200);
+			setMockResponse(SOLICITUD_DESPEGUE_URL, WSSSGenericResponseTest.json(''), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(caso.Id,false);
 			Test.stopTest();
@@ -100,7 +100,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialData(casoSolicitudDespeguesFT);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoSolicitudDespeguesFT.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_DESPEGUE_URL, WSCaseEnviarASSGenericResponseTest.jsonUpdate(nota.Id), 200);
+			setMockResponse(SOLICITUD_DESPEGUE_URL, WSSSGenericResponseTest.jsonUpdate(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudDespeguesFT.Id,false);
 			Test.stopTest();
@@ -128,7 +128,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialData(casoSolicitudDespeguesFT);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoSolicitudDespeguesFT.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_DESPEGUE_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(SOLICITUD_DESPEGUE_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudDespeguesFT.Id,false);
 			Test.stopTest();
@@ -160,7 +160,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialData(casoSolicitudDespeguesCT);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoSolicitudDespeguesCT.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_DESPEGUE_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(SOLICITUD_DESPEGUE_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudDespeguesCT.Id,false);
 			Test.stopTest();
@@ -197,7 +197,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 					.build()
 			};
 			insert integrantes;
-			setMockResponse(SOLICITUD_DESPEGUE_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(SOLICITUD_DESPEGUE_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudDespeguesTF.Id,false);
 			Test.stopTest();
@@ -224,7 +224,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialData(casoSolicitudDespeguesTF);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoSolicitudDespeguesTF.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_DESPEGUE_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(SOLICITUD_DESPEGUE_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudDespeguesTF.Id,false);
 			Test.stopTest();
@@ -248,7 +248,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 										.withType('TF')
 										.build();
 			setInitialData(casoSolicitudDespeguesTF);
-			setMockResponse(SOLICITUD_DESPEGUE_URL, WSCaseEnviarASSGenericResponseTest.jsonError, 422);
+			setMockResponse(SOLICITUD_DESPEGUE_URL, WSSSGenericResponseTest.jsonError, 422);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudDespeguesTF.Id,false);
 			Test.stopTest();
@@ -277,7 +277,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialDataWithEmail(casoSolicitudDespeguesCT);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoSolicitudDespeguesCT.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_DESPEGUE_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(SOLICITUD_DESPEGUE_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudDespeguesCT.Id,false);
 			Test.stopTest();
@@ -303,7 +303,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialData(casoSolicitudAltaFamiliar);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoSolicitudAltaFamiliar.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_ALTA_FAMILIAR_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(SOLICITUD_ALTA_FAMILIAR_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudAltaFamiliar.Id,false);
 			Test.stopTest();
@@ -328,7 +328,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialData(casoSolicitudAltaFamiliar);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoSolicitudAltaFamiliar.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_ALTA_FAMILIAR_URL, WSCaseEnviarASSGenericResponseTest.jsonUpdate(nota.Id), 200);
+			setMockResponse(SOLICITUD_ALTA_FAMILIAR_URL, WSSSGenericResponseTest.jsonUpdate(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudAltaFamiliar.Id,false);
 			Test.stopTest();
@@ -349,7 +349,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 					.withDelegacionId(delegacion.Id)
 					.build();
 			setInitialData(casoSolicitudAltaFamiliar);
-			setMockResponse(SOLICITUD_ALTA_FAMILIAR_URL, WSCaseEnviarASSGenericResponseTest.jsonError, 422);
+			setMockResponse(SOLICITUD_ALTA_FAMILIAR_URL, WSSSGenericResponseTest.jsonError, 422);
 			Test.setMock(HttpCalloutMock.class, getResponseFound);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudAltaFamiliar.Id,false);
@@ -370,7 +370,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialDataWithEmail(casoSolicitudAltaFamiliar);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoSolicitudAltaFamiliar.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_ALTA_FAMILIAR_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(SOLICITUD_ALTA_FAMILIAR_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudAltaFamiliar.Id,false);
 			Test.stopTest();
@@ -393,7 +393,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialData(casoSolicitudCambioSegmento);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoSolicitudCambioSegmento.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_CAMBIO_SEGMENTO_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(SOLICITUD_CAMBIO_SEGMENTO_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudCambioSegmento.Id,false);
 			Test.stopTest();
@@ -415,7 +415,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialData(casoSolicitudCambioSegmento);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoSolicitudCambioSegmento.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_CAMBIO_SEGMENTO_URL, WSCaseEnviarASSGenericResponseTest.jsonUpdate(nota.Id), 200);
+			setMockResponse(SOLICITUD_CAMBIO_SEGMENTO_URL, WSSSGenericResponseTest.jsonUpdate(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudCambioSegmento.Id,false);
 			Test.stopTest();
@@ -434,7 +434,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialDataWithEmail(casoSolicitudCambioSegmento);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoSolicitudCambioSegmento.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_CAMBIO_SEGMENTO_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(SOLICITUD_CAMBIO_SEGMENTO_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoSolicitudCambioSegmento.Id,false);
 			Test.stopTest();
@@ -461,7 +461,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 				.withCase(casoBajaParcial.Id)
 				.build();
 			insert integrante;
-			setMockResponse(SOLICITUD_BAJA_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id, integrante.Id), 200);
+			setMockResponse(SOLICITUD_BAJA_URL, WSSSGenericResponseTest.json(nota.Id, integrante.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoBajaParcial.Id,false);
 			Test.stopTest();
@@ -494,7 +494,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 				.withCase(casoBajaParcial.Id)
 				.build();
 			insert integrante;
-			setMockResponse(SOLICITUD_BAJA_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id, integrante.Id), 200);
+			setMockResponse(SOLICITUD_BAJA_URL, WSSSGenericResponseTest.json(nota.Id, integrante.Id), 200);
 			Test.startTest();
 			CaseSendToSSAttachmentQueueable queueable = new CaseSendToSSAttachmentQueueable(casoBajaParcial.Id);
 			queueable.execute(null);
@@ -509,7 +509,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialData(casoBajaTotal);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoBajaTotal.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_BAJA_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(SOLICITUD_BAJA_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoBajaTotal.Id,false);
 			Test.stopTest();
@@ -526,7 +526,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialData(casoBajaTotal);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoBajaTotal.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_BAJA_URL, WSCaseEnviarASSGenericResponseTest.jsonUpdate(nota.Id), 200);
+			setMockResponse(SOLICITUD_BAJA_URL, WSSSGenericResponseTest.jsonUpdate(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoBajaTotal.Id,false);
 			Test.stopTest();
@@ -547,7 +547,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 				.withCase(casoBajaParcial.Id)
 				.build();
 			insert integrante;
-			setMockResponse(SOLICITUD_BAJA_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id, integrante.Id), 200);
+			setMockResponse(SOLICITUD_BAJA_URL, WSSSGenericResponseTest.json(nota.Id, integrante.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoBajaParcial.Id,false);
 			Test.stopTest();
@@ -566,7 +566,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialData(caseIF);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = caseIF.Id);
 			insert nota;
-			setMockResponse(INTERFAZ_FINANCIERA_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(INTERFAZ_FINANCIERA_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(caseIF.Id,false);
 			Test.stopTest();
@@ -584,7 +584,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialData(caseIF);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = caseIF.Id);
 			insert nota;
-			setMockResponse(INTERFAZ_FINANCIERA_URL, WSCaseEnviarASSGenericResponseTest.jsonUpdate(nota.Id), 200);
+			setMockResponse(INTERFAZ_FINANCIERA_URL, WSSSGenericResponseTest.jsonUpdate(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(caseIF.Id,false);
 			Test.stopTest();
@@ -603,7 +603,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialData(caseIF);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = caseIF.Id);
 			insert nota;
-			setMockResponse(INTERFAZ_FINANCIERA_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(INTERFAZ_FINANCIERA_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(caseIF.Id,false);
 			Test.stopTest();
@@ -619,7 +619,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialDataWithEmail(caseIF);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = caseIF.Id);
 			insert nota;
-			setMockResponse(INTERFAZ_FINANCIERA_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(INTERFAZ_FINANCIERA_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(caseIF.Id,false);
 			Test.stopTest();
@@ -635,7 +635,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 											.withAccountId(cuenta.Id)
 											.build();
 			insert casoCredencial;
-			setMockResponse(SOLICITUD_NUEVA_CREDENCIAL_URL, WSCaseEnviarASSGenericResponseTest.jsonUpdate(''), 200);
+			setMockResponse(SOLICITUD_NUEVA_CREDENCIAL_URL, WSSSGenericResponseTest.jsonUpdate(''), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoCredencial.Id,false);
 			Test.stopTest();
@@ -648,7 +648,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 											.withAccountId(cuenta.Id)
 											.build();
 			insert casoCredencial;
-			setMockResponse(SOLICITUD_NUEVA_CREDENCIAL_URL, WSCaseEnviarASSGenericResponseTest.jsonError, 422);
+			setMockResponse(SOLICITUD_NUEVA_CREDENCIAL_URL, WSSSGenericResponseTest.jsonError, 422);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoCredencial.Id,false);
 			Test.stopTest();
@@ -669,7 +669,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialData(casoCambioPlan);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoCambioPlan.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_CAMBIO_PLAN_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(SOLICITUD_CAMBIO_PLAN_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoCambioPlan.Id,false);
 			Test.stopTest();
@@ -689,7 +689,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialData(casoCambioPlan);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoCambioPlan.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_CAMBIO_PLAN_URL, WSCaseEnviarASSGenericResponseTest.jsonUpdate(nota.Id), 200);
+			setMockResponse(SOLICITUD_CAMBIO_PLAN_URL, WSSSGenericResponseTest.jsonUpdate(nota.Id), 200);
 			Test.setMock(HttpCalloutMock.class, getResponseFound);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoCambioPlan.Id,false);
@@ -710,7 +710,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			setInitialDataWithEmail(casoCambioPlan);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoCambioPlan.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_CAMBIO_PLAN_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(SOLICITUD_CAMBIO_PLAN_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoCambioPlan.Id,false);
 			Test.stopTest();
@@ -737,7 +737,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			insert casoDatosParticulares;
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoDatosParticulares.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_DATOS_PARTICULARES_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(SOLICITUD_DATOS_PARTICULARES_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoDatosParticulares.Id,false);
 			Test.stopTest();
@@ -764,7 +764,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			insert casoDatosParticulares;
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoDatosParticulares.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_DATOS_PARTICULARES_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(SOLICITUD_DATOS_PARTICULARES_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoDatosParticulares.Id,false);
 			Test.stopTest();
@@ -784,7 +784,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 			insert casoDatosParticulares;
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoDatosParticulares.Id);
 			insert nota;
-			setMockResponse(SOLICITUD_DATOS_PARTICULARES_URL, WSCaseEnviarASSGenericResponseTest.json(nota.Id), 200);
+			setMockResponse(SOLICITUD_DATOS_PARTICULARES_URL, WSSSGenericResponseTest.json(nota.Id), 200);
 			Test.startTest();
 			CaseSendToSSGenericBtnCtrl.Response response = CaseSendToSSGenericBtnCtrl.sendToSS(casoDatosParticulares.Id,false);
 			Test.stopTest();

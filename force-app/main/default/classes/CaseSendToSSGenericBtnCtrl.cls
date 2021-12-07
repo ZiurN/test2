@@ -130,11 +130,11 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 		WSCaseEnviarASSHelper.Response solicitudBaja = (WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, SOLICITUDES_AFILIADOS, 'baja');
 		if(!solicitudBaja.hasError) {
 			if(!isAttachmentResend) {
-				List<WSCaseEnviarASSGenericResponse.Notas> notasToProcess = new List<WSCaseEnviarASSGenericResponse.Notas>();
+				List<WSSSGenericResponse.Notas> notasToProcess = new List<WSSSGenericResponse.Notas>();
 				if(caso.Type == 'Baja Parcial') {
 					List<Integrante_caso__c> integrantesToUpdate = new List<Integrante_caso__c>();
 					String caseNroSolicitud = '';
-					for(WSCaseEnviarASSGenericResponse.Data data : solicitudBaja.result.data) {
+					for(WSSSGenericResponse.Data data : solicitudBaja.result.data) {
 						integrantesToUpdate.add(new Integrante_caso__c(Id = data.sf_id, Numero_de_solicitud__c = data.solafi_id, Estado_solicitud__c = data.estado_sol));
 						caseNroSolicitud += data.solafi_id + ' - ';
 						notasToProcess.addAll(data.notas);
@@ -147,7 +147,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 					update caso;
 					update integrantesToUpdate;
 				} else {
-					WSCaseEnviarASSGenericResponse.Data data =  solicitudBaja.result.data.get(0);
+					WSSSGenericResponse.Data data =  solicitudBaja.result.data.get(0);
 					caso.Estado_de_solicitud__c = data.estado_sol;
 					caso.Nro_de_solicitud_SS__c = data.solafi_id;
 					notasToProcess.addAll(data.notas);
@@ -232,7 +232,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 										Boolean switchToInProgress,
 										Boolean isAttachmentResend) {
 		if(!isAttachmentResend) {
-			WSCaseEnviarASSGenericResponse.Data data =  resp.result.data.get(0);
+			WSSSGenericResponse.Data data =  resp.result.data.get(0);
 			caso.Estado_de_solicitud__c = data.estado_sol;
 			caso.Estado_DDJJ__c = data.estado_dj;
 			caso.Nro_de_solicitud_SS__c = data.solafi_id;
@@ -252,9 +252,9 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 		}
 		Database.SaveResult[] results = Database.update(filesToUpdate, false);
 	}
-	private static void processNotas (List<WSCaseEnviarASSGenericResponse.Notas> notasDeAuditoria) {
+	private static void processNotas (List<WSSSGenericResponse.Notas> notasDeAuditoria) {
 		List<Nota_de_Auditoria__c> notasAActualizar = new List<Nota_de_Auditoria__c>();
-		for(WSCaseEnviarASSGenericResponse.Notas nota : notasDeAuditoria) {
+		for(WSSSGenericResponse.Notas nota : notasDeAuditoria) {
 			notasAActualizar.add(new Nota_de_Auditoria__c(Id = nota.sf_id, Id_externo_solicitudes__c = nota.nota_id, Nota__c = nota.texto_nota));
 		}
 		Database.upsert(notasAActualizar, false);

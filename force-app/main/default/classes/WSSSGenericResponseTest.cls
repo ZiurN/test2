@@ -1,5 +1,5 @@
 @isTest
-public class WSCaseEnviarASSGenericResponseTest {
+public class WSSSGenericResponseTest {
 	public static String jsonError = '{'+
 			'\"data\": {'+
 				'\"error\": true,'+
@@ -84,15 +84,15 @@ public class WSCaseEnviarASSGenericResponseTest {
 	}
 	static testMethod void testParse() {
 		String json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
-		WSCaseEnviarASSGenericResponse.Meta objMeta = new WSCaseEnviarASSGenericResponse.Meta(System.JSON.createParser(json));
+		WSSSGenericResponse.Meta objMeta = new WSSSGenericResponse.Meta(System.JSON.createParser(json));
 		System.assert(objMeta != null, 'No debe ser nulo');
 		System.assert(objMeta.Allowed_includes == null, 'Debe ser nulo');
 		System.assert(objMeta.default_includes == null, 'Debe ser nulo');
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
-		WSCaseEnviarASSGenericResponse.Notas objNotas = new WSCaseEnviarASSGenericResponse.Notas(System.JSON.createParser(json));
+		WSSSGenericResponse.Notas objNotas = new WSSSGenericResponse.Notas(System.JSON.createParser(json));
 		System.assert(objNotas != null, 'No debe ser nulo');
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
-		WSCaseEnviarASSGenericResponse.Prestaciones objPrestaciones = new WSCaseEnviarASSGenericResponse.Prestaciones(System.JSON.createParser(json));
+		WSSSGenericResponse.Prestaciones objPrestaciones = new WSSSGenericResponse.Prestaciones(System.JSON.createParser(json));
 		System.assert(objPrestaciones != null, 'No debe ser nulo');
 		System.assert(objPrestaciones.apr_id == null, 'Debe ser nulo');
 		System.assert(objPrestaciones.estado_prestacion == null, 'Debe ser nulo');
@@ -117,11 +117,11 @@ public class WSCaseEnviarASSGenericResponseTest {
 		System.assert(objPrestaciones.importe_rein_aud == null, 'Debe ser nulo');
 		System.assert(objPrestaciones.alertas == null, 'Debe ser nulo');
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
-		WSCaseEnviarASSGenericResponse.Data objData = new WSCaseEnviarASSGenericResponse.Data(System.JSON.createParser(json));
+		WSSSGenericResponse.Data objData = new WSSSGenericResponse.Data(System.JSON.createParser(json));
 		System.assert(objData != null, 'No debe ser nulo');
 		System.assert(objData.ap == null, 'Debe ser nulo');
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
-		WSCaseEnviarASSGenericResponse.Alertas objAlertas = new WSCaseEnviarASSGenericResponse.Alertas(System.JSON.createParser(json));
+		WSSSGenericResponse.Alertas objAlertas = new WSSSGenericResponse.Alertas(System.JSON.createParser(json));
 		System.assert(objAlertas != null, 'No debe ser nulo');
 		System.assert(objAlertas.pca_pca_id == null, 'Debe ser nulo');
 		System.assert(objAlertas.aca_id == null, 'Debe ser nulo');
@@ -141,15 +141,15 @@ public class WSCaseEnviarASSGenericResponseTest {
 		System.assert(objAlertas.fecha_resolucion == null, 'Debe ser nulo');
 		System.assert(objAlertas.auditor_resuelve == null, 'Debe ser nulo');
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
-		WSCaseEnviarASSGenericResponse objWSCaseEnviarASSGenericResponse = new WSCaseEnviarASSGenericResponse(System.JSON.createParser(json));
-		System.assert(objWSCaseEnviarASSGenericResponse != null, 'No debe ser nulo');
-		System.assert(objWSCaseEnviarASSGenericResponse.error == null, 'Debe ser nulo');
-		System.assert(objWSCaseEnviarASSGenericResponse.data == null, 'Debe ser nulo');
-		System.assert(objWSCaseEnviarASSGenericResponse.httpCode == null, 'Debe ser nulo');
-		System.assert(objWSCaseEnviarASSGenericResponse.message == null, 'Debe ser nulo');
-		System.assert(objWSCaseEnviarASSGenericResponse.meta == null, 'Debe ser nulo');
+		WSSSGenericResponse objWSSSGenericResponse = new WSSSGenericResponse(System.JSON.createParser(json));
+		System.assert(objWSSSGenericResponse != null, 'No debe ser nulo');
+		System.assert(objWSSSGenericResponse.error == null, 'Debe ser nulo');
+		System.assert(objWSSSGenericResponse.data == null, 'Debe ser nulo');
+		System.assert(objWSSSGenericResponse.httpCode == null, 'Debe ser nulo');
+		System.assert(objWSSSGenericResponse.message == null, 'Debe ser nulo');
+		System.assert(objWSSSGenericResponse.meta == null, 'Debe ser nulo');
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
-		WSCaseEnviarASSGenericResponse.Ap objAp = new WSCaseEnviarASSGenericResponse.Ap(System.JSON.createParser(json));
+		WSSSGenericResponse.Ap objAp = new WSSSGenericResponse.Ap(System.JSON.createParser(json));
 		System.assert(objAp != null, 'No debe ser nulo');
 		System.assert(objAp.apr_id == null, 'Debe ser nulo');
 		System.assert(objAp.fecha == null, 'Debe ser nulo');
@@ -200,7 +200,7 @@ public class WSCaseEnviarASSGenericResponseTest {
 	}
 	@isTest
 	static void testParseSolicitudResponse () {
-		WSCaseEnviarASSGenericResponse obj = WSCaseEnviarASSGenericResponse.parse(json('someId'));
+		WSSSGenericResponse obj = WSSSGenericResponse.parse(json('someId'));
 		System.assert(obj != null, 'No debe ser nulo');
 		System.assert(!obj.error, 'No deben haber errores');
 		System.assertEquals(200, obj.httpCode, 'El código debe ser 200');
@@ -209,11 +209,11 @@ public class WSCaseEnviarASSGenericResponseTest {
 	}
 	@isTest
 	static void testParseSolicitudErrorResponse () {
-		WSCaseEnviarASSGenericResponse obj = WSCaseEnviarASSGenericResponse.parse(jsonError);
+		WSSSGenericResponse obj = WSSSGenericResponse.parse(jsonError);
 		System.assert(obj != null, 'No debe ser nulo');
 		System.assert(obj.data != null, 'No debe ser nulo');
 		System.assertEquals(1, obj.data.size(), 'Debe haber un objeto Data');
-		WSCaseEnviarASSGenericResponse.Data data = obj.data[0];
+		WSSSGenericResponse.Data data = obj.data[0];
 		System.assert(data.error, 'Debe haber un error');
 		System.assertEquals('exception', data.errorType, 'El error debe ser de tipo excepción');
 		Map<String, String[]> errors = data.errors.errors;
@@ -447,18 +447,18 @@ public class WSCaseEnviarASSGenericResponseTest {
 				'\"default_includes\": []'+
 			'}'+
 		'}';
-		WSCaseEnviarASSGenericResponse obj = WSCaseEnviarASSGenericResponse.parse(json);
+		WSSSGenericResponse obj = WSSSGenericResponse.parse(json);
 		System.assert(obj != null, 'No debe ser nulo');
 		System.assert(obj.data[0].ap != null, 'No debe ser nulo');
 	}
 	@isTest
 	static void testParseAPErrorResponse () {
 		String json = WSCaseAPGenerarCentroMock.getError();
-		WSCaseEnviarASSGenericResponse obj = WSCaseEnviarASSGenericResponse.parse(json);
+		WSSSGenericResponse obj = WSSSGenericResponse.parse(json);
 		System.assert(obj != null, 'No debe ser nulo');
 		System.assert(obj.data != null, 'No debe ser nulo');
 		System.assertEquals(1, obj.data.size(), 'Debe haber un objeto Data');
-		WSCaseEnviarASSGenericResponse.Data data = obj.data[0];
+		WSSSGenericResponse.Data data = obj.data[0];
 		System.assert(data.error, 'Debe haber error');
 		System.assertEquals('exception', data.errorType, 'El error debe ser de tipo excepción');
 		System.assertEquals(422, data.httpCode, 'El error debe ser de tipo excepción');
@@ -615,7 +615,7 @@ public class WSCaseEnviarASSGenericResponseTest {
 			'\"default_includes\": []'+
 			'}'+
 		'}';
-		WSCaseEnviarASSGenericResponse r = WSCaseEnviarASSGenericResponse.parse(json);
+		WSSSGenericResponse r = WSSSGenericResponse.parse(json);
 		System.assert(r != null, 'No debe ser nulo');
 	}
 	/** El cuerpo de la propiedad Errors cambia */
@@ -642,7 +642,7 @@ public class WSCaseEnviarASSGenericResponseTest {
 							'}' +
 						'}';
 		String errorMsg = 'ERROR AL DAR DE ALTA REINTEGRO . reintegro 636550 no tiene CBU y la modalidad de pago es transferencia\n';
-		WSCaseEnviarASSGenericResponse r = WSCaseEnviarASSGenericResponse.parse(jsonError);
+		WSSSGenericResponse r = WSSSGenericResponse.parse(jsonError);
 		System.assert(r != null, 'No debe ser nulo');
 		System.assertEquals(errorMsg, r.processMessage(), 'El mensaje de error debe ser claro y estar dentro del objeto');
 	}
@@ -650,7 +650,7 @@ public class WSCaseEnviarASSGenericResponseTest {
 	static void testParseAPError () {
 		String jsonError = '{"data":{"error":true,"errors":{"message":"No se pudo actualizar la autorizaci\u00f3n previa. Es presupuesto y la AP no tiene prestador","debug_message":""},"data":null,"httpCode":500,"message":"No se pudo actualizar la autorizaci\u00f3n previa. Es presupuesto y la AP no tiene prestador"}}';
 		String errorMsg = 'ERROR AL DAR DE ALTA REINTEGRO . reintegro 636550 no tiene CBU y la modalidad de pago es transferencia\n';
-		WSCaseEnviarASSGenericResponse r = WSCaseEnviarASSGenericResponse.parse(jsonError);
+		WSSSGenericResponse r = WSSSGenericResponse.parse(jsonError);
 		System.assert(r != null, 'No debe ser nulo');
 		System.assertEquals(errorMsg, r.processMessage(), 'El mensaje de error debe ser claro y estar dentro del objeto');
 	}
