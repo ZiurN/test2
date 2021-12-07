@@ -120,7 +120,9 @@ public without sharing class CaseAPRevertirOrdenCtrl  {
 		}
 	}
 	@AuraEnabled
-	public static Boolean isLeader() {
-		return Utils.isLeader();
+	public static Boolean canRevertOrders() {
+		Boolean isLider = Utils.isLeader();
+		Boolean isEncargado = Utils.isEncargado();
+		return isLider || isEncargado;
 	}
 }
