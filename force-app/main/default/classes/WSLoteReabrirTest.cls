@@ -40,7 +40,7 @@ private class WSLoteReabrirTest {
 		Test.stopTest();
 
 		System.assertEquals(false, resp.hasError);
-		System.assertEquals(null, resp.message);
+		System.assertEquals('Ok', resp.message);
 		System.assertEquals('A',resp.lote.data.lote.estado);
 		System.assertEquals(5397,resp.lote.data.lote.lr_id);
 		System.assertEquals('38855',resp.lote.data.lote.prei_id);

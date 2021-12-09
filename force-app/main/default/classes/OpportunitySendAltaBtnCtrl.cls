@@ -23,7 +23,7 @@ public without sharing class OpportunitySendAltaBtnCtrl {
                 Cotizacion_elegida__r.Plan_a_cotizar__c, Localidad_new__c, Localidad_new__r.Codigo_Postal__c, Localidad_new__r.Loc_Id__c, Owner.CommunityNickname,
                 Localidad_new__r.Organizador_lookup__c, Dpto__c, Telefono__c, Correo_Electronico__c, LeadSource, Edad__c, Tipo_de_Asociado__c,Name,Sin_cotizacion__c,
                 Apellido_INDCOR__c, Nombre_INDCORP__c,Cotizacion_elegida__r.Tipo_de_afiliado__c,Subestado_de_DDJJ__c,Cobertura_anterior__r.Codigo_de_obra_social__c,
-                Parentesco__c, CUIL_del_CBU__c,Activar_seleccionar_archivos__c,RecordType.DeveloperName,Asociado_ReferenteOpp__r.Afi_Id__c,
+                Parentesco__c, CUIL_del_CBU__c,Activar_seleccionar_archivos__c,RecordType.DeveloperName,Asociado_ReferenteOpp__r.Afi_Id__c, Asociado_ReferenteOpp__c,
                 (
                     SELECT Apellido__c, Nombre__c, Indicador_de_aporte__c, Tipo_de_relacion_con_titular__c, Nacionalidad__c, Integrante_tipo_asociado__c,
                         Fecha_de_Nacimiento__c, Sexo__c, Estado_Civil__c, Nro_de_documento__c, Tipo_de_Documento__c, Aportes__c, Edad__c,

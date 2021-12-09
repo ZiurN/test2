@@ -42,7 +42,7 @@ private class WSCaseAPEmitirOrdenTest {
         Test.stopTest();
 
         System.assertEquals(false,resp.hasError);
-        System.assertEquals(null,resp.message);
+        System.assertEquals('Ok', resp.message);
         System.assertEquals('1014009998',resp.result.data.ap.apr_id);
         System.assertEquals('2020-02-02 00:00:00',resp.result.data.ap.fecha);
         System.assertEquals('CX--MOST',resp.result.data.ap.conexion);

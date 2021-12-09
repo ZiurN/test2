@@ -38,7 +38,7 @@ private class WSLotePasajeAIFTest {
 		Test.stopTest();
 
 		System.assertEquals(false, resp.hasError);
-		System.assertEquals(null, resp.message);
+		System.assertEquals('Ok', resp.message);
 		System.assertEquals('F',resp.lote.data.lote.estado);
 		System.assertEquals(5406,resp.lote.data.lote.lr_id);
 	}

@@ -91,6 +91,7 @@ public without Sharing class CaseAutorizarAPRechazadaBtnCtrl  {
 	private static Response validatePermissions(User usuario, List<Case> casos) {
 		//Boolean propietario = usuario.Profile.Name == 'Administrador del sistema' || caso.OwnerId == usuario.Id;
 		Boolean liderMesa = usuario.Profile.Name == 'Administrador del sistema' 
+							|| usuario.Profile.Name == 'System Administrator'
 							|| usuario.Profile.Name == 'Coordinador de Mesa de Ayuda';
 		
 		if(!casos[0].Caso_Rechazado__c) {

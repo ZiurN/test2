@@ -6,7 +6,7 @@ private class LocalidadTriggerTest {
 	static{
 		String uniqueUserName2 = 'organizador' + DateTime.now().getTime() + '@testorg.com';
 
-		Profile p = [SELECT Id FROM Profile WHERE Name='Administrador del sistema'];
+		Profile p = [SELECT Id FROM Profile WHERE Name = 'Administrador del sistema' OR Name = 'System Administrator'];
 		UserRole role = [SELECT Id,Name FROM UserRole WHERE Name = 'Administrador'];
 		userTest = new User(Alias = 'standt', Email='standarduser@testorg.com',
 				EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US',

@@ -253,6 +253,6 @@ private class OpportunityFileUploadCtrlTest {
         Test.stopTest();
 		
         System.assert(!resp.hasError);
-        System.assertEquals(resp.profile, 'Administrador del sistema');
+        System.assert(resp.profile == 'Administrador del sistema' || resp.profile == 'System Administrator');
     }
 }

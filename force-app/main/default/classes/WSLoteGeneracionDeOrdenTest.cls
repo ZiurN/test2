@@ -56,7 +56,7 @@ public class WSLoteGeneracionDeOrdenTest  {
 		Test.stopTest();
 
 		System.assertEquals(false, resp.hasError);
-		System.assertEquals(null, resp.message);
+		System.assertEquals('Ok', resp.message);
 		System.assertEquals(5402, resp.lote.data.lote.lr_id);
 		System.assertEquals('A', resp.lote.data.lote.estado);
 		System.assertEquals(1, resp.lote.data.lote.logs.size());
@@ -75,7 +75,7 @@ public class WSLoteGeneracionDeOrdenTest  {
 		Test.stopTest();
 
 		System.assertEquals(false, resp.hasError);
-		System.assertEquals(null, resp.message);
+		System.assertEquals('Ok', resp.message);
 		System.assertEquals(5404, resp.lote.data.lote.lr_id);
 		System.assertEquals('A', resp.lote.data.lote.estado);
 		System.assertEquals(null, resp.lote.data.lote.logs);
