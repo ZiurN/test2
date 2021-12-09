@@ -15,11 +15,12 @@
             <value>
                 <fullName>1</fullName>
                 <default>false</default>
-                <label>Abierto</label>
+                <label>Canal Corporativo</label>
             </value>
             <value>
                 <fullName>2</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>La segunda</label>
             </value>
             <value>

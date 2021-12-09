@@ -4,9 +4,9 @@
 		LightningUtils.callApex(
 			component,
 			"ifStatusIsOrdenEmitidaAndRecordTypeIsSeguimientoCancelCase",
-			function(succeed, result, errors) {
-				if(succeed) {
-					if(!result.hasError) {
+			function (succeed, result, errors) {
+				if (succeed) {
+					if (!result.hasError) {
 						if (result.message == 'ok') {
 							LightningUtils.showToast(
 							    "Caso Anulado",
@@ -17,14 +17,12 @@
 						} else {
 							LightningUtils.showToast("No se pudo anular: ", result.message);
 						}
-					}
-					else {
+					} else {
 						LightningUtils.showToast("Error", result.message, {"type":"error"});
 					}
 				} else {
 					LightningUtils.showToast("Error", 'Hubo un error en SF', {"type":"error"});
 				}
-
 				component.set('v.isLoading', false);
 			},
 			{
@@ -32,41 +30,32 @@
 			}
 		);
 	},
-
-	isLeader: function (component) {
-		
+	canCancelAPs: function (component) {
 		return new Promise(
-		  $A.getCallback(function(resolve, reject) {
-			let action = component.get("c.isLeader"); 
-			
-			action.setCallback(this, function(response) {
-				if(response.getState() === 'SUCCESS') {
-					component.set('v.isLeader', response.getReturnValue());
-					component.set('v.isLeaderVarSetted', true);
-
-					resolve(response.getReturnValue());
-				}
-				else {
-					resolve(false);
-				}
-				
-			});
-			$A.enqueueAction(action);
-		  })
+			$A.getCallback(function(resolve, reject) {
+				let action = component.get("c.canCancelAPs");
+				action.setCallback(this, function(response) {
+					if (response.getState() === 'SUCCESS') {
+						component.set('v.canCancelAPs', response.getReturnValue());
+						component.set('v.canCancelAPsVarSetted', true);
+						resolve(response.getReturnValue());
+					}
+					else {
+						resolve(false);
+					}
+				});
+				$A.enqueueAction(action);
+			})
 		);
-		
 	},
-
-	ableDisableButton: function(component) {
+	toggleToEnableButton: function (component) {
 		let button = component.find('button');
-		let isLeader = component.get('v.isLeader');
+		let canCancelAPs = component.get('v.canCancelAPs');
 		let estado = component.get('v.caseSimpleRecord').Status;
 		let rechazado = component.get('v.caseSimpleRecord').Caso_Rechazado__c;
-
-		if(isLeader) {
+		if (canCancelAPs) {
 			button.set('v.disabled', false);
-		}
-		else if (estado == 'CA-----E' || estado == 'CA-----N' || rechazado) {
+		} else if (estado == 'CA-----E' || estado == 'CA-----N' || rechazado) {
 			button.set('v.disabled', true);
 		} else {
 			button.set('v.disabled', false);
