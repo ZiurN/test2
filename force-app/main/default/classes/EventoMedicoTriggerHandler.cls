@@ -1,18 +1,23 @@
+/**-----------------------------------------------------------------------------------------------------------------------
+@author			Jeferson Ruiz.
+@description	Clase manejadora del desencadenador para el objeto Evento_medico__c
+@date			08/12/2021
+------------------------------------------------------------------------------------------------------------------------*/
 public with sharing class EventoMedicoTriggerHandler extends TriggerHandler {
 	List<Evento_medico__c> lNew = (List<Evento_medico__c>) Trigger.new;
 	List<Evento_medico__c> lOld = (List<Evento_medico__c>) Trigger.old;
 	Map<Id,Evento_medico__c> mNew = (Map<Id,Evento_medico__c>) Trigger.newMap;
 	Map<Id,Evento_medico__c> mOld = (Map<Id,Evento_medico__c>) Trigger.oldMap;
-	public override void beforeInsert(){
+	public override void beforeInsert() {
 		// Nothing
 	}
-	public override void beforeUpdate(){
+	public override void beforeUpdate() {
 		EventoMedicoTriggerHelper.validateFormaDeEgreso(mNew, mOld);
 	}
-	public override void beforeDelete(){
+	public override void beforeDelete() {
 		EventoMedicoTriggerHelper.validateDeletion(mOld);
 	}
-	public override void afterInsert(){
+	public override void afterInsert() {
 		Map<Id, List<Evento_medico__c>> userIdEMsMap = new Map<Id, List<Evento_medico__c>>();
 		for (Evento_medico__c em : lNew) {
 			if (userIdEMsMap.containsKey(em.OwnerId)) {
@@ -27,7 +32,7 @@ public with sharing class EventoMedicoTriggerHandler extends TriggerHandler {
 			EventoMedicoTriggerHelper.assignDelegacionFromUser(userIdEMsMap);
 		}
 	}
-	public override void afterUpdate(){
+	public override void afterUpdate() {
 		Id[] emsToSendToSS = new List<Id>();
 		for(Evento_medico__c em : lNew) {
 			Evento_medico__c oldEm = mOld.get(em.Id);
@@ -43,10 +48,10 @@ public with sharing class EventoMedicoTriggerHandler extends TriggerHandler {
 			EventoMedicoTriggerHelper.sendToSS(emsToSendToSS);
 		}
 	}
-	public override void afterDelete(){
+	public override void afterDelete() {
 		//Nothing
 	}
-	public override void afterUndelete(){
+	public override void afterUndelete() {
 		//Nothing
 	}
 }
