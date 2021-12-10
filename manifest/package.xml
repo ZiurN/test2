@@ -39,6 +39,12 @@
         <name>StaticResource</name>
     </types>
     <types>
+    <members>Case-Caso a tipificar CDC</members>
+    <members>Case-Caso a tipificar</members>
+    <members>Case-Solicitud de baja</members>
+    <name>Layout</name>
+</types>
+    <types>
         <members>Account</members>
         <members>Case</members>
         <members>Contact</members>
