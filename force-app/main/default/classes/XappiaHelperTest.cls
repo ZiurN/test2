@@ -84,11 +84,11 @@ private class XappiaHelperTest {
 	@IsTest
 	static void testGetRecordTypeShouldNotUseQuery() {
 		List<RecordType> rts = [SELECT id, DeveloperName, SobjectType FROM RecordType LIMIT 1];
-        System.debug(Limits.getQueries());
+		System.debug(Limits.getQueries());
 		if (rts.size() > 0) {
 			System.assertNotEquals(null, XappiaHelper.getRecordType(rts[0].sObjectType, rts[0].DeveloperName), 'Debe retornar info del RT');
-            XappiaHelper.getRecordType(rts[0].sObjectType, rts[0].DeveloperName);
-            System.assertEquals(1, Limits.getQueries(), 'Una query debio ser realizada');
+			XappiaHelper.getRecordType(rts[0].sObjectType, rts[0].DeveloperName);
+			System.assertEquals(1, Limits.getQueries(), 'Una query debio ser realizada');
 		}
 	}
 	@IsTest
@@ -154,5 +154,10 @@ private class XappiaHelperTest {
 	@isTest
 	static void testgetProfileIdByName () {
 		System.assertNotEquals(null, XappiaHelper.getProfileIdByName('System Administrator'), 'Debe retornar info del profile');
+	}
+	@isTest
+	static void testgetStaticResource () {
+		StaticResource resource = [SELECT Body FROM StaticResource WHERE Name = 'LightningUtils' LIMIT 1];
+		System.assertEquals(resource, XappiaHelper.getStaticResource('LightningUtils'), 'Debe retornar el recurso estático esperado');
 	}
 }
