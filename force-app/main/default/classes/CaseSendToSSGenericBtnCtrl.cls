@@ -30,7 +30,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 	private static String userNick = usuario.CommunityNickname != null ? usuario.CommunityNickname.toUpperCase() : null;
 	private static List<ContentVersion> files = new List<ContentVersion>();
 	private static Boolean isAttachmentResend;
-	private static Parser parser;
+	private static CasoEnviarASSParser parser;
 	private static String body;
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Jeferson Ruiz.
@@ -87,7 +87,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 	}
 	/** Senders */
 	private static Response sendSolicitudAlta (String recordId) {
-		parser = new Parser(caso, userNick, files, notas, usuario);
+		parser = new CasoEnviarASSParser(caso, userNick, files, notas, usuario);
 		String body = parser.parseAltaBody();
 		WSCaseEnviarASSHelper.Response resp = (WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, SOLICITUDES_AFILIADOS, 'alta-familiar');
 		if(!resp.hasError) {
@@ -100,7 +100,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 	}
 	private static Response sendSolicitudDespegue (String recordId) {
 		List<Integrante_caso__c> integrantes = getIntegrantes(recordId);
-		parser = new Parser(caso, userNick, files, notas, integrantes, usuario);
+		parser = new CasoEnviarASSParser(caso, userNick, files, notas, integrantes, usuario);
 		String body = parser.parseDespegueBody();
 		WSCaseEnviarASSHelper.Response resp = (WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, SOLICITUDES_AFILIADOS, 'despegue');
 		if(!resp.hasError) {
@@ -119,10 +119,10 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 				return new Response(true, System.Label.Alerta_BajaParcialSinIntegrantes, WARNING, '');
 			}
 			notas = getNotas(integrantesById.keySet());
-			parser = new Parser(caso, userNick, files, notas, integrantes, usuario);
+			parser = new CasoEnviarASSParser(caso, userNick, files, notas, integrantes, usuario);
 			body = parser.parseBajaParcialBody();
 		} else if(caso.Type == 'Baja Total') {
-			parser = new Parser(caso, userNick, files, notas, usuario);
+			parser = new CasoEnviarASSParser(caso, userNick, files, notas, usuario);
 			body = parser.parseBajaTotalBody();
 		} else {
 			return new Response(true, System.Label.Alerta_CasoBajaTipoInvalido, WARNING, '');
@@ -164,7 +164,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 		return new Response(solicitudBaja.hasError, (solicitudBaja.hasError) ? solicitudBaja.message : solicitudBaja.result.message, (solicitudBaja.hasError) ? ERROR : SUCCESS, body);
 	}
 	private static Response sendSolicitudCambioSegmento (String recordId) {
-		parser = new Parser(caso, userNick, files, notas, usuario);
+		parser = new CasoEnviarASSParser(caso, userNick, files, notas, usuario);
 		body = parser.parseCambioDeSegmentoBody();
 		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, SOLICITUDES_AFILIADOS, 'cambio-segmento');
 		if(!resp.hasError) {
@@ -176,7 +176,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, (resp.hasError) ? ERROR : SUCCESS, body);
 	}
 	private static Response sendInterfazFinanciera (String recordId) {
-		parser = new Parser(caso, userNick, files, notas, usuario);
+		parser = new CasoEnviarASSParser(caso, userNick, files, notas, usuario);
 		body = parser.parseInterfazFinanciera();
 		WSCaseEnviarASSHelper.Response resp = (WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, SOLICITUDES_AFILIADOS, 'interfaz-financiera');
 		if(!resp.hasError) {
@@ -206,7 +206,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, (resp.hasError) ? ERROR : SUCCESS, body);
 	}
 	private static Response sendSolicitudCambioPlan (String recordId) {
-		parser = new Parser(caso, userNick, files, notas, usuario);
+		parser = new CasoEnviarASSParser(caso, userNick, files, notas, usuario);
 		body = parser.parseCambioPlanBody();
 		WSCaseEnviarASSHelper.Response resp = (WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, SOLICITUDES_AFILIADOS, 'cambio-plan');
 		if(!resp.hasError) {
@@ -218,7 +218,7 @@ public without sharing class CaseSendToSSGenericBtnCtrl {
 		return new Response(resp.hasError, (resp.hasError) ? resp.message : resp.result.message, (resp.hasError) ? ERROR : SUCCESS, body);
 	}
 	private static Response sendSolicitudDatosParticulares () {
-		parser = new Parser(caso, userNick, usuario);
+		parser = new CasoEnviarASSParser(caso, userNick, usuario);
 		body = parser.parseDatosParticularesBody();
 		WSCaseEnviarASSHelper.Response resp = ( WSCaseEnviarASSHelper.Response) WSCaseEnviarASSHelper.enviarASS(body, SOLICITUDES_AFILIADOS, 'datos-particulares');
 		if(!resp.hasError) {

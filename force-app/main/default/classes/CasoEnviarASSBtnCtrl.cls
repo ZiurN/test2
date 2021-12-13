@@ -21,7 +21,7 @@ public without sharing class CasoEnviarASSBtnCtrl {
 	private static Case caseFromSF;
 	private static User usuario;
 	private static String userNick;
-	private static Parser parser;
+	private static CasoEnviarASSParser parser;
 	private static String body;
 	private static String caseType;
 	/**-----------------------------------------------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ public without sharing class CasoEnviarASSBtnCtrl {
 		if(validation.auraMessage.message != 'ok') {
 			return validation;
 		}
-		parser =  new Parser(caseFromSF, userNick);
+		parser =  new CasoEnviarASSParser(caseFromSF, userNick);
 		body = parser.parseReintegroBody();
 		WSCaseEnviarASSHelper.Response resp = WSCaseEnviarASSHelper.enviarASS(body, REINTEGROS, 'reintegros');
 		Response response;
@@ -101,7 +101,7 @@ public without sharing class CasoEnviarASSBtnCtrl {
 	private static Response sendAPToSS (Segmentos__c[] segmentos) {
 		Response response;
 		List<Prestacion__c> prestaciones = getPrestaciones(caseFromSF.Id);
-		parser = new Parser (caseFromSF, prestaciones, userNick);
+		parser = new CasoEnviarASSParser (caseFromSF, prestaciones, userNick);
 		body = parser.parseAutorizacionAPBody();
 		WSCaseEnviarASSHelper.Response wsResp = WSCaseEnviarASSHelper.enviarASS(body, AUTORIZACION, 'autorizaciones');
 		Boolean updateSucc = true;

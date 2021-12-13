@@ -4,7 +4,7 @@
 @date			26/10/2021
 ------------------------------------------------------------------------------------------------------------------------*/
 @SuppressWarnings('PMD.ExcessiveParameterList')
-public with sharing class Parser {
+public with sharing class CasoEnviarASSParser {
 	public Case caso {get; set;}
 	public String userNick {get; set;}
 	public List<ContentVersion> files {get; set;}
@@ -13,14 +13,14 @@ public with sharing class Parser {
 	public User usuario {get; set;}
 	public List<Prestacion__c> prestaciones {get; set;}
 	/** Constructors */
-	public Parser (Case caso,
+	public CasoEnviarASSParser (Case caso,
 					String userNick,
 					User usuario) {
 		this.caso = caso;
 		this.userNick = userNick;
 		this.usuario = usuario;
 	}
-	public Parser (Case caso,
+	public CasoEnviarASSParser (Case caso,
 					String userNick,
 					List<ContentVersion> files,
 					List<Nota_de_Auditoria__c> notas,
@@ -31,7 +31,7 @@ public with sharing class Parser {
 		this.notas = notas;
 		this.usuario = usuario;
 	}
-	public Parser (Case caso,
+	public CasoEnviarASSParser (Case caso,
 					String userNick,
 					List<ContentVersion> files,
 					List<Nota_de_Auditoria__c> notas,
@@ -41,17 +41,17 @@ public with sharing class Parser {
 		this.userNick = userNick;
 		this.files = files;
 		this.notas = notas;
-		//this.integrantes = integrantes; //Borrado temporalmente para reproducir error
+		this.integrantes = integrantes;
 		this.usuario = usuario;
 	}
-	public Parser (Case caso,
+	public CasoEnviarASSParser (Case caso,
 					List<Prestacion__c> prestaciones,
 					String userNick) {
 		this.caso = caso;
 		this.prestaciones = prestaciones;
 		this.userNick = userNick;
 	}
-	public Parser (Case caso, String userNick) {
+	public CasoEnviarASSParser (Case caso, String userNick) {
 		this.caso = caso;
 		this.userNick = userNick;
 	}

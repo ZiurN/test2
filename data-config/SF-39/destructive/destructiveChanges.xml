@@ -3,6 +3,17 @@
     <types>
 		<members>WSCaseEnviarASSGenericResponse</members>
 		<members>WSCaseEnviarASSGenericResponseTest</members>
+		<members>WSCasoEnviarASSTest</members>
+		<members>WSCaseAPGenerarCentroRespTest</members>
+		<members>CaseReintegroEnviarASSBtnCtrlTest</members>
+		<members>WSCaseReintegroEnviarASSRespTest</members>
+		<members>WSCaseReintegroEnviarASSMock</members>
+		<members>WSCaseAPGenerarCentroResp</members>
+		<members>WSCaseReintegroEnviarASSResp</members>
+		<members>WSCasoEnviarASS</members>
+		<members>WSCaseReintegroEnviarASS</members>
+		<members>WSCaseReintegroEnviarASSTest</members>
+		<members>CaseReintegroEnviarASSBtnCtrl</members>
         <name>ApexClass</name>
     </types>
 </Package>
