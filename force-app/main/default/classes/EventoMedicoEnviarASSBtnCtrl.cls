@@ -167,15 +167,12 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl  {
 	}
 
 	private static Response validateOwner(Evento_medico__c em, User usuario) {
-		Boolean propietario = usuario.Profile.Name == 'Administrador del sistema' || usuario.Profile.Name == 'CDC'
-								|| em.OwnerId == usuario.Id;
-
-		if(!propietario) {
-			return new Response(false, 'El usuario no es el propietario');
-		} 
-		
+		List<String> profileNames = new List<String>{'Administrador del sistema', 'CDC', 'System Administrator'};
+		Boolean isOwner = profileNames.contains(usuario.Profile.Name) || em.OwnerId == usuario.Id;
+		if(!isOwner) {
+			return new Response(false, System.Label.Alerta_NoAuth_UsuarioNoPropietario);
+		}
 		return new Response(false, 'ok');
-
 	}
 
 	private static void updateEMAndCreateSegmentCasePrestAndAlerts(

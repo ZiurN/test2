@@ -345,7 +345,7 @@ public without sharing class ContentDocumentLinkTriggerHelper {
 	}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Jeferson Ruiz.
-	@description	
+	@description	Método para el archivo a la libreria de edición, de forma que este pueda ser editado por la cola Front
 	@param			newDocumentsFromTrigger - Lista de los documentos nuevos.
 	------------------------------------------------------------------------------------------------------------------------*/
 	public static void modifyParentIdFromCDocumentsForEmailToCaseCases (List<ContentDocumentLink> newDocumentsFromTrigger) {

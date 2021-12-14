@@ -116,8 +116,7 @@ public class EventoMedicoTriggerHelper {
 
 	public static void validateDeletion(Map<Id, Evento_medico__c> oldMap) {
 		User currentUser = [SELECT Id, Profile.Name FROM User WHERE Id = :UserInfo.getUserId()];
-		Boolean isAdmin = currentUser.Profile.Name == 'Administrador del sistema';
-
+		Boolean isAdmin = currentUser.Profile.Name == 'Administrador del sistema' || currentUser.Profile.Name == 'System Administrator';
 		for (Evento_medico__c em : oldMap.values()) {
 			if(!isAdmin) {
 				em.addError('No tiene permitido eliminar Eventos Medicos');
