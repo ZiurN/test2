@@ -343,8 +343,10 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl  {
 						when 'N' {
 							prestToUpdate.Prestacion__r = new Nomenclador_de_Prestacion__c(Codigo__c = prestWS.prestacion); 
 							if (!nomencladoresToUpsert.containsKey(prestWS.prestacion)) {
-								Nomenclador_de_Prestacion__c nomenclador = 
-									new Nomenclador_de_Prestacion__c(Codigo__c = prestWS.prestacion);
+								Nomenclador_de_Prestacion__c nomenclador = new Nomenclador_de_Prestacion__c (
+									Codigo__c = prestWS.prestacion,
+									Estado__c = 'A'
+								);
 								nomencladoresToUpsert.put(prestWS.prestacion, nomenclador);
 							}
 						}
