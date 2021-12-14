@@ -14,6 +14,7 @@
 		<members>WSCaseReintegroEnviarASS</members>
 		<members>WSCaseReintegroEnviarASSTest</members>
 		<members>CaseReintegroEnviarASSBtnCtrl</members>
+		<members>WSLocalidadMock</members>
         <name>ApexClass</name>
     </types>
 </Package>

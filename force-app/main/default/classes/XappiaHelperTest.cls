@@ -155,4 +155,9 @@ private class XappiaHelperTest {
 	static void testgetProfileIdByName () {
 		System.assertNotEquals(null, XappiaHelper.getProfileIdByName('System Administrator'), 'Debe retornar info del profile');
 	}
+	@isTest
+	static void testgetStaticResource () {
+		StaticResource resource = [SELECT Body FROM StaticResource WHERE Name = 'LightningUtils' LIMIT 1];
+		System.assertEquals(resource, XappiaHelper.getStaticResource('LightningUtils'), 'Debe retornar el recurso estático esperado');
+	}
 }
