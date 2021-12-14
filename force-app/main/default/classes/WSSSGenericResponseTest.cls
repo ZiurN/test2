@@ -503,7 +503,7 @@ public class WSSSGenericResponseTest {
 				'\"prestaciones\": ['+
 				'{'+
 					'\"rei_id\": \"553276\",'+
-			' \"nro_sf\": \"dasdsa0003\",'+
+					'\"nro_sf\": \"dasdsa0003\",'+
 					'\"estado_prestacion\": \"C1-----A\",'+
 					'\"estado_descripcion\": \"EN AUDITORIA\",'+
 					'\"contexto\": \"Ambulatorio\",'+
@@ -649,7 +649,7 @@ public class WSSSGenericResponseTest {
 	@IsTest
 	static void testParseAPError () {
 		String jsonError = '{"data":{"error":true,"errors":{"message":"No se pudo actualizar la autorizaci\u00f3n previa. Es presupuesto y la AP no tiene prestador","debug_message":""},"data":null,"httpCode":500,"message":"No se pudo actualizar la autorizaci\u00f3n previa. Es presupuesto y la AP no tiene prestador"}}';
-		String errorMsg = 'ERROR AL DAR DE ALTA REINTEGRO . reintegro 636550 no tiene CBU y la modalidad de pago es transferencia\n';
+		String errorMsg = 'No se pudo actualizar la autorizaci\u00f3n previa. Es presupuesto y la AP no tiene prestador\n';
 		WSSSGenericResponse r = WSSSGenericResponse.parse(jsonError);
 		System.assert(r != null, 'No debe ser nulo');
 		System.assertEquals(errorMsg, r.processMessage(), 'El mensaje de error debe ser claro y estar dentro del objeto');
