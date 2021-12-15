@@ -170,7 +170,7 @@
         <fields>Codigo_de_Provincia__c</fields>
         <fields>Codigo_Postal__c</fields>
         <fields>Organizador_lookup__c</fields>
-        <profileName>System Administrator</profileName>
+        <profileName>Administrador del sistema</profileName>
     </profileSearchLayouts>
     <profileSearchLayouts>
         <fields>Codigo_Postal__c</fields>

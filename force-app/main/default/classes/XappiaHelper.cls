@@ -25,7 +25,6 @@ public without sharing class XappiaHelper {
 	}
 	public static RecordType getRecordType(String encodedName) {
 		List<String> parameters = encodedName.split('-');
-		system.debug(parameters);
 		if (parameters.size() == 2) {
 			return getRecordType(parameters[0], parameters[1]);
 		} else {
