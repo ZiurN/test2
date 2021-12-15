@@ -1,4 +1,4 @@
-@isTest 
+@isTest
 private class UtilsTest {
 	static User liderBsAsYPampeana;
 	static User liderAmba;
@@ -451,7 +451,7 @@ private class UtilsTest {
 		Test.startTest();
 		String resp = Utils.getStringAlphanumericOnly(text);
 		Test.stopTest();
-		System.assertEquals('notificacin - al (asociado)', resp, 'Los valores de texto no coinciden');
+		System.assertEquals('notificacin al asociado', resp, 'Los valores de texto no coinciden');
 	}
 	@isTest
 	private static void ifUserIsEncargadoReturnTrue() {
