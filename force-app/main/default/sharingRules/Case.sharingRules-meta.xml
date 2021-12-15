@@ -92,6 +92,18 @@
         </sharedFrom>
     </sharingOwnerRules>
     <sharingOwnerRules>
+        <fullName>Liquidaciones_de_prestaciones</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>Sharing Rule creada para dar permisos de visualización a usuarios de un grupo público de los registros de la cola Liquidación de Prestaciones- JIRA DES 5195</description>
+        <label>Liquidaciones de prestaciones</label>
+        <sharedTo>
+            <group>Liquidaciones_de_prestaciones</group>
+        </sharedTo>
+        <sharedFrom>
+            <queue>Liquidaciones_de_prestaciones</queue>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
         <fullName>Litoral</fullName>
         <accessLevel>Edit</accessLevel>
         <label>Litoral</label>

@@ -52,5 +52,13 @@
         <members>*</members>
         <name>CustomObject</name>
     </types>
+    <types>
+        <members>Case.*</members>
+        <name>SharingCriteriaRule</name>
+    </types>
+    <types>
+        <members>Case.*</members>
+        <name>SharingOwnerRule</name>
+    </types>
     <version>51.0</version>
 </Package>
