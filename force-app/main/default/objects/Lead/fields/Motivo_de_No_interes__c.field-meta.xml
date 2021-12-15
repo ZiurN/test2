@@ -31,6 +31,11 @@
                 <default>false</default>
                 <label>Otros</label>
             </value>
+            <value>
+                <fullName>No responde / Imposibilidad de contacto</fullName>
+                <default>false</default>
+                <label>No responde / Imposibilidad de contacto</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

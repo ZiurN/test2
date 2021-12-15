@@ -380,6 +380,10 @@
     <picklistValues>
         <picklist>Motivo_de_No_interes__c</picklist>
         <values>
+            <fullName>No responde / Imposibilidad de contacto</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Otros</fullName>
             <default>false</default>
         </values>
