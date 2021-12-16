@@ -276,9 +276,9 @@ public without sharing class XappiaHelper {
 		Map<String, String> picklistValues = new Map<String, String>();
 		SObjectType objectType = Schema.getGlobalDescribe().get(objectName);
 		List<Schema.PicklistEntry> pick_list_values = objectType.getDescribe()
-													   .fields.getMap()
-													   .get(pickListFieldName)
-													   .getDescribe().getPickListValues();
+														.fields.getMap()
+														.get(pickListFieldName)
+														.getDescribe().getPickListValues();
 		for (Schema.PicklistEntry aPickListValue : pick_list_values) {
 			picklistValues.put(aPickListValue.getValue(), aPickListValue.getLabel());
 		}

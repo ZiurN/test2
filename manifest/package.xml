@@ -39,12 +39,26 @@
         <name>StaticResource</name>
     </types>
     <types>
+    <members>Case-Caso a tipificar CDC</members>
+    <members>Case-Caso a tipificar</members>
+    <members>Case-Solicitud de baja</members>
+    <name>Layout</name>
+</types>
+    <types>
         <members>Account</members>
         <members>Case</members>
         <members>Contact</members>
         <members>Opportunity</members>
         <members>*</members>
         <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Case.*</members>
+        <name>SharingCriteriaRule</name>
+    </types>
+    <types>
+        <members>Case.*</members>
+        <name>SharingOwnerRule</name>
     </types>
     <version>51.0</version>
 </Package>

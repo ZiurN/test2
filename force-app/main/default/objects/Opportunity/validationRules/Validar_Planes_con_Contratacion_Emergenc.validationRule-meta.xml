@@ -2,16 +2,15 @@
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Validar_Planes_con_Contratacion_Emergenc</fullName>
     <active>true</active>
-    <description>JIRA DES 4531- No permitir seleccionar Plan AS100, AS300, AS400 y AS500 cuando cláusula Contratación de Emergicia está en True</description>
+    <description>JIRA DES 4531- No permitir seleccionar AS300, AS400 y AS500 cuando cláusula Contratación de Emergicia está en True. Modif JIRA DES 5765</description>
     <errorConditionFormula>AND
 	(
 		Indicador_de_contratacion_de_emergencia__c, 
 	OR(
-		(ISPICKVAL(Plan_del_grupo_familiar__c, &quot;AS100&quot;)),
 		(ISPICKVAL(Plan_del_grupo_familiar__c, &quot;AS300&quot;)),
 		(ISPICKVAL(Plan_del_grupo_familiar__c, &quot;AS400&quot;)),
 		(ISPICKVAL(Plan_del_grupo_familiar__c, &quot;AS500&quot;))
 		)
 	)</errorConditionFormula>
-    <errorMessage>Para los planes AS100, AS300, AS400, AS500 no puede marcar el campo Indicador de Contratacion de Emergencia</errorMessage>
+    <errorMessage>Para los planes AS300, AS400, AS500 no puede marcar el campo Indicador de Contratacion de Emergencia</errorMessage>
 </ValidationRule>
