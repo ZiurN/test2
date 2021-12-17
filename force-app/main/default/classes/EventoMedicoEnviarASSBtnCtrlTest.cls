@@ -1,11 +1,9 @@
 @IsTest
 private class EventoMedicoEnviarASSBtnCtrlTest {
-	private static final Webservice_endpoint_setting__mdt SERVICE_CONFIG = ConfigUtils.getWebServiceConfig('SALUDSOFT.TEST');
-	private static final String AUTH_TOKEN_URL = SERVICE_CONFIG.URL__c + '/oauth/token';
-	private static final String ARCHIVOS_URL = SERVICE_CONFIG.URL__c + ConfigUtils.getEndpointsByTipo('archivos').get('archivos').Endpoint__c;
+	private static final String ARCHIVOS_URL = ConfigUtils.getEndpointsByTipo('archivos').get('archivos').Endpoint__c;
 	private static Map<String, Webservice_endpoint__mdt> endpointsEventosMedicos = ConfigUtils.getEndpointsByTipo('eventos-medicos');
-	private static final String SEGUIMIENTO_URL = SERVICE_CONFIG.URL__c + endpointsEventosMedicos.get('seguimiento').Endpoint__c;
-	private static final String EVENTOS_MEDICOS_URL = SERVICE_CONFIG.URL__c + endpointsEventosMedicos.get('eventos-medicos').Endpoint__c;
+	private static final String SEGUIMIENTO_URL = endpointsEventosMedicos.get('seguimiento').Endpoint__c;
+	private static final String EVENTOS_MEDICOS_URL = endpointsEventosMedicos.get('eventos-medicos').Endpoint__c;
     private static XHttpCalloutMock getResponseFound;
     private static XHttpCalloutMock getResponseFoundEMI;
 	private static User usuario;
@@ -36,10 +34,31 @@ private class EventoMedicoEnviarASSBtnCtrlTest {
 			.withEstado('A')
 			.build();
 		insert nom2;
+		TestUtils.mockSettings archivosMockSettings = new  TestUtils.MockSettings();
+		archivosMockSettings.statusCode = 200;
+		archivosMockSettings.status = 'OK';
+		archivosMockSettings.body = WSCaseAPGenerarCentroMock.getArchivos();
+		archivosMockSettings.url = ARCHIVOS_URL;
 		getResponseFound = new XHttpCalloutMock();
+		List<TestUtils.mockSettings> getResponseFoundSettings = new List<TestUtils.mockSettings>();
+		TestUtils.mockSettings getResponseFoundSetting = new  TestUtils.MockSettings();
+		getResponseFoundSetting.statusCode = 200;
+		getResponseFoundSetting.status = 'OK';
+		getResponseFoundSetting.body = WSEventoMedicoEnviarASSMock.getFound();
+		getResponseFoundSetting.url = SEGUIMIENTO_URL;
+		getResponseFoundSettings.add(getResponseFoundSetting);
+		getResponseFoundSettings.add(archivosMockSettings);
+		TestUtils.setMockResponse(getResponseFound, getResponseFoundSettings);
 		getResponseFoundEMI = new XHttpCalloutMock();
-		setMockResponse(getResponseFound, WSEventoMedicoEnviarASSMock.getFound(), SEGUIMIENTO_URL);
-		setMockResponse(getResponseFoundEMI, WSEventoMedicoEnviarASSMock.getFoundEMI(), EVENTOS_MEDICOS_URL);
+		List<TestUtils.mockSettings> getResponseFoundEMISettings = new List<TestUtils.mockSettings>();
+		TestUtils.mockSettings getResponseFoundEMISetting = new  TestUtils.MockSettings();
+		getResponseFoundEMISetting.statusCode = 200;
+		getResponseFoundEMISetting.status = 'OK';
+		getResponseFoundEMISetting.body = WSEventoMedicoEnviarASSMock.getFoundEMI();
+		getResponseFoundEMISetting.url = EVENTOS_MEDICOS_URL;
+		getResponseFoundEMISettings.add(getResponseFoundEMISetting);
+		getResponseFoundEMISettings.add(archivosMockSettings);
+		TestUtils.setMockResponse(getResponseFoundEMI, getResponseFoundEMISettings);
     }
     @isTest
     private static void whenAnEMSIsSentToSSWithCorrectData_ItShouldReturnAValidResponse() {
@@ -292,22 +311,4 @@ private class EventoMedicoEnviarASSBtnCtrlTest {
         Test.stopTest();
         System.assertEquals(fechaEsperada, fechaDevuelta, 'Las fechas no coinciden');
     }
-	/** Utils */
-	private static void setMockResponse (XHttpCalloutMock mock, String body, String url) {
-		mock.buildResponse()
-			.withStatus('OK')
-			.withStatusCode(200)
-			.withBody(WSAuthTokenMock.getTokenSuccess())
-			.addForAddress(AUTH_TOKEN_URL);
-		mock.buildResponse()
-			.withStatus('OK')
-			.withStatusCode(200)
-			.withBody(body)
-			.addForAddress(url);
-		mock.buildResponse()
-			.withStatus('OK')
-			.withStatusCode(200)
-			.withBody(WSCaseAPGenerarCentroMock.getArchivos())
-			.addForAddress(ARCHIVOS_URL);
-	}
 }
