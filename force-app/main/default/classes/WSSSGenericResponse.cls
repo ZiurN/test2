@@ -95,7 +95,7 @@ public class WSSSGenericResponse {
 			public List<String> debug_message {get; set;}
 			public String exception_text {get; set;}
 			public Integer line {get; set;}
-			public EventoMedico em {get; set;}
+			//public EventoMedico em {get; set;}
 			public Data(JSONParser parser) {
 				while (parser.nextToken() != System.JSONToken.END_OBJECT) {
 					if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
@@ -173,7 +173,7 @@ public class WSSSGenericResponse {
 									reintegro = new Reintegro(parser);
 								}
 								when 'em' {
-									em = new EventoMedico(parser);
+									//em = new EventoMedico(parser);
 								}
 								when else {
 									System.debug(LoggingLevel.WARN, 'Data consuming unrecognized property: ' + text);
@@ -765,7 +765,7 @@ public class WSSSGenericResponse {
 						}
 					}
 	/** Constructor */
-	public WSCaseEnviarASSGenericResponse (JSONParser parser) {
+	public WSSSGenericResponse (JSONParser parser) {
 		while (parser.nextToken() != System.JSONToken.END_OBJECT) {
 			if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
 				String text = parser.getText();
@@ -792,7 +792,7 @@ public class WSSSGenericResponse {
 							meta = new Meta(parser);
 						}
 						when else {
-							System.debug(LoggingLevel.WARN, 'WSCaseEnviarASSGenericResponse consuming unrecognized property: '+text);
+							System.debug(LoggingLevel.WARN, 'WSSSGenericResponse consuming unrecognized property: '+text);
 							consumeObject(parser);
 						}
 					}
@@ -801,9 +801,9 @@ public class WSSSGenericResponse {
 		}
 	}
 	/** Métodos de construcción */
-	public static WSCaseEnviarASSGenericResponse parse(String json) {
+	public static WSSSGenericResponse parse(String json) {
 		System.JSONParser parser = System.JSON.createParser(json);
-		return new WSCaseEnviarASSGenericResponse(parser);
+		return new WSSSGenericResponse(parser);
 	}
 	private static List<Data> arrayOfDatas(System.JSONParser p) {
 		List<Data> res = new List<Data>();
