@@ -199,7 +199,69 @@ private class SegmentoTriggerTest {
 		Database.DeleteResult result = Database.delete(seg, false);
 		Test.stopTest();
 		System.assert(!result.isSuccess(), 'Debe haber un error');
-		System.assertEquals('No se puede eliminar el primer segmento del Evento Médico',
+		System.assertEquals(System.Label.Alerta_Segmento_NoBorrarPrimerSeg,
+							result.getErrors()[0].getMessage(),
+							'El mensaje no indica el error');
+	}
+	@isTest
+	public static void ifRealDatesAreSettedUpdateEventoMedicoDates () {
+		Evento_medico__c em = new Evento_medico__c(
+			Nro_de_Evento_Medico_SS__c = '275822',
+			Fecha_y_Hora_inicio_EMS__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 01),
+			Fecha_y_hora_fin_ems__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 02)
+		);
+		insert em;
+		Segmentos__c seg = new Segmentos__c(
+			Semid__c = '305715',
+			Fecha_Inicio_tentativa__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 01),
+			Fecha_Fin_tentativa__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 02),
+			Evento_Medico__c = em.Id
+		);
+		insert seg;
+		seg.Fecha_Inicio_real__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 04);
+		seg.Fecha_Fin_real__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 06);
+		Test.startTest();
+		update seg;
+		Test.stopTest();
+		em = [SELECT Fecha_y_Hora_inicio_EMS__c, Fecha_y_hora_fin_ems__c FROM Evento_medico__c WHERE Id =: em.Id];
+		System.assertEquals(seg.Fecha_Inicio_real__c, em.Fecha_y_Hora_inicio_EMS__c, 'Las fechas no coinciden');
+		System.assertEquals(seg.Fecha_Fin_real__c, em.Fecha_y_hora_fin_ems__c, 'Las fechas no coinciden');
+	}
+	@isTest
+	public static void ifInitialDateIsAfterFinalDateThrowErrorMessage () {
+		Evento_medico__c em = new Evento_medico__c(
+			Nro_de_Evento_Medico_SS__c = '275822',
+			Fecha_y_Hora_inicio_EMS__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 01),
+			Fecha_y_hora_fin_ems__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 02)
+		);
+		insert em;
+		Segmentos__c seg = new Segmentos__c(
+			Semid__c = '305715',
+			Fecha_Inicio_tentativa__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 01),
+			Fecha_Fin_tentativa__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 02),
+			Evento_Medico__c = em.Id
+		);
+		insert seg;
+		seg.Fecha_Fin_real__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 03);
+		seg.Fecha_Inicio_real__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 02);
+		/** Si alguna fecha es nula, no debería dispararse el error */
+		update seg;
+		seg.Fecha_Fin_real__c = null;
+		seg.Fecha_Inicio_real__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 02);
+		update seg;
+		seg.Fecha_Fin_real__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 03);
+		seg.Fecha_Inicio_real__c = null;
+		update seg;
+		seg.Fecha_Fin_real__c = null;
+		seg.Fecha_Inicio_real__c = null;
+		update seg;
+		seg.Fecha_Fin_real__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 03);
+		seg.Fecha_Inicio_real__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 04);
+		Test.startTest();
+		Database.SaveResult result = Database.update(seg, false);
+		Test.stopTest();
+		System.assert(!result.isSuccess(), 'Debe haber un error');
+		System.assertEquals(System.Label.Alerta_Segmento_FechasNoConsecutivas,
 							result.getErrors()[0].getMessage(),
 							'El mensaje no indica el error');
 	}

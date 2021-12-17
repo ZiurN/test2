@@ -26,7 +26,17 @@ public with sharing class SegmentoTriggerHandler extends TriggerHandler {
 		}
 	}
 	public override void beforeUpdate() {
-		//Nothing
+		List<Segmentos__c> segmentosToCheck = new List<Segmentos__c>();
+		for (Segmentos__c segmento : lNew) {
+			if (mOld.containsKey(segmento.Id)
+				&& (mOld.get(segmento.Id).Fecha_Inicio_real__c != segmento.Fecha_Inicio_real__c
+					|| mOld.get(segmento.Id).Fecha_Fin_real__c != segmento.Fecha_Fin_real__c)) {
+				segmentosToCheck.add(segmento);
+			}
+		}
+		if (!segmentosToCheck.isEmpty()) {
+			SegmentoHelper.checkFechasReales(segmentosToCheck);
+		}
 	}
 	public override void beforeDelete() {
 		SegmentoHelper.avoidDeletionOfTheFirstSegmento(lOld);
@@ -54,7 +64,7 @@ public with sharing class SegmentoTriggerHandler extends TriggerHandler {
 										&& (profileName != 'Administrador de sistema' && profileName != 'System Administrator');
 			Boolean shouldInsertSS = segmento.Fecha_inicio_tentativa__c != null && segmento.Fecha_fin_Tentativa__c != null;
 			if(String.isNotBlank(segmento.Semid__c)
-				&& SegmentoHelper.isChangedSomeFieldToSendToSS(segmento,oldSeg)
+				&& SegmentoHelper.isChangedSomeFieldToSendToSS(segmento, oldSeg)
 				&& shouldUpdateSS) {
 				segmentosToUpdate.add(segmento);
 			}
@@ -64,10 +74,10 @@ public with sharing class SegmentoTriggerHandler extends TriggerHandler {
 				segmentosToCreate.add(segmento);
 			}
 		}
-		if(!segmentosToUpdate.isEmpty() && !Test.isRunningTest()) {
+		if(!segmentosToUpdate.isEmpty()) {
 			System.enqueueJob(new SegmentoQueueable(segmentosToUpdate, true));
 		}
-		else if(!segmentosToCreate.isEmpty() && !Test.isRunningTest()) {
+		else if(!segmentosToCreate.isEmpty()) {
 			System.enqueueJob(new SegmentoQueueable(segmentosToCreate, false));
 		}
 	}
