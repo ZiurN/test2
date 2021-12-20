@@ -265,4 +265,31 @@ private class SegmentoTriggerTest {
 							result.getErrors()[0].getMessage(),
 							'El mensaje no indica el error');
 	}
+	@IsTest
+	public static void ifEventoMedicoHaveStatusClosedDontUpdate () {
+		Evento_medico__c em = new Evento_medico__c(
+			Nro_de_Evento_Medico_SS__c = '275822',
+			Fecha_y_Hora_inicio_EMS__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 01),
+			Fecha_y_hora_fin_ems__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 02)
+		);
+		insert em;
+		Segmentos__c seg = new Segmentos__c(
+			Semid__c = '305715',
+			Fecha_Inicio_tentativa__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 01),
+			Fecha_Fin_tentativa__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 02),
+			Evento_Medico__c = em.Id
+		);
+		insert seg;
+		em.Estado__c = 'Cerrado';
+		update em;
+		seg.Fecha_Inicio_real__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 04);
+		seg.Fecha_Fin_real__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 06);
+		Test.startTest();
+		Database.SaveResult result = Database.update(seg, false);
+		Test.stopTest();
+		System.assert(!result.isSuccess(), 'Debe haber un error');
+		System.assertEquals(System.Label.Alerta_Segmento_EventoMedicoCerrado,
+							result.getErrors()[0].getMessage(),
+							'El mensaje no indica el error');
+	}
 }

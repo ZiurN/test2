@@ -61,8 +61,7 @@ public without sharing class SegmentoHelper {
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Jeferson Ruiz.
 	@description	Método que verifica que las fechas reales insertadas en el segmento sean consecutivas
-	@param			oldSegmentosToCheck - Mapa de los segmentos previos por su Id.
-	@param			newSegmentosToCheck - Mapa de los segmentos modificados por su Id.
+	@param			segmentosToCheck - Segmentos para verificar.
 	------------------------------------------------------------------------------------------------------------------------*/
 	public static void checkFechasReales (List<Segmentos__c> segmentosToCheck) {
 		for (Segmentos__c segmento : segmentosToCheck) {
@@ -72,6 +71,27 @@ public without sharing class SegmentoHelper {
 				segmento.addError(System.Label.Alerta_Segmento_FechasNoConsecutivas);
 			}
 		}
+	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
+	@description	Método que verifica el estado del evento médico asociado. Si está cerrado, debe evitar cualquier
+					actualización.
+	@param			segmentosToCheck - Segmentos para verificar.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static List<Segmentos__c> checkEventoMedicoStatus (List<Segmentos__c> segmentosToCheck) {
+		List<Segmentos__c> segmentosToReturn = new List<Segmentos__c>();
+		Map<Id, Segmentos__c> segmentosByEventoMedicoIds = new Map<Id, Segmentos__c>();
+		for (Segmentos__c segmento : segmentosToCheck) {
+			segmentosByEventoMedicoIds.put(segmento.Evento_Medico__c, segmento);
+		}
+		for (Evento_medico__c eventoMedico : getEventosMedicos(segmentosByEventoMedicoIds.keySet())) {
+			if (eventoMedico.Estado__c == 'Cerrado') {
+				segmentosByEventoMedicoIds.get(eventoMedico.Id).addError(System.Label.Alerta_Segmento_EventoMedicoCerrado);
+			} else {
+				segmentosToReturn.add(segmentosByEventoMedicoIds.get(eventoMedico.Id));
+			}
+		}
+		return segmentosToReturn;
 	}
 	/** Utils */
 	private static List<Evento_medico__c> getEventosMedicos (Set<Id> eventosMedicosIds) {

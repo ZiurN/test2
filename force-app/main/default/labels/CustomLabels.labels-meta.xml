@@ -213,8 +213,29 @@
         <categories>Alertas</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>Alerta_CasoNoSolicitud</shortDescription>
-        <value>El caso no es una solicitud</value>
+    <labels>
+        <fullName>Alerta_Segmento_EventoMedicoCerrado</fullName>
+        <categories>Alertas Segmentos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_Segmento_EventoMedicoCerrado</shortDescription>
+        <value>El Evento Médico asociado está cerrado, no puede modificar el segmento</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_Segmento_FechasNoConsecutivas</fullName>
+        <categories>Alertas Segmentos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_Segmento_FechasNoConsecutivas</shortDescription>
+        <value>La fecha final real no puede ser anterior a la fecha de inicio real</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_Segmento_NoBorrarPrimerSeg</fullName>
+        <categories>Alertas Segmentos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_Segmento_NoBorrarPrimerSeg</shortDescription>
+        <value>No se puede eliminar el primer segmento del Evento Médico</value>
     </labels>
     <labels>
         <fullName>Alerta_InvalidCaseClosed</fullName>

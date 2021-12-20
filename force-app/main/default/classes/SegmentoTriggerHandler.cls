@@ -26,16 +26,19 @@ public with sharing class SegmentoTriggerHandler extends TriggerHandler {
 		}
 	}
 	public override void beforeUpdate() {
-		List<Segmentos__c> segmentosToCheck = new List<Segmentos__c>();
-		for (Segmentos__c segmento : lNew) {
-			if (mOld.containsKey(segmento.Id)
-				&& (mOld.get(segmento.Id).Fecha_Inicio_real__c != segmento.Fecha_Inicio_real__c
-					|| mOld.get(segmento.Id).Fecha_Fin_real__c != segmento.Fecha_Fin_real__c)) {
-				segmentosToCheck.add(segmento);
+		List<Segmentos__c> editableSegmentos = SegmentoHelper.checkEventoMedicoStatus(lNew);
+		if (!editableSegmentos.isEmpty()) {
+			List<Segmentos__c> segmentosToCheck = new List<Segmentos__c>();
+			for (Segmentos__c segmento : editableSegmentos) {
+				if (mOld.containsKey(segmento.Id)
+					&& (mOld.get(segmento.Id).Fecha_Inicio_real__c != segmento.Fecha_Inicio_real__c
+						|| mOld.get(segmento.Id).Fecha_Fin_real__c != segmento.Fecha_Fin_real__c)) {
+					segmentosToCheck.add(segmento);
+				}
 			}
-		}
-		if (!segmentosToCheck.isEmpty()) {
-			SegmentoHelper.checkFechasReales(segmentosToCheck);
+			if (!segmentosToCheck.isEmpty()) {
+				SegmentoHelper.checkFechasReales(segmentosToCheck);
+			}
 		}
 	}
 	public override void beforeDelete() {
