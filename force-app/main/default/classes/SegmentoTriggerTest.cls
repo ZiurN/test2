@@ -143,6 +143,8 @@ private class SegmentoTriggerTest {
 		Test.startTest();
 		System.enqueueJob(segmentoQueable);
 		Test.stopTest();
+		/** Validar que se creó el platform event informando el error en SS */
+		validatePlatformEventFired();
 		Segmentos__c segToAssert = [SELECT Error_en_SS__c FROM Segmentos__c WHERE Id =: seg.Id];
 		System.assertEquals('<p style="color: rgb(228, 10, 10);">No pudo autorizarse</p>', segToAssert.Error_en_SS__c, 'Debe estar el error de SS');
 	}
@@ -182,6 +184,7 @@ private class SegmentoTriggerTest {
 		Test.startTest();
 		System.enqueueJob(segmentoQueable);
 		Test.stopTest();
+		validatePlatformEventFired();
 		Segmentos__c segToAssert = [SELECT Error_en_SS__c FROM Segmentos__c WHERE Id =: seg.Id];
 		System.assertEquals('<p style="color: rgb(228, 10, 10);">El segmento solicitado es inválido.</p>',
 							segToAssert.Error_en_SS__c,
@@ -291,5 +294,16 @@ private class SegmentoTriggerTest {
 		System.assertEquals(System.Label.Alerta_Segmento_EventoMedicoCerrado,
 							result.getErrors()[0].getMessage(),
 							'El mensaje no indica el error');
+	}
+	/** Utils */
+	private static void validatePlatformEventFired () {
+		EventBusSubscriber[] subscribers =[SELECT Name,
+												Type,
+												Position,
+												Retries,
+												LastError
+				 							FROM EventBusSubscriber
+											WHERE Topic='SS_Segmento_Response__e'];
+		System.assertEquals(1, subscribers.size(), 'Debe haber un suscriptor por el trigger del evento');
 	}
 }

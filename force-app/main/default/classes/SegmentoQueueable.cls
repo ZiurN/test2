@@ -24,9 +24,9 @@ public without sharing class SegmentoQueueable implements Queueable, Database.Al
 		String rtIdEMI = XappiaHelper.getRecordType('Evento_Medico__c', 'Evento_medico_de_internacion').Id;
 		Evento_Medico__c em = getEventoMedico(seg.Evento_Medico__c);
 		String body = generateJSONFromCreate(seg);
-		WSSegmentoAlta.Response resp = WSSegmentoAlta.crearSegmento(seg.Evento_Medico__r.Nro_de_Evento_Medico_SS__c, body);
+		WSSegmentoEnviarASSHelper.Response resp = WSSegmentoEnviarASSHelper.enviarASS(body, 'eventos-medicos', 'eventos-medicos', seg.Evento_Medico__r.Nro_de_Evento_Medico_SS__c);
 		if (!resp.hasError) {
-			for(WSSegmentoEliminarResp.Segmento segWs : resp.result.data.em.segmento) {
+			for(WSSSGenericResponse.Segmento segWs : resp.result.data[0].em.segmento) {
 				if(segmentId == segWs.aca_nro_sf) {
 					seg.Semid__c = segWs.sem_id;
 					seg.Fecha_Inicio_real__c = segWs.fecha_real_desde != null
@@ -38,7 +38,7 @@ public without sharing class SegmentoQueueable implements Queueable, Database.Al
 				}
 			}
 			if(seg.Evento_Medico__r.RecordTypeId == rtIdEMI) {
-				attachPDF(resp.result.data.em, seg.Evento_Medico__c);
+				attachPDF(resp.result.data[0].em, seg.Evento_Medico__c);
 			}
 			Database.SaveResult result = Database.update(seg);
 			String errorMsg = '';
@@ -93,13 +93,13 @@ public without sharing class SegmentoQueueable implements Queueable, Database.Al
 			segmentoId
 		);
 		if (!resp.hasError) {
-			for(WSSSGenericResponse.Segmento wsSegmento : resp.result.data.em.segmento) {
+			for(WSSSGenericResponse.Segmento wsSegmento : resp.result.data[0].em.segmento) {
 				if(wsSegmento.sem_id == segList[0].Semid__c) {
 					segList[0].Estado__c = wsSegmento.estado;
 				}
 			}
 			if(segList[0].Evento_Medico__r.RecordTypeId == rtIdEMI) {
-				attachPDF(resp.result.data.em, segList[0].Evento_Medico__c);
+				attachPDF(resp.result.data[0].em, segList[0].Evento_Medico__c);
 			}
 			Database.SaveResult result = Database.update(segList[0]);
 			String errorMsg = 'Segmento actualizado exitosamente';
@@ -137,7 +137,7 @@ public without sharing class SegmentoQueueable implements Queueable, Database.Al
 		}
 		update em;
 	}
-	private static void attachPDF(WSSegmentoEliminarResp.Em emWS, Id emIdSF) {
+	private static void attachPDF(WSSSGenericResponse.EventoMedico emWS, Id emIdSF) {
 		String title = emWS.em_id;
 		List<ContentDocumentLink> links = [SELECT LinkedEntityId, ContentDocumentId, ContentDocument.LatestPublishedVersionId, ContentDocument.Title, 
 				ShareType, ContentDocument.FileType, ContentDocument.FileExtension

@@ -161,7 +161,12 @@ public class WSSSGenericResponse {
 					this.message = value;
 					this.errors = new Map<String, String[]>{'message' => new String[] {value}};
 				}}
-				public Map<String, String[]> errors {get;set;}
+				public Map<String, String[]> errors {get {
+					if (this.errors == null) {
+						this.errors = new Map<String, String[]>();
+					}
+					return this.errors;
+				}set;}
 				public Errors (System.JSONParser parser) {
 					while (parser.nextToken() != System.JSONToken.END_OBJECT) {
 						if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
@@ -1004,11 +1009,10 @@ public class WSSSGenericResponse {
 	/** Para enviar y determinar el mensaje de error */
 	public String processMessage () {
 		String message = '';
-		System.debug(this.data[0]);
 		if (this.data[0].httpCode > 400 && this.data[0].httpCode <= 500) {
 			if (!String.isBlank(this.message) && this.error) {
 				message = this.message;
-			}  else if (!String.isBlank(this.data[0].message) && this.data[0].errors.errors.values().size() > 0) {
+			} else if (!String.isBlank(this.data[0].message) && (this.data[0].errors != null && this.data[0].errors?.errors.values().size() > 0)) {
 				message = processErrorMessages();
 			} else if (!String.isBlank(this.data[0].message) && this.data[0].error) {
 				message = this.data[0].message;
