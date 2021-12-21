@@ -44,7 +44,7 @@ private class WSCaseAPRevertirTest {
         Test.stopTest();
 
         System.assertEquals(false,response.hasError);
-        System.assertEquals(null,response.message);
+        System.assertEquals('Ok',response.message);
 
 
     }

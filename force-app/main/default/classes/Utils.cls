@@ -379,7 +379,7 @@ public without sharing class Utils {
 		if (String.isBlank(text)) {
 			return '';
 		}
-		String REGEX = '^[a-zA-Z0-9-_ ()]*$';
+		String REGEX = '^[a-zA-Z0-9_ ]*$';
 		String alphanumericString = '';
 		Integer strLength = text.length();
 		for (Integer i = 0; i < text.length(); i++) {
@@ -388,6 +388,6 @@ public without sharing class Utils {
 				alphanumericString += s;
 			}
 		}
-		return alphanumericString;
+		return alphanumericString.replaceAll('\\s{2}', ' ');
 	}
 }

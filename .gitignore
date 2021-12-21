@@ -2,6 +2,7 @@
 # Project Settings and MetaData
 .vim*
 .sfdx/
+.vim*
 delta*/
 .project
 .settings/

@@ -1,14 +1,9 @@
 public class WSCaseEnviarASSGenericResponse {
 
-	public class Meta {
+	/*public class Meta {
 		public List<Notas> allowed_includes;
 		public List<Notas> default_includes;
 	}
-
-	public class Notas extends WSCaseEnviarASSHelper.Notas {
-        
-	}
-
 	public class Data {
 		
 		public String sf_id;
@@ -32,5 +27,5 @@ public class WSCaseEnviarASSGenericResponse {
 	
 	public static WSCaseEnviarASSGenericResponse parse(String json) {
 		return (WSCaseEnviarASSGenericResponse) System.JSON.deserialize(json, WSCaseEnviarASSGenericResponse.class);
-	}
+	}*/
 }

@@ -135,7 +135,7 @@ private class ReingresoBtnCtrlTest {
 		acc.Afi_Id__c = '473981';
 		insert acc;
 
-		List<Profile> profileList = [SELECT Id, Name FROM Profile WHERE Name = 'Administrador del sistema'];
+		List<Profile> profileList = [SELECT Id, Name FROM Profile WHERE Name = 'Administrador del sistema' OR Name = 'System Administrator'];
 
         User usuario = new User(Alias = 'standt', Email='standarduser@testorg.com',
                 EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US',

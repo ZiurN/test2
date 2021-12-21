@@ -1,6 +1,6 @@
 @isTest 
 private class WSCaseReintegroEnviarASSTest {
-	static XHttpCalloutMock getResponseFound;
+	/*static XHttpCalloutMock getResponseFound;
 	static XHttpCalloutMock getErrorResponse;
 	static String body;
 
@@ -105,6 +105,6 @@ private class WSCaseReintegroEnviarASSTest {
 		System.assertEquals(404, responseToAssert.response.getStatusCode());
 		System.assertEquals('404 not found', responseToAssert.response.getStatus());
 		System.assertEquals(null, responseToAssert.token);
-	}
+	}*/
 	
 }

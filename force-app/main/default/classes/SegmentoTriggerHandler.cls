@@ -37,7 +37,7 @@ public with sharing class SegmentoTriggerHandler extends TriggerHandler {
 				}
 			}
 			if (!segmentosToCheck.isEmpty()) {
-				//SegmentoHelper.checkFechasReales(segmentosToCheck);
+				SegmentoHelper.checkFechasReales(segmentosToCheck);
 			}
 		}
 	}

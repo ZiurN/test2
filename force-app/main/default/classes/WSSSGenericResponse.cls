@@ -1,6 +1,6 @@
 /**-----------------------------------------------------------------------------------------------------------------------
 @author			Jeferson Ruiz.
-@description	Clase deserializadora para las respuestas  de llamados a SS.
+@description	Clase deserializadora para las respuestas de llamados a SS.
 @date			26/10/2021
 ------------------------------------------------------------------------------------------------------------------------*/
 public class WSSSGenericResponse {
@@ -85,7 +85,6 @@ public class WSSSGenericResponse {
 			public String errorType {get; set;}
 			public Integer httpCode {get; set;}
 			public String message {get; set;}
-			public List<String> debug_message {get; set;}
 			public String exception_text {get; set;}
 			public Integer line {get; set;}
 			public EventoMedico em {get; set;}
@@ -136,9 +135,6 @@ public class WSSSGenericResponse {
 									errorType = parser.getText();
 								} when 'httpCode' {
 									httpCode = parser.getIntegerValue();
-								} when 'debug_message' {
-									List<String> debugList = (List<String>) parser.readValueAs(List<String>.class);
-									debug_message = debugList;
 								} when 'exception' {
 									exception_text = parser.getText();
 								} when 'line' {
@@ -165,7 +161,6 @@ public class WSSSGenericResponse {
 					this.message = value;
 					this.errors = new Map<String, String[]>{'message' => new String[] {value}};
 				}}
-				public Map<String, String[]> debug_message {get; set;}
 				public Map<String, String[]> errors {get;set;}
 				public Errors (System.JSONParser parser) {
 					while (parser.nextToken() != System.JSONToken.END_OBJECT) {
@@ -175,9 +170,6 @@ public class WSSSGenericResponse {
 								switch on text {
 									when 'message' {
 										message = parser.getText();
-									} when 'debug_message' {
-										Map<String, String[]> errMap = (Map<String, String[]>) parser.readValueAs(Map<String, String[]>.class);
-										debug_message = errMap;
 									}
 								}
 							}
@@ -341,6 +333,9 @@ public class WSSSGenericResponse {
 				public String celula {get;set;}
 				public String sla {get;set;}
 				public String estado_em {get;set;}
+				public String aca_nro_sf {get;set;}
+				public String imp_presu {get;set;}
+				public String ap_anestesia {get;set;}
 				public List<Prestaciones> prestaciones {get;set;}
 				public Ap(JSONParser parser) {
 					while (parser.nextToken() != System.JSONToken.END_OBJECT) {
@@ -440,6 +435,12 @@ public class WSSSGenericResponse {
 										estado_em = parser.getText();
 									} when 'prestaciones' {
 										prestaciones = arrayOfPrestaciones(parser);
+									} when 'aca_nro_sf' {
+										aca_nro_sf = parser.getText();
+									} when 'imp_presu' {
+										imp_presu = parser.getText();
+									} when 'ap_anestesia' {
+										ap_anestesia = parser.getText();
 									} when else {
 										System.debug(LoggingLevel.WARN, 'Ap consuming unrecognized property: '+text);
 										consumeObject(parser);
@@ -1028,13 +1029,13 @@ public class WSSSGenericResponse {
 	}
 	public static String translateNivel (String lvl) {
 		switch on lvl{
-			when 'N1'{
+			when 'N1' {
 				return 'Nivel 1';
-			} when 'N2'{
+			} when 'N2' {
 				return 'Nivel 2';
-			} when 'N3'{
+			} when 'N3' {
 				return 'Nivel 3';
-			} when else{
+			} when else {
 				return 'Nivel 1';
 			}
 		}

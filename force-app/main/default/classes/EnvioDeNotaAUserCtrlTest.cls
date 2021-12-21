@@ -5,8 +5,7 @@ private class EnvioDeNotaAUserCtrlTest {
 
 	static{
 		String uniqueUserName = 'organizador' + DateTime.now().getTime() + '@testorg.com';
-
-		Profile p = [SELECT Id FROM Profile WHERE Name='Administrador del sistema'];
+		Profile p = [SELECT Id FROM Profile WHERE Name = 'Administrador del sistema' OR Name = 'System Administrator'];
 		UserRole role = [SELECT Id,Name FROM UserRole WHERE Name = 'Administrador'];
 		u = new User(Alias = 'standt', Email='standarduser@testorg.com',
 				EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US',

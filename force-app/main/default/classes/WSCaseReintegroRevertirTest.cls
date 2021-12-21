@@ -44,7 +44,7 @@ public class WSCaseReintegroRevertirTest  {
         Test.stopTest();
 
         System.assertEquals(false, response.hasError);
-        System.assertEquals(null, response.message);
+        System.assertEquals('Ok', response.message);
 		System.assertEquals('CR-----G', response.result.data.reintegro[0].vda_drv_estado);
 
     }

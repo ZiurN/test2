@@ -1,0 +1,40 @@
+{
+	"data": [],
+	"links": {
+		"first": "https://api-test.acasalud.com.ar/aca_salud_test/public/v1/salud/localidades-zonas?page=1",
+		"last": "https://api-test.acasalud.com.ar/aca_salud_test/public/v1/salud/localidades-zonas?page=1",
+		"prev": null,
+		"next": null
+	},
+	"meta": {
+		"current_page": 1,
+		"from": null,
+		"last_page": 1,
+		"path": "https://api-test.acasalud.com.ar/aca_salud_test/public/v1/salud/localidades-zonas",
+		"per_page": 500,
+		"to": null,
+		"total": 0,
+		"allowed_filters": [],
+		"allowed_sorts": [],
+		"allowed_appends": [],
+		"allowed_fields": [],
+		"allowed_includes": [],
+		"default_includes": [],
+		"optional_get_vars": {
+			"sortBy": [
+				"codigo_postal",
+				"localidad"
+			],
+			"sortOrder": [
+				"asc",
+				"desc"
+			],
+			"pageSize": {
+				"0": "?pageSize=0",
+				"15": "?pageSize=15",
+				"50": "?pageSize=50",
+				"100": "?pageSize=100"
+			}
+		}
+	}
+}

@@ -51,7 +51,7 @@ private class WSCaseValoracionTest {
         Test.stopTest();
 
         System.assertEquals(false,resp.hasError);
-        System.assertEquals(null,resp.message);
+        System.assertEquals('Ok', resp.message);
         System.assertEquals('10000',resp.result.data[0].importe);	
 
     }

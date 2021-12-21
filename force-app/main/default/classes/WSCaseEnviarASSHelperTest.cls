@@ -1,11 +1,9 @@
-@isTest 
-private class WSCasoEnviarASSTest {
-
-	 static XHttpCalloutMock getResponseFound;
+@isTest
+public with sharing class WSCaseEnviarASSHelperTest {
+    static XHttpCalloutMock getResponseFound;
     static XHttpCalloutMock getErrorResponse;
-
     static {
-		Case ap = new Case();	
+		Case ap = new Case();
 		insert ap;
         getResponseFound = new XHttpCalloutMock();
         getResponseFound.buildResponse()
@@ -17,12 +15,10 @@ private class WSCasoEnviarASSTest {
                 .withStatus('OK')
                 .withStatusCode(200)
                 .withBody(WSCaseAPGenerarCentroMock.getFound(ap.Id))
-                .addForAddress(WSCasoEnviarASS.SERVICE_CONFIG.URL__c + '/v1/salud/autorizaciones');
-
+                .addForAddress(WSCaseEnviarASSHelper.SERVICE_CONFIG.URL__c + '/v1/salud/autorizaciones');
     }
-
     @IsTest
-    private static void whenTheWSIsConsume_APUpdated(){
+    private static void whenTheWSIsConsume_APUpdated() {
         Test.setMock(HttpCalloutMock.class, getResponseFound);
         String body = '{'+
 					'"fecha": "2019-05-05",'+
@@ -49,10 +45,8 @@ private class WSCasoEnviarASSTest {
 					'}]'+
 				'}';
         Test.startTest();
-        WSCasoEnviarASS.Response responseToAssert = WSCasoEnviarASS.enviarCaso(body);
+        WSCaseEnviarASSHelper.Response responseToAssert = WSCaseEnviarASSHelper.enviarASS(body, 'autorizaciones', 'autorizaciones');
         Test.stopTest();
-
-        System.debug('*****responseToAssert*****: ' + responseToAssert);
         System.assertEquals(false, responseToAssert.hasError);
         System.assertEquals(200, responseToAssert.response.getStatusCode());
         System.assertEquals('OK', responseToAssert.response.getStatus());

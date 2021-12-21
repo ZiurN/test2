@@ -53,7 +53,7 @@ private class WSLoteContabilizarTest {
 		Test.stopTest();
 
 		System.assertEquals(false, resp.hasError);
-		System.assertEquals(null, resp.message);
+		System.assertEquals('Ok', resp.message);
 		System.assertEquals('O',resp.lote.data.lote.estado);
 		System.assertEquals(5402,resp.lote.data.lote.lr_id);
 		System.assertEquals('38863',resp.lote.data.lote.prei_id);
@@ -69,7 +69,7 @@ private class WSLoteContabilizarTest {
 		Test.stopTest();
 
 		System.assertEquals(false, resp.hasError);
-		System.assertEquals(null, resp.message);
+		System.assertEquals('Ok', resp.message);
 		System.assertEquals('C',resp.lote.data.lote.estado);
 		System.assertEquals(5402,resp.lote.data.lote.lr_id);
 		System.assertEquals('38866',resp.lote.data.lote.prei_id);
