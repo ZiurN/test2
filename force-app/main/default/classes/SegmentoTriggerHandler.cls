@@ -37,7 +37,7 @@ public with sharing class SegmentoTriggerHandler extends TriggerHandler {
 				}
 			}
 			if (!segmentosToCheck.isEmpty()) {
-				SegmentoHelper.checkFechasReales(segmentosToCheck);
+				//SegmentoHelper.checkFechasReales(segmentosToCheck);
 			}
 		}
 	}
@@ -64,7 +64,7 @@ public with sharing class SegmentoTriggerHandler extends TriggerHandler {
 			Segmentos__c oldSeg = mOld.get(segmento.Id);
 			Boolean shouldUpdateSS = segmento.Fecha_fin_Real__c != null
 										&& segmento.Fecha_Inicio_real__c != null
-										&& (profileName != 'Administrador de sistema' && profileName != 'System Administrator');
+										&& (profileName != 'Administrador de sistema' /**&& profileName != 'System Administrator'*/);
 			Boolean shouldInsertSS = segmento.Fecha_inicio_tentativa__c != null && segmento.Fecha_fin_Tentativa__c != null;
 			if(String.isNotBlank(segmento.Semid__c)
 				&& SegmentoHelper.isChangedSomeFieldToSendToSS(segmento, oldSeg)

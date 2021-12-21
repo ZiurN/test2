@@ -29,20 +29,6 @@ public with sharing class WSSegmentoActualizar {
 
         public override void processError(HttpResponse response) {
             Map<String,Object> body = (Map<String,Object>) JSON.deserializeUntyped(response.getBody());
-//            Map<String,Object> data = (Map<String,Object>) body.get('data');
-//            Map<String,Object> errors = (Map<String,Object>) data.get('errors');
-//            String msg = '';
-//
-//            if(data.get('httpCode') == 500) {
-//                msg = data.get('message').toString();
-//            } else {
-//                for(String key : errors.keySet()){
-//                    List<Object> error = (List<Object>) errors.get(key);
-//                    msg = msg +  error[0].toString() + '\n';
-//                }
-//
-//            }
-//            message = msg;
             message = UtilsDisplayErrorMessageFromWS.showErrorMessage(body);
         }
 

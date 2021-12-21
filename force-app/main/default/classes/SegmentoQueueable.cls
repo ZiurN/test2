@@ -85,13 +85,15 @@ public without sharing class SegmentoQueueable implements Queueable, Database.Al
 		String rtIdEMI = XappiaHelper.getRecordType('Evento_Medico__c', 'Evento_medico_de_internacion').Id;
 		Evento_Medico__c em = getEventoMedico(segList[0].Evento_Medico__c);
 		body = generateJSONFromUpdate(segList[0]);
-		WSSegmentoActualizar.Response resp = WSSegmentoActualizar.actualizarSegmento(
-				segList[0].Evento_Medico__r.Nro_de_Evento_Medico_SS__c,
-				segmentoId,
-				body
+		WSSegmentoEnviarASSHelper.Response resp = WSSegmentoEnviarASSHelper.enviarASS(
+			body,
+			'eventos-medicos',
+			'eventos-medicos',
+			segList[0].Evento_Medico__r.Nro_de_Evento_Medico_SS__c,
+			segmentoId
 		);
 		if (!resp.hasError) {
-			for(WSSegmentoEliminarResp.Segmento wsSegmento : resp.result.data.em.segmento) {
+			for(WSSSGenericResponse.Segmento wsSegmento : resp.result.data.em.segmento) {
 				if(wsSegmento.sem_id == segList[0].Semid__c) {
 					segList[0].Estado__c = wsSegmento.estado;
 				}
@@ -99,7 +101,7 @@ public without sharing class SegmentoQueueable implements Queueable, Database.Al
 			if(segList[0].Evento_Medico__r.RecordTypeId == rtIdEMI) {
 				attachPDF(resp.result.data.em, segList[0].Evento_Medico__c);
 			}
-			Database.SaveResult  result = Database.update(segList[0]);
+			Database.SaveResult result = Database.update(segList[0]);
 			String errorMsg = 'Segmento actualizado exitosamente';
 			if(!result.isSuccess()){
 				errorMsg = '';

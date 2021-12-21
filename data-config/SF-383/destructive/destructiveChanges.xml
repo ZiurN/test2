@@ -3,6 +3,10 @@
     <types>
 		<members>WSEventoMedicoEnviarASS</members>
 		<members>WSSegmentoActualizarMock</members>
+		<members>WSSegmentoActualizar</members>
+		<members>WSSegmentoEliminarResp</members>
+		<members>WSSegmentoEliminarRespTest</members>
+		<members>WSSegmentoEliminarMock</members>
         <name>ApexClass</name>
     </types>
 </Package>

@@ -21,11 +21,9 @@ public class WSSSGenericResponse {
 							switch on text {
 								when 'allowed_includes' {
 									allowed_includes = arrayOfNotas(parser);
-								}
-								when 'default_includes' {
+								} when 'default_includes' {
 									default_includes = arrayOfNotas(parser);
-								}
-								when else {
+								} when else {
 									System.debug(LoggingLevel.WARN, 'Meta consuming unrecognized property: '+text);
 									consumeObject(parser);
 								}
@@ -50,22 +48,17 @@ public class WSSSGenericResponse {
 							switch on text {
 								when 'sf_id' {
 									sf_id = parser.getText();
-								}
-								when 'texto' {
+								} when 'texto' {
 									texto = parser.getText();
-								}
-								when 'nota_id' {
+								} when 'nota_id' {
 									nota_id = parser.getText();
-								}
-								when 'texto_nota' {
+								} when 'texto_nota' {
 									texto_nota = parser.getText();
-								}
-								when 'usuario_nota' {
+								} when 'usuario_nota' {
 									usuario_nota = parser.getText();
-								}
-								when else {
+								} when else {
 									System.debug(LoggingLevel.WARN, 'Notas consuming unrecognized property: '+text);
-								consumeObject(parser);
+									consumeObject(parser);
 								}
 							}
 						}
@@ -95,7 +88,7 @@ public class WSSSGenericResponse {
 			public List<String> debug_message {get; set;}
 			public String exception_text {get; set;}
 			public Integer line {get; set;}
-			//public EventoMedico em {get; set;}
+			public EventoMedico em {get; set;}
 			public Data(JSONParser parser) {
 				while (parser.nextToken() != System.JSONToken.END_OBJECT) {
 					if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
@@ -104,78 +97,59 @@ public class WSSSGenericResponse {
 							switch on text {
 								when 'sf_id' {
 									sf_id = parser.getText();
-								}
-								when 'solafi_id' {
+								} when 'solafi_id' {
 									solafi_id = parser.getText();
-								}
-								when 'estado_sol' {
+								} when 'estado_sol' {
 									estado_sol = parser.getText();
-								}
-								when 'estado_dj' {
+								} when 'estado_dj' {
 									estado_dj = parser.getText();
-								}
-								when 'codigo_as' {
+								} when 'codigo_as' {
 									codigo_as = parser.getText();
-								}
-								when 'tipo_asoc' {
+								} when 'tipo_asoc' {
 									tipo_asoc = parser.getText();
-								}
-								when 'afi_id' {
+								} when 'afi_id' {
 									afi_id = parser.getText();
-								}
-								when 'empresa_codigo' {
+								} when 'empresa_codigo' {
 									empresa_codigo = parser.getText();
-								}
-								when 'suc_empresa' {
+								} when 'suc_empresa' {
 									suc_empresa = parser.getText();
-								}
-								when 'notas' {
+								} when 'notas' {
 									notas = arrayOfNotas(parser);
-								}
-								when 'ap' {
+								} when 'ap' {
 									ap = arrayOfAp(parser);
-								}
-								when 'error' {
+								} when 'error' {
 									error = parser.getBooleanValue();
-								}
-								when 'errors' {
+								} when 'errors' {
 									try {
 										Map<String, String[]> errMap = (Map<String, String[]>) parser.readValueAs(Map<String, String[]>.class);
 										errors = new Errors(errMap);
 									} catch (JSONException err) {
-										String mgs = parser.getText();
-										System.debug(err.getMessage());
-										/** Por alguna razón, se 'salta' la propiedad message y la lee como el valor de errors */
-										errors = new Errors(parser);
-										errors.message = mgs;
+										if (parser.getCurrentToken() != System.JSONToken.START_ARRAY) {
+											String mgs = parser.getText();
+											System.debug(err.getMessage());
+											/** Por alguna razón, se 'salta' la propiedad message y la lee como el valor de errors */
+											errors = new Errors(parser);
+											errors.message = mgs;
+										}
 									}
-								}
-								when 'errorType' {
+								} when 'errorType' {
 									errorType = parser.getText();
-								}
-								when 'httpCode' {
+								} when 'httpCode' {
 									httpCode = parser.getIntegerValue();
-								}
-								when 'debug_message' {
+								} when 'debug_message' {
 									List<String> debugList = (List<String>) parser.readValueAs(List<String>.class);
 									debug_message = debugList;
-								}
-								when 'exception' {
+								} when 'exception' {
 									exception_text = parser.getText();
-								}
-								when 'line' {
+								} when 'line' {
 									line = parser.getIntegerValue();
-								}
-								when 'message' {
+								} when 'message' {
 									message = parser.getText();
-								}
-								when 'reintegro' {
+								} when 'reintegro' {
 									reintegro = new Reintegro(parser);
-								}
-								when 'em' {
-									//em = new EventoMedico(parser);
-								}
-								when else {
+								} when 'em' {
+									em = new EventoMedico(parser);
+								} when else {
 									System.debug(LoggingLevel.WARN, 'Data consuming unrecognized property: ' + text);
 									consumeObject(parser);
 								}
@@ -201,8 +175,7 @@ public class WSSSGenericResponse {
 								switch on text {
 									when 'message' {
 										message = parser.getText();
-									}
-									when 'debug_message' {
+									} when 'debug_message' {
 										Map<String, String[]> errMap = (Map<String, String[]>) parser.readValueAs(Map<String, String[]>.class);
 										debug_message = errMap;
 									}
@@ -255,92 +228,63 @@ public class WSSSGenericResponse {
 								switch on text {
 									when 'lote' {
 										lote = parser.getText();
-									}
-									when 'lote_original' {
+									} when 'lote_original' {
 										lote_original = parser.getText();
-									}
-									when 'rei_id' {
+									} when 'rei_id' {
 										rei_id = parser.getText();
-									}
-									when 'orei_orei_id' {
+									} when 'orei_orei_id' {
 										orei_orei_id = parser.getText();
-									}
-									when 'fecha' {
+									} when 'fecha' {
 										fecha = parser.getText();
-									}
-									when 'del_os_codigo' {
+									} when 'del_os_codigo' {
 										del_os_codigo = parser.getText();
-									}
-									when 'afi_afi_id' {
+									} when 'afi_afi_id' {
 										afi_afi_id = parser.getText();
-									}
-									when 'codigo' {
+									} when 'codigo' {
 										codigo = parser.getText();
-									}
-									when 'asociado_nombre' {
+									} when 'asociado_nombre' {
 										asociado_nombre = parser.getText();
-									}
-									when 'em_em_id' {
+									} when 'em_em_id' {
 										em_em_id = parser.getText();
-									}
-									when 'efe_codigo_realizador' {
+									} when 'efe_codigo_realizador' {
 										efe_codigo_realizador = parser.getText();
-									}
-									when 'efe_codigo_prescriptor' {
+									} when 'efe_codigo_prescriptor' {
 										efe_codigo_prescriptor = parser.getText();
-									}
-									when 'fecha_prescripcion' {
+									} when 'fecha_prescripcion' {
 										fecha_prescripcion = parser.getText();
-									}
-									when 'diag_codigo' {
+									} when 'diag_codigo' {
 										diag_codigo = parser.getText();
-									}
-									when 'cobro_indeb' {
+									} when 'cobro_indeb' {
 										cobro_indeb = parser.getText();
-									}
-									when 'razon_social' {
+									} when 'razon_social' {
 										razon_social = parser.getText();
-									}
-									when 'cuit' {
+									} when 'cuit' {
 										cuit = parser.getText();
-									}
-									when 'tipo_comprobante' {
+									} when 'tipo_comprobante' {
 										tipo_comprobante = parser.getText();
-									}
-									when 'nro_comprobante' {
+									} when 'nro_comprobante' {
 										nro_comprobante = parser.getText();
-									}
-									when 'fecha_comprobante' {
+									} when 'fecha_comprobante' {
 										fecha_comprobante = parser.getText();
-									}
-									when 'importe' {
+									} when 'importe' {
 										importe = parser.getText();
-									}
-									when 'vda_drv_estado' {
+									} when 'vda_drv_estado' {
 										vda_drv_estado = parser.getText();
-									}
-									when 'nombre_estado' {
+									} when 'nombre_estado' {
 										nombre_estado = parser.getText();
-									}
-									when 'nro_sf' {
+									} when 'nro_sf' {
 										nro_sf = parser.getText();
-									}
-									when 'link_rein' {
+									} when 'link_rein' {
 										link_rein = parser.getText();
-									}
-									when 'celula' {
+									} when 'celula' {
 										celula = parser.getText();
-									}
-									when 'sla' {
+									} when 'sla' {
 										sla = parser.getText();
-									}
-									when 'prestaciones' {
+									} when 'prestaciones' {
 										prestaciones = arrayOfPrestaciones(parser);
-									}
-									when 'nivel' {
+									} when 'nivel' {
 										nivel = parser.getText();
-									}
-									when else {
+									} when else {
 										System.debug(LoggingLevel.WARN, 'Reintegro consuming unrecognized property: '+text);
 										consumeObject(parser);
 									}
@@ -406,143 +350,97 @@ public class WSSSGenericResponse {
 								switch on text {
 									when 'apr_id' {
 										apr_id = parser.getText();
-									}
-									when 'fecha' {
+									} when 'fecha' {
 										fecha = parser.getText();
-									}
-									when 'conexion' {
+									} when 'conexion' {
 										conexion = parser.getText();
-									}
-									when 'nombre_conexion' {
+									} when 'nombre_conexion' {
 										nombre_conexion = parser.getText();
-									}
-									when 'delegacion' {
+									} when 'delegacion' {
 										delegacion = parser.getText();
-									}
-									when 'nombre_delegacion' {
+									} when 'nombre_delegacion' {
 										nombre_delegacion = parser.getText();
-									}
-									when 'fecha_probable' {
+									} when 'fecha_probable' {
 										fecha_probable = parser.getText();
-									}
-									when  'estado' {
+									} when 'estado' {
 										estado = parser.getText();
-									}
-									when 'nombre_estado' {
+									} when 'nombre_estado' {
 										nombre_estado = parser.getText();
-									}
-									when 'user_insert' {
+									} when 'user_insert' {
 										user_insert = parser.getText();
-									}
-									when 'fecha_insert' {
+									} when 'fecha_insert' {
 										fecha_insert = parser.getText();
-									}
-									when 'codigo_afiliado' {
+									} when 'codigo_afiliado' {
 										codigo_afiliado = parser.getText();
-									}
-									when 'apellidos_afiliado' {
+									} when 'apellidos_afiliado' {
 										apellidos_afiliado = parser.getText();
-									}
-									when 'nombres_afiliado' {
+									} when 'nombres_afiliado' {
 										nombres_afiliado = parser.getText();
-									}
-									when  'doc_afiliado' {
+									} when 'doc_afiliado' {
 										doc_afiliado = parser.getText();
-									}
-									when 'evento_medico' {
+									} when 'evento_medico' {
 										evento_medico = parser.getText();
-									}
-									when 'fecha_prescripcion' {
+									} when 'fecha_prescripcion' {
 										fecha_prescripcion = parser.getText();
-									}
-									when  'diagnostico' {
+									} when 'diagnostico' {
 										diagnostico = parser.getText();
-									}
-									when 'desc_diagnostico' {
+									} when 'desc_diagnostico' {
 										desc_diagnostico = parser.getText();
-									}
-									when 'prescriptor' {
+									} when 'prescriptor' {
 										prescriptor = parser.getText();
-									}
-									when 'nombre_prescriptor' {
+									} when 'nombre_prescriptor' {
 										nombre_prescriptor = parser.getText();
-									}
-									when 'prestador_dirige' {
+									} when 'prestador_dirige' {
 										prestador_dirige = parser.getText();
-									}
-									when 'nombre_prestador_dirige' {
+									} when 'nombre_prestador_dirige' {
 										nombre_prestador_dirige = parser.getText();
-									}
-									when 'prestador' {
+									} when 'prestador' {
 										prestador = parser.getText();
-									}
-									when 'nombre_prestador' {
+									} when 'nombre_prestador' {
 										nombre_prestador = parser.getText();
-									}
-									when 'consultorio' {
+									} when 'consultorio' {
 										consultorio = parser.getText();
-									}
-									when 'nombre_consultorio' {
+									} when 'nombre_consultorio' {
 										nombre_consultorio = parser.getText();
-									}
-									when 'observaciones' {
+									} when 'observaciones' {
 										observaciones = parser.getText();
-									}
-									when 'mail' {
+									} when 'mail' {
 										mail = parser.getText();
-									}
-									when 'otros_mail' {
+									} when 'otros_mail' {
 										otros_mail = parser.getText();
-									}
-									when 'aca_agencia' {
+									} when 'aca_agencia' {
 										aca_agencia = parser.getText();
-									}
-									when 'tran_alta' {
+									} when 'tran_alta' {
 										tran_alta = parser.getText();
-									}
-									when 'tran_anulacion' {
+									} when 'tran_anulacion' {
 										tran_anulacion = parser.getText();
-									}
-									when 'ref_externa' {
+									} when 'ref_externa' {
 										ref_externa = parser.getText();
-									}
-									when 'urgente' {
+									} when 'urgente' {
 										urgente = parser.getText();
-									}
-									when 'afi_id' {
+									} when 'afi_id' {
 										afi_id = parser.getText();
-									}
-									when 'nro_sf' {
+									} when 'nro_sf' {
 										nro_sf = parser.getText();
-									}
-									when 'nivel' {
+									} when 'nivel' {
 										nivel = translateNivel(parser.getText());
-									}
-									when 'clasificacion' {
+									} when 'clasificacion' {
 										clasificacion = parser.getText();
-									}
-									when 'tipo_ap_sf' {
+									} when 'tipo_ap_sf' {
 										tipo_ap_sf = parser.getText();
-									}
-									when 'ap_material' {
+									} when 'ap_material' {
 										ap_material = parser.getText();
-									}
-									when 'ap_presupuesto' {
+									} when 'ap_presupuesto' {
 										ap_presupuesto = parser.getText();
-									}
-									when 'celula' {
+									} when 'celula' {
 										celula = parser.getText();
-									}
-									when 'sla' {
+									} when 'sla' {
 										sla = parser.getText();
-									}
-									when 'estado_em' {
+									} when 'estado_em' {
 										estado_em = parser.getText();
-									}
-									when 'prestaciones' {
+									} when 'prestaciones' {
 										prestaciones = arrayOfPrestaciones(parser);
-									}
-									when else {
+									} when else {
 										System.debug(LoggingLevel.WARN, 'Ap consuming unrecognized property: '+text);
 										consumeObject(parser);
 									}
@@ -589,86 +487,59 @@ public class WSSSGenericResponse {
 									switch on text {
 										when 'apr_id' {
 											apr_id = parser.getText();
-										}
-										when 'estado_prestacion' {
+										} when 'estado_prestacion' {
 											estado_prestacion = parser.getText();
-										}
-										when 'estado_descripcion' {
+										} when 'estado_descripcion' {
 											estado_descripcion = parser.getText();
-										}
-										when 'contexto' {
+										} when 'contexto' {
 											contexto = parser.getText();
-										}
-										when 'cantidad' {
+										} when 'cantidad' {
 											cantidad = parser.getText();
-										}
-										when 'prestacion' {
+										} when 'prestacion' {
 											prestacion = parser.getText();
-										}
-										when 'nombre_prestacion' {
+										} when 'nombre_prestacion' {
 											nombre_prestacion = parser.getText();
-										}
-										when 'tipo_prestacion' {
+										} when 'tipo_prestacion' {
 											tipo_prestacion = parser.getText();
-										}
-										when 'troquel' {
+										} when 'troquel' {
 											troquel = parser.getText();
-										}
-										when 'grupo_prestacion' {
+										} when 'grupo_prestacion' {
 											grupo_prestacion = parser.getText();
-										}
-										when 'pca_id' {
+										} when 'pca_id' {
 											pca_id = parser.getText();
-										}
-										when 'alerta' {
+										} when 'alerta' {
 											alerta = parser.getText();
-										}
-										when 'texto_aclarativo' {
+										} when 'texto_aclarativo' {
 											texto_aclarativo = parser.getText();
-										}
-										when 'importe_plan_sys' {
+										} when 'importe_plan_sys' {
 											importe_plan_sys = parser.getText();
-										}
-										when 'importe_plan_aud' {
+										} when 'importe_plan_aud' {
 											importe_plan_aud = parser.getText();
-										}
-										when 'importe_convenio_sys' {
+										} when 'importe_convenio_sys' {
 											importe_convenio_sys = parser.getText();
-										}
-										when 'importe_convenio_aud' {
+										} when 'importe_convenio_aud' {
 											importe_convenio_aud = parser.getText();
-										}
-										when 'importe_cargo_al_socio_sys' {
+										} when 'importe_cargo_al_socio_sys' {
 											importe_cargo_al_socio_sys = parser.getText();
-										}
-										when 'importe_cargo_al_socio_aud' {
+										} when 'importe_cargo_al_socio_aud' {
 											importe_cargo_al_socio_aud = parser.getText();
-										}
-										when 'importe_rein_sys' {
+										} when 'importe_rein_sys' {
 											importe_rein_sys = parser.getText();
-										}
-										when 'importe_rein_aud' {
+										} when 'importe_rein_aud' {
 											importe_rein_aud = parser.getText();
-										}
-										when 'alertas' {
+										} when 'alertas' {
 											alertas = arrayOfAlertas(parser);
-										}
-										when 'rei_id' {
+										} when 'rei_id' {
 											rei_id = parser.getText();
-										}
-										when 'nro_sf' {
+										} when 'nro_sf' {
 											nro_sf = parser.getText();
-										}
-										when 'cara_pieza_dental' {
+										} when 'cara_pieza_dental' {
 											cara_pieza_dental = parser.getText();
-										}
-										when 'importe_pagar' {
+										} when 'importe_pagar' {
 											importe_pagar = parser.getText();
-										}
-										when 'pieza_dental' {
+										} when 'pieza_dental' {
 											pieza_dental = parser.getText();
-										}
-										when else {
+										} when else {
 											System.debug(LoggingLevel.WARN, 'Prestaciones consuming unrecognized property: '+text);
 											consumeObject(parser);
 										}
@@ -705,56 +576,39 @@ public class WSSSGenericResponse {
 										switch on text {
 											when 'pca_pca_id' {
 												pca_pca_id = parser.getText();
-											}
-											when 'aca_id' {
+											} when 'aca_id' {
 												aca_id = parser.getText();
-											}
-											when 'cca_cca_id' {
+											} when 'cca_cca_id' {
 												cca_cca_id = parser.getText();
-											}
-											when 'control' {
+											} when 'control' {
 												control = parser.getText();
-											}
-											when 'nombre_control' {
+											} when 'nombre_control' {
 												nombre_control = parser.getText();
-											}
-											when 'funcion' {
+											} when 'funcion' {
 												funcion = parser.getText();
-											}
-											when 'texto_aclarativo' {
+											} when 'texto_aclarativo' {
 												texto_aclarativo = parser.getText();
-											}
-											when 'nivel_auditoria' {
+											} when 'nivel_auditoria' {
 												nivel_auditoria = parser.getText();
-											}
-											when 'estado_alerta' {
+											} when 'estado_alerta' {
 												estado_alerta = parser.getText();
-											}
-											when 'descripcion_estado' {
+											} when 'descripcion_estado' {
 												descripcion_estado = parser.getText();
-											}
-											when 'nota_auditor' {
+											} when 'nota_auditor' {
 												nota_auditor = parser.getText();
-											}
-											when 'observaciones' {
+											} when 'observaciones' {
 												observaciones = parser.getText();
-											}
-											when 'fecha_generacion' {
+											} when 'fecha_generacion' {
 												fecha_generacion = parser.getText();
-											}
-											when 'fecha_lectura' {
+											} when 'fecha_lectura' {
 												fecha_lectura = parser.getText();
-											}
-											when 'auditor_lee' {
+											} when 'auditor_lee' {
 												auditor_lee = parser.getText();
-											}
-											when 'fecha_resolucion' {
+											} when 'fecha_resolucion' {
 												fecha_resolucion = parser.getText();
-											}
-											when 'auditor_resuelve' {
+											} when 'auditor_resuelve' {
 												auditor_resuelve = parser.getText();
-											}
-											when else {
+											} when else {
 												System.debug(LoggingLevel.WARN, 'Alertas consuming unrecognized property: '+text);
 												consumeObject(parser);
 											}
@@ -764,6 +618,291 @@ public class WSSSGenericResponse {
 							}
 						}
 					}
+		/** Objeto Evento Médico */
+			public class EventoMedico {
+				public String em_id {get;set;}
+				public String fecha_inicio {get;set;}
+				public String estado {get;set;}
+				public String emitido {get;set;}
+				public String alerta {get;set;}
+				public String fecha_emision {get;set;}
+				public List<Segmento> segmento {get;set;}
+				public String efe_codigo_lugar {get;set;}
+				public String cons_lugar {get;set;}
+				public String nom_lugar {get;set;}
+				public String nom_cons {get;set;}
+				public String efe_codigo_resp {get;set;}
+				public String nom_resp {get;set;}
+				public String efe_codigo_solic {get;set;}
+				public String nom_solic {get;set;}
+				public String tem_codigo {get;set;}
+				public String nom_tipo {get;set;}
+				public String contexto {get;set;}
+				public String de_seguimiento {get;set;}
+				public String recupero {get;set;}
+				public String diferido {get;set;}
+				public String suspendido {get;set;}
+				public String fec_vto_certif {get;set;}
+				public String cod_motivo {get;set;}
+				public String nom_motivo {get;set;}
+				public String mail {get;set;}
+				public String diag_codigo {get;set;}
+				public String diag_nombre {get;set;}
+				public String complicaciones {get;set;}
+				public String grup_pres {get;set;}
+				public String gpres_nombre {get;set;}
+				public String nro_prestacion {get;set;}
+				public String nom_prestacion {get;set;}
+				public String aut_previa {get;set;}
+				public String feem_codigo {get;set;}
+				public String feem_nombre {get;set;}
+				public String domi_entrega {get;set;}
+				public String agenia {get;set;}
+				public String otro_domi {get;set;}
+				public String via_entrega {get;set;}
+				public String domicilio {get;set;}
+				public String em_de_seguimiento {get;set;}
+				public String tipo_seg {get;set;}
+				public String nom_tipo_seg {get;set;}
+				public String estado_seg {get;set;}
+				public String desc_seg {get;set;}
+				public String cod_regla {get;set;}
+				public String nom_regla {get;set;}
+				public String sistema {get;set;}
+				public String descr_em {get;set;}
+				public String nom_delegacion {get;set;}
+				public String obs_em {get;set;}
+				public String afi_afi_id {get;set;}
+				public String apr_apr_id {get;set;}
+				public String check_mat {get;set;}
+				public String check_presu {get;set;}
+				public String importe_presu {get;set;}
+				public String nro_sf {get;set;}
+				public String link_em {get;set;}
+				public EventoMedico(JSONParser parser) {
+					while (parser.nextToken() != System.JSONToken.END_OBJECT) {
+						if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
+							String text = parser.getText();
+							if (parser.nextToken() != System.JSONToken.VALUE_NULL) {
+								switch on text {
+									when 'em_id' {
+										em_id = parser.getText();
+									} when 'fecha_inicio' {
+										fecha_inicio = parser.getText();
+									} when 'estado' {
+										estado = parser.getText();
+									} when 'emitido' {
+										emitido = parser.getText();
+									} when 'alerta' {
+										alerta = parser.getText();
+									} when 'fecha_emision' {
+										fecha_emision = parser.getText();
+									} when 'segmento' {
+										segmento = arrayOfSegmento(parser);
+									} when 'efe_codigo_lugar' {
+										efe_codigo_lugar = parser.getText();
+									} when 'cons_lugar' {
+										cons_lugar = parser.getText();
+									} when 'nom_lugar' {
+										nom_lugar = parser.getText();
+									} when 'nom_cons' {
+										nom_cons = parser.getText();
+									} when 'efe_codigo_resp' {
+										efe_codigo_resp = parser.getText();
+									} when 'nom_resp' {
+										nom_resp = parser.getText();
+									} when 'efe_codigo_solic' {
+										efe_codigo_solic = parser.getText();
+									} when 'nom_solic' {
+										nom_solic = parser.getText();
+									} when'tem_codigo' {
+										tem_codigo = parser.getText();
+									} when 'nom_tipo' {
+										nom_tipo = parser.getText();
+									} when 'contexto' {
+										contexto = parser.getText();
+									} when 'de_seguimiento' {
+										de_seguimiento = parser.getText();
+									} when'recupero' {
+										recupero = parser.getText();
+									} when 'diferido' {
+										diferido = parser.getText();
+									} when 'suspendido' {
+										suspendido = parser.getText();
+									} when 'fec_vto_certif' {
+										fec_vto_certif = parser.getText();
+									} when 'cod_motivo' {
+										cod_motivo = parser.getText();
+									} when 'nom_motivo' {
+										nom_motivo = parser.getText();
+									} when 'mail' {
+										mail = parser.getText();
+									} when 'diag_codigo' {
+										diag_codigo = parser.getText();
+									} when 'diag_nombre' {
+										diag_nombre = parser.getText();
+									} when 'complicaciones' {
+										complicaciones = parser.getText();
+									} when 'grup_pres' {
+										grup_pres = parser.getText();
+									} when 'gpres_nombre' {
+										gpres_nombre = parser.getText();
+									} when 'nro_prestacion' {
+										nro_prestacion = parser.getText();
+									} when 'nom_prestacion' {
+										nom_prestacion = parser.getText();
+									} when 'aut_previa' {
+										aut_previa = parser.getText();
+									} when 'feem_codigo' {
+										feem_codigo = parser.getText();
+									} when 'feem_nombre' {
+										feem_nombre = parser.getText();
+									} when 'domi_entrega' {
+										domi_entrega = parser.getText();
+									} when 'agenia' {
+										agenia = parser.getText();
+									} when 'otro_domi' {
+										otro_domi = parser.getText();
+									} when 'via_entrega' {
+										via_entrega = parser.getText();
+									} when'domicilio' {
+										domicilio = parser.getText();
+									} when 'em_de_seguimiento' {
+										em_de_seguimiento = parser.getText();
+									} when 'tipo_seg' {
+										tipo_seg = parser.getText();
+									} when 'nom_tipo_seg' {
+										nom_tipo_seg = parser.getText();
+									} when 'estado_seg' {
+										estado_seg = parser.getText();
+									} when 'desc_seg' {
+										desc_seg = parser.getText();
+									} when 'cod_regla' {
+										cod_regla = parser.getText();
+									} when 'nom_regla' {
+										nom_regla = parser.getText();
+									} when 'sistema' {
+										sistema = parser.getText();
+									} when 'descr_em' {
+										descr_em = parser.getText();
+									} when 'nom_delegacion' {
+										nom_delegacion = parser.getText();
+									} when 'obs_em' {
+										obs_em = parser.getText();
+									} when 'afi_afi_id' {
+										afi_afi_id = parser.getText();
+									} when 'apr_apr_id' {
+										apr_apr_id = parser.getText();
+									} when 'check_mat' {
+										check_mat = parser.getText();
+									} when 'check_presu' {
+										check_presu = parser.getText();
+									} when 'importe_presu' {
+										importe_presu = parser.getText();
+									} when 'nro_sf' {
+										nro_sf = parser.getText();
+									} when 'link_em' {
+										link_em = parser.getText();
+									} when else {
+										System.debug(LoggingLevel.WARN, 'Em consuming unrecognized property: '+text);
+										consumeObject(parser);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			/** Objecto Segmento */
+				public class Segmento {
+					public String em_em_id {get;set;}
+					public String sem_id {get;set;}
+					public String fecha {get;set;}
+					public String solicitante {get;set;}
+					public String nom_solicitante {get;set;}
+					public String fecha_desde_tentativa {get;set;}
+					public String fecha_hasta_tentativa {get;set;}
+					public String cant_dias {get;set;}
+					public String estado {get;set;}
+					public String cod_auditor {get;set;}
+					public String ape_auditor {get;set;}
+					public String nom_auditor {get;set;}
+					public String fecha_real_desde {get;set;}
+					public String fecha_real_hasta {get;set;}
+					public String orig_fecha_real {get;set;}
+					public String cod_audito2 {get;set;}
+					public String ape_auditor2 {get;set;}
+					public String nom_auditor2 {get;set;}
+					public String prestador {get;set;}
+					public String pres_nombre {get;set;}
+					public String presentacion {get;set;}
+					public String lote {get;set;}
+					public String obs {get;set;}
+					public String aca_nro_sf {get;set;}
+					public Segmento(JSONParser parser) {
+						while (parser.nextToken() != System.JSONToken.END_OBJECT) {
+							if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
+								String text = parser.getText();
+								if (parser.nextToken() != System.JSONToken.VALUE_NULL) {
+									switch on text {
+										when 'em_em_id' {
+											em_em_id = parser.getText();
+										} when 'sem_id' {
+											sem_id = parser.getText();
+										} when 'fecha' {
+											fecha = parser.getText();
+										} when 'solicitante' {
+											solicitante = parser.getText();
+										} when 'nom_solicitante' {
+											nom_solicitante = parser.getText();
+										} when 'fecha_desde_tentativa' {
+											fecha_desde_tentativa = parser.getText();
+										} when 'fecha_hasta_tentativa' {
+											fecha_hasta_tentativa = parser.getText();
+										} when 'cant_dias' {
+											cant_dias = parser.getText();
+										} when 'estado' {
+											estado = parser.getText();
+										} when 'cod_auditor' {
+											cod_auditor = parser.getText();
+										} when 'ape_auditor' {
+											ape_auditor = parser.getText();
+										} when 'nom_auditor' {
+											nom_auditor = parser.getText();
+										} when 'fecha_real_desde' {
+											fecha_real_desde = parser.getText();
+										} when 'fecha_real_hasta' {
+											fecha_real_hasta = parser.getText();
+										} when 'orig_fecha_real' {
+											orig_fecha_real = parser.getText();
+										} when 'cod_audito2' {
+											cod_audito2 = parser.getText();
+										} when 'ape_auditor2' {
+											ape_auditor2 = parser.getText();
+										} when 'nom_auditor2' {
+											nom_auditor2 = parser.getText();
+										} when 'prestador' {
+											prestador = parser.getText();
+										} when 'pres_nombre' {
+											pres_nombre = parser.getText();
+										} when 'presentacion' {
+											presentacion = parser.getText();
+										} when 'lote' {
+											lote = parser.getText();
+										} when 'obs' {
+											obs = parser.getText();
+										} when 'aca_nro_sf' {
+											aca_nro_sf = parser.getText();
+										} when else {
+											System.debug(LoggingLevel.WARN, 'Segmento consuming unrecognized property: '+text);
+											consumeObject(parser);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 	/** Constructor */
 	public WSSSGenericResponse (JSONParser parser) {
 		while (parser.nextToken() != System.JSONToken.END_OBJECT) {
@@ -773,25 +912,20 @@ public class WSSSGenericResponse {
 					switch on text {
 						when 'error' {
 							error = parser.getBooleanValue();
-						}
-						when 'data' {
+						} when 'data' {
 							if (parser.getCurrentToken() == System.JSONToken.START_ARRAY) {
 								data = arrayofDatas(parser);
 							} else if (parser.getCurrentToken() == System.JSONToken.START_OBJECT) {
 								Data dataToList =  new Data(parser);
 								data = new List<Data>{dataToList};
 							}
-						}
-						when 'httpCode' {
+						} when 'httpCode' {
 							httpCode = parser.getIntegerValue();
-						}
-						when 'message' {
+						} when 'message' {
 							message = parser.getText();
-						}
-						when 'meta' {
+						} when 'meta' {
 							meta = new Meta(parser);
-						}
-						when else {
+						} when else {
 							System.debug(LoggingLevel.WARN, 'WSSSGenericResponse consuming unrecognized property: '+text);
 							consumeObject(parser);
 						}
@@ -845,6 +979,14 @@ public class WSSSGenericResponse {
 		}
 		return res;
 	}
+	private static List<Segmento> arrayOfSegmento(System.JSONParser p) {
+		List<Segmento> res = new List<Segmento>();
+		if (p.getCurrentToken() == null) p.nextToken();
+		while (p.nextToken() != System.JSONToken.END_ARRAY) {
+			res.add(new Segmento(p));
+		}
+		return res;
+	}
 	public static void consumeObject(System.JSONParser parser) {
 		Integer depth = 0;
 		do {
@@ -861,17 +1003,16 @@ public class WSSSGenericResponse {
 	/** Para enviar y determinar el mensaje de error */
 	public String processMessage () {
 		String message = '';
+		System.debug(this.data[0]);
 		if (this.data[0].httpCode > 400 && this.data[0].httpCode <= 500) {
 			if (!String.isBlank(this.message) && this.error) {
 				message = this.message;
-			}else if (!String.isBlank(this.data[0].message) && this.data[0].errors.errors.values().size() > 0) {
+			}  else if (!String.isBlank(this.data[0].message) && this.data[0].errors.errors.values().size() > 0) {
 				message = processErrorMessages();
-			}
-			else if (!String.isBlank(this.data[0].message) && this.data[0].error) {
+			} else if (!String.isBlank(this.data[0].message) && this.data[0].error) {
 				message = this.data[0].message;
 			}
-		}
-		else{
+		} else{
 			message = processErrorMessages();
 		}
 		return message;
@@ -889,14 +1030,11 @@ public class WSSSGenericResponse {
 		switch on lvl{
 			when 'N1'{
 				return 'Nivel 1';
-			}
-			when 'N2'{
+			} when 'N2'{
 				return 'Nivel 2';
-			}
-			when 'N3'{
+			} when 'N3'{
 				return 'Nivel 3';
-			}
-			when else{
+			} when else{
 				return 'Nivel 1';
 			}
 		}
