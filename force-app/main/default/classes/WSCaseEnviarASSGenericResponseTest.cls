@@ -1,6 +1,6 @@
 @isTest
 public class WSCaseEnviarASSGenericResponseTest {
-    public static String jsonError = '{'+
+    /*public static String jsonError = '{'+
 		'    \"data\": {'+
 		'        \"error\": true,'+
 		'        \"errors\": {'+
@@ -89,5 +89,5 @@ public class WSCaseEnviarASSGenericResponseTest {
     static testMethod void testParse() {
 		WSCaseEnviarASSGenericResponse obj = WSCaseEnviarASSGenericResponse.parse(json('someId'));
 		System.assert(obj != null);
-	}
+	}*/
 }

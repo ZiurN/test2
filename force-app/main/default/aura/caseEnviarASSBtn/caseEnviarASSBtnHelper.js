@@ -1,34 +1,33 @@
 ({
 	checkAttachmentAndSendToSS: function (component, event, idAP) {
-        let helper = this;
+		let helper = this;
 		let emId = component.get('v.caseSimpleRecord').Evento_Medico__c;
-        LightningUtils.callApex(
-            component,
-            "hasAttachments",
-            function(succeed, result, errors) {
-                if(succeed) {
-                    if(!result) {
-                        LightningUtils.showToast(
-                            "Info",
-                            "No se puede enviar porque no tiene archivos adjuntos"
-                        );
-                    } else {
-                        helper.sendToSS(component, event, idAP);
-                    }
-                } else {
+		LightningUtils.callApex(
+			component,
+			"hasAttachments",
+			function(succeed, result, errors) {
+				if(succeed) {
+					if(!result) {
+						LightningUtils.showToast(
+							"Info",
+							"No se puede enviar porque no tiene archivos adjuntos",
+							{"type":"warning"}
+						);
+					} else {
+						helper.sendToSS(component, event, idAP);
+					}
+				} else {
 
-                }
-            },
-            {
-                caseId : idAP,
+				}
+			},
+			{
+				caseId : idAP,
 				emId : emId
-            }
-        );
-    },
-
+			}
+		);
+	},
 	sendToSS: function (component, event, idAP) {
 		component.set('v.isLoading', true);
-		
 		LightningUtils.callApex(
 			component,
 			"sendCaseToSS",
@@ -40,20 +39,18 @@
 						$A.get('e.force:refreshView').fire();
 					}
 					else {
-						LightningUtils.showToast("Info", result.message, {"type":"error"});
-                        component.set('v.isLoading', false);
+						LightningUtils.showToast("Info", result.auraMessage.message, {"type":result.auraMessage.status});
+						component.set('v.isLoading', false);
 					}
 				} else {
-					let errorMsg = errors[0]['message'] != undefined && errors[0]['message'] != null ? errors[0]['message'] : 'Contacte con un administrador'; 
-				    
-				    LightningUtils.showToast("Info", errorMsg , {"type":"error"});
-                }
+					let errorMsg = errors[0]['message'] != undefined && errors[0]['message'] != null ? errors[0]['message'] : 'Contacte con un administrador';
+					LightningUtils.showToast("Info", errorMsg , {"type":"error"});
+				}
 				component.set('v.isLoading', false);
 			},
 			{
 				caseToSend : idAP
 			}
 		);
-		
 	}
 })

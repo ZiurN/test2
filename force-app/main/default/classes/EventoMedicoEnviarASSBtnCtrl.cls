@@ -82,7 +82,7 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl {
 		if(!isOwner) {
 			return new Response(false, System.Label.Alerta_NoAuth_UsuarioNoPropietario);
 		}
-		return new Response(false, 'OK');
+		return new Response(false, 'Ok');
 	}
 	private static void updateEMAndCreateSegmentCasePrestAndAlerts (Evento_medico__c emFromSF, WSEventoMedicoEnviarASSHelper.Response wsResp) {
 		Segmentos__c[] segmentosToUpdate = new List<Segmentos__c>();
@@ -221,7 +221,7 @@ public without sharing class EventoMedicoEnviarASSBtnCtrl {
 						when 'N' {
 							prestToUpdate.Prestacion__r = new Nomenclador_de_Prestacion__c(Codigo__c = prestWS.prestacion);
 							if (!nomencladoresToUpsert.containsKey(prestWS.prestacion)) {
-								Nomenclador_de_Prestacion__c nomenclador =new Nomenclador_de_Prestacion__c(
+								Nomenclador_de_Prestacion__c nomenclador = new Nomenclador_de_Prestacion__c (
 									Codigo__c = prestWS.prestacion,
 									Estado__c = 'A'
 								);

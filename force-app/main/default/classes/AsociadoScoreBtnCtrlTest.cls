@@ -4,8 +4,7 @@ public class AsociadoScoreBtnCtrlTest {
     static XHttpCalloutMock getResponseError;
 
     static {
-		WSCaseReintegroEnviarASSMock mock = new WSCaseReintegroEnviarASSMock();
-		
+
 		getResponseFound = new XHttpCalloutMock();
 		getResponseFound.buildResponse()
 			.withStatus('OK')
@@ -48,7 +47,7 @@ public class AsociadoScoreBtnCtrlTest {
         ];
 
         System.assertEquals(false,responseToAssert.hasError);
-        System.assertEquals(null,responseToAssert.message);
+        System.assertEquals('Ok',responseToAssert.message);
         System.assertEquals('-886034.17', accToAssert.Indice_de_Rentabilidad__c);
         System.assertEquals('ROJO', accToAssert.Color_scoring__c);
 

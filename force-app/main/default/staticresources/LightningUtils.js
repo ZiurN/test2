@@ -10,7 +10,6 @@ window.LightningUtils = (function() {
 		callApex: function(component, action, callback, params) {
 			var recordId = component.get("v.recordId");
 			var action = component.get("c." + action);
-			
 			if(params) {
 				action.setParams(params);
 			}
@@ -20,7 +19,6 @@ window.LightningUtils = (function() {
 			console.log(action);
 			$A.enqueueAction(action);
 		},
-		
 		showToast : function(title, message, otherParams) {
 			var params = {};
 			if(otherParams) {

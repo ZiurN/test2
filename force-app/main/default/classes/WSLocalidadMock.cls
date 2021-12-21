@@ -1,5 +1,5 @@
-public class WSLocalidadMock {
-    public static String getFound() {
+public without sharing class WSLocalidadMock {
+    /**public static String getFound() {
         return '{' +
                     '"data": [' +
                         '{' +
@@ -651,12 +651,8 @@ public class WSLocalidadMock {
                     '}' +
     '}';
     }
-
-   
-    
     public static String getFound2(){
-
-    return '{' +
+    	return '{' +
             '"data": [' +
                 '{' +
                     '"codigo_postal": "1139CFE",' +
@@ -1306,20 +1302,19 @@ public class WSLocalidadMock {
             '}' +
         '}' ;
     }
-    
     public static String getError(){
-        return '{' + 
-                    '"data": {' + 
-                        '"error": true,' + 
-                        '"errors": [],' + 
-                        '"errorType": "exception",' + 
-                        '"httpCode": 404,' + 
-                        '"message": "La ruta que está buscando no existe.",' + 
-                        '"debug_message": [],' + 
-                        '"exception": "NotFoundHttpException",' + 
-                        '"file": "C:\\Apache24_64\\htdocs\\aca_salud_test\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\RouteCollection.php",' + 
-                        '"line": 179' + 
-                    '}' + 
+        return '{' +
+                    '"data": {' +
+                        '"error": true,' +
+                        '"errors": [],' +
+                        '"errorType": "exception",' +
+                        '"httpCode": 404,' +
+                        '"message": "La ruta que está buscando no existe.",' +
+                        '"debug_message": [],' +
+                        '"exception": "NotFoundHttpException",' +
+                        '"file": "C:\\Apache24_64\\htdocs\\aca_salud_test\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\RouteCollection.php",' +
+                        '"line": 179' +
+                    '}' +
                 '}' ;
     }
     public static String getEmpty(){
@@ -1363,5 +1358,5 @@ public class WSLocalidadMock {
                         '}' +
                     '}' +
                 '}' ;
-    }
+    }*/
 }

@@ -42,7 +42,7 @@ private class WSCaseAPAnularTest {
         Test.stopTest();
 
         System.assertEquals(false,resp.hasError);
-        System.assertEquals(null,resp.message);
+        System.assertEquals('Ok', resp.message);
         System.assertEquals('1014009953',resp.result.data.ap.apr_id);
         System.assertEquals('2020-02-12 00:00:00',resp.result.data.ap.fecha);
         System.assertEquals('CX--MOST',resp.result.data.ap.conexion);

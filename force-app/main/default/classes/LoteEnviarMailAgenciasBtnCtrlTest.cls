@@ -38,7 +38,7 @@ public class LoteEnviarMailAgenciasBtnCtrlTest {
         Test.stopTest();
 
         System.assertEquals(false,responseToAssert.hasError);
-        System.assertEquals(null,responseToAssert.message);
+        System.assertEquals('Ok',responseToAssert.message);
     }
 
     @IsTest

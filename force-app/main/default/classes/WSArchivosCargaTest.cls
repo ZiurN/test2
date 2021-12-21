@@ -49,7 +49,7 @@ public class WSArchivosCargaTest  {
 		Test.stopTest();
 
 		System.assertEquals(false,resp.hasError);
-		System.assertEquals(null,resp.message);
+		System.assertEquals('Ok', resp.message);
 	}
 
 

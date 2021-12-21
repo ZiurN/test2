@@ -7,7 +7,7 @@ public class AsociadoCuponDePagoCtrlTest {
         AsociadoCuponDePagoCtrl.Response responseToAssert = AsociadoCuponDePagoCtrl.getDeudasAsociado(new Integer[]{23162069},System.today());
         Test.stopTest();
 
-        System.assertEquals(null, responseToAssert.message);
+        System.assertEquals('Ok', responseToAssert.message);
 
         System.assertEquals(1, responseToAssert.datosDeDeudas.size());
         System.assertEquals('03/12/2019',responseToAssert.datosDeDeudas.get(0).vencimiento);

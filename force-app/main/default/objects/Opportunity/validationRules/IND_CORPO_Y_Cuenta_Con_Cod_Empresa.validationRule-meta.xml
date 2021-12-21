@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IND_CORPO_Y_Cuenta_Con_Cod_Empresa</fullName>
+    <active>true</active>
+    <description>Validacion creada para evitar la creación de Opp Individual Corporativas en Cuentas Empresa sin Código Empresa - JIRA DES 3833/5950</description>
+    <errorConditionFormula>AND(
+$Profile.Name != &apos;Administrador del sistema&apos;,
+ISNEW(),
+RecordType.DeveloperName = &apos;Individual_Corporativo&apos;,
+ISBLANK(Account.Codigo_de_empresa__c ) 
+)</errorConditionFormula>
+    <errorMessage>No puede crear una Oportunidad Individual Corporativa a una Empresa sin Código de Empresa Válido. Debe esperar el alta de la Empresa, para incorporar Oportunidades individuales a dicha cuenta.</errorMessage>
+</ValidationRule>

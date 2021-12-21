@@ -6,7 +6,6 @@ public class WSAuthToken {
 
 	public static Response getToken() {
 		Response result = new Response();
-
 		String bodyValue = 
 			'grant_type=password'
 				+ '&username=' + SERVICE_CONFIG.User__c +
