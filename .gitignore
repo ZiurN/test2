@@ -1,6 +1,7 @@
 # GitIgnore for Salesforce Projects
 # Project Settings and MetaData
 .sfdx/
+.vim*
 delta*/
 .project
 .settings/

@@ -58,7 +58,7 @@ private class CrearIntegranteOverrideBtnControllerTest {
         Account obraSocial = Build.anAccountObrasocial().build();
         Localidad__c loc = new Localidad__c();
         insert new List<SObject> {delegacion, entidad, familiar, obraSocial, loc};
-        Case casoSolicitudDespeguesFT = Build.aCaseSolicituddedespegues()
+        Case casoSolicitudDespeguesFT = Build.aCaseSolicitudDedespegues()
                                     .withDerivaAportes(true)
                                     .withAporte(5000)
                                     .withBebeSinDNI(true)

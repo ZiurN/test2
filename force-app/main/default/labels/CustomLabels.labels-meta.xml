@@ -33,6 +33,38 @@
         <value>Solo se pueden autorizar alertas ID si hay un responsable asignado al caso</value>
     </labels>
     <labels>
+        <fullName>Alerta_BajaParcialSinIntegrantes</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_BajaParcialSinIntegrantes</shortDescription>
+        <value>No puede generar una baja parcial sin integrantes</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_CasoBajaTipoInvalido</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_CasoBajaTipoInvalido</shortDescription>
+        <value>El caso no tiene un tipo de baja válido</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_CasoNoSolicitud</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_CasoNoSolicitud</shortDescription>
+        <value>El caso no es una solicitud</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_InvalidCaseClosed</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_InvalidCaseClosed</shortDescription>
+        <value>Caso inválido, compruebe que el caso no este cerrado</value>
+    </labels>
+    <labels>
         <fullName>Alerta_NoAuth_AlertAM</fullName>
         <categories>Alertas</categories>
         <language>en_US</language>
@@ -153,6 +185,14 @@
         <value>El usuario no es el propietario</value>
     </labels>
     <labels>
+        <fullName>Alerta_NoEnviarSInAdjuntos</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoEnviarSInAdjuntos</shortDescription>
+        <value>No se puede enviar porque no tiene archivos adjuntos</value>
+    </labels>
+    <labels>
         <fullName>Email_EnvioCorrecto</fullName>
         <categories>Email Class</categories>
         <language>en_US</language>
@@ -175,6 +215,14 @@
         <protected>false</protected>
         <shortDescription>Email_NoTemplate</shortDescription>
         <value>No se encontro una plantilla para el envio de mail</value>
+    </labels>
+    <labels>
+        <fullName>Error_NoPuedeEliminarCoberturaEnviadaSS</fullName>
+        <categories>Error</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Error_NoPuedeEliminarCoberturaEnviadaSS</shortDescription>
+        <value>No se puede eliminar la Cobertura Especial porque ya fue enviada a SaludSoft</value>
     </labels>
     <labels>
         <fullName>LA_PreChat_Base_LiveChat_04I1U0000008Wy8_3750225</fullName>
@@ -201,35 +249,35 @@
         <value>Avalian - Solicitud de ingreso y DDJJ completa.pdf</value>
     </labels>
     <labels>
-        <fullName>Alerta_CasoNoSolicitud</fullName>
-        <categories>Alertas</categories>
+        <fullName>Alerta_ArchivoDeOportunidad</fullName>
+        <categories>Alertas CDLink</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>Alerta_CasoNoSolicitud</shortDescription>
-        <value>El caso no es una solicitud</value>
+        <shortDescription>Alerta_ArchivoDeOportunidad</shortDescription>
+        <value>No se pueden eliminar archivos de oportunidades</value>
     </labels>
     <labels>
-        <fullName>Alerta_InvalidCaseClosed</fullName>
-        <categories>Alertas</categories>
+        <fullName>Alerta_ArchivoEnviadoASS</fullName>
+        <categories>Alertas CDLink</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>Alerta_InvalidCaseClosed</shortDescription>
-        <value>Caso inválido, compruebe que el caso no este cerrado</value>
+        <shortDescription>Alerta_ArchivoEnviadoASS</shortDescription>
+        <value>No se pueden eliminar archivos si el caso ya fue enviado a Salud Soft</value>
     </labels>
     <labels>
-        <fullName>Alerta_NoEnviarSInAdjuntos</fullName>
-        <categories>Alertas</categories>
+        <fullName>Alerta_ArchivoMayor3MB</fullName>
+        <categories>Alertas CDLink</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>Alerta_NoEnviarSInAdjuntos</shortDescription>
-        <value>El caso no se puede enviar sin archivos adjuntos</value>
+        <shortDescription>Alerta_ArchivoMayor3MB</shortDescription>
+        <value>El tamaño del archivo no debe superar los 3MB</value>
     </labels>
     <labels>
-        <fullName>Error_NoPuedeEliminarCoberturaEnviadaSS</fullName>
-        <categories>Error</categories>
+        <fullName>Alerta_YaExisteArchivoMismoNombre</fullName>
+        <categories>Alertas CDLink</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>Error_NoPuedeEliminarCoberturaEnviadaSS</shortDescription>
-        <value>No se puede eliminar la Cobertura Especial porque ya fue enviada a SaludSoft</value>
+        <shortDescription>Alerta_YaExisteArchivoMismoNombre</shortDescription>
+        <value>Ya existe un archivo, adjunto a este registro, con el mismo nombre</value>
     </labels>
 </CustomLabels>

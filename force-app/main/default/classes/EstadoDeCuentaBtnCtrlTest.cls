@@ -4,8 +4,7 @@ public class EstadoDeCuentaBtnCtrlTest {
     static XHttpCalloutMock getResponseError;
 
     static {
-		WSCaseReintegroEnviarASSMock mock = new WSCaseReintegroEnviarASSMock();
-		
+
 		getResponseFound = new XHttpCalloutMock();
 		getResponseFound.buildResponse()
 			.withStatus('OK')
@@ -47,8 +46,8 @@ public class EstadoDeCuentaBtnCtrlTest {
             WHERE Id =: acc.Id
         ];
 
-        System.assertEquals(false,responseToAssert.hasError);
-        System.assertEquals(null,responseToAssert.message);
+        System.assertEquals(false, responseToAssert.hasError);
+        System.assertEquals('Ok', responseToAssert.message);
         System.assertEquals('VERDE', accToAssert.Color_estado_de_cuenta__c);
 
     }

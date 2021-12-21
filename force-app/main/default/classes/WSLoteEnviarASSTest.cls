@@ -44,7 +44,7 @@ private class WSLoteEnviarASSTest {
 		Test.stopTest();
 
 		System.assertEquals(false,resp.hasError);
-		System.assertEquals(null,resp.message);
+		System.assertEquals('Ok', resp.message);
 		System.assertEquals(5400,resp.lote.data.lote_id);
 		System.assertEquals('A',resp.lote.data.estado);
 	}

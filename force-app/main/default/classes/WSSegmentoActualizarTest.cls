@@ -45,7 +45,7 @@ private class WSSegmentoActualizarTest {
         Test.stopTest();
 
         System.assertEquals(false,resp.hasError);
-        System.assertEquals(null,resp.message);
+        System.assertEquals('Ok', resp.message);
         System.assertEquals(null,resp.result.data.em.nro_sf);
         System.assertEquals('275822',resp.result.data.em.em_id);
         System.assertEquals('20-02-0011 20:00',resp.result.data.em.fecha_inicio);

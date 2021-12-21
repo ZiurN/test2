@@ -23,28 +23,20 @@ public class OpportunityHelper  {
 		if(dnis.isEmpty()){
 			return;
 		}
-		List<Account> accsWithId = [
-			SELECT Id,Numero_de_documento__c,Codigo_de_Afiliado__c
-			FROM Account
-			WHERE Numero_de_documento__c IN :dnis
-			AND Estado__c = 'B'
-		];
-		List<Account> activeAccsWithId = [
-			SELECT Id,Numero_de_documento__c
-			FROM Account
-			WHERE Numero_de_documento__c IN :dnis
-			AND Estado__c != 'B'
-		];
+		List<Account> accounts = [SELECT Id,Numero_de_documento__c,
+										Codigo_de_Afiliado__c,
+										Estado__c
+								FROM Account
+								WHERE Numero_de_documento__c IN :dnis];
 		Map<String,Account> duplicateDnis = new Map<String,Account>();
-		for(Account acc : accsWithId){
-			duplicateDnis.put(acc.Numero_de_documento__c,acc);
-		}
-
 		List<String> activeDnis = new List<String>();
-		for(Account acc : activeAccsWithId){
-			activeDnis.add(acc.Numero_de_documento__c);
+		for (Account acc : accounts) {
+			if (acc.Estado__c == 'B') {
+				duplicateDnis.put(acc.Numero_de_documento__c,acc);
+			} else {
+				activeDnis.add(acc.Numero_de_documento__c);
+			}
 		}
-
 		for(Opportunity opp : opps){
 			if(activeDnis.contains(opp.Numero_de_documento__c)){
 				opp.addError('Ya existe una cuenta activa con el mismo DNI');

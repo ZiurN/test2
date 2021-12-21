@@ -47,7 +47,7 @@ private class EventoMedicoEnviarASSBtnCtrlTest {
                 .withStatus('OK')
                 .withStatusCode(200)
                 .withBody(WSCaseAPGenerarCentroMock.getArchivos())
-                .addForAddress(WSCasoEnviarASS.SERVICE_CONFIG.URL__c + '/v1/salud/archivos');
+                .addForAddress(WSCaseEnviarASSHelper.SERVICE_CONFIG.URL__c + '/v1/salud/archivos');
 
         getResponseFoundEMI = new XHttpCalloutMock();
         getResponseFoundEMI.buildResponse()
@@ -64,7 +64,7 @@ private class EventoMedicoEnviarASSBtnCtrlTest {
                 .withStatus('OK')
                 .withStatusCode(200)
                 .withBody(WSCaseAPGenerarCentroMock.getArchivos())
-                .addForAddress(WSCasoEnviarASS.SERVICE_CONFIG.URL__c + '/v1/salud/archivos');
+                .addForAddress(WSCaseEnviarASSHelper.SERVICE_CONFIG.URL__c + '/v1/salud/archivos');
     }
 
     @isTest

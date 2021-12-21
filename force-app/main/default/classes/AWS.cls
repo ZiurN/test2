@@ -82,13 +82,13 @@ public inherited sharing class AWS {
     public class Response extends WSResult {
         public String url;
         public String relativeLocation;
-        // public WSCaseReintegroEnviarASSResp result;
+        
         public override void processResponse(HttpResponse response) {
 			System.debug(response);
             //ej
             //System.HttpResponse[Status=OK, StatusCode=200]
             System.debug(response.getBody());
-            //result = WSCaseReintegroEnviarASSResp.parse(response.getBody());
+           
         }
 
         public override void processError(HttpResponse response) {

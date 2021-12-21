@@ -38,7 +38,7 @@ public class WSLoteImprimirIFTest  {
 		Test.stopTest();
 
 		System.assertEquals(false,resp.hasError);
-		System.assertEquals(null,resp.message);
+		System.assertEquals('Ok', resp.message);
 		System.assertEquals('A',resp.lote.data.lote.estado);
 		System.assertEquals('http://www.extranet.acasalud.com.ar/SF/PRELIQ_5397.pdf',resp.lote.data.lote.link_preliq);
 	}

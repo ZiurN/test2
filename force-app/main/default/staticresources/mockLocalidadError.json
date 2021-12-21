@@ -1,0 +1,13 @@
+{
+	"data": {
+		"error": true,
+		"errors": [],
+		"errorType": "exception",
+		"httpCode": 404,
+		"message": "La ruta que está buscando no existe.",
+		"debug_message": [],
+		"exception": "NotFoundHttpException",
+		"file": "C:\\Apache24_64\\htdocs\\aca_salud_test\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\RouteCollection.php",
+		"line": 179
+	}
+}

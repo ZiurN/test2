@@ -25,7 +25,6 @@ public without sharing class XappiaHelper {
 	}
 	public static RecordType getRecordType(String encodedName) {
 		List<String> parameters = encodedName.split('-');
-		system.debug(parameters);
 		if (parameters.size() == 2) {
 			return getRecordType(parameters[0], parameters[1]);
 		} else {
@@ -73,7 +72,7 @@ public without sharing class XappiaHelper {
 				return null;
 			}
 			mapRecordTypesBySObjectName.put(
-				sObjectTypeStr, 
+				sObjectTypeStr,
 				sObjecytType.getDescribe().getRecordTypeInfosByDeveloperName()
 			);
 		}
@@ -320,7 +319,7 @@ public without sharing class XappiaHelper {
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Matias Moll.
 	@description	Método para obtener el ID de un perfil por su nombre;
-	@param			prof -Nombre del perfil a buscar.
+	@param			prof - Nombre del perfil a buscar.
 	@return			Id - Id encontrado para el perfil.
 	------------------------------------------------------------------------------------------------------------------------*/
 	public static Id getProfileIdByName(String prof){
@@ -329,5 +328,15 @@ public without sharing class XappiaHelper {
 			return profiles[0].Id;
 		}
 		return null;
+	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
+	@description	Método obtener recursos estáticos que puedan ser usados en Apex (JSONs principalmente)
+	@param			staticResourceName - Nombre del recurso estático.
+	@return			StaticResource - El recurso estático buscado.
+	------------------------------------------------------------------------------------------------------------------------*/
+	@SuppressWarnings('PMD.ApexCRUDViolation')
+	public static StaticResource getStaticResource (String staticResourceName) {
+		return [SELECT Body FROM StaticResource WHERE Name =: staticResourceName LIMIT 1];
 	}
 }
