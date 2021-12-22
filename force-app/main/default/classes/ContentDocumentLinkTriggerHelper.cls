@@ -416,9 +416,27 @@ public without sharing class ContentDocumentLinkTriggerHelper {
 			cDocsIds.add(cdl.ContentDocumentId);
 		}
 		Map<Id, ContentDocument> cDocsToCheckById = new Map<Id, ContentDocument>([SELECT Owner.Alias FROM ContentDocument WHERE Id IN: cDocsIds]);
+		Map<Id,ContentDocumentLink> cdLinksToCheckById = new Map<Id,ContentDocumentLink>(getContentDocumentLinks(new List<Id>(cDocsToCheckById.keySet())));
+		Map<Id, List<Id>> linkedEntitiesIdsByCDocId = new Map<Id, List<Id>>();
+		if (!cdLinksToCheckById.isEmpty()) {
+			for (ContentDocumentLink cdl : cdLinksToCheckById.values()) {
+				if (linkedEntitiesIdsByCDocId.containsKey(cdl.contentDocumentId)) {
+					linkedEntitiesIdsByCDocId.get(cdl.contentDocumentId).add(cdl.LinkedEntityId);
+				} else {
+					linkedEntitiesIdsByCDocId.put(cdl.contentDocumentId, new List<Id>{cdl.LinkedEntityId});
+				}
+			}
+		}
 		for (ContentDocumentLink cdl : newDocuments) {
 			String sobjectType = cdl.LinkedEntityId.getSObjectType().getDescribe().getName();
-			if (cDocsToCheckById.get(cdl.ContentDocumentId).Owner.Alias == 'platint' && sobjectType == 'EmailMessage' && !isAfter) {
+			Boolean cDLinkedToCase = false;
+			if (linkedEntitiesIdsByCDocId.containsKey(cdl.contentDocumentId)) {
+				for (Id linkedEntityId : linkedEntitiesIdsByCDocId.get(cdl.contentDocumentId)) {
+					String linkedEntityType = linkedEntityId.getSObjectType().getDescribe().getName();
+					if (linkedEntityType == 'Case') cDLinkedToCase = true;
+				}
+			}
+			if (cDocsToCheckById.get(cdl.ContentDocumentId).Owner.Alias == 'platint' && sobjectType == 'EmailMessage' && !isAfter && !cDLinkedToCase) {
 				cDLinksFromEmailToCaseByLinkedEntityIds.put(cdl.LinkedEntityId, cdl);
 			} else if (cDocsToCheckById.get(cdl.ContentDocumentId).Owner.Alias == 'platint' && sobjectType == 'Case' && isAfter) {
 				if (!cDLinksByParentCaseId.containsKey(cdl.LinkedEntityId)) {
