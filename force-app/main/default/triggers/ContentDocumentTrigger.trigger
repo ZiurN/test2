@@ -5,5 +5,7 @@ trigger ContentDocumentTrigger on ContentDocument (before insert,
 													after update,
 													after delete,
 													after undelete) {
-	new ContentDocumentTriggerHandler().run();
+	if(!XappiaHelper.isPlatformUser()) {
+		new ContentDocumentTriggerHandler().run();
+	}
 }

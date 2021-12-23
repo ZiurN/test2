@@ -15,7 +15,7 @@ public without sharing class ContentDocumentLinkTriggerHelper {
 					oportunidades.
 	@param			cdlList - Lista de archivos a validar.
 	------------------------------------------------------------------------------------------------------------------------*/
-	public static void avoidTwoFilesWithTheSameNameInCaseAndEM(List<ContentDocumentLink> cdlList, Boolean isPlatformUser) {
+	public static void avoidTwoFilesWithTheSameNameInCaseAndEM(List<ContentDocumentLink> cdlList) {
         Set<Id> setDocumentIds = new set<Id>();
         set<Id> setEntitiesIds = new set<Id>();
 		set<Id> opportunityIds = new set<Id>();
@@ -126,39 +126,12 @@ public without sharing class ContentDocumentLinkTriggerHelper {
 				if(objCntDoc != null && !String.isBlank(objCntDoc.Title)) {
 					set<String> setExistingFilenames = mapRecordIdFilenames.get(cdl.LinkedEntityId);
 					Set<String> setTitulosOriginales = filesNamesByEntityId.get(cdl.LinkedEntityId);
-					Boolean IsDuplicate = (setExistingFilenames != null
-												&& setExistingFilenames.contains(objCntDoc.Title.toUpperCase()))
-											|| (setTitulosOriginales != null
-												&& setTitulosOriginales.contains(objCntDoc.Title.toUpperCase()));
-					if (isPlatformUser && IsDuplicate) {
-						XappiaHelper.contentDocumentByLinkedEntityList.add(new Map<Id, Id>{cdl.LinkedEntityId => cdl.ContentDocumentId});
-					} else if (IsDuplicate) {
+					if ((setExistingFilenames != null && setExistingFilenames.contains(objCntDoc.Title.toUpperCase()))
+							|| (setTitulosOriginales != null && setTitulosOriginales.contains(objCntDoc.Title.toUpperCase()))) {
 						cdl.addError(System.Label.Alerta_YaExisteArchivoMismoNombre);
 					}
 				}
 			}
-		}
-	}
-	/**-----------------------------------------------------------------------------------------------------------------------
-	@author			Jeferson Ruiz
-	@description	Método para eliminar los ContentDocumentLinks que se crean al responder emails.
-	@param			contentDocLinksIdsToDelete - Lista de Ids de los registros a eliminar.
-	------------------------------------------------------------------------------------------------------------------------*/
-	public static void deleteDuplicatePlatIntCDLinks (Map<Id, ContentDocumentLink> cDLinkByIdToCheck) {
-		List<ContentDocumentLink> cDLinksToDelete = new List<ContentDocumentLink>();
-		if (!XappiaHelper.contentDocumentByLinkedEntityList.isEmpty() && !cDLinkByIdToCheck.isEmpty()) {
-			for (Map<Id,Id> contentDocumentByLinkedEntity : XappiaHelper.contentDocumentByLinkedEntityList) {
-				for (ContentDocumentLink cdLink : cDLinkByIdToCheck.values()) {
-					if (contentDocumentByLinkedEntity.containsKey(cdLink.LinkedEntityId)
-						&& contentDocumentByLinkedEntity.get(cdLink.LinkedEntityId) == cdLink.ContentDocumentId) {
-							ContentDocumentLink cdLinkToDelete = new ContentDocumentLink(
-								Id = cdLink.Id
-							);
-						cDLinksToDelete.add(cdLinkToDelete);
-					}
-				}
-			}
-			Database.delete(cDLinksToDelete);
 		}
 	}
 	/**-----------------------------------------------------------------------------------------------------------------------

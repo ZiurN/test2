@@ -5,5 +5,7 @@ trigger ContentDocumentLinkTrigger on ContentDocumentLink (before insert,
 															after update,
 															after delete,
 															after undelete) {
-	new ContentDocumentLinkTriggerHandler().run();
+	if(!XappiaHelper.isPlatformUser()) {
+		new ContentDocumentLinkTriggerHandler().run();
+	}
 }

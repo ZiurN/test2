@@ -14,7 +14,7 @@ public without sharing class XappiaHelper {
 				}
 			}
 		}
-		return isPlatUser;} set;}
+		return isPlatformUser == null ? isPlatUser: isPlatformUser;} set;}
 	public static List<Map<Id, Id>> contentDocumentByLinkedEntityList = new List<Map<Id, Id>>();
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Matias Moll.

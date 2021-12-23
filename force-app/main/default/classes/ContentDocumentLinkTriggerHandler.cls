@@ -9,10 +9,9 @@ public with sharing class ContentDocumentLinkTriggerHandler extends TriggerHandl
 	Map<Id,ContentDocumentLink> mNew = (Map<Id,ContentDocumentLink>) Trigger.newMap;
 	Map<Id,ContentDocumentLink> mOld = (Map<Id,ContentDocumentLink>) Trigger.oldMap;
 	public override void beforeInsert() {
-		Boolean isPlatformUser = XappiaHelper.isPlatformUser();
 		ContentDocumentLinkTriggerHelper.modifyLinkedEntityForEmailToCaseCases(lNew);
-		ContentDocumentLinkTriggerHelper.avoidTwoFilesWithTheSameNameInCaseAndEM(lNew, isPlatformUser);
-		if (!isPlatformUser) ContentDocumentLinkTriggerHelper.avoidFilesLargerThan3MbInCaseAndEM(lNew);
+		ContentDocumentLinkTriggerHelper.avoidTwoFilesWithTheSameNameInCaseAndEM(lNew);
+		ContentDocumentLinkTriggerHelper.avoidFilesLargerThan3MbInCaseAndEM(lNew);
 	}
 	public override void beforeUpdate() {
 		// Nothing to do
@@ -39,7 +38,6 @@ public with sharing class ContentDocumentLinkTriggerHandler extends TriggerHandl
 	public override void afterInsert() {
 		ContentDocumentLinkTriggerHelper.modifyParentIdFromCDocumentsForEmailToCaseCases(lNew);
 		ContentDocumentLinkTriggerHelper.overwriteOpportunityWithNewFile(lNew);
-		ContentDocumentLinkTriggerHelper.deleteDuplicatePlatIntCDLinks (mNew);
 	}
 	public override void afterUpdate() {
 		// Nothing to do
