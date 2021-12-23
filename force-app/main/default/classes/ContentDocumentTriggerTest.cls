@@ -167,7 +167,7 @@ private class ContentDocumentTriggerTest {
             System.debug(result);
             System.assertEquals(false, result.isSuccess());
             System.assertEquals(
-                'No se pueden eliminar archivos si el caso ya fue enviado a Salud Soft', 
+                'No se pueden eliminar archivos si el caso ya fue enviado a Salud Soft',
                 result.getErrors()[0].getMessage()
             );
         }
