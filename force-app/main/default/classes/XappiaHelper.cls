@@ -1,6 +1,21 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class XappiaHelper {
 	static Map<String, Map<String, RecordTypeInfo>> mapRecordTypesBySObjectName = new Map<String, Map<String, RecordTypeInfo>>();
+	public static Boolean isPlatformUser {get {
+		Boolean isPlatUser = false;
+		if (isPlatformUser == null) {
+			for (User platUser : [SELECT Id FROM User WHERE Alias = 'platint']) {
+				if (Userinfo.getUserId() == platUser.Id) {
+					isPlatUser = true;
+					isPlatformUser = true;
+					break;
+				} else if (isPlatformUser == null) {
+					isPlatformUser = false;
+				}
+			}
+		}
+		return isPlatUser;} set;}
+	public static List<Map<Id, Id>> contentDocumentByLinkedEntityList = new List<Map<Id, Id>>();
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Matias Moll.
 	@description	Método para retornar información del tipo de registro.
@@ -338,5 +353,8 @@ public without sharing class XappiaHelper {
 	@SuppressWarnings('PMD.ApexCRUDViolation')
 	public static StaticResource getStaticResource (String staticResourceName) {
 		return [SELECT Body FROM StaticResource WHERE Name =: staticResourceName LIMIT 1];
+	}
+	public static Boolean isPlatformUser () {
+		return isPlatformUser;
 	}
 }

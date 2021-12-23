@@ -125,6 +125,70 @@ private class ContentDocumentLinkTriggerTest {
 		System.assert(!result.isSuccess(), 'Debe ocurrir un error al tratar de guardar el cdLink');
 		System.assertEquals(System.Label.Alerta_ArchivoMayor3MB, result.getErrors()[0].getMessage(), 'El mensaje debe indicar que el archivo es muy grande');
 	}
+	@isTest(SeeAllData=true)
+	private static void ifEmail_to_Case_AllowInsertFilesLargerThan3Mb() {
+		Case emailToCaseCase = Build.aCaseFromEmail().build();
+		insert emailToCaseCase;
+		List<id> contentDocumentList = new List<id>();
+		ContentVersion cv = new ContentVersion();
+		cv.Title = 'AvoidDuplicateTestCase';
+		cv.VersionData = Blob.valueOf('AvoidDuplicateTestCase');
+		cv.PathOnClient = '/AvoidDuplicateTestCase';
+		insert cv;
+		cv = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id];
+		contentDocumentList.add(cv.ContentDocumentId);
+		ContentDocumentLink link = new ContentDocumentLink();
+		link.ContentDocumentId = cv.ContentDocumentId;
+		link.LinkedEntityId = emailToCaseCase.Id;
+		insert link;
+		ContentVersion cvDuplicate = new ContentVersion();
+		cvDuplicate.Title = 'AvoidDuplicateTestCase';
+		cvDuplicate.VersionData = Blob.valueOf('AvoidDuplicateTestCase');
+		cvDuplicate.PathOnClient = '/AvoidDuplicateTestCase(2)';
+		insert cvDuplicate;
+		cvDuplicate = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cvDuplicate.Id];
+		contentDocumentList.add(cvDuplicate.ContentDocumentId);
+		ContentDocumentLink linkDuplicate = new ContentDocumentLink();
+		linkDuplicate.ContentDocumentId = cvDuplicate.ContentDocumentId;
+		linkDuplicate.LinkedEntityId = emailToCaseCase.Id;
+		List<User> platIntUsers = [SELECT Id FROM User WHERE isActive = true AND UserName LIKE 'automatedcase%'];
+		System.assertEquals(1, platIntUsers.size(), 'Debe haber un usuario para los casos Email-to-Case');
+		Database.SaveResult result;
+		System.runAs (platIntUsers[0]) {
+			Test.startTest();
+			result = Database.insert(linkDuplicate, false);
+			Test.stopTest();
+		}
+		System.assert(result.isSuccess(), 'No debio ocurrir nada al tratar de guardar el cdLink');
+		List<ContentDocumentLink> cDLinks = [SELECT LinkedEntityId FROM ContentDocumentLink WHERE ContentDocumentId IN :contentDocumentList];
+		System.assertEquals(3, cDLinks.size(), 'Debe haber cuatro CDLink');
+	}
+	@isTest
+	private static void ifEmail_to_Case_DontAlertButDontCreateNewCDLink() {
+		Case emailToCaseCase = Build.aCaseFromEmail().build();
+		insert emailToCaseCase;
+		ContentDocumentLink cdl = New ContentDocumentLink();
+		List<ContentDocument> documents = [SELECT Id, Title, LatestPublishedVersionId FROM ContentDocument WHERE ContentSize > 3145728 LIMIT 1];
+		if(documents.isEmpty()) {
+			return;
+		}
+		for (ContentDocument contentDocument: documents){
+            cdl.LinkedEntityId = emailToCaseCase.id;
+            cdl.ContentDocumentId = contentDocument.Id;
+            cdl.shareType = 'V';
+        }
+		List<User> platIntUsers = [SELECT Id FROM User WHERE isActive = true AND UserName LIKE 'automatedcase%'];
+		System.assertEquals(1, platIntUsers.size(), 'Debe haber un usuario para los casos Email-to-Case');
+		Database.SaveResult result;
+		System.runAs (platIntUsers[0]) {
+			Test.startTest();
+			result = Database.insert(cdl, false);
+			Test.stopTest();
+		}
+		System.assert(result.isSuccess(), 'No debio ocurrir nada al tratar de guardar el cdLink');
+		List<ContentDocumentLink> cDLinks = [SELECT LinkedEntityId FROM ContentDocumentLink WHERE ContentDocumentId =: cdl.ContentDocumentId];
+		System.assertEquals(4, cDLinks.size(), 'Debe haber cuatro CDLink');
+	}
 	@isTest
 	private static void avoidDeleteAFileAlreadySendedToSS() {
 		Opportunity opp = Build.anOpportunityIndividuos().build();
