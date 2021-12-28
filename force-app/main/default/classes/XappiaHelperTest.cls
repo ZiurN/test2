@@ -161,9 +161,13 @@ private class XappiaHelperTest {
 		System.assertEquals(resource, XappiaHelper.getStaticResource('LightningUtils'), 'Debe retornar el recurso estático esperado');
 	}
 	@isTest
-	static void testisPlatformUser () {
+	static void testisPlatformUserFalse () {
 		Boolean isPlatformUser = XappiaHelper.isPlatformUser();
 		System.assert(!isPlatformUser, 'El admin no debe ser PlatformUser');
+	}
+	@isTest
+	static void testisPlatformUserTrue () {
+		Boolean isPlatformUser;
 		List<User> platIntUsers = [SELECT Id FROM User WHERE isActive = true AND UserName LIKE 'automatedcase%'];
 		System.assertEquals(1, platIntUsers.size(), 'Debe haber un usuario para los casos Email-to-Case');
 		System.runAs (platIntUsers[0]) {

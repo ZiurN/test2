@@ -15,7 +15,10 @@ public without sharing class XappiaHelper {
 			}
 		}
 		return isPlatformUser == null ? isPlatUser: isPlatformUser;} set;}
-	public static List<Map<Id, Id>> contentDocumentByLinkedEntityList = new List<Map<Id, Id>>();
+	public static Boolean eventFired {get{
+		if (eventFired == null) return false;
+		else return eventFired;
+	} set;}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Matias Moll.
 	@description	Método para retornar información del tipo de registro.

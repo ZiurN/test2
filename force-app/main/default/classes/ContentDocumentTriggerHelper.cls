@@ -91,7 +91,7 @@ public without sharing class ContentDocumentTriggerHelper {
 												WHERE Id IN :oldMapTrigger.keyset()];
 		Map<Id, List<ContentDocumentLink>> contentDocumentLinksByContentDocumentId = new Map<Id, List<ContentDocumentLink>>();
 		for(ContentDocument cd : contentDocuments) {
-			contentDocumentLinksByContentDocumentId.put(cd.Id, ContentDocumentLinks);
+			contentDocumentLinksByContentDocumentId.put(cd.Id, cd.ContentDocumentLinks);
 			for(ContentDocumentLink cdl : cd.ContentDocumentLinks) {
 				caseIds.add(cdl.LinkedEntityId);
 			}
@@ -99,7 +99,7 @@ public without sharing class ContentDocumentTriggerHelper {
 		Map<Id, List<ContentDocumentLink>> filteredCDLinksByContentDocumentId = filteredContentDocuments(contentDocumentLinksByContentDocumentId, caseIds);
 		for (Id contentDocumentId : filteredCDLinksByContentDocumentId.keySet()) {
 			if (filteredCDLinksByContentDocumentId.get(contentDocumentId).isEmpty() && userIsAdmin) {
-				Trigger.oldMap.get(cd.Id).addError(System.Label.Alerta_ArchivoEnviadoASS);
+				oldMapTrigger.get(contentDocumentId).addError(System.Label.Alerta_ArchivoEnviadoASS);
 			}
 		}
 	}
@@ -169,7 +169,7 @@ public without sharing class ContentDocumentTriggerHelper {
 			List<ContentDocumentLink> cDLinkList = contentDocumentLinksByContentDocumentId.get(contentDocId);
 			if (cDLinkList != null && !cDLinkList.isEmpty()) {
 				for (ContentDocumentLink cdLink : cDLinkList) {
-					if (caseIds.containsKey(cdLink.LinkedEntityId)) {
+					if (caseIds.contains(cdLink.LinkedEntityId)) {
 						filteredMap.get(contentDocId).add(cdLink);
 					}
 				}
