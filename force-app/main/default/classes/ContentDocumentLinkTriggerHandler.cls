@@ -9,7 +9,6 @@ public with sharing class ContentDocumentLinkTriggerHandler extends TriggerHandl
 	Map<Id,ContentDocumentLink> mNew = (Map<Id,ContentDocumentLink>) Trigger.newMap;
 	Map<Id,ContentDocumentLink> mOld = (Map<Id,ContentDocumentLink>) Trigger.oldMap;
 	public override void beforeInsert() {
-		ContentDocumentLinkTriggerHelper.modifyLinkedEntityForEmailToCaseCases(lNew);
 		ContentDocumentLinkTriggerHelper.avoidTwoFilesWithTheSameNameInCaseAndEM(lNew);
 		ContentDocumentLinkTriggerHelper.avoidFilesLargerThan3MbInCaseAndEM(lNew);
 	}
@@ -36,7 +35,6 @@ public with sharing class ContentDocumentLinkTriggerHandler extends TriggerHandl
 			}
 	}
 	public override void afterInsert() {
-		ContentDocumentLinkTriggerHelper.modifyParentIdFromCDocumentsForEmailToCaseCases(lNew);
 		ContentDocumentLinkTriggerHelper.overwriteOpportunityWithNewFile(lNew);
 	}
 	public override void afterUpdate() {
