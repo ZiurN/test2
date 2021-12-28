@@ -1,7 +1,7 @@
 trigger ContentDocumentLinkTrigger on ContentDocumentLink (before insert, after insert,	before delete) {
 	if(Trigger.isBefore) {
 		if(Trigger.isInsert) {
-			ContentDocumentLinkTriggerHelper.modifyLinkedEntityForEmailToCaseCases(Trigger.new);
+			//ContentDocumentLinkTriggerHelper.modifyLinkedEntityForEmailToCaseCases(Trigger.new);
 			ContentDocumentLinkTriggerHelper.avoidTwoFilesWithTheSameNameInCaseAndEM(Trigger.new);
 			ContentDocumentLinkTriggerHelper.avoidFilesLargerThan3MbInCaseAndEM(Trigger.new);
 		}
@@ -27,7 +27,7 @@ trigger ContentDocumentLinkTrigger on ContentDocumentLink (before insert, after 
 	}
 	if(Trigger.isAfter){
 		if(Trigger.isInsert) {
-			ContentDocumentLinkTriggerHelper.modifyParentIdFromCDocumentsForEmailToCaseCases(Trigger.new);
+			//ContentDocumentLinkTriggerHelper.modifyParentIdFromCDocumentsForEmailToCaseCases(Trigger.new);
 			ContentDocumentLinkTriggerHelper.overwriteOpportunityWithNewFile(Trigger.new);
 		}
 	}
