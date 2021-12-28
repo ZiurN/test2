@@ -182,7 +182,7 @@ private class ContentDocumentLinkTriggerTest {
 			System.assertEquals(System.Label.Alerta_ArchivoEnviadoASS,result.getErrors()[0].getMessage(), 'El error debe indicar que el archivo ya fue enviado a SS');
 		}
 	}
-	@isTest
+	/*@isTest
 	private static void ifEmailToCase_ChangeContentDocOwnerAndContentDocLinkParent () {
 		Integer numberOfCases = [SELECT count () FROM Case];
 		System.assertEquals(0, numberOfCases, 'No deben haber casos');
@@ -353,5 +353,5 @@ private class ContentDocumentLinkTriggerTest {
 				System.assertEquals(libraryId, cDL.LinkedEntityId, 'Un CDLink debe estar asociado a la libreria');
 			}
 		}
-	}
+	}*/
 }
