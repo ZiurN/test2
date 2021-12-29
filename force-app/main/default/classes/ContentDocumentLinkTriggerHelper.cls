@@ -235,7 +235,7 @@ public without sharing class ContentDocumentLinkTriggerHelper {
 			}
 
 		}
-		if(usuario.Profile.Name != 'Administrador del sistema') {
+		if(usuario.Profile.Name != 'Administrador del sistema' || usuario.Profile.Name != 'System Administrator') {
 			for(Id cdId : caseDocumentLinksByDocumentIds.keySet()) {
 				for(ContentDocumentLink cdl : caseDocumentLinksByDocumentIds.get(cdId)) {
 					triggerOldMap.get(cdl.Id)?.addError(System.Label.Alerta_ArchivoEnviadoASS);
@@ -404,7 +404,6 @@ public without sharing class ContentDocumentLinkTriggerHelper {
 	@description	Método para procesar los CDlinks una vez insertados por el usuario PlatInt.
 	@param			oldMapTrigger - Mapa de los CD a borrar por su Id.
 	------------------------------------------------------------------------------------------------------------------------*/
-	@future
 	public static void processAfterInsertEvent (Set<String> LinkedEntitiesIds) {
 		List<ContentDocumentLink> cdLinksToProcess = [SELECT Id,
 														ContentDocumentId,

@@ -1,7 +1,7 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ContentDocumentTriggerHelper {
 	private static User usuario = [SELECT Id, Profile.Name FROM User WHERE Id =: UserInfo.getUserId()];
-	private static Boolean userIsAdmin = usuario.Profile.Name != 'Administrador del sistema' || usuario.Profile.Name != 'System Administrator';
+	private static Boolean userIsAdmin = usuario.Profile.Name == 'Administrador del sistema' || usuario.Profile.Name == 'System Administrator';
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Matias Moll.
 	@description	Método para evitar borrado de CD relacionados a Oportunidades ya enviados a SS.
@@ -16,7 +16,7 @@ public without sharing class ContentDocumentTriggerHelper {
 									)
 								FROM ContentDocument
 								WHERE Id IN :oldMapTrigger.keyset()]) {
-			if(!cd.ContentDocumentLinks.isEmpty() && userIsAdmin) {
+			if(!cd.ContentDocumentLinks.isEmpty() && !userIsAdmin) {
 				oldMapTrigger.get(cd.Id).addError(System.Label.Alerta_ArchivoDeOportunidad);
 			}
 		}
@@ -98,7 +98,7 @@ public without sharing class ContentDocumentTriggerHelper {
 		}
 		Map<Id, List<ContentDocumentLink>> filteredCDLinksByContentDocumentId = filteredContentDocuments(contentDocumentLinksByContentDocumentId, caseIds);
 		for (Id contentDocumentId : filteredCDLinksByContentDocumentId.keySet()) {
-			if (filteredCDLinksByContentDocumentId.get(contentDocumentId).isEmpty() && userIsAdmin) {
+			if (!filteredCDLinksByContentDocumentId.get(contentDocumentId).isEmpty() && !userIsAdmin) {
 				oldMapTrigger.get(contentDocumentId).addError(System.Label.Alerta_ArchivoEnviadoASS);
 			}
 		}

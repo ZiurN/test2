@@ -109,16 +109,16 @@ private class ContentDocumentLinkTriggerTest {
 	private static void avoidInsertFilesLargerThan3Mb() {
 		Evento_medico__c em = new Evento_medico__c();
 		insert em;
-		ContentDocumentLink cdl = New ContentDocumentLink();
+		ContentDocumentLink cdl = new ContentDocumentLink();
 		List<ContentDocument> documents = [SELECT Id, Title, LatestPublishedVersionId FROM ContentDocument WHERE ContentSize > 3145728 LIMIT 1];
 		if(documents.isEmpty()) {
 			return;
 		}
 		for (ContentDocument contentDocument: documents){
-            cdl.LinkedEntityId = em.id;
-            cdl.ContentDocumentId = contentDocument.Id;
-            cdl.shareType = 'V';
-        }
+			cdl.LinkedEntityId = em.id;
+			cdl.ContentDocumentId = contentDocument.Id;
+			cdl.shareType = 'V';
+		}
 		Test.startTest();
 		Database.SaveResult result = Database.insert(cdl, false);
 		Test.stopTest();
@@ -129,54 +129,12 @@ private class ContentDocumentLinkTriggerTest {
 	private static void ifEmail_to_Case_AllowInsertFilesLargerThan3Mb() {
 		Case emailToCaseCase = Build.aCaseFromEmail().build();
 		insert emailToCaseCase;
-		List<id> contentDocumentList = new List<id>();
-		ContentVersion cv = new ContentVersion();
-		cv.Title = 'AvoidDuplicateTestCase';
-		cv.VersionData = Blob.valueOf('AvoidDuplicateTestCase');
-		cv.PathOnClient = '/AvoidDuplicateTestCase';
-		insert cv;
-		cv = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id];
-		contentDocumentList.add(cv.ContentDocumentId);
-		ContentDocumentLink link = new ContentDocumentLink();
-		link.ContentDocumentId = cv.ContentDocumentId;
-		link.LinkedEntityId = emailToCaseCase.Id;
-		insert link;
-		ContentVersion cvDuplicate = new ContentVersion();
-		cvDuplicate.Title = 'AvoidDuplicateTestCase';
-		cvDuplicate.VersionData = Blob.valueOf('AvoidDuplicateTestCase');
-		cvDuplicate.PathOnClient = '/AvoidDuplicateTestCase(2)';
-		insert cvDuplicate;
-		cvDuplicate = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cvDuplicate.Id];
-		contentDocumentList.add(cvDuplicate.ContentDocumentId);
-		ContentDocumentLink linkDuplicate = new ContentDocumentLink();
-		linkDuplicate.ContentDocumentId = cvDuplicate.ContentDocumentId;
-		linkDuplicate.LinkedEntityId = emailToCaseCase.Id;
-		List<User> platIntUsers = [SELECT Id FROM User WHERE isActive = true AND UserName LIKE 'automatedcase%'];
-		System.assertEquals(1, platIntUsers.size(), 'Debe haber un usuario para los casos Email-to-Case');
-		Database.SaveResult result;
-		System.runAs (platIntUsers[0]) {
-			Test.startTest();
-			result = Database.insert(linkDuplicate, false);
-			Test.stopTest();
-		}
-		System.assert(result.isSuccess(), 'No debio ocurrir nada al tratar de guardar el cdLink');
-		List<ContentDocumentLink> cDLinks = [SELECT LinkedEntityId FROM ContentDocumentLink WHERE ContentDocumentId IN :contentDocumentList];
-		System.assertEquals(3, cDLinks.size(), 'Debe haber cuatro CDLink');
-	}
-	@isTest
-	private static void ifEmail_to_Case_DontAlertButDontCreateNewCDLink() {
-		Case emailToCaseCase = Build.aCaseFromEmail().build();
-		insert emailToCaseCase;
-		ContentDocumentLink cdl = New ContentDocumentLink();
 		List<ContentDocument> documents = [SELECT Id, Title, LatestPublishedVersionId FROM ContentDocument WHERE ContentSize > 3145728 LIMIT 1];
-		if(documents.isEmpty()) {
-			return;
-		}
-		for (ContentDocument contentDocument: documents){
-            cdl.LinkedEntityId = emailToCaseCase.id;
-            cdl.ContentDocumentId = contentDocument.Id;
-            cdl.shareType = 'V';
-        }
+		System.assertEquals(1, documents.size(), 'Debe haber un archivo de más de 3Mb');
+		ContentDocumentLink cdl = new ContentDocumentLink();
+		cdl.LinkedEntityId = emailToCaseCase.id;
+		cdl.ContentDocumentId = documents[0].Id;
+		cdl.shareType = 'V';
 		List<User> platIntUsers = [SELECT Id FROM User WHERE isActive = true AND UserName LIKE 'automatedcase%'];
 		System.assertEquals(1, platIntUsers.size(), 'Debe haber un usuario para los casos Email-to-Case');
 		Database.SaveResult result;
@@ -186,16 +144,18 @@ private class ContentDocumentLinkTriggerTest {
 			Test.stopTest();
 		}
 		System.assert(result.isSuccess(), 'No debio ocurrir nada al tratar de guardar el cdLink');
-		List<ContentDocumentLink> cDLinks = [SELECT LinkedEntityId FROM ContentDocumentLink WHERE ContentDocumentId =: cdl.ContentDocumentId];
+		List<ContentDocumentLink> cDLinks = [SELECT LinkedEntityId, ContentDocumentId FROM ContentDocumentLink WHERE ContentDocumentId =: documents[0].Id];
+		System.debug(JSON.serializePretty(cDLinks));
+		// Ya existen tres CDLinks apra este ContentDocument.
 		System.assertEquals(4, cDLinks.size(), 'Debe haber cuatro CDLink');
 	}
 	@isTest
 	private static void avoidDeleteAFileAlreadySendedToSS() {
 		Opportunity opp = Build.anOpportunityIndividuos().build();
-        opp.OwnerId = salesUser.Id;
+		opp.OwnerId = salesUser.Id;
 		insert opp;
-        Database.DeleteResult result;
-        System.runAs(salesUser) {
+		Database.DeleteResult result;
+		System.runAs(salesUser) {
 			ContentVersion cv = new ContentVersion();
 			cv.Title = 'AvoidDeleteTest';
 			cv.VersionData = Blob.valueOf('AvoidDeleteTest');
@@ -218,15 +178,15 @@ private class ContentDocumentLinkTriggerTest {
 	@isTest
 	private static void avoidDeleteAFileAlreadySendedToSSInSalesCases () {
 		String uniqueUserName = 'standarduser' + DateTime.now().getTime() + '@testorg.com';
-        Profile perfil = [SELECT Id FROM Profile WHERE Name='Front'];
-        User front = new User(Alias = 'standt', Email='standarduser@testorg.com',
-            EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US',
-            LocaleSidKey='en_US', ProfileId = perfil.Id, TimeZoneSidKey='America/Los_Angeles',
-            UserName=uniqueUserName);
+		Profile perfil = [SELECT Id FROM Profile WHERE Name='Front'];
+		User front = new User(Alias = 'standt', Email='standarduser@testorg.com',
+			EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US',
+			LocaleSidKey='en_US', ProfileId = perfil.Id, TimeZoneSidKey='America/Los_Angeles',
+			UserName=uniqueUserName);
 		Case aCase = Build.aCaseSolicitudDatosParticulares().build();
-        aCase.Nro_de_solicitud_SS__c = '123456';
+		aCase.Nro_de_solicitud_SS__c = '123456';
 		insert aCase;
-        Database.DeleteResult result;
+		Database.DeleteResult result;
 		System.runAs(front) {
 			ContentVersion cv = new ContentVersion();
 			cv.Title = 'AvoidDeleteTestCase';
@@ -246,7 +206,7 @@ private class ContentDocumentLinkTriggerTest {
 			System.assertEquals(System.Label.Alerta_ArchivoEnviadoASS,result.getErrors()[0].getMessage(), 'El error debe indicar que el archivo ya fue enviado a SS');
 		}
 	}
-	/*@isTest
+	@isTest
 	private static void ifEmailToCase_ChangeContentDocOwnerAndContentDocLinkParent () {
 		Integer numberOfCases = [SELECT count () FROM Case];
 		System.assertEquals(0, numberOfCases, 'No deben haber casos');
@@ -262,7 +222,6 @@ private class ContentDocumentLinkTriggerTest {
 		delegacion.Codigo_de_delegacion__c = '650078';
 		insert  delegacion;
 		System.runAs (platIntUsers[0]) {
-			Test.startTest();
 			insert emailToCaseCase;
 			emailToCaseCase.OwnerId = fromQueue.Id;
 			update emailToCaseCase;
@@ -283,6 +242,7 @@ private class ContentDocumentLinkTriggerTest {
 			cDLink = new ContentDocumentLink();
 			cDLink.ContentDocumentId = cv.ContentDocumentId;
 			cDLink.LinkedEntityId = email.Id;
+			Test.startTest();
 			insert cDLink;
 			Test.stopTest();
 		}
@@ -417,5 +377,5 @@ private class ContentDocumentLinkTriggerTest {
 				System.assertEquals(libraryId, cDL.LinkedEntityId, 'Un CDLink debe estar asociado a la libreria');
 			}
 		}
-	}*/
+	}
 }
