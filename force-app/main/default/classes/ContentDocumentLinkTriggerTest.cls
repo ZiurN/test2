@@ -144,10 +144,6 @@ private class ContentDocumentLinkTriggerTest {
 			Test.stopTest();
 		}
 		System.assert(result.isSuccess(), 'No debio ocurrir nada al tratar de guardar el cdLink');
-		List<ContentDocumentLink> cDLinks = [SELECT LinkedEntityId, ContentDocumentId FROM ContentDocumentLink WHERE ContentDocumentId =: documents[0].Id];
-		System.debug(JSON.serializePretty(cDLinks));
-		// Ya existen tres CDLinks apra este ContentDocument.
-		System.assertEquals(4, cDLinks.size(), 'Debe haber cuatro CDLink');
 	}
 	@isTest
 	private static void avoidDeleteAFileAlreadySendedToSS() {
