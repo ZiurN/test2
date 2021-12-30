@@ -37,11 +37,11 @@ public with sharing class WSSegmentoEnviarASSHelper {
 	public class Response extends WSResult {
 		public WSSSGenericResponse result;
 		public override void processResponse(HttpResponse response) {
-			System.debug('BODY Respuesta: ');System.debug(response.getBody());
-			result = WSSSGenericResponse.parse(response.getBody());
+			System.debug('BODY Respuesta OK: ');System.debug(response.getBody());
+			result = setResponse(response.getBody());
 		}
 		public override void processError(HttpResponse response) {
-			System.debug('BODY Respuesta: ');System.debug(response.getBody());
+			System.debug('BODY Respuesta Error: ');System.debug(response.getBody());
 			result = WSSSGenericResponse.parse(response.getBody());
 			this.message = result.processMessage();
 			SS_Segmento_Response__e errorEvent =  new SS_Segmento_Response__e(
@@ -50,6 +50,16 @@ public with sharing class WSSegmentoEnviarASSHelper {
 				Id_Segmento__c = segmentoId
 			);
 			List<Database.SaveResult> results = EventBus.publish(new List<SS_Segmento_Response__e>{errorEvent});
+		}
+		private WSSSGenericResponse setResponse (String body) {
+			WSSSGenericResponse.Response tmp_result;
+			try {
+				tmp_result = (WSSSGenericResponse.Response) JSON.deserializeStrict(body, WSSSGenericResponse.Response.class);
+				return new WSSSGenericResponse(tmp_result);
+			} catch (Exception e) {
+				System.debug(e.getMessage());
+				return WSSSGenericResponse.parse(response.getBody());
+			}
 		}
 	}
 }

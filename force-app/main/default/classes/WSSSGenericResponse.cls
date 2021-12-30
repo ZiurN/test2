@@ -13,7 +13,8 @@ public class WSSSGenericResponse {
 		public class Meta {
 			public List<Notas> allowed_includes {get;set;}
 			public List<Notas> default_includes {get;set;}
-			public Meta(JSONParser parser) {
+			public Meta () {}
+			public Meta (JSONParser parser) {
 				while (parser.nextToken() != System.JSONToken.END_OBJECT) {
 					if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
 						String text = parser.getText();
@@ -88,6 +89,7 @@ public class WSSSGenericResponse {
 			public String exception_text {get; set;}
 			public Integer line {get; set;}
 			public EventoMedico em {get; set;}
+			public Data() {}
 			public Data(JSONParser parser) {
 				while (parser.nextToken() != System.JSONToken.END_OBJECT) {
 					if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
@@ -126,7 +128,7 @@ public class WSSSGenericResponse {
 										if (parser.getCurrentToken() != System.JSONToken.START_ARRAY) {
 											String mgs = parser.getText();
 											System.debug(err.getMessage());
-											/** Por alguna razón, se 'salta' la propiedad message y la lee como el valor de errors */
+											// Por alguna razón, se 'salta' la propiedad message y la lee como el valor de errors
 											errors = new Errors(parser);
 											errors.message = mgs;
 										}
@@ -685,6 +687,7 @@ public class WSSSGenericResponse {
 				public String importe_presu {get;set;}
 				public String nro_sf {get;set;}
 				public String link_em {get;set;}
+				public EventoMedico() {}
 				public EventoMedico(JSONParser parser) {
 					while (parser.nextToken() != System.JSONToken.END_OBJECT) {
 						if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
@@ -845,6 +848,7 @@ public class WSSSGenericResponse {
 					public String lote {get;set;}
 					public String obs {get;set;}
 					public String aca_nro_sf {get;set;}
+					public Segmento() {}
 					public Segmento(JSONParser parser) {
 						while (parser.nextToken() != System.JSONToken.END_OBJECT) {
 							if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
@@ -910,6 +914,7 @@ public class WSSSGenericResponse {
 					}
 				}
 	/** Constructor */
+	public WSSSGenericResponse () {}
 	public WSSSGenericResponse (JSONParser parser) {
 		while (parser.nextToken() != System.JSONToken.END_OBJECT) {
 			if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
@@ -939,6 +944,13 @@ public class WSSSGenericResponse {
 				}
 			}
 		}
+	}
+	public WSSSGenericResponse (Response response) {
+		this.error = response.error;
+		this.httpCode = response.httpCode;
+		this.message = response.message;
+		this.meta = response.meta;
+		this.data = new List<Data>{response.data};
 	}
 	/** Métodos de construcción */
 	public static WSSSGenericResponse parse(String json) {
@@ -1043,5 +1055,12 @@ public class WSSSGenericResponse {
 				return 'Nivel 1';
 			}
 		}
+	}
+	public class Response {
+		public Boolean error {get;set;}
+		public Integer httpCode {get;set;}
+		public String message {get;set;}
+		public Data data {get;set;}
+		public Meta meta {get;set;}
 	}
 }
