@@ -30,26 +30,40 @@ public with sharing class WSSegmentoEnviarASSHelper {
 		ws.request.setHeader('Accept','application/json"');
 		ws.request.setHeader('Content-Type', 'application/json');
 		WSAuthToken.Response tokenResp = WSAuthToken.setAuthHeader(ws);
+		if (ws.hasError) fireSSSegmentoResponseEvent(ws.errorMessage);
 		Response res = (Response) ws.invoke(new Response());
 		WSAuthToken.manageTokenResponse(tokenResp);
 		return res;
 	}
+	public static void fireSSSegmentoResponseEvent (String message) {
+		SS_Segmento_Response__e errorEvent =  new SS_Segmento_Response__e(
+			error__c = true,
+			Response_Error__c = message,
+			Id_Segmento__c = segmentoId
+		);
+		List<Database.SaveResult> results = EventBus.publish(new List<SS_Segmento_Response__e>{errorEvent});
+	}
 	public class Response extends WSResult {
 		public WSSSGenericResponse result;
 		public override void processResponse(HttpResponse response) {
-			System.debug('BODY Respuesta: ');System.debug(response.getBody());
-			result = WSSSGenericResponse.parse(response.getBody());
+			System.debug('BODY Respuesta OK: ');System.debug(response.getBody());
+			result = setResponse(response.getBody());
 		}
 		public override void processError(HttpResponse response) {
-			System.debug('BODY Respuesta: ');System.debug(response.getBody());
-			result = WSSSGenericResponse.parse(response.getBody());
+			System.debug('BODY Respuesta Error: ');System.debug(response.getBody());
+			result = setResponse(response.getBody());
 			this.message = result.processMessage();
-			SS_Segmento_Response__e errorEvent =  new SS_Segmento_Response__e(
-				error__c = true,
-				Response_Error__c = this.message,
-				Id_Segmento__c = segmentoId
-			);
-			List<Database.SaveResult> results = EventBus.publish(new List<SS_Segmento_Response__e>{errorEvent});
+			WSSegmentoEnviarASSHelper.fireSSSegmentoResponseEvent(this.message);
+		}
+		private WSSSGenericResponse setResponse (String body) {
+			WSSSGenericResponse.Response tmp_result;
+			try {
+				tmp_result = (WSSSGenericResponse.Response) JSON.deserializeStrict(body, WSSSGenericResponse.Response.class);
+				return new WSSSGenericResponse(tmp_result);
+			} catch (Exception e) {
+				System.debug(e.getMessage());
+				return WSSSGenericResponse.parse(response.getBody());
+			}
 		}
 	}
 }

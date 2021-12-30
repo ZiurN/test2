@@ -31,10 +31,8 @@ private class SegmentoTriggerTest {
 			404,
 			'exception');
 		getErrorResponseAlta = new XHttpCalloutMock();
-		TestUtils.setMockResponse(
-			false,
+		TestUtils.setAuthToken(
 			getErrorResponseAlta,
-			EVENTO_MEDICO_URL + '/275822/segmentos/305715',
 			XappiaHelper.getStaticResource('mockEventoMedicoSegmentoAltaError').body.toString(),
 			404,
 			'exception');
@@ -118,7 +116,20 @@ private class SegmentoTriggerTest {
 		WSSegmentoAltaMock mock = new WSSegmentoAltaMock();
 		String body = mock.getFound(seg1.Id);
 		getResponseFoundAlta = new XHttpCalloutMock();
-		TestUtils.setMockResponse(getResponseFoundAlta, EVENTO_MEDICO_URL + '/275822/segmentos', body);
+		List<TestUtils.mockSettings> mocks = new List<TestUtils.mockSettings>();
+		TestUtils.mockSettings mock1 = new TestUtils.mockSettings();
+		mock1.statusCode = 200;
+		mock1.status = 'OK';
+		mock1.body = body;
+		mock1.url = EVENTO_MEDICO_URL + '/275822/segmentos';
+		mocks.add(mock1);
+		TestUtils.mockSettings mock2 = new TestUtils.mockSettings();
+		mock2.statusCode = 200;
+		mock2.status = 'OK';
+		mock2.body = body;
+		mock2.url = EVENTO_MEDICO_URL + '/275822/segmentos/305723';
+		mocks.add(mock2);
+		TestUtils.setMockResponse(getResponseFoundAlta, mocks);
 		Test.setMock(HttpCalloutMock.class, getResponseFoundAlta);
 		SegmentoQueueable segmentoQueable = new SegmentoQueueable(new List<Segmentos__c>{seg1}, false);
 		Test.startTest();

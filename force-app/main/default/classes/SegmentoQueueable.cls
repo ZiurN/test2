@@ -26,8 +26,8 @@ public without sharing class SegmentoQueueable implements Queueable, Database.Al
 		String body = generateJSONFromCreate(seg);
 		WSSegmentoEnviarASSHelper.Response resp = WSSegmentoEnviarASSHelper.enviarASS(body, 'eventos-medicos', 'eventos-medicos', seg.Evento_Medico__r.Nro_de_Evento_Medico_SS__c);
 		if (!resp.hasError) {
-			for(WSSSGenericResponse.Segmento segWs : resp.result.data[0].em.segmento) {
-				if(segmentId == segWs.aca_nro_sf) {
+			for (WSSSGenericResponse.Segmento segWs : resp.result.data[0].em.segmento) {
+				if (segmentId == segWs.aca_nro_sf) {
 					seg.Semid__c = segWs.sem_id;
 					seg.Fecha_Inicio_real__c = segWs.fecha_real_desde != null
 							? EventoMedicoEnviarASSBtnCtrl.parseStringToDateTime(segWs.fecha_real_desde)

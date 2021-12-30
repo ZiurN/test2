@@ -120,6 +120,16 @@ public without sharing class TestUtils {
 			.withBody(WSAuthTokenMock.getTokenSuccess())
 			.addForAddress(AUTH_TOKEN_URL);
 	}
+	public static void setAuthToken (XHttpCalloutMock mock,
+									String body,
+									Integer statusCode,
+									String status) {
+		mock.buildResponse()
+			.withStatus(status)
+			.withStatusCode(statusCode)
+			.withBody(body)
+			.addForAddress(AUTH_TOKEN_URL);
+	}
 	public class mockSettings {
 		public Integer statusCode {get; set;}
 		public String status {get;set;}
