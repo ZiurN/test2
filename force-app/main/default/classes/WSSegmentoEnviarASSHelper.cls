@@ -65,5 +65,15 @@ public with sharing class WSSegmentoEnviarASSHelper {
 				return WSSSGenericResponse.parse(response.getBody());
 			}
 		}
+		private WSSSGenericResponse setResponse (String body) {
+			WSSSGenericResponse.Response tmp_result;
+			try {
+				tmp_result = (WSSSGenericResponse.Response) JSON.deserializeStrict(body, WSSSGenericResponse.Response.class);
+				return new WSSSGenericResponse(tmp_result);
+			} catch (Exception e) {
+				System.debug(e.getMessage());
+				return WSSSGenericResponse.parse(response.getBody());
+			}
+		}
 	}
 }
