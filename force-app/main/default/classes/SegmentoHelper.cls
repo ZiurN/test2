@@ -93,6 +93,22 @@ public without sharing class SegmentoHelper {
 		}
 		return segmentosToReturn;
 	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
+	@description	Método para desmarcar los segmentos que fueron revertidos.
+	@param			segmentosToDeFlagRevertedIds - Lista de ids de segmentos.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static void deFlagRevertedSegmentos (Set<Id> segmentosToDeFlagRevertedIds) {
+		List<Segmentos__c> segmentos = [SELECT Revirtiendo_Segmento__c
+										FROM Segmentos__c
+										WHERE Id IN: segmentosToDeFlagRevertedIds];
+		if (!segmentos.isEmpty()) {
+			for (Segmentos__c segmento : segmentos) {
+				segmento.Revirtiendo_Segmento__c = false;
+			}
+		}
+		update segmentos;
+	}
 	/** Utils */
 	private static List<Evento_medico__c> getEventosMedicos (Set<Id> eventosMedicosIds) {
 		return [SELECT Estado__c,

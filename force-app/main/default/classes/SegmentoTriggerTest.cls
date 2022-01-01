@@ -43,8 +43,10 @@ private class SegmentoTriggerTest {
 		insert em;
 		Segmentos__c segmento1 = new Segmentos__c();
 		segmento1.Evento_Medico__c = em.Id;
+		segmento1.Solicitante__c = 'NO ENCOLAR';
 		Segmentos__c segmento2 = new Segmentos__c();
 		segmento2.Evento_Medico__c = em.Id;
+		segmento2.Solicitante__c = 'NO ENCOLAR';
 		Segmentos__c[] segmentos = new List<Segmentos__c>{segmento1, segmento2};
 		Test.startTest();
 		insert segmentos;
@@ -78,16 +80,16 @@ private class SegmentoTriggerTest {
 	private static void testBulk() {
 		Evento_medico__c em = new Evento_medico__c(Estado__c = 'Autorizado');
 		insert em;
-		Segmentos__c segmento1 = new Segmentos__c(Evento_Medico__c = em.Id);
-		Segmentos__c segmento2 = new Segmentos__c(Evento_Medico__c = em.Id);
-		Segmentos__c segmento3 = new Segmentos__c(Evento_Medico__c = em.Id);
-		Segmentos__c segmento4 = new Segmentos__c(Evento_Medico__c = em.Id);
-		Segmentos__c segmento5 = new Segmentos__c(Evento_Medico__c = em.Id);
-		Segmentos__c segmento6 = new Segmentos__c(Evento_Medico__c = em.Id);
-		Segmentos__c segmento7 = new Segmentos__c(Evento_Medico__c = em.Id);
-		Segmentos__c segmento8 = new Segmentos__c(Evento_Medico__c = em.Id);
-		Segmentos__c segmento9 = new Segmentos__c(Evento_Medico__c = em.Id);
-		Segmentos__c segmento10 = new Segmentos__c(Evento_Medico__c = em.Id);
+		Segmentos__c segmento1 = new Segmentos__c(Evento_Medico__c = em.Id, Solicitante__c = 'NO ENCOLAR');
+		Segmentos__c segmento2 = new Segmentos__c(Evento_Medico__c = em.Id, Solicitante__c = 'NO ENCOLAR');
+		Segmentos__c segmento3 = new Segmentos__c(Evento_Medico__c = em.Id, Solicitante__c = 'NO ENCOLAR');
+		Segmentos__c segmento4 = new Segmentos__c(Evento_Medico__c = em.Id, Solicitante__c = 'NO ENCOLAR');
+		Segmentos__c segmento5 = new Segmentos__c(Evento_Medico__c = em.Id, Solicitante__c = 'NO ENCOLAR');
+		Segmentos__c segmento6 = new Segmentos__c(Evento_Medico__c = em.Id, Solicitante__c = 'NO ENCOLAR');
+		Segmentos__c segmento7 = new Segmentos__c(Evento_Medico__c = em.Id, Solicitante__c = 'NO ENCOLAR');
+		Segmentos__c segmento8 = new Segmentos__c(Evento_Medico__c = em.Id, Solicitante__c = 'NO ENCOLAR');
+		Segmentos__c segmento9 = new Segmentos__c(Evento_Medico__c = em.Id, Solicitante__c = 'NO ENCOLAR');
+		Segmentos__c segmento10 = new Segmentos__c(Evento_Medico__c = em.Id, Solicitante__c = 'NO ENCOLAR');
 		Test.startTest();
 		insert new List<Segmentos__c>{segmento1, segmento2, segmento3, segmento4, segmento5, segmento6, segmento7, segmento8, segmento9, segmento10};
 		Test.stopTest();
@@ -148,16 +150,21 @@ private class SegmentoTriggerTest {
 		Evento_medico__c em = new Evento_medico__c(Nro_de_Evento_Medico_SS__c = '275822');
 		em.Forma_de_egreso__c = 'FUGA';
 		insert em;
-		Segmentos__c seg = new Segmentos__c(Evento_Medico__c = em.Id);
+		Segmentos__c seg = new Segmentos__c(
+			Evento_Medico__c = em.Id,
+			Semid__c = '305714',
+			Numero_del_segmento__c = 1
+		);
 		insert seg;
-		SegmentoQueueable segmentoQueable = new SegmentoQueueable(new List<Segmentos__c>{seg}, false);
+		Segmentos__c seg2 = new Segmentos__c(Evento_Medico__c = em.Id);
 		Test.startTest();
-		System.enqueueJob(segmentoQueable);
+		insert seg2;
 		Test.stopTest();
 		/** Validar que se creó el platform event informando el error en SS */
 		validatePlatformEventFired();
-		Segmentos__c segToAssert = [SELECT Error_en_SS__c FROM Segmentos__c WHERE Id =: seg.Id];
-		System.assertEquals('<p style="color: rgb(228, 10, 10);">No pudo autorizarse</p>', segToAssert.Error_en_SS__c, 'Debe estar el error de SS');
+		List<Segmentos__c> segsToAssert = [SELECT Id FROM Segmentos__c WHERE Evento_Medico__c =: em.Id];
+		System.assertEquals(1, segsToAssert.size(), 'Solo debe haber un segmento médico asociado al evento');
+		System.assertEquals(seg.Id, segsToAssert[0].Id, 'Solo debe haber un segmento médico asociado al evento');
 	}
 	@IsTest
 	private static void updateSegmentTest() {
@@ -188,7 +195,8 @@ private class SegmentoTriggerTest {
 		Evento_medico__c em = new Evento_medico__c(Nro_de_Evento_Medico_SS__c = '275822');
 		insert em;
 		Segmentos__c seg = new Segmentos__c(
-			Semid__c = '305715', Evento_Medico__c = em.Id
+			Semid__c = '305715',
+			Evento_Medico__c = em.Id
 		);
 		insert seg;
 		SegmentoQueueable segmentoQueable = new SegmentoQueueable(new List<Segmentos__c>{seg}, true);
@@ -206,7 +214,8 @@ private class SegmentoTriggerTest {
 		Evento_medico__c em = new Evento_medico__c(Nro_de_Evento_Medico_SS__c = '275822');
 		insert em;
 		Segmentos__c seg = new Segmentos__c(
-			Semid__c = '305715', Evento_Medico__c = em.Id
+			Semid__c = '305715',
+			Evento_Medico__c = em.Id
 		);
 		insert seg;
 		Test.startTest();
@@ -305,6 +314,36 @@ private class SegmentoTriggerTest {
 		System.assertEquals(System.Label.Alerta_Segmento_EventoMedicoCerrado,
 							result.getErrors()[0].getMessage(),
 							'El mensaje no indica el error');
+	}
+	@isTest
+	public static void ifSSUpdateResponseHasErrorRevertSegmentoInfo () {
+		Evento_medico__c em = new Evento_medico__c(
+			Nro_de_Evento_Medico_SS__c = '275822',
+			Fecha_y_Hora_inicio_EMS__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 01),
+			Fecha_y_hora_fin_ems__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 02)
+		);
+		insert em;
+		Datetime fechaInicioReal = DateTime.newInstance(Date.today().year(), Date.today().month(), 04);
+		Datetime fechaFinReal = DateTime.newInstance(Date.today().year(), Date.today().month(), 06);
+		Segmentos__c oldSeg = new Segmentos__c(
+			Semid__c = '305715',
+			Fecha_Inicio_tentativa__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 01),
+			Fecha_Fin_tentativa__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 02),
+			Fecha_Inicio_real__c = fechaInicioReal,
+			Fecha_Fin_real__c = fechaFinReal,
+			Evento_Medico__c = em.Id
+		);
+		insert oldSeg;
+		oldSeg.Fecha_Inicio_real__c = fechaInicioReal.addDays(3);
+		oldSeg.Fecha_Fin_real__c = fechaFinReal.addDays(3);
+		Test.setMock(HttpCalloutMock.class, getErrorResponseActualizacion);
+		Test.startTest();
+		update oldSeg;
+		Test.stopTest();
+		validatePlatformEventFired();
+		oldSeg = [SELECT Fecha_Inicio_real__c, Fecha_Fin_real__c FROM Segmentos__c WHERE Id =: oldSeg.Id];
+		System.assert(oldSeg.Fecha_Inicio_real__c == fechaInicioReal, 'Las fechas no coinciden');
+		System.assert(oldSeg.Fecha_Fin_real__c == fechaFinReal, 'Las fechas no coinciden');
 	}
 	/** Utils */
 	private static void validatePlatformEventFired () {

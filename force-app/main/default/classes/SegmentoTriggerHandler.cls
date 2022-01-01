@@ -29,7 +29,9 @@ public with sharing class SegmentoTriggerHandler extends TriggerHandler {
 		List<Segmentos__c> editableSegmentos = SegmentoHelper.checkEventoMedicoStatus(lNew);
 		if (!editableSegmentos.isEmpty()) {
 			List<Segmentos__c> segmentosToCheck = new List<Segmentos__c>();
+			List<Segmentos__c> revertedSegmentos = new List<Segmentos__c>();
 			for (Segmentos__c segmento : editableSegmentos) {
+				Segmentos__c oldSeg = mOld.get(segmento.Id);
 				if (mOld.containsKey(segmento.Id)
 					&& (mOld.get(segmento.Id).Fecha_Inicio_real__c != segmento.Fecha_Inicio_real__c
 						|| mOld.get(segmento.Id).Fecha_Fin_real__c != segmento.Fecha_Fin_real__c)) {
@@ -47,38 +49,51 @@ public with sharing class SegmentoTriggerHandler extends TriggerHandler {
 	public override void afterInsert() {
 		List<Segmentos__c> segmentos = new List<Segmentos__c>();
 		for(Segmentos__c segmento : lNew) {
-			if(String.isBlank(segmento.Semid__c)) {
+			Boolean dontQueue = Test.isRunningTest() && segmento.Solicitante__c == 'NO ENCOLAR';
+			if(String.isBlank(segmento.Semid__c) && !dontQueue) {
 				segmentos.add(segmento);
 			}
 		}
-		if(!segmentos.isEmpty() && !Test.isRunningTest()) {
+		if(!segmentos.isEmpty()) {
 			System.enqueueJob(new SegmentoQueueable(segmentos, false));
 		}
 	}
 	public override void afterUpdate() {
 		Id profileId = UserInfo.getProfileId();
 		String profileName = [SELECT Id,Name FROM Profile WHERE Id = :profileId].Name;
+		Map<Id, Segmentos__c> oldSegmentosMap = new Map<Id, Segmentos__c>();
 		List<Segmentos__c> segmentosToUpdate = new List<Segmentos__c>();
 		List<Segmentos__c> segmentosToCreate = new List<Segmentos__c>();
+		Set<Id> segmentosToDeFlagRevertedIds = new Set<Id>();
 		for(Segmentos__c segmento : lNew) {
 			Segmentos__c oldSeg = mOld.get(segmento.Id);
 			Boolean shouldUpdateSS = segmento.Fecha_fin_Real__c != null
 										&& segmento.Fecha_Inicio_real__c != null
-										&& (profileName != 'Administrador de sistema' /**&& profileName != 'System Administrator'*/);
+										&& (profileName != 'Administrador de sistema' && profileName != 'System Administrator');
 			Boolean shouldInsertSS = segmento.Fecha_inicio_tentativa__c != null && segmento.Fecha_fin_Tentativa__c != null;
+			Boolean isReverting = oldSeg.Revirtiendo_Segmento__c == false && segmento.Revirtiendo_Segmento__c == true;
+			Boolean hasBeenReverted = oldSeg.Revirtiendo_Segmento__c == true && segmento.Revirtiendo_Segmento__c == false;
+			Boolean dontQueue = Test.isRunningTest() && segmento.Solicitante__c == 'NO ENCOLAR';
 			if(String.isNotBlank(segmento.Semid__c)
 				&& SegmentoHelper.isChangedSomeFieldToSendToSS(segmento, oldSeg)
-				&& shouldUpdateSS) {
+				&& shouldUpdateSS
+				&& !(isReverting || hasBeenReverted)
+				&& !dontQueue) {
 				segmentosToUpdate.add(segmento);
-			}
-			else if(String.isBlank(segmento.Semid__c)
+				oldSegmentosMap.put(segmento.Id, mOld.get(segmento.Id));
+			} else if (isReverting) {
+				segmentosToDeFlagRevertedIds.add(segmento.Id);
+			}else if(String.isBlank(segmento.Semid__c)
 				&& SegmentoHelper.isChangedSomeFieldToSendToSS(segmento, oldSeg)
 				&& shouldInsertSS) {
 				segmentosToCreate.add(segmento);
 			}
 		}
+		if (!segmentosToDeFlagRevertedIds.isEmpty()) {
+			SegmentoHelper.deFlagRevertedSegmentos(segmentosToDeFlagRevertedIds);
+		}
 		if(!segmentosToUpdate.isEmpty()) {
-			System.enqueueJob(new SegmentoQueueable(segmentosToUpdate, true));
+			System.enqueueJob(new SegmentoQueueable(segmentosToUpdate, oldSegmentosMap, true));
 		}
 		else if(!segmentosToCreate.isEmpty()) {
 			System.enqueueJob(new SegmentoQueueable(segmentosToCreate, false));

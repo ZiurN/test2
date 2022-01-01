@@ -1,9 +1,15 @@
 public without sharing class SegmentoQueueable implements Queueable, Database.AllowsCallouts {
 	List<Segmentos__c> segmentos;
+	Map<Id, Segmentos__c> oldSegmentosMap;
 	Boolean esActualizacion;
 	public SegmentoQueueable(List<Segmentos__c> segmentosList, Boolean isUpdate) {
 		segmentos = segmentosList;
 		esActualizacion = isUpdate;
+	}
+	public SegmentoQueueable(List<Segmentos__c> segmentosList, Map<Id, Segmentos__c> oldSegmentosMap, Boolean isUpdate) {
+		this.segmentos = segmentosList;
+		this.oldSegmentosMap = oldSegmentosMap;
+		this.esActualizacion = isUpdate;
 	}
 	public void execute(QueueableContext context) {
 		if(!segmentos.isEmpty()) {
@@ -12,15 +18,22 @@ public without sharing class SegmentoQueueable implements Queueable, Database.Al
 				createSegmento(segmento.Id);
 			}
 			else {
-				actualizarSegmento(segmento.Semid__c);
+				actualizarSegmento(segmento.Semid__c, oldSegmentosMap);
 			}
 			if(!segmentos.isEmpty()){
-				System.enqueueJob(new SegmentoQueueable(segmentos, esActualizacion));
+				if (esActualizacion) {
+					System.enqueueJob(new SegmentoQueueable(segmentos, oldSegmentosMap, esActualizacion));
+				} else {
+					System.enqueueJob(new SegmentoQueueable(segmentos, esActualizacion));
+				}
 			}
 		}
 	}
 	private static void createSegmento(String segmentId) {
-		Segmentos__c seg = getSegmentoById(segmentId);
+		List<Segmentos__c> segs = getSegmentoById(segmentId);
+		Segmentos__c seg;
+		if (segs.isEmpty()) return;
+		else seg = segs[0];
 		String rtIdEMI = XappiaHelper.getRecordType('Evento_Medico__c', 'Evento_medico_de_internacion').Id;
 		Evento_Medico__c em = getEventoMedico(seg.Evento_Medico__c);
 		String body = generateJSONFromCreate(seg);
@@ -53,30 +66,24 @@ public without sharing class SegmentoQueueable implements Queueable, Database.Al
 			else {
 				seg.Error_en_SS__c = '';
 				update seg;
+				seg = getSegmentoById(segmentId)[0];
+				updateEventoMedico(em, seg);
 			}
 		}
 		else {
-			seg.Error_en_SS__c = '<p style="color: rgb(228, 10, 10);">' + resp.message + '</p>';
-			update seg;
+			seg = getSegmentoById(segmentId)[0];
+			Database.DeleteResult result = Database.delete(seg, false);
+			if(!result.isSuccess()){
+				String errorMsg = '';
+				for(Database.Error err : result.getErrors()){
+					errorMsg = err.message + '\n';
+				}
+				seg.Error_en_SS__c = '<p style="color: rgb(228, 10, 10);">' + errorMsg + '</p>';
+				update seg;
+			}
 		}
-		seg = getSegmentoById(segmentId);
-		if(seg.Fecha_Inicio_real__c != null && seg.Numero_del_segmento__c == 1 && em.Fecha_y_Hora_inicio_EMS__c != seg.Fecha_Inicio_real__c
-			&& String.isBlank(seg.Error_en_SS__c
-		)) {
-			em.Fecha_y_Hora_inicio_EMS__c = seg.Fecha_Inicio_real__c;
-		}
-		if(seg.Segmento_actual__c && seg.Fecha_Fin_real__c == null && seg.Fecha_Fin_tentativa__c != null && String.isBlank(seg.Error_en_SS__c)
-		) {
-			em.Fecha_y_hora_fin_ems__c = seg.Fecha_Fin_tentativa__c;
-		}
-		if(seg.Segmento_actual__c && seg.Fecha_Fin_real__c != null && seg.Fecha_Fin_real__c >= em.Fecha_y_Hora_inicio_EMS__c
-			&& String.isBlank(em.Forma_de_egreso__c) && String.isBlank(seg.Error_en_SS__c)
-		) {
-			em.Fecha_y_hora_fin_ems__c = seg.Fecha_Fin_real__c;
-		}
-		update em;
 	}
-	private static void actualizarSegmento(String segmentoId) {
+	private static void actualizarSegmento(String segmentoId, Map<Id, Segmentos__c> oldSegmentosMap) {
 		String body;
 		List<Segmentos__c> segList = getSegmentosBySemid(segmentoId);
 		if(segList.isEmpty()) {
@@ -114,28 +121,19 @@ public without sharing class SegmentoQueueable implements Queueable, Database.Al
 			else {
 				segList[0].Error_en_SS__c = '';
 				update segList[0];
+				segList = getSegmentosBySemid(segmentoId);
+				updateEventoMedico(em, segList[0]);
 			}
 		}
 		else {
-			segList[0].Error_en_SS__c = '<p style="color: rgb(228, 10, 10);">' + resp.message + '</p>';
-			update segList[0];
+			Segmentos__c segToRevert = segList[0];
+			if (oldSegmentosMap != null && oldSegmentosMap.containsKey(segList[0].Id)) {
+				segToRevert = oldSegmentosMap.get(segList[0].Id).clone(true);
+			}
+			segToRevert.Error_en_SS__c = '<p style="color: rgb(228, 10, 10);">' + resp.message + '</p>';
+			segToRevert.Revirtiendo_Segmento__c = true;
+			update segToRevert;
 		}
-		segList = getSegmentosBySemid(segmentoId);
-		if(segList[0].Fecha_Inicio_real__c != null && segList[0].Numero_del_segmento__c == 1 && em.Fecha_y_Hora_inicio_EMS__c != segList[0].Fecha_Inicio_real__c
-			&& String.isBlank(segList[0].Error_en_SS__c)
-		) {
-			em.Fecha_y_Hora_inicio_EMS__c = segList[0].Fecha_Inicio_real__c;
-		}
-		if(segList[0].Segmento_actual__c && segList[0].Fecha_Fin_real__c == null && segList[0].Fecha_Fin_tentativa__c != null && String.isBlank(segList[0].Error_en_SS__c)
-		) {
-			em.Fecha_y_hora_fin_ems__c = segList[0].Fecha_Fin_tentativa__c;
-		}
-		if(segList[0].Segmento_actual__c && segList[0].Fecha_Fin_real__c != null && segList[0].Fecha_Fin_real__c >= em.Fecha_y_Hora_inicio_EMS__c
-			&& String.isBlank(em.Forma_de_egreso__c) && String.isBlank(segList[0].Error_en_SS__c)
-		) {
-			em.Fecha_y_hora_fin_ems__c = segList[0].Fecha_Fin_real__c;
-		}
-		update em;
 	}
 	private static void attachPDF(WSSSGenericResponse.EventoMedico emWS, Id emIdSF) {
 		String title = emWS.em_id;
@@ -214,7 +212,7 @@ public without sharing class SegmentoQueueable implements Queueable, Database.Al
 		return jsonS;
 	}
 	/** Utils */
-	private static Segmentos__c getSegmentoById (String segmentId) {
+	private static List<Segmentos__c> getSegmentoById (String segmentId) {
 		return [SELECT Semid__c,
 					Evento_Medico__r.Efector_Solicitante__r.Codigo_de_efector__c,
 					Fecha_Inicio_tentativa__c,
@@ -250,5 +248,27 @@ public without sharing class SegmentoQueueable implements Queueable, Database.Al
 					Forma_de_egreso__c
 				FROM Evento_Medico__c
 				WHERE Id =: eventoMedicoId];
+	}
+	private static void updateEventoMedico (Evento_Medico__c em, Segmentos__c seg) {
+		if (seg.Fecha_Inicio_real__c != null
+			&& seg.Numero_del_segmento__c == 1
+			&& em.Fecha_y_Hora_inicio_EMS__c != seg.Fecha_Inicio_real__c
+			&& String.isBlank(seg.Error_en_SS__c)) {
+			em.Fecha_y_Hora_inicio_EMS__c = seg.Fecha_Inicio_real__c;
+		}
+		if (seg.Segmento_actual__c
+			&& seg.Fecha_Fin_real__c == null
+			&& seg.Fecha_Fin_tentativa__c != null
+			&& String.isBlank(seg.Error_en_SS__c)) {
+			em.Fecha_y_hora_fin_ems__c = seg.Fecha_Fin_tentativa__c;
+		}
+		if(seg.Segmento_actual__c
+			&& seg.Fecha_Fin_real__c != null
+			&& seg.Fecha_Fin_real__c >= em.Fecha_y_Hora_inicio_EMS__c
+			&& String.isBlank(em.Forma_de_egreso__c)
+			&& String.isBlank(seg.Error_en_SS__c)) {
+			em.Fecha_y_hora_fin_ems__c = seg.Fecha_Fin_real__c;
+		}
+		update em;
 	}
 }
