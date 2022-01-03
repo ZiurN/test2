@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Metadata con los Ids de los Diagnosticos para usar en los PB</description>
+    <label>Diagnóstico</label>
+    <pluralLabel>Diagnósticos</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

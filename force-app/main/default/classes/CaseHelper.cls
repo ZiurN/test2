@@ -1,76 +1,55 @@
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class CaseHelper {
 
 	@TestVisible
     public static final Webservice_endpoint_setting__mdt SERVICE_CONFIG =
 			ConfigUtils.getWebServiceConfig('SALUDSOFT.TEST');
-			
     public static void assignDelegacionFromUser(Map<Id, List<Case>> userIdCasesMap) {
-        //Set<Case> casesToUpdate = new Set<Case>();
 		List<Case> casesToUpdate = new List<Case>();
         Map<String, List<Case>> codDelegacionCasesMap = new Map<String, List<Case>>();
-		//Map<String, Set<Case>> codDelegacionCasesMap = new Map<String, Set<Case>>();
-		//usuario = [SELECT Codigo_delegacion__c FROM User WHERE Id  = userIdCasesMap.keyset()[0]];
-		Group[] cdc = [SELECT id FROM Group WHERE Type = 'Queue' AND DeveloperName = 'CDC'];
-				Account[] delegacionCdc = [SELECT Id, Codigo_de_delegacion__c
-					FROM Account
-					WHERE Codigo_de_delegacion__c = '650078'
-		];
-
-
-        for (User usuario : [
-                SELECT Codigo_delegacion__c
-                FROM User
-                WHERE Id IN :userIdCasesMap.keySet()
-        ]) {
+        for (User usuario : [SELECT Codigo_delegacion__c FROM User WHERE Id IN :userIdCasesMap.keySet()]) {
 			if (usuario.Codigo_delegacion__c != null) {
                 List<Case> casesFromUserMap = userIdCasesMap.get(usuario.Id);
-				//Set<Case> casesFromUserMapS = new Set<Case>(casesFromUserMap);
                 if (codDelegacionCasesMap.containsKey(usuario.Codigo_delegacion__c)) {
                     List<Case> casesFromDelegacionMap = codDelegacionCasesMap.get(usuario.Codigo_delegacion__c);
-					//Set<Case> casesFromDelegacionMap = codDelegacionCasesMap.get(usuario.Codigo_delegacion__c);
                     casesFromDelegacionMap.addAll(casesFromUserMap);
                     codDelegacionCasesMap.put(usuario.Codigo_delegacion__c, casesFromDelegacionMap);
                 } else {
                     codDelegacionCasesMap.put(usuario.Codigo_delegacion__c, casesFromUserMap);
                 }
             }
-
         }
-
+		Account[] delegaciones = [SELECT Id, Codigo_de_delegacion__c
+									FROM Account
+									WHERE Codigo_de_delegacion__c IN :codDelegacionCasesMap.keySet()
+										OR Codigo_de_delegacion__c = '650078'];
+		Account[] delegacionCdc = new List<Account>();
+		Account[] delegacionesToCheck = new List<Account>();
+		for (Account delegacion: delegaciones) {
+			if (delegacion.Codigo_de_delegacion__c == '650078') delegacionCdc.add(delegacion);
+			else delegacionesToCheck.add(delegacion);
+		}
+		Group[] cdc = [SELECT id FROM Group WHERE Type = 'Queue' AND DeveloperName = 'CDC'];
 		if(!cdc.isEmpty()) {
-			if(userIdCasesMap.containsKey(cdc[0].Id)) { 
+			if(userIdCasesMap.containsKey(cdc[0].Id)) {
 				List<Case> casesFromUserMap = userIdCasesMap.get(cdc[0].Id);
-
 				for(Case aCase : casesFromUserMap) {
 					aCase.Delegacion__c = delegacionCdc[0].Id;
-
 					casesToUpdate.add(aCase);
 				}
 			}
 		}
-
-		System.debug('****codDelegacionCasesMap ' + codDelegacionCasesMap);
-        for(Account delegacion : [
-                SELECT Id, Codigo_de_delegacion__c
-                FROM Account
-                WHERE Codigo_de_delegacion__c IN :codDelegacionCasesMap.keySet()
-        ]) {
+        for(Account delegacion : delegacionesToCheck) {
             for (Case caso : codDelegacionCasesMap.get(delegacion.Codigo_de_delegacion__c)) {
-				//caso.Cambio_Manual__c = false;
                 caso.Delegacion__c = delegacion.Id;
                 casesToUpdate.add(caso);
             }
         }
-
 		List<Case> casos = new List<Case>(casesToUpdate);
         if (!casesToUpdate.isEmpty()) {
-			System.debug('****casesToUpdate ' + casesToUpdate);
-			System.debug('****setToUpdate ' + casos);
-           update casesToUpdate;
-		   //update casos;
+			update casesToUpdate;
         }
     }
-    
     public static void derivaconAlCompletarDocumentacion(List<Case> casesToUpdate){
         system.debug('casos que vinieron en la lista: ' + casesToUpdate.size());
 		
@@ -579,31 +558,28 @@ public with sharing class CaseHelper {
 				lotesIds.add(caso.Lote__c);
 			}
 		}
-
-		Map<Id, Lote__c> loteById = new Map<Id, Lote__c>([
-			SELECT Id, Estado__c
-			FROM Lote__c
-			WHERE Id IN :lotesIds
-		]);
-
-		for (Case caso : cases) {
-			if(caso.RecordTypeId == XappiaHelper.getRecordType('Case', 'Reintegro').Id
-				&& String.isNotBlank(caso.Lote__c) && loteById.get(caso.Lote__c).Estado__c == 'C') {
-				caso.addError('No puede asignar un Lote cerrado a un Reintegro');
+		Map<Id, Lote__c> loteById = new Map<Id, Lote__c>();
+		if (!lotesIds.isEmpty()) {
+			loteById = new Map<Id, Lote__c>([
+				SELECT Id, Estado__c
+				FROM Lote__c
+				WHERE Id IN :lotesIds
+			]);
+		}
+		if (!lotesIds.isEmpty()) {
+			for (Case caso : cases) {
+				if(caso.RecordTypeId == XappiaHelper.getRecordType('Case', 'Reintegro').Id
+					&& String.isNotBlank(caso.Lote__c) && loteById.get(caso.Lote__c).Estado__c == 'C') {
+					caso.addError('No puede asignar un Lote cerrado a un Reintegro');
+				}
 			}
 		}
 	}
 
 	@Future(callout=true)
 	public static void darDeBajaCasos(Set<Id> idCases){
-		List<Case> cases = [
-			SELECT Id, Type,Error__c
-			FROM Case
-			WHERE Id IN :idCases
-		];
-
+		List<Case> cases = [SELECT Id, Type,Error__c FROM Case WHERE Id IN :idCases];
 		List<Case> casosToUpdate = new List<Case>();
-
 		for(Case caso : cases){
 			String body = generateBajaJSON(caso);
 			System.debug('***body case: '+ body);
