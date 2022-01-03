@@ -81,6 +81,7 @@ public without sharing class SegmentoQueueable implements Queueable, Database.Al
 				seg.Error_en_SS__c = '<p style="color: rgb(228, 10, 10);">' + errorMsg + '</p>';
 				update seg;
 			}
+			sendNotificationToUser(segmentId, em.Id, seg.Name);
 		}
 	}
 	private static void actualizarSegmento(String segmentoId, Map<Id, Segmentos__c> oldSegmentosMap) {
@@ -129,6 +130,8 @@ public without sharing class SegmentoQueueable implements Queueable, Database.Al
 			Segmentos__c segToRevert = segList[0];
 			if (oldSegmentosMap != null && oldSegmentosMap.containsKey(segList[0].Id)) {
 				segToRevert = oldSegmentosMap.get(segList[0].Id).clone(true);
+				segToRevert.Fecha_Inicio_real__c = segToRevert.Fecha_Inicio_real__c == null ? null : segToRevert.Fecha_Inicio_real__c;
+				segToRevert.Fecha_Fin_real__c = segToRevert.Fecha_Fin_real__c == null ? null : segToRevert.Fecha_Fin_real__c;
 			}
 			segToRevert.Error_en_SS__c = '<p style="color: rgb(228, 10, 10);">' + resp.message + '</p>';
 			segToRevert.Revirtiendo_Segmento__c = true;
@@ -214,6 +217,7 @@ public without sharing class SegmentoQueueable implements Queueable, Database.Al
 	/** Utils */
 	private static List<Segmentos__c> getSegmentoById (String segmentId) {
 		return [SELECT Semid__c,
+					Name,
 					Evento_Medico__r.Efector_Solicitante__r.Codigo_de_efector__c,
 					Fecha_Inicio_tentativa__c,
 					Evento_Medico__r.Nro_de_Evento_Medico_SS__c,
@@ -270,5 +274,18 @@ public without sharing class SegmentoQueueable implements Queueable, Database.Al
 			em.Fecha_y_hora_fin_ems__c = seg.Fecha_Fin_real__c;
 		}
 		update em;
+	}
+	@future
+	private static void sendNotificationToUser (String segmentoId, String eventoMedicoId, String segName) {
+		List<CustomNotificationType> segmentoBorradoNotifs = [SELECT Id
+															FROM CustomNotificationType
+															WHERE DeveloperName = 'Segmento_Borrado_en_SF'
+															LIMIT 1];
+		Set<String> usersSet = new Set<String>{UserInfo.getUserId()};
+		String notificationId = String.valueOf(segmentoBorradoNotifs[0].Id);
+		String targetId = eventoMedicoId;
+		String title = 'Error al crear el Segmento ' + segName + ' en SaludSoft';
+		String body = 'El segmento ' + segName + ' será borrado en Salesforce';
+		XappiaHelper.sendCustomNotification(notificationId, targetId, title, body, usersSet);
 	}
 }

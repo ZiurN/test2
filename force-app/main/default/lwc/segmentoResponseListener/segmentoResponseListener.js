@@ -1,7 +1,7 @@
 import { LightningElement, api, wire } from 'lwc';
 import { getRecord, getRecordNotifyChange } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { subscribe, unsubscribe, onError, setDebugFlag, isEmpEnabled } from 'lightning/empApi';
+import { subscribe, unsubscribe, onError } from 'lightning/empApi';
 const FIELDS = [
 	'Segmentos__c.Error_en_SS__c',
 	'Segmentos__c.Semid__c'
@@ -47,9 +47,11 @@ export default class SegmentoResponseListener extends LightningElement {
 	messageCallback = (response) => {
 		let segmentoId = response.data.payload.Id_Segmento__c;
 		let hasSSError = response.data.payload.error__c;
-		if(segmentoId === this.semid && hasSSError) {
+		let isDelete = response.data.payload.isDelete__c;
+		if (isDelete || (segmentoId === this.semid && hasSSError)) {
 			this.sendMessageToUser('error', response.data.payload.Response_Error__c);
 		}
+		getRecordNotifyChange([{recordId: this.recordId}]);
 	}
 	registerErrorListener() {
 		// Invoke onError empApi method
@@ -64,6 +66,5 @@ export default class SegmentoResponseListener extends LightningElement {
 			variant: status,
 		});
 		this.dispatchEvent(evt);
-		getRecordNotifyChange([{recordId: this.recordId}]);
 	}
 }

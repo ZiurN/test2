@@ -337,9 +337,13 @@ private class SegmentoTriggerTest {
 		oldSeg.Fecha_Inicio_real__c = fechaInicioReal.addDays(3);
 		oldSeg.Fecha_Fin_real__c = fechaFinReal.addDays(3);
 		Test.setMock(HttpCalloutMock.class, getErrorResponseActualizacion);
-		Test.startTest();
-		update oldSeg;
-		Test.stopTest();
+		Group fromQueue = [SELECT Id FROM Group WHERE Type = 'Queue' AND Name = 'Front'];
+		List<GroupMember> fromUsers = [SELECT UserOrGroupId From GroupMember where GroupId =: fromQueue.Id];
+		System.runAs (new User(Id = fromUsers[0].UserOrGroupId)) {
+			Test.startTest();
+			update oldSeg;
+			Test.stopTest();
+		}
 		validatePlatformEventFired();
 		oldSeg = [SELECT Fecha_Inicio_real__c, Fecha_Fin_real__c FROM Segmentos__c WHERE Id =: oldSeg.Id];
 		System.assert(oldSeg.Fecha_Inicio_real__c == fechaInicioReal, 'Las fechas no coinciden');

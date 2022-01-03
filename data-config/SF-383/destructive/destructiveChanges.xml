@@ -8,6 +8,12 @@
 		<members>WSSegmentoEliminarRespTest</members>
 		<members>WSSegmentoEliminarMock</members>
 		<members>WSSegmentoAltaTest</members>
+		<members>SegmentoAltaBtnCtrl</members>
+		<members>SegmentoAltaBtnCtrlTest</members>
+		<members>SegmentoEnviarASSBtnCtrl</members>
+		<members>SegmentoEnviarASSBtnCtrlTest</members>
         <name>ApexClass</name>
+		<members>SegmentoEnviarASSBtn</members>
+		<name>AuraDefinitionBundle</name>
     </types>
 </Package>

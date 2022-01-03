@@ -360,4 +360,25 @@ public without sharing class XappiaHelper {
 	public static Boolean isPlatformUser () {
 		return isPlatformUser;
 	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
+	@description	Método para enviar una notificación personalizada al usuario.
+	@param			notificationTypeId - Id de la notificación personalizada.
+	@param			targetId - Id del registro al que se debe dirigir el usuario al dar clic en la notificación.
+	@param			title - Título de la notificación.
+	@param			body - Texto de la notificación.
+	@param			setUserIds - Conjunto de Ids a los que se les enviará la notificación.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static void sendCustomNotification (String notificationTypeId,
+												String targetId,
+												String title,
+												String body,
+												Set<String> setUserIds) {
+		Messaging.CustomNotification notification = new Messaging.CustomNotification();
+		notification.setNotificationTypeId(notificationTypeId);
+		notification.setTargetId(targetId);
+		notification.setTitle(title);
+		notification.setBody(body);
+		notification.send(setUserIds);
+	}
 }
