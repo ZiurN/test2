@@ -150,24 +150,12 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
-                <componentName>segmentoButtonsContainer</componentName>
-                <identifier>segmentoButtonsContainer</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
                 <componentInstanceProperties>
                     <name>tabs</name>
                     <value>sidebartabs</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
                 <identifier>flexipage_tabset2</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentName>segmentoResponseListener</componentName>
-                <identifier>c_segmentoResponseListener2</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
