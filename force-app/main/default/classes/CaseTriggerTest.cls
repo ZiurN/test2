@@ -509,6 +509,7 @@ private class CaseTriggerTest {
 		Case nCase = new Case(	RecordTypeId = XappiaHelper.getRecordType('Case','Autorizacion_previa').Id,
 								CBU__c = '12345', Status='Generada', Nivel_de_derivacion__c = 'Nivel 2',
 								Informacion_de_documentacion_faltante__c='test', Description='test',Fecha_prescripcion__c = Date.today(),
+								Fecha__c = Date.today().addDays(1),
 							 	Fecha_probable__c = Date.today().addDays(2), usuario__c = usuario.Id, id_usuario_solicitante__c = usuario.Id,
 							 	Correo_electronico_responsable__c= 'soyuntesttttt@gmail.com');
 		System.runAs(usuario){
