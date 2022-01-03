@@ -76,6 +76,7 @@ public class WSArchivosCargaResp {
 	
 	
 	public static WSArchivosCargaResp parse(String json) {
+		System.debug(json);
 		System.JSONParser parser = System.JSON.createParser(json);
 		return new WSArchivosCargaResp(parser);
 	}

@@ -95,12 +95,10 @@ public without sharing class ContentDocumentLinkTriggerHelper {
 					mapRecordIdFilenames.put(cdl.LinkedEntityId, new set<String>());
 				}
 				mapRecordIdFilenames.get(cdl.LinkedEntityId).add(cdl.ContentDocument.Title.toUpperCase());
-
 				if (!entitiesIdsByContentDocumentId.containsKey(cdl.ContentDocumentId)) {
 					entitiesIdsByContentDocumentId.put(cdl.ContentDocumentId, new Set<Id>());
 				}
 				entitiesIdsByContentDocumentId.get(cdl.ContentDocumentId).add(cdl.LinkedEntityId);
-
 				if (!cdsByEntityId.containsKey(cdl.LinkedEntityId)) {
 					cdsByEntityId.put(cdl.LinkedEntityId, new Set<Id>());
 				}
@@ -237,7 +235,7 @@ public without sharing class ContentDocumentLinkTriggerHelper {
 			}
 
 		}
-		if(usuario.Profile.Name != 'Administrador del sistema') {
+		if(usuario.Profile.Name != 'Administrador del sistema' || usuario.Profile.Name != 'System Administrator') {
 			for(Id cdId : caseDocumentLinksByDocumentIds.keySet()) {
 				for(ContentDocumentLink cdl : caseDocumentLinksByDocumentIds.get(cdId)) {
 					triggerOldMap.get(cdl.Id)?.addError(System.Label.Alerta_ArchivoEnviadoASS);
@@ -333,14 +331,24 @@ public without sharing class ContentDocumentLinkTriggerHelper {
 		setCDLinksToEdit(false);
 		if (!cDLinksByParentCaseId.isEmpty()) {
 			Map<Id,Case> casesById = new Map<Id, Case>([SELECT OwnerId FROM Case WHERE Id IN: cDLinksByParentCaseId.keySet()]);
+			List<ContentDocumentLink> cdLinksToDelete = new List<ContentDocumentLink>();
+			List<ContentDocumentLink> cdLinksToInsert = new List<ContentDocumentLink>();
 			for (Id caseId : casesById.keySet()) {
 				for (ContentDocumentLink cDLink : cDLinksByParentCaseId.get(caseId)) {
 					String sobjectType = cDLink.LinkedEntityId.getSObjectType().getDescribe().getName();
 					if (sobjectType == 'EmailMessage') {
-						cDLink.LinkedEntityId = caseId;
+						ContentDocumentLink cdLinkToCase = new ContentDocumentLink(
+							LinkedEntityId = caseId,
+							ContentDocumentId = cDLink.contentDocumentId
+						);
+						cdLinksToInsert.add(cdLinkToCase);
+						cdLinksToDelete.add(cDLink);
 					}
 				}
 			}
+			insert cdLinksToInsert;
+			delete cdLinksToDelete;
+			newDocuments = cdLinksToInsert;
 		}
 	}
 	/**-----------------------------------------------------------------------------------------------------------------------
@@ -375,6 +383,40 @@ public without sharing class ContentDocumentLinkTriggerHelper {
 			update cDocs;
 		}
     }
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
+	@description	Método para procesar los CDlinks una vez insertados por el usuario PlatInt.
+	@param			oldMapTrigger - Mapa de los CD a borrar por su Id.
+	------------------------------------------------------------------------------------------------------------------------*/
+	@future
+	public static void fireCDLinksInsertedEvent (Set<String> LinkedEntitiesIds) {
+		List<CDLinks_Inserted__e> eventsToFire = new List<CDLinks_Inserted__e>();
+		for (String linkedEntityId : linkedEntitiesIds) {
+			CDLinks_Inserted__e event = new CDLinks_Inserted__e (
+				Linked_Entity__c = linkedEntityId
+			);
+			eventsToFire.add(event);
+		}
+		List<Database.SaveResult> results = EventBus.publish(eventsToFire);
+	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
+	@description	Método para procesar los CDlinks una vez insertados por el usuario PlatInt.
+	@param			oldMapTrigger - Mapa de los CD a borrar por su Id.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static void processAfterInsertEvent (Set<String> LinkedEntitiesIds) {
+		List<ContentDocumentLink> cdLinksToProcess = [SELECT Id,
+														ContentDocumentId,
+														LinkedEntityId,
+														ContentDocument.Title,
+														ContentDocument.FileExtension
+													FROM ContentDocumentLink
+													WHERE LinkedEntityId IN: LinkedEntitiesIds];
+		if (!cdLinksToProcess.isEmpty()) {
+			modifyLinkedEntityForEmailToCaseCases(cdLinksToProcess);
+			modifyParentIdFromCDocumentsForEmailToCaseCases(newDocuments);
+		}
+	}
 	/** Utils */
 	private static List<ContentDocumentLink> getContentDocumentLinks (Set<Id> LinkedEntityIds, Set<Id> ContentDocumentIds) {
 		return [SELECT Id,
@@ -410,7 +452,7 @@ public without sharing class ContentDocumentLinkTriggerHelper {
 		cDLinkToAdd.Visibility = 'AllUsers';
 	}
 	private static void setCDLinksToEdit (Boolean isAfter) {
-		Map<Id, ContentDocumentLink> cDLinksFromEmailToCaseByLinkedEntityIds = new Map<Id, ContentDocumentLink>();
+		Map<Id, List<ContentDocumentLink>> cDLinksFromEmailToCaseByLinkedEntityIds = new Map<Id, List<ContentDocumentLink>>();
 		List<Id> cDocsIds = new List<Id>();
 		for (ContentDocumentLink cdl : newDocuments) {
 			cDocsIds.add(cdl.ContentDocumentId);
@@ -436,8 +478,13 @@ public without sharing class ContentDocumentLinkTriggerHelper {
 					if (linkedEntityType == 'Case') cDLinkedToCase = true;
 				}
 			}
+			List<Id> EmailMessagesIds = new List<Id>();
 			if (cDocsToCheckById.get(cdl.ContentDocumentId).Owner.Alias == 'platint' && sobjectType == 'EmailMessage' && !isAfter && !cDLinkedToCase) {
-				cDLinksFromEmailToCaseByLinkedEntityIds.put(cdl.LinkedEntityId, cdl);
+				if (!cDLinksFromEmailToCaseByLinkedEntityIds.containsKey(cdl.LinkedEntityId)) {
+					cDLinksFromEmailToCaseByLinkedEntityIds.put(cdl.LinkedEntityId, new List<ContentDocumentLink>{cdl});
+				} else {
+					cDLinksFromEmailToCaseByLinkedEntityIds.get(cdl.LinkedEntityId).add(cdl);
+				}
 			} else if (cDocsToCheckById.get(cdl.ContentDocumentId).Owner.Alias == 'platint' && sobjectType == 'Case' && isAfter) {
 				if (!cDLinksByParentCaseId.containsKey(cdl.LinkedEntityId)) {
 					cDLinksByParentCaseId.put(cdl.LinkedEntityId, new List<ContentDocumentLink>{cdl});
@@ -451,9 +498,9 @@ public without sharing class ContentDocumentLinkTriggerHelper {
 			for (EmailMessage email : emails) {
 				String sobjectType = email.ParentId.getSObjectType().getDescribe().getName();
 				if (sobjectType == 'Case' && !cDLinksByParentCaseId.containsKey(email.ParentId)) {
-					cDLinksByParentCaseId.put(email.ParentId, new List<ContentDocumentLink>{cDLinksFromEmailToCaseByLinkedEntityIds.get(email.Id)});
+					cDLinksByParentCaseId.put(email.ParentId, new List<ContentDocumentLink>(cDLinksFromEmailToCaseByLinkedEntityIds.get(email.Id)));
 				} else if (cDLinksByParentCaseId.containsKey(email.ParentId)) {
-					cDLinksByParentCaseId.get(email.ParentId).add(cDLinksFromEmailToCaseByLinkedEntityIds.get(email.Id));
+					cDLinksByParentCaseId.get(email.ParentId).addAll(cDLinksFromEmailToCaseByLinkedEntityIds.get(email.Id));
 				}
 			}
 		}

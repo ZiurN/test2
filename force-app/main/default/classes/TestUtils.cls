@@ -120,6 +120,38 @@ public without sharing class TestUtils {
 			.withBody(WSAuthTokenMock.getTokenSuccess())
 			.addForAddress(AUTH_TOKEN_URL);
 	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz
+	@description	Crea un HTMLBody con contentversions, imitando tener elementos pegados en los correos
+	@param			mock - Mock para construir.
+	@return			HtmlBody - El HTMLBody.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static String createHTMLBody (List<ContentVersion> cvs) {
+		String HtmlBody = '<html>' +
+			'<head>' +
+				'<title></title>' +
+			'</head>' +
+			'<body>123132132<br clear="none" />' +
+				'<b>From:</b> Jeferson Ruiz [jeferson.ruiz@globant.com]<br clear="none" />' +
+				'<b>Sent:</b> 28/12/2021 22:15<br clear="none" />' +
+				'<b>To:</b> jeferson.ruiz@xappia.com<br clear="none" />' +
+				'<b>Subject:</b>Prueba imagenes pegadas a correo<br clear="none" />' +
+				'<div dir="ltr">';
+		for (ContentVersion cv : cvs) {
+			HtmlBody += '<div>' +
+				'<img alt="imagen.png" height="278"' +
+					'src="https://acasalud--uat2--c.documentforce.com/sfc/servlet.shepherd/version/download/' + cv.Id + '?asPdf=false&operationContext=CHATTER"' +
+					'width="531" />' +
+					'<br clear="none" />' +
+				'&nbsp;' +
+			'</div>';
+		}
+		HtmlBody += '<br clear="none" />' +
+				'</div>' +
+			'</body>' +
+			'</html>';
+		return HtmlBody;
+	}
 	public class mockSettings {
 		public Integer statusCode {get; set;}
 		public String status {get;set;}
