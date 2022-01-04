@@ -246,7 +246,7 @@
         <fields>Codigo_de_efector__c</fields>
         <fields>Clase_efector__c</fields>
         <fields>Codigo_de_empresa__c</fields>
-        <profileName>Administrador del sistema</profileName>
+        <profileName>System Administrator</profileName>
     </profileSearchLayouts>
     <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
     <recordTypeTrackHistory>false</recordTypeTrackHistory>
