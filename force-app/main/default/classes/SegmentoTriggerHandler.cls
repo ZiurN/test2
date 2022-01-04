@@ -14,7 +14,6 @@ public with sharing class SegmentoTriggerHandler extends TriggerHandler {
 			if(eventoMedicoIdSegmentosMap.containsKey(segmento.Evento_Medico__c)) {
 				Segmentos__c[] segmentosFromMap = eventoMedicoIdSegmentosMap.get(segmento.Evento_Medico__c);
 				segmentosFromMap.add(segmento);
-
 				eventoMedicoIdSegmentosMap.put(segmento.Evento_Medico__c, segmentosFromMap);
 			}
 			else {
@@ -24,22 +23,32 @@ public with sharing class SegmentoTriggerHandler extends TriggerHandler {
 		if (!eventoMedicoIdSegmentosMap.isEmpty()) {
 			SegmentoHelper.checkSegmentoActualInTheLastSegmento(eventoMedicoIdSegmentosMap);
 		}
+		SegmentoHelper.checkFechasTentativas(lNew);
+		SegmentoHelper.checkFechasReales(lNew);
 	}
 	public override void beforeUpdate() {
 		List<Segmentos__c> editableSegmentos = SegmentoHelper.checkEventoMedicoStatus(lNew);
 		if (!editableSegmentos.isEmpty()) {
-			List<Segmentos__c> segmentosToCheck = new List<Segmentos__c>();
-			List<Segmentos__c> revertedSegmentos = new List<Segmentos__c>();
+			List<Segmentos__c> segmentosToCheckFechasReales = new List<Segmentos__c>();
+			List<Segmentos__c> segmentosToCheckFechasTentativas = new List<Segmentos__c>();
 			for (Segmentos__c segmento : editableSegmentos) {
 				Segmentos__c oldSeg = mOld.get(segmento.Id);
 				if (mOld.containsKey(segmento.Id)
 					&& (mOld.get(segmento.Id).Fecha_Inicio_real__c != segmento.Fecha_Inicio_real__c
 						|| mOld.get(segmento.Id).Fecha_Fin_real__c != segmento.Fecha_Fin_real__c)) {
-					segmentosToCheck.add(segmento);
+							segmentosToCheckFechasReales.add(segmento);
+				}
+				if (mOld.containsKey(segmento.Id)
+					&& (mOld.get(segmento.Id).Fecha_Inicio_tentativa__c != segmento.Fecha_Inicio_tentativa__c
+						|| mOld.get(segmento.Id).Fecha_Fin_tentativa__c != segmento.Fecha_Fin_tentativa__c)) {
+							segmentosToCheckFechasTentativas.add(segmento);
 				}
 			}
-			if (!segmentosToCheck.isEmpty()) {
-				SegmentoHelper.checkFechasReales(segmentosToCheck);
+			if (!segmentosToCheckFechasReales.isEmpty()) {
+				SegmentoHelper.checkFechasReales(segmentosToCheckFechasReales);
+			}
+			if (!segmentosToCheckFechasTentativas.isEmpty()) {
+				SegmentoHelper.checkFechasTentativas(segmentosToCheckFechasTentativas);
 			}
 		}
 	}
