@@ -13,7 +13,9 @@
 		<members>SegmentoEnviarASSBtnCtrl</members>
 		<members>SegmentoEnviarASSBtnCtrlTest</members>
         <name>ApexClass</name>
+    </types>
+	<types>
 		<members>SegmentoEnviarASSBtn</members>
 		<name>AuraDefinitionBundle</name>
-    </types>
+	</types>
 </Package>
