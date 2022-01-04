@@ -74,6 +74,20 @@ public without sharing class SegmentoHelper {
 	}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Jeferson Ruiz.
+	@description	Método que verifica que las fechas tentativas insertadas en el segmento sean consecutivas
+	@param			segmentosToCheck - Segmentos para verificar.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static void checkFechasTentativas (List<Segmentos__c> segmentosToCheck) {
+		for (Segmentos__c segmento : segmentosToCheck) {
+			Boolean fechaInicialNula =  segmento.Fecha_Inicio_tentativa__c == null;
+			Boolean fechaFinalNula = segmento.Fecha_Fin_tentativa__c == null;
+			if (!fechaInicialNula && !fechaFinalNula && (segmento.Fecha_Inicio_tentativa__c > segmento.Fecha_Fin_tentativa__c)) {
+				segmento.addError(System.Label.Alerta_Segmento_FechasTentativasNoConsecutivas);
+			}
+		}
+	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
 	@description	Método que verifica el estado del evento médico asociado. Si está cerrado, debe evitar cualquier
 					actualización.
 	@param			segmentosToCheck - Segmentos para verificar.
