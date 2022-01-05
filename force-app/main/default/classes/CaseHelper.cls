@@ -19,34 +19,34 @@ public with sharing class CaseHelper {
                 }
             }
         }
-		Account[] delegaciones = [SELECT Id, Codigo_de_delegacion__c
+		if (!codDelegacionCasesMap.isEmpty()) {
+			Account[] delegaciones = [SELECT Id, Codigo_de_delegacion__c
 									FROM Account
 									WHERE Codigo_de_delegacion__c IN :codDelegacionCasesMap.keySet()
 										OR Codigo_de_delegacion__c = '650078'];
-		Account[] delegacionCdc = new List<Account>();
-		for (Account delegacion: delegaciones) {
-			if (delegacion.Codigo_de_delegacion__c == '650078') delegacionCdc.add(delegacion);
-		}
-		Group[] cdc = [SELECT id FROM Group WHERE Type = 'Queue' AND DeveloperName = 'CDC'];
-		if(!cdc.isEmpty()) {
-			if(userIdCasesMap.containsKey(cdc[0].Id)) {
+			Account[] delegacionCdc = new List<Account>();
+			for (Account delegacion: delegaciones) {
+				if (delegacion.Codigo_de_delegacion__c == '650078') delegacionCdc.add(delegacion);
+			}
+			Group[] cdc = [SELECT id FROM Group WHERE Type = 'Queue' AND DeveloperName = 'CDC'];
+			if (!cdc.isEmpty() && userIdCasesMap.containsKey(cdc[0].Id)) {
 				List<Case> casesFromUserMap = userIdCasesMap.get(cdc[0].Id);
 				for(Case aCase : casesFromUserMap) {
 					aCase.Delegacion__c = delegacionCdc[0].Id;
 					casesToUpdate.add(aCase);
 				}
 			}
+			for (Account delegacion : delegaciones) {
+				for (Case caso : codDelegacionCasesMap.get(delegacion.Codigo_de_delegacion__c)) {
+					caso.Delegacion__c = delegacion.Id;
+					casesToUpdate.add(caso);
+				}
+			}
+			List<Case> casos = new List<Case>(casesToUpdate);
+			if (!casesToUpdate.isEmpty()) {
+				update casesToUpdate;
+			}
 		}
-        for(Account delegacion : delegaciones) {
-            for (Case caso : codDelegacionCasesMap.get(delegacion.Codigo_de_delegacion__c)) {
-                caso.Delegacion__c = delegacion.Id;
-                casesToUpdate.add(caso);
-            }
-        }
-		List<Case> casos = new List<Case>(casesToUpdate);
-        if (!casesToUpdate.isEmpty()) {
-			update casesToUpdate;
-        }
     }
     public static void derivaconAlCompletarDocumentacion(List<Case> casesToUpdate){
         system.debug('casos que vinieron en la lista: ' + casesToUpdate.size());
