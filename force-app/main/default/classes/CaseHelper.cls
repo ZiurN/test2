@@ -24,10 +24,8 @@ public with sharing class CaseHelper {
 									WHERE Codigo_de_delegacion__c IN :codDelegacionCasesMap.keySet()
 										OR Codigo_de_delegacion__c = '650078'];
 		Account[] delegacionCdc = new List<Account>();
-		Account[] delegacionesToCheck = new List<Account>();
 		for (Account delegacion: delegaciones) {
 			if (delegacion.Codigo_de_delegacion__c == '650078') delegacionCdc.add(delegacion);
-			else delegacionesToCheck.add(delegacion);
 		}
 		Group[] cdc = [SELECT id FROM Group WHERE Type = 'Queue' AND DeveloperName = 'CDC'];
 		if(!cdc.isEmpty()) {
@@ -39,7 +37,7 @@ public with sharing class CaseHelper {
 				}
 			}
 		}
-        for(Account delegacion : delegacionesToCheck) {
+        for(Account delegacion : delegaciones) {
             for (Case caso : codDelegacionCasesMap.get(delegacion.Codigo_de_delegacion__c)) {
                 caso.Delegacion__c = delegacion.Id;
                 casesToUpdate.add(caso);
