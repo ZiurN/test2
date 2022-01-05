@@ -1535,16 +1535,12 @@ private class CaseTriggerTest {
 		delegacion.Name = 'Test';
 		delegacion.Codigo_de_delegacion__c = '650078';
 		insert  delegacion;
-		List<GroupMember> membersOfCDC = [SELECT UserOrGroupId FROM GroupMember WHERE Group.DeveloperName = 'CDC'];
-		String OwnerIdFromGroupMembers;
-		for (GroupMember member : membersOfCDC) {
-			if (member.UserOrGroupId.getSObjectType().getDescribe().getName() == 'User') {
-				OwnerIdFromGroupMembers = member.UserOrGroupId;
-				break;
-			}
+		Group[] cdc = [SELECT id FROM Group WHERE Type = 'Queue' AND DeveloperName = 'CDC'];
+		if(cdc.isEmpty()) {
+			return;
 		}
 		Case aCase = new Case();
-		aCase.OwnerId = Id.valueOf(OwnerIdFromGroupMembers);
+		aCase.OwnerId = cdc[0].Id;
 		Test.startTest();
 		insert aCase;
 		Test.stopTest();
