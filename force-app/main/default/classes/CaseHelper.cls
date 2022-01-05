@@ -4,8 +4,13 @@ public with sharing class CaseHelper {
 	@TestVisible
     public static final Webservice_endpoint_setting__mdt SERVICE_CONFIG =
 			ConfigUtils.getWebServiceConfig('SALUDSOFT.TEST');
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Método para asignar la delegación al caso en base a la delegación del usuario.
+					vía Email-to-Case.
+	@param			userIdCasesMap - Mapa de lista de casos por el Id del propietario.
+	------------------------------------------------------------------------------------------------------------------------*/
     public static void assignDelegacionFromUser(Map<Id, List<Case>> userIdCasesMap) {
-		List<Case> casesToUpdate = new List<Case>();
         Map<String, List<Case>> codDelegacionCasesMap = new Map<String, List<Case>>();
         for (User usuario : [SELECT Codigo_delegacion__c FROM User WHERE Id IN :userIdCasesMap.keySet()]) {
 			if (usuario.Codigo_delegacion__c != null) {
@@ -24,31 +29,35 @@ public with sharing class CaseHelper {
 									WHERE Codigo_de_delegacion__c IN :codDelegacionCasesMap.keySet()
 										OR Codigo_de_delegacion__c = '650078'];
 		Account[] delegacionCdc = new List<Account>();
-		Account[] delegacionesToCheck = new List<Account>();
 		for (Account delegacion: delegaciones) {
 			if (delegacion.Codigo_de_delegacion__c == '650078') delegacionCdc.add(delegacion);
-			else delegacionesToCheck.add(delegacion);
 		}
 		Group[] cdc = [SELECT id FROM Group WHERE Type = 'Queue' AND DeveloperName = 'CDC'];
-		if(!cdc.isEmpty()) {
-			if(userIdCasesMap.containsKey(cdc[0].Id)) {
-				List<Case> casesFromUserMap = userIdCasesMap.get(cdc[0].Id);
-				for(Case aCase : casesFromUserMap) {
-					aCase.Delegacion__c = delegacionCdc[0].Id;
-					casesToUpdate.add(aCase);
+		List<Case> casesToUpdate = new List<Case>();
+		if	(!cdc.isEmpty()
+			&& userIdCasesMap.containsKey(cdc[0].Id)
+			&& !userIdCasesMap.get(cdc[0].Id).isEmpty()) {
+			List<Case> casesFromUserMap = userIdCasesMap.get(cdc[0].Id);
+			for(Case aCase : casesFromUserMap) {
+				aCase.Delegacion__c = delegacionCdc[0].Id;
+				casesToUpdate.add(aCase);
+			}
+		}
+		if (!codDelegacionCasesMap.isEmpty() && !delegaciones.isEmpty()) {
+			for(Account delegacion : delegaciones) {
+				if (codDelegacionCasesMap.containsKey(delegacion.Codigo_de_delegacion__c)
+					&& !codDelegacionCasesMap.get(delegacion.Codigo_de_delegacion__c).isEmpty()) {
+					for (Case caso : codDelegacionCasesMap.get(delegacion.Codigo_de_delegacion__c)) {
+						caso.Delegacion__c = delegacion.Id;
+						casesToUpdate.add(caso);
+					}
 				}
 			}
 		}
-        for(Account delegacion : delegacionesToCheck) {
-            for (Case caso : codDelegacionCasesMap.get(delegacion.Codigo_de_delegacion__c)) {
-                caso.Delegacion__c = delegacion.Id;
-                casesToUpdate.add(caso);
-            }
-        }
 		List<Case> casos = new List<Case>(casesToUpdate);
-        if (!casesToUpdate.isEmpty()) {
+		if (!casesToUpdate.isEmpty()) {
 			update casesToUpdate;
-        }
+		}
     }
     public static void derivaconAlCompletarDocumentacion(List<Case> casesToUpdate){
         system.debug('casos que vinieron en la lista: ' + casesToUpdate.size());
