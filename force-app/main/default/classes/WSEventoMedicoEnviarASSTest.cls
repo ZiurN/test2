@@ -1,6 +1,6 @@
 @isTest
 public class WSEventoMedicoEnviarASSTest  {
-	
+	/*
 	static XHttpCalloutMock getResponseFound;
 	static XHttpCalloutMock getErrorResponse;
 	static XHttpCalloutMock getErrorResponse500;
@@ -131,5 +131,5 @@ public class WSEventoMedicoEnviarASSTest  {
 		System.debug('Result***: ' + responseToAssert.result);
 
 		System.assertEquals('Error 500.', responseToAssert.message);
-	}
+	}*/
 }
