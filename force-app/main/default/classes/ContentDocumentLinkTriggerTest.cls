@@ -105,18 +105,18 @@ private class ContentDocumentLinkTriggerTest {
 		System.assert(!result.isSuccess(), 'Debe ocurrir un error al tratar de guardar el cdLink');
 		System.assertEquals(duplicateMessage, result.getErrors()[0].getMessage(), 'El mensaje debe indicar que ya existe otro archivo');
 	}
-	@isTest(SeeAllData=true)
+	@isTest
 	private static void avoidInsertFilesLargerThan3Mb() {
 		Evento_medico__c em = new Evento_medico__c();
 		insert em;
 		ContentDocumentLink cdl = new ContentDocumentLink();
-		List<ContentDocument> documents = [SELECT Id, Title, LatestPublishedVersionId FROM ContentDocument WHERE ContentSize > 3145728 LIMIT 1];
-		if(documents.isEmpty()) {
-			return;
-		}
-		for (ContentDocument contentDocument: documents){
+		ContentVersion cv = TestUtils.createContentVersionWithFileBiggerThan3MB();
+		insert cv;
+		List<ContentVersion> documents = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id];
+		System.assert(documents.size() > 0, 'Debe haber un archivo de más de 3Mb');
+		for (ContentVersion contentDocument: documents){
 			cdl.LinkedEntityId = em.id;
-			cdl.ContentDocumentId = contentDocument.Id;
+			cdl.ContentDocumentId = contentDocument.ContentDocumentId;
 			cdl.shareType = 'V';
 		}
 		Test.startTest();
@@ -125,19 +125,22 @@ private class ContentDocumentLinkTriggerTest {
 		System.assert(!result.isSuccess(), 'Debe ocurrir un error al tratar de guardar el cdLink');
 		System.assertEquals(System.Label.Alerta_ArchivoMayor3MB, result.getErrors()[0].getMessage(), 'El mensaje debe indicar que el archivo es muy grande');
 	}
-	@isTest(SeeAllData=true)
+	@isTest
 	private static void ifEmail_to_Case_AllowInsertFilesLargerThan3Mb() {
 		Case emailToCaseCase = Build.aCaseFromEmail().build();
 		insert emailToCaseCase;
-		List<ContentDocument> documents = [SELECT Id, Title, LatestPublishedVersionId FROM ContentDocument WHERE ContentSize > 3145728 LIMIT 1];
-		System.assertEquals(1, documents.size(), 'Debe haber un archivo de más de 3Mb');
+		ContentVersion cv = TestUtils.createContentVersionWithFileBiggerThan3MB();
+		insert cv;
+		List<ContentVersion> documents = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id];
+		System.assert(documents.size() > 0, 'Debe haber un archivo de más de 3Mb');
 		ContentDocumentLink cdl = new ContentDocumentLink();
 		cdl.LinkedEntityId = emailToCaseCase.id;
-		cdl.ContentDocumentId = documents[0].Id;
+		cdl.ContentDocumentId = documents[0].ContentDocumentId;
 		cdl.shareType = 'V';
 		List<User> platIntUsers = [SELECT Id FROM User WHERE isActive = true AND UserName LIKE 'automatedcase%'];
 		System.assertEquals(1, platIntUsers.size(), 'Debe haber un usuario para los casos Email-to-Case');
 		Database.SaveResult result;
+		XappiaHelper.isPlatformUser = null;
 		System.runAs (platIntUsers[0]) {
 			Test.startTest();
 			result = Database.insert(cdl, false);
