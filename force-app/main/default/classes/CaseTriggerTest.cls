@@ -1544,9 +1544,12 @@ private class CaseTriggerTest {
 		Test.startTest();
 		insert aCase;
 		Test.stopTest();
-		List<Case> casosToAssert = [SELECT Delegacion__r.Codigo_de_delegacion__c FROM Case WHERE Id = :aCase.Id];
+		List<Case> casosToAssert = [SELECT Delegacion__c,
+										Delegacion__r.Codigo_de_delegacion__c
+									FROM Case WHERE Id = :aCase.Id];
 		for(Case casoToAssert : casosToAssert) {
-			System.assertEquals('650078', casoToAssert.Delegacion__r.Codigo_de_delegacion__c);
+			System.assertEquals(delegacion.Id, casoToAssert.Delegacion__c, 'El id de la delegación debe ser la de CDC');
+			System.assertEquals('650078', casoToAssert.Delegacion__r.Codigo_de_delegacion__c, 'El número de la delegación debe ser 650078');
 		}
 	}
 	@IsTest
