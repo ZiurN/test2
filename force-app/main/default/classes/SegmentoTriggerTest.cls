@@ -291,6 +291,7 @@ private class SegmentoTriggerTest {
 	@IsTest
 	public static void ifEventoMedicoHaveStatusClosedDontUpdate () {
 		Evento_medico__c em = new Evento_medico__c(
+			RecordTypeId = XappiaHelper.getRecordType('Evento_medico__c', 'Evento_medico_de_internacion').Id,
 			Nro_de_Evento_Medico_SS__c = '275822',
 			Fecha_y_Hora_inicio_EMS__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 01),
 			Fecha_y_hora_fin_ems__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 02)
