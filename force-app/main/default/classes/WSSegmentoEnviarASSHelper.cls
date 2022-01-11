@@ -34,15 +34,15 @@ public with sharing class WSSegmentoEnviarASSHelper {
 		ws.request.setHeader('Accept','application/json"');
 		ws.request.setHeader('Content-Type', 'application/json');
 		WSAuthToken.Response tokenResp = WSAuthToken.setAuthHeader(ws);
-		if (ws.hasError) fireSSSegmentoResponseEvent(ws.errorMessage, segmentoId, isCreating);
+		if (ws.hasError) fireSSSegmentoResponseEvent(ws.errorMessage, segmentoId, isCreating, true);
 		Response res = (Response) ws.invoke(new Response(segmentoId, isCreating));
 		WSAuthToken.manageTokenResponse(tokenResp);
 		return res;
 	}
-	public static void fireSSSegmentoResponseEvent (String message, String segmentoId, Boolean isCreating) {
+	public static void fireSSSegmentoResponseEvent (String message, String segmentoId, Boolean isCreating, Boolean isError) {
 		SS_Segmento_Response__e errorEvent =  new SS_Segmento_Response__e(
 			isDelete__c = isCreating,
-			error__c = true,
+			error__c = isError,
 			Response_Error__c = message,
 			Id_Segmento__c = !String.isBlank(segmentoId) ? segmentoId : 'NoID'
 		);
@@ -74,7 +74,7 @@ public with sharing class WSSegmentoEnviarASSHelper {
 			System.debug('BODY Respuesta Error: ');System.debug(response.getBody());
 			result = setResponse(response.getBody());
 			this.message = result.processMessage();
-			WSSegmentoEnviarASSHelper.fireSSSegmentoResponseEvent(this.message, this.segmentoId, this.isCreating);
+			WSSegmentoEnviarASSHelper.fireSSSegmentoResponseEvent(this.message, this.segmentoId, this.isCreating, true);
 		}
 		private WSSSGenericResponse setResponse (String body) {
 			WSSSGenericResponse.Response tmp_result;

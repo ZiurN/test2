@@ -125,6 +125,7 @@ public without sharing class SegmentoQueueable implements Queueable, Database.Al
 				segList = getSegmentosBySemid(segmentoId);
 				updateEventoMedico(em, segList[0]);
 			}
+			WSSegmentoEnviarASSHelper.fireSSSegmentoResponseEvent(errorMsg, segmentoId, false, false);
 		}
 		else {
 			Segmentos__c segToRevert = segList[0];

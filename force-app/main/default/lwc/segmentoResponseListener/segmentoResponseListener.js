@@ -50,6 +50,8 @@ export default class SegmentoResponseListener extends LightningElement {
 		let isDelete = response.data.payload.isDelete__c;
 		if (isDelete || (segmentoId === this.semid && hasSSError)) {
 			this.sendMessageToUser('error', response.data.payload.Response_Error__c);
+		} else if (!hasSSError && !isDelete) {
+			this.sendMessageToUser('success', 'Segmento actualizado en SS');
 		}
 		getRecordNotifyChange([{recordId: this.recordId}]);
 	}

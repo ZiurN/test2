@@ -137,6 +137,7 @@ private class SegmentoTriggerTest {
 		Test.startTest();
 		System.enqueueJob(segmentoQueable);
 		Test.stopTest();
+		validatePlatformEventFired();
 		Segmentos__c segToAssert = [SELECT Fecha_Inicio_real__c, Fecha_Fin_real__c FROM Segmentos__c WHERE Id =: seg1.Id];
 		Datetime inicio = Datetime.newInstance(2020, 2, 3, 0, 0, 0);
 		Datetime fin = Datetime.newInstance(2020, 2, 4, 0, 0, 0);
@@ -184,6 +185,7 @@ private class SegmentoTriggerTest {
 		Test.startTest();
 		System.enqueueJob(segmentoQueable);
 		Test.stopTest();
+		validatePlatformEventFired();
 		Segmentos__c segToAssert = [SELECT Estado__c, Fecha_Inicio_real__c, Fecha_Fin_real__c
 										FROM Segmentos__c
 										WHERE Id =: seg1.Id];
