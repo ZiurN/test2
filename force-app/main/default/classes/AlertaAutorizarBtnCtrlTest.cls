@@ -1,247 +1,184 @@
 @IsTest
 private class AlertaAutorizarBtnCtrlTest {
-    static XHttpCalloutMock getResponseFound;
-    static XHttpCalloutMock getResponseFoundNoEM;
-    static XHttpCalloutMock getErrorResponse;
+	public static final String ALERTA_AUTORIZAR_URL = ConfigUtils.getEndpointsByTipo('autorizaciones').get('alerta/autorizar').Endpoint__c;
+	public static final String REINTEGROS_ALERTAS_URL = ConfigUtils.getEndpointsByTipo('reintegros').get('alertas').Endpoint__c;
+	static XHttpCalloutMock getResponseFound;
+	static XHttpCalloutMock getResponseFoundNoEM;
+	static XHttpCalloutMock getErrorResponse;
 	static XHttpCalloutMock getResponseFoundReintegro;
-    static XHttpCalloutMock getErrorResponseReintegro;
-    static XHttpCalloutMock getErrorMessageWsResponse;
+	static XHttpCalloutMock getErrorResponseReintegro;
+	static XHttpCalloutMock getErrorMessageWsResponse;
 	static User userFront;
 	static User userMesa;
 	static CaseTeamRole caseRole;
 	static Profile perfilFront;
 	static Profile perfilMesa;
-
-    static {
+	static {
 		System.runAs(new User(Id = UserInfo.getUserId())) {
 			String uniqueUserName = 'standarduserAutAlert' + DateTime.now().getTime() + '@testorg.com';
 			UserRole role = [SELECT Id,Name FROM UserRole WHERE Name = 'Administrador'];
-			
 			perfilFront = [SELECT Id FROM Profile WHERE Name='Front'];
 			userFront = new User(Alias = 'standt', Email='standarduser@testorg.com',
 				EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US',
 				LocaleSidKey='en_US', TimeZoneSidKey='America/Los_Angeles',
 				UserName=uniqueUserName + 'FrontAutAlert', ProfileId = perfilFront.Id, UserRoleId = role.Id);
 			insert userFront;
-
 			perfilMesa = [SELECT Id FROM Profile WHERE Name='Mesa de ayuda'];
 			userMesa = new User(Alias = 'standt', Email='standarduser@testorg.com',
 				EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='es',
 				LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
 				UserName=uniqueUserName + 'MesaAutAlert', ProfileId = perfilMesa.Id, UserRoleId = role.Id);
 			insert userMesa;
-
 			List<Group> groupFront = [SELECT Id, Name FROM Group WHERE DeveloperName = 'Front'];
 			GroupMember groupMemberF = new GroupMember(groupId = groupFront[0].Id, UserOrGroupId = userFront.Id);
 			insert groupMemberF;
-
 			List<Group> groupMesa = [SELECT Id, Name FROM Group WHERE DeveloperName = 'Mesa_de_ayuda'];
 			GroupMember groupMemberM = new GroupMember(groupId = groupMesa[0].Id, UserOrGroupId = userMesa.Id);
 			insert groupMemberM;
-
 			caseRole = new CaseTeamRole();
 			caseRole.Name = 'Cel Test';
 			caseRole.AccessLevel = 'Edit';
-
 			insert caseRole;
 		}
-
-        getResponseFound = new XHttpCalloutMock();
-        getResponseFound.buildResponse()
-                .withStatus('OK')
-                .withStatusCode(200)
-                .withBody(WSAuthTokenMock.getTokenSuccess())
-                .addForAddress(WSAuthToken.SERVICE_CONFIG.URL__c + '/oauth/token');
-        getResponseFound.buildResponse()
-                .withStatus('OK')
-                .withStatusCode(200)
-                .withBody(WSAlertaAutorizarRespMock.getFound())
-                .addForAddress(WSAlertaAutorizar.SERVICE_CONFIG.URL__c + '/v1/salud/autorizaciones/alerta/autorizar/16461690');
-
-        getResponseFoundNoEM = new XHttpCalloutMock();
-        getResponseFoundNoEM.buildResponse()
-                .withStatus('OK')
-                .withStatusCode(200)
-                .withBody(WSAuthTokenMock.getTokenSuccess())
-                .addForAddress(WSAuthToken.SERVICE_CONFIG.URL__c + '/oauth/token');
-        getResponseFoundNoEM.buildResponse()
-                .withStatus('OK')
-                .withStatusCode(200)
-                .withBody(WSAlertaAutorizarRespMock.getFound2())
-                .addForAddress(WSAlertaAutorizar.SERVICE_CONFIG.URL__c + '/v1/salud/autorizaciones/alerta/autorizar/16461790');
-
-        getErrorResponse = new XHttpCalloutMock();
-        getErrorResponse.buildResponse()
-                .withStatus('OK')
-                .withStatusCode(200)
-                .withBody(WSAuthTokenMock.getTokenSuccess())
-                .addForAddress(WSAuthToken.SERVICE_CONFIG.URL__c + '/oauth/token');
-        getErrorResponse.buildResponse()
-                .withStatus('Not Found')
-                .withStatusCode(404)
-                .withBody(WSAlertaAutorizarRespMock.getError())
-                .addForAddress(WSAlertaAutorizar.SERVICE_CONFIG.URL__c + '/v1/salud/autorizaciones/alerta/autorizar/');
-
-        getErrorMessageWsResponse = new XHttpCalloutMock();
-        getErrorMessageWsResponse.buildResponse()
-                .withStatus('OK')
-                .withStatusCode(200)
-                .withBody(WSAuthTokenMock.getTokenSuccess())
-                .addForAddress(WSAuthToken.SERVICE_CONFIG.URL__c + '/oauth/token');
-        getErrorMessageWsResponse.buildResponse()
-                .withStatus('Not Found')
-                .withStatusCode(404)
-                .withBody(WSAlertaAutorizarRespMock.getError())
-                .addForAddress(WSAlertaAutorizar.SERVICE_CONFIG.URL__c + '/v1/salud/autorizaciones/alerta/autorizar/1234');
-
+		getResponseFound = new XHttpCalloutMock();
+		TestUtils.setMockResponse(
+			getResponseFound,
+			ALERTA_AUTORIZAR_URL + '/16461690',
+			WSAlertaAutorizarRespMock.getFound(),
+			200,
+			'OK'
+		);
+		getResponseFoundNoEM = new XHttpCalloutMock();
+		TestUtils.setMockResponse(
+			getResponseFoundNoEM,
+			ALERTA_AUTORIZAR_URL + '/16461790',
+			WSAlertaAutorizarRespMock.getFound2(),
+			200,
+			'OK'
+		);
+		getErrorResponse = new XHttpCalloutMock();
+		TestUtils.setMockResponse(
+			getErrorResponse,
+			ALERTA_AUTORIZAR_URL + '/',
+			WSAlertaAutorizarRespMock.getError(),
+			404,
+			'Not Found'
+		);
+		getErrorMessageWsResponse = new XHttpCalloutMock();
+		TestUtils.setMockResponse(
+			getErrorMessageWsResponse,
+			ALERTA_AUTORIZAR_URL + '/1234',
+			WSAlertaAutorizarRespMock.getError(),
+			404,
+			'Not Found'
+		);
 		getResponseFoundReintegro = new XHttpCalloutMock();
-        getResponseFoundReintegro.buildResponse()
-                .withStatus('OK')
-                .withStatusCode(200)
-                .withBody(WSAuthTokenMock.getTokenSuccess())
-                .addForAddress(WSAuthToken.SERVICE_CONFIG.URL__c + '/oauth/token');
-        getResponseFoundReintegro.buildResponse()
-                .withStatus('OK')
-                .withStatusCode(200)
-                .withBody(WSAlertaReintegroMock.getFound())
-                .addForAddress(WSAlertaReintegroAutorizar.SERVICE_CONFIG.URL__c + '/v1/salud/reintegros/alertas/16461901');
-
+		TestUtils.setMockResponse(
+			getResponseFoundReintegro,
+			REINTEGROS_ALERTAS_URL + '/16461901',
+			WSAlertaReintegroMock.getFound(),
+			200,
+			'OK'
+		);
 		getErrorResponseReintegro = new XHttpCalloutMock();
-        getErrorResponseReintegro.buildResponse()
-                .withStatus('OK')
-                .withStatusCode(200)
-                .withBody(WSAuthTokenMock.getTokenSuccess())
-                .addForAddress(WSAuthToken.SERVICE_CONFIG.URL__c + '/oauth/token');
-        getErrorResponseReintegro.buildResponse()
-                .withStatus('Error')
-                .withStatusCode(404)
-                .withBody(WSAlertaRechazarMock.getError())
-                .addForAddress(WSAlertaRechazar.SERVICE_CONFIG.URL__c + '/v1/salud/reintegros/alertas/16461630');
-    }
-
-    @IsTest
-    public static void whenTheBtnIsClickedInTheView_consumeWSAAlertaAutorizar_returnACorrectResponse() {
-        Test.setMock(HttpCalloutMock.class, getResponseFound);
-
-        Evento_medico__c em = new Evento_medico__c(Nro_de_Evento_Medico_SS__c = '276013', Estado__c = 'En Auditoria');
-        insert em;
-        Segmentos__c seg = new Segmentos__c(Semid__c = '305822', Estado__c = 'En auditoria', Evento_Medico__c = em.Id);
-        insert seg;
+		TestUtils.setMockResponse(
+			getErrorResponseReintegro,
+			REINTEGROS_ALERTAS_URL + '/16461630',
+			WSAlertaRechazarMock.getError(),
+			404,
+			'Error'
+		);
+	}
+	@IsTest
+	public static void whenTheBtnIsClickedInTheView_consumeWSAAlertaAutorizar_returnACorrectResponse() {
+		Test.setMock(HttpCalloutMock.class, getResponseFound);
+		Evento_medico__c em = new Evento_medico__c(Nro_de_Evento_Medico_SS__c = '276013', Estado__c = 'En Auditoria');
+		insert em;
+		Segmentos__c seg = new Segmentos__c(Semid__c = '305822', Estado__c = 'En auditoria', Evento_Medico__c = em.Id);
+		insert seg;
 		Case caso = new Case(Nro_AP__c = '1014010147', Evento_Medico__c = em.Id);
 		caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
 		caso.Correo_asociado__c = 'ej@test.com';
 		insert caso;
-        Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042498', Ap__c = caso.Id);
-        insert pres;
-        Alerta__c alerta = new Alerta__c(idalerta__c = '16461690', Prestacion__c = pres.Id, Evento_Medico__c = em.Id);
-        insert alerta;
-
-        Test.startTest();
-        AlertaAutorizarBtnCtrl.Response responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
-        Test.stopTest();
-
-        Alerta__c alertSOQL = [
-                SELECT Estado__c, Resolucion_de_alerta_auditor__c, Fecha_resolucion_de_Alerta__c, Prestacion__r.Estado__c
-                FROM Alerta__c
-                WHERE idalerta__c =: alerta.idalerta__c
-        ];
-
-        Evento_medico__c emSOQL = [
-                SELECT Estado__c,
-                    (
-                        SELECT Semid__c, Estado__c FROM Segmentos__r
-                    ),
-					(
-						SELECT Nivel_de_derivacion__c FROM Casos__r
-					)
-                FROM Evento_medico__c
-                WHERE Id =: em.Id
-        ];
-        System.debug('****emSOQL: ' + emSOQL.Segmentos__r);
-        System.debug('****emSOQL.Segmentos__r[0]: ' + emSOQL.Segmentos__r[0]);
-        System.assertEquals('Autorizado', emSOQL.Estado__c);
-        System.assertEquals('Autorizado', emSOQL.Segmentos__r[0].Estado__c);
-		System.assertEquals('Nivel 3', emSOQL.Casos__r[0].Nivel_de_derivacion__c);
-        System.assertEquals(false, responseToAssert.hasError);
-        System.assertEquals('C1EA--AA', alertSOQL.Prestacion__r.Estado__c);
-        System.assertEquals('C1EA--AA', alertSOQL.Estado__c);
-        System.assertEquals(Date.valueOf('2020-02-29'), alertSOQL.Fecha_resolucion_de_Alerta__c);
-    }
-
-    @IsTest
-    public static void whenTheBtnIsClickedInTheView_consumeWSAAlertaAutorizarNoEM_returnACorrectResponse() {
-        Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
-
-        Evento_medico__c em = new Evento_medico__c(Nro_de_Evento_Medico_SS__c = '276013', Estado__c = 'En Auditoria');
-        insert em;
-        Segmentos__c seg = new Segmentos__c(Semid__c = '305822', Estado__c = 'En auditoria', Evento_Medico__c = em.Id);
-        insert seg;
+		Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042498', Ap__c = caso.Id);
+		insert pres;
+		Alerta__c alerta = new Alerta__c(idalerta__c = '16461690', Prestacion__c = pres.Id, Evento_Medico__c = em.Id);
+		insert alerta;
+		Test.startTest();
+		AlertaAutorizarBtnCtrl.Response responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
+		Test.stopTest();
+		Alerta__c alertSOQL = getAlerts(alerta.idalerta__c);
+		Evento_medico__c emSOQL = [SELECT Estado__c,
+										(SELECT Semid__c,
+											Estado__c
+										FROM Segmentos__r),
+										(SELECT Nivel_de_derivacion__c
+										FROM Casos__r)
+									FROM Evento_medico__c
+									WHERE Id =: em.Id];
+		System.assertEquals('Autorizado', emSOQL.Estado__c, 'El Estado debe ser Autorizado');
+		System.assertEquals('Autorizado', emSOQL.Segmentos__r[0].Estado__c, 'El Estado debe ser Autorizado');
+		System.assertEquals('Nivel 3', emSOQL.Casos__r[0].Nivel_de_derivacion__c, 'El nivel de derivación debe ser 3');
+		System.assert(!responseToAssert.hasError, 'No debe haber un error');
+		System.assertEquals('C1EA--AA', alertSOQL.Prestacion__r.Estado__c, 'El estado de la prestación debe ser C1EA--AA');
+		System.assertEquals('C1EA--AA', alertSOQL.Estado__c, 'El estado de la alerat debe ser C1EA--AA');
+		System.assertEquals(Date.valueOf('2020-02-29'), alertSOQL.Fecha_resolucion_de_Alerta__c, 'Las fechas no coinciden');
+	}
+	@IsTest
+	public static void whenTheBtnIsClickedInTheView_consumeWSAAlertaAutorizarNoEM_returnACorrectResponse() {
+		Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
+		Evento_medico__c em = new Evento_medico__c(Nro_de_Evento_Medico_SS__c = '276013', Estado__c = 'En Auditoria');
+		insert em;
+		Segmentos__c seg = new Segmentos__c(Semid__c = '305822', Estado__c = 'En auditoria', Evento_Medico__c = em.Id);
+		insert seg;
 		Case caso = new Case(Nro_AP__c = '1014010152');
 		caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
 		caso.Correo_asociado__c = 'ej@test.com';
 		insert caso;
-        Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
-        insert pres;
-        Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id);
-        insert alerta;
-
-        Test.startTest();
-        AlertaAutorizarBtnCtrl.Response responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
-        Test.stopTest();
-
-        Alerta__c alertSOQL = [
-                SELECT Estado__c, Resolucion_de_alerta_auditor__c, Fecha_resolucion_de_Alerta__c, Prestacion__r.Estado__c,
-					Prestacion__r.Ap__r.Nivel_de_derivacion__c
-                FROM Alerta__c
-                WHERE idalerta__c =: alerta.idalerta__c
-        ];
-
-        System.assertEquals(false, responseToAssert.hasError);
-        System.assertEquals('C1EA--AA', alertSOQL.Prestacion__r.Estado__c);
-		System.assertEquals('Nivel 3', alertSOQL.Prestacion__r.Ap__r.Nivel_de_derivacion__c);
-        System.assertEquals('C1EA--AA', alertSOQL.Estado__c);
-        System.assertEquals(Date.valueOf('2020-02-29'), alertSOQL.Fecha_resolucion_de_Alerta__c);
-    }
-
-    @IsTest
-    public static void whenTheBtnIsClickedFromAnAlertWithExternalIdEmpty_returnErrorMessage() {
-        Test.setMock(HttpCalloutMock.class, getErrorResponse);
-        
-        Test.startTest();
-        AlertaAutorizarBtnCtrl.Response responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(null);
-        Test.stopTest();
-
-        System.assertEquals(true, responseToAssert.hasError);
-        System.assertEquals('El id externo está vacío', responseToAssert.message);
-    }
-
-    @IsTest
-    public static void whenTheWsHaveSomeError_returnErrorMessageFromWs() {
-        Test.setMock(HttpCalloutMock.class, getErrorMessageWsResponse);
-        Evento_medico__c em = new Evento_medico__c(Nro_de_Evento_Medico_SS__c = '276013', Estado__c = 'En Auditoria');
-        insert em;
-        Segmentos__c seg = new Segmentos__c(Semid__c = '305822', Estado__c = 'En auditoria', Evento_Medico__c = em.Id);
-        insert seg;
+		Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
+		insert pres;
+		Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id);
+		insert alerta;
+		Test.startTest();
+		AlertaAutorizarBtnCtrl.Response responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
+		Test.stopTest();
+		Alerta__c alertSOQL = getAlerts(alerta.idalerta__c);
+		System.assert(!responseToAssert.hasError, 'No debe haber un error');
+		System.assertEquals('C1EA--AA', alertSOQL.Prestacion__r.Estado__c, 'El estado de la prestación debe ser C1EA--AA');
+		System.assertEquals('Nivel 3', alertSOQL.Prestacion__r.Ap__r.Nivel_de_derivacion__c, 'El nivel de derivación debe ser 3');
+		System.assertEquals('C1EA--AA', alertSOQL.Estado__c, 'El estado de la alerta debe esr C1EA--AA');
+		System.assertEquals(Date.valueOf('2020-02-29'), alertSOQL.Fecha_resolucion_de_Alerta__c, 'Las fechas no coinciden');
+	}
+	@IsTest
+	public static void whenTheBtnIsClickedFromAnAlertWithExternalIdEmpty_returnErrorMessage() {
+		Test.setMock(HttpCalloutMock.class, getErrorResponse);
+		Test.startTest();
+		AlertaAutorizarBtnCtrl.Response responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(null);
+		Test.stopTest();
+		validateErrorMessage(responseToAssert, System.Label.Alerta_NoAuth_NoId);
+	}
+	@IsTest
+	public static void whenTheWsHaveSomeError_returnErrorMessageFromWs() {
+		Test.setMock(HttpCalloutMock.class, getErrorMessageWsResponse);
+		Evento_medico__c em = new Evento_medico__c(Nro_de_Evento_Medico_SS__c = '276013', Estado__c = 'En Auditoria');
+		insert em;
+		Segmentos__c seg = new Segmentos__c(Semid__c = '305822', Estado__c = 'En auditoria', Evento_Medico__c = em.Id);
+		insert seg;
 		Case caso = new Case(Nro_AP__c = '1014010152');
 		caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
 		insert caso;
-        Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042384', Ap__c = caso.Id);
-        insert pres;
-        Alerta__c alerta = new Alerta__c(idalerta__c = '1234', Prestacion__c = pres.Id, Evento_Medico__c = em.Id);
-        insert alerta;
-
-        Test.startTest();
-        AlertaAutorizarBtnCtrl.Response responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta('1234');
-        Test.stopTest();
-
-        System.assertEquals(true, responseToAssert.hasError);
-        System.assertEquals('La alerta solicitada es inválida.', responseToAssert.message);
-    }
-
+		Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042384', Ap__c = caso.Id);
+		insert pres;
+		Alerta__c alerta = new Alerta__c(idalerta__c = '1234', Prestacion__c = pres.Id, Evento_Medico__c = em.Id);
+		insert alerta;
+		Test.startTest();
+		AlertaAutorizarBtnCtrl.Response responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta('1234');
+		Test.stopTest();
+		validateErrorMessage(responseToAssert, 'La alerta solicitada es inválida.');
+	}
 	@IsTest
-    public static void ifTheProfileIsNotFrontShowCorrectError() {
-        Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
-		
+	public static void ifTheProfileIsNotFrontShowCorrectError() {
+		Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
 		String uniqueUserName = 'standarduser' + DateTime.now().getTime() + '@testorg.com';
 		Profile p = [SELECT Id FROM Profile WHERE Name='Discapacidad'];
 		UserRole role = [SELECT Id,Name FROM UserRole WHERE Name = 'Administrador'];
@@ -250,329 +187,237 @@ private class AlertaAutorizarBtnCtrlTest {
 				LocaleSidKey='en_US', TimeZoneSidKey='America/Los_Angeles',
 				UserName=uniqueUserName, ProfileId = p.Id, UserRole = role);
 		insert usuario;
-
 		Case caso = new Case(Nro_AP__c = '1014010152');
 		caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
 		insert caso;
-        Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
-        insert pres;
-        Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id, Funcion__c = 'FCION_FRONT');
-        insert alerta;
-
+		Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
+		insert pres;
+		Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id, Funcion__c = 'FCION_FRONT');
+		insert alerta;
 		AlertaAutorizarBtnCtrl.Response responseToAssert;
 		System.runAs(usuario){
 			Test.startTest();
 			responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
 			Test.stopTest();
 		}
-
-        System.assertEquals(true, responseToAssert.hasError);
-		System.assertEquals('No se permite autorizar alerta Front', responseToAssert.message);
-    }
-
+		validateErrorMessage(responseToAssert, System.Label.Alerta_NoAuth_AlertFront);
+	}
 	@IsTest
-    public static void ifTheProfileIsNotBackShowCorrectError() {
-        Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
-
+	public static void ifTheProfileIsNotBackShowCorrectError() {
+		Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
 		AlertaAutorizarBtnCtrl.Response responseToAssert;
 		System.runAs(userFront){
 		Case caso = new Case(Nro_AP__c = '1014010152');
 		caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
 		insert caso;
-        Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
-        insert pres;
-        Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id, Funcion__c = 'FCION_BACK');
-        insert alerta;
-
+		Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
+		insert pres;
+		Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id, Funcion__c = 'FCION_BACK');
+		insert alerta;
 			Test.startTest();
 			responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
 			Test.stopTest();
 		}
-
-        System.assertEquals(true, responseToAssert.hasError);
-		System.assertEquals('No se permite autorizar alerta Back', responseToAssert.message);
-    }
-
+		validateErrorMessage(responseToAssert, System.Label.Alerta_NoAuth_AlertBack);
+	}
 	@IsTest
-    public static void ifTheProfileIsNotAMShowCorrectError() {
-        Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
-
+	public static void ifTheProfileIsNotAMShowCorrectError() {
+		Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
 		AlertaAutorizarBtnCtrl.Response responseToAssert;
 		Case caso = new Case(Nro_AP__c = '1014010152');
 		caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
 		caso.OwnerId = userFront.Id;
 		insert caso;
-        Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
-        insert pres;
-        Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id, Funcion__c = 'AM');
-        insert alerta;
-
+		Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
+		insert pres;
+		Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id, Funcion__c = 'AM');
+		insert alerta;
 		System.runAs(userFront) {
 			Test.startTest();
 			responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
 			Test.stopTest();
 		}
-
-        System.assertEquals(true, responseToAssert.hasError);
-		System.assertEquals('No se permite autorizar alerta AM', responseToAssert.message);
-    }
-
+		validateErrorMessage(responseToAssert, System.Label.Alerta_NoAuth_AlertAM);
+	}
 	@IsTest
-    public static void ifTheProfileIsNotComprasTecnicasShowCorrectError() {
-        Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
-
+	public static void ifTheProfileIsNotComprasTecnicasShowCorrectError() {
+		Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
 		AlertaAutorizarBtnCtrl.Response responseToAssert;
 		System.runAs(userFront){
 		Case caso = new Case(Nro_AP__c = '1014010152');
 		caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
 		insert caso;
-        Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
-        insert pres;
-        Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id, Funcion__c = 'CPRAS_TECNI');
-        insert alerta;
-
+		Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
+		insert pres;
+		Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id, Funcion__c = 'CPRAS_TECNI');
+		insert alerta;
 			Test.startTest();
 			responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
 			Test.stopTest();
 		}
-
-        System.assertEquals(true, responseToAssert.hasError);
-		System.assertEquals('No se permite autorizar alerta de Compras Tecnicas', responseToAssert.message);
-    }
-
+		validateErrorMessage(responseToAssert, System.Label.Alerta_NoAuth_CPRAS_TECNI);
+	}
 	@IsTest
-    public static void ifTheProfileIsNotDiscapacidadShowCorrectError() {
-        Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
-
+	public static void ifTheProfileIsNotDiscapacidadShowCorrectError() {
+		Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
 		AlertaAutorizarBtnCtrl.Response responseToAssert;
 		System.runAs(userFront) {
 		Case caso = new Case(Nro_AP__c = '1014010152');
 		caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
 		insert caso;
-        Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
-        insert pres;
-        Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id, Funcion__c = 'FCION_DISCA');
-        insert alerta;
-
+		Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
+		insert pres;
+		Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id, Funcion__c = 'FCION_DISCA');
+		insert alerta;
 			Test.startTest();
 			responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
 			Test.stopTest();
 		}
-
-        System.assertEquals(true, responseToAssert.hasError);
-		System.assertEquals('No se permite autorizar alerta de Discapacidad', responseToAssert.message);
-    }
-
+		validateErrorMessage(responseToAssert, System.Label.Alerta_NoAuth_AlertDiscapacidad);
+	}
 	@IsTest
-    public static void ifTheProfileIsNotDiscapacidadInterdisciplinariohowCorrectError() {
-        Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
-
+	public static void ifTheProfileIsNotDiscapacidadInterdisciplinariohowCorrectError() {
+		Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
 		AlertaAutorizarBtnCtrl.Response responseToAssert;
 		System.runAs(userFront) {
 		Case caso = new Case(Nro_AP__c = '1014010152');
 		caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
 		insert caso;
-        Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
-        insert pres;
-        Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id, Funcion__c = 'FCION_ID');
-        insert alerta;
-
+		Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
+		insert pres;
+		Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id, Funcion__c = 'FCION_ID');
+		insert alerta;
 			Test.startTest();
 			responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
 			Test.stopTest();
 		}
-
-        System.assertEquals(true, responseToAssert.hasError);
-		System.assertEquals('No se permite autorizar alerta ID', responseToAssert.message);
-    }
-	
+		validateErrorMessage(responseToAssert, System.Label.Alerta_NoAuth_AlertID);
+	}
 	@IsTest
-    public static void ifTheProfileIsNotPresupuestohowCorrectError() {
-        Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
-
+	public static void ifTheProfileIsNotPresupuestohowCorrectError() {
+		Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
 		AlertaAutorizarBtnCtrl.Response responseToAssert;
 		System.runAs(userFront) {
 		Case caso = new Case(Nro_AP__c = '1014010152');
 		caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
 		insert caso;
-        Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
-        insert pres;
-        Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id, Funcion__c = 'FCION_PRESU');
-        insert alerta;
-
+		Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
+		insert pres;
+		Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id, Funcion__c = 'FCION_PRESU');
+		insert alerta;
 			Test.startTest();
 			responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
 			Test.stopTest();
 		}
-
-        System.assertEquals(true, responseToAssert.hasError);
-		System.assertEquals('No se permite autorizar alerta de Presupuesto', responseToAssert.message);
-    }
-
+		validateErrorMessage(responseToAssert, System.Label.Alerta_NoAuth_AlertPresupuesto);
+	}
 	@IsTest
-    public static void whenTryToAuthorizeAnAlertWithAHigherNivelDeAuditoria_showTheCorrectError() {
-        Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
-
-		Case caso = new Case(Nro_AP__c = '1014010152'); 
+	public static void whenTryToAuthorizeAnAlertWithAHigherNivelDeAuditoria_showTheCorrectError() {
+		Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
+		Case caso = new Case(Nro_AP__c = '1014010152');
 		caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
 		insert caso;
-        Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
-        insert pres;
+		Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
+		insert pres;
 		Alerta__c alertaMenorNivelSinAutorizar = new Alerta__c(Prestacion__c = pres.Id, Nivel_de_auditoria__c = 120,
 			Estado__c = 'C1-----A'); //C1EA--AA
 		insert alertaMenorNivelSinAutorizar;
-        Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id, Nivel_de_auditoria__c = 200);
-        insert alerta;
-		
+		Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id, Nivel_de_auditoria__c = 200);
+		insert alerta;
 		Test.startTest();
 		AlertaAutorizarBtnCtrl.Response responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
 		Test.stopTest();
-		
-
-        System.assertEquals(true, responseToAssert.hasError);
-		System.assertEquals('No se puede autorizar porque hay una alerta, con un nivel de auditoría menor, sin resolver aún',
-			responseToAssert.message);
-    }
-
+		validateErrorMessage(responseToAssert, System.Label.Alerta_NoAuth_AuditoriaMenor);
+	}
 	@IsTest
-    public static void whenTheBtnIsClickedInTheView_consumeWSAAlertaReintegroAutorizar_returnACorrectResponse() {
-        Test.setMock(HttpCalloutMock.class, getResponseFoundReintegro);
-
+	public static void whenTheBtnIsClickedInTheView_consumeWSAAlertaReintegroAutorizar_returnACorrectResponse() {
+		Test.setMock(HttpCalloutMock.class, getResponseFoundReintegro);
 		Case reintegro = new Case(Codigo_reintegro_SS__c = '553276');
 		reintegro.RecordTypeId = XappiaHelper.getRecordType('Case', 'Reintegro').Id;
 		insert reintegro;
-
-        Prestacion_de_reintegro__c pres = new Prestacion_de_reintegro__c(Id_Externo__c = '74042509', Caso__c = reintegro.Id);
-        insert pres;
-
-        Alerta__c alerta = new Alerta__c(idalerta__c = '16461901', Prestacion_de_reintegro__c = pres.Id);
-        insert alerta;
-
-        Test.startTest();
-        AlertaAutorizarBtnCtrl.Response responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
-        Test.stopTest();
-
-        Alerta__c alertSOQL = [
-            SELECT Estado__c, Resolucion_de_alerta_auditor__c, Fecha_resolucion_de_Alerta__c, Prestacion_de_reintegro__r.Estado__c
-            FROM Alerta__c
-            WHERE idalerta__c =: alerta.idalerta__c
-        ];
-		System.debug('****responseToAssert ' + responseToAssert);
-        System.assertEquals(false, responseToAssert.hasError);
-        System.assertEquals('C1EA-RAP', alertSOQL.Prestacion_de_reintegro__r.Estado__c);
-        System.assertEquals('C1EA-RAP', alertSOQL.Estado__c);
-        System.assertEquals(Date.valueOf('2021-08-31'), alertSOQL.Fecha_resolucion_de_Alerta__c);
-    }
-
+		Prestacion_de_reintegro__c pres = new Prestacion_de_reintegro__c(Id_Externo__c = '74042509', Caso__c = reintegro.Id);
+		insert pres;
+		Alerta__c alerta = new Alerta__c(idalerta__c = '16461901', Prestacion_de_reintegro__c = pres.Id);
+		insert alerta;
+		Test.startTest();
+		AlertaAutorizarBtnCtrl.Response responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
+		Test.stopTest();
+		Alerta__c alertSOQL = getAlerts(alerta.idalerta__c);
+		System.assert(!responseToAssert.hasError, 'No debe haber un error');
+		System.assertEquals('C1EA-RAP', alertSOQL.Prestacion_de_reintegro__r.Estado__c, 'El estado de la prestación debe ser C1EA-RAP');
+		System.assertEquals('C1EA-RAP', alertSOQL.Estado__c, 'El estado de la alerta debe ser C1EA-RAP');
+		System.assertEquals(Date.valueOf('2021-08-31'), alertSOQL.Fecha_resolucion_de_Alerta__c, 'Las fechas no coinciden');
+	}
 	@IsTest
-    public static void whenTheBtnIsClickedInTheView_consumeWSAAlertaReintegroAutorizar_returnAnErrorResponse() {
-        Test.setMock(HttpCalloutMock.class, getErrorResponseReintegro);
-
+	public static void whenTheBtnIsClickedInTheView_consumeWSAAlertaReintegroAutorizar_returnAnErrorResponse() {
+		Test.setMock(HttpCalloutMock.class, getErrorResponseReintegro);
 		Case reintegro = new Case(Codigo_reintegro_SS__c = '553276');
 		reintegro.RecordTypeId = XappiaHelper.getRecordType('Case', 'Reintegro').Id;
 		insert reintegro;
-
-        Prestacion_de_reintegro__c pres = new Prestacion_de_reintegro__c(Id_Externo__c = '74042491', Caso__c = reintegro.Id);
-        insert pres;
-
-        Alerta__c alerta = new Alerta__c(idalerta__c = '16461630', Prestacion_de_reintegro__c = pres.Id);
-        insert alerta;
-
-        Test.startTest();
-        AlertaAutorizarBtnCtrl.Response responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
-        Test.stopTest();
-
-        Alerta__c alertSOQL = [
-            SELECT Estado__c, Resolucion_de_alerta_auditor__c, Fecha_resolucion_de_Alerta__c, Prestacion__r.Estado__c,
-				Prestacion__r.Ap__r.Nivel_de_derivacion__c
-            FROM Alerta__c
-            WHERE idalerta__c =: alerta.idalerta__c
-        ];
-
-        System.assertEquals(true, responseToAssert.hasError);
-		System.assertEquals('La alerta solicitada es inválida.', responseToAssert.message);
-    }
-
+		Prestacion_de_reintegro__c pres = new Prestacion_de_reintegro__c(Id_Externo__c = '74042491', Caso__c = reintegro.Id);
+		insert pres;
+		Alerta__c alerta = new Alerta__c(idalerta__c = '16461630', Prestacion_de_reintegro__c = pres.Id);
+		insert alerta;
+		Test.startTest();
+		AlertaAutorizarBtnCtrl.Response responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
+		Test.stopTest();
+		validateErrorMessage(responseToAssert, 'La alerta solicitada es inválida.');
+	}
 	@isTest
 	private static void validateUserWhenNoBelongsToFrontQueueAndCaseIsNivel1() {
-		//userMesa.ProfileId = perfilFront.Id;
-		//update userMesa;
-		
 		AlertaAutorizarBtnCtrl.Response responseToAssert;
 		System.runAs(userMesa) {
 			Case caso = new Case(Nro_AP__c = '1014010152');
 			caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
-			//caso.OwnerId = userMesa.Id;
 			caso.Nivel_de_derivacion__c = 'Nivel 1';
 			insert caso;
-
 			Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
-			//pres.OwnerId = userMesa.Id;
 			insert pres;
-
 			Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id);
-			//alerta.OwnerId = userMesa.Id;
 			insert alerta;
-
-			//Test.setMock(HttpCalloutMock.class, getResponseFoundNoEM);
 			Test.startTest();
 			responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
 			Test.stopTest();
 		}
-
-		System.assertEquals('- El usuario no pertenece a Front', responseToAssert.message);
+		validateErrorMessage(responseToAssert, System.Label.Alerta_NoAuth_UsuarioNoFront);
 	}
-
 	@isTest
 	private static void validateUserWhenNoBelongsToMesaQueueAndCaseIsNivel2() {
 		AlertaAutorizarBtnCtrl.Response responseToAssert;
 		System.runAs(userFront) {
-		
 			Case caso = new Case(Nro_AP__c = '1014010152');
 			caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
 			caso.Nivel_de_derivacion__c = 'Nivel 2';
 			insert caso;
-
 			Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
 			insert pres;
-
 			Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id);
 			insert alerta;
-
 			Test.startTest();
 			responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
 			Test.stopTest();
 		}
-
-		System.assertEquals('- El usuario no pertenece a Mesa de Ayuda', responseToAssert.message);
+		validateErrorMessage(responseToAssert, System.Label.Alerta_NoAuth_UsuarioNoMesaAyuda);
 	}
-
 	@isTest
 	private static void validateUserWhenNoBelongsToTeamCaseAndCaseIsNivel3() {
 		AlertaAutorizarBtnCtrl.Response responseToAssert;
 		System.runAs(userFront) {
-
 			Case caso = new Case(Nro_AP__c = '1014010152');
 			caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
 			caso.OwnerId = userFront.Id;
 			caso.Nivel_de_derivacion__c = 'Nivel 3';
 			insert caso;
-
 			Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
 			insert pres;
-
 			Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id);
 			insert alerta;
-
 			Test.startTest();
 			responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
 			Test.stopTest();
 		}
-
-		System.assertEquals('- El usuario no pertenece al equipo del caso', responseToAssert.message);
+		validateErrorMessage(responseToAssert, System.Label.Alerta_NoAuth_UsuarioNoEquipoCaso);
 	}
-
-	
 	@isTest
 	private static void whenADoctorWantsAuthorizeAnAlertAMAndTheMedicoAsignadoIsEmpty_assingHimself() {
 		String uniqueUserName = 'standarduserAutorizarAlerta' + DateTime.now().getTime() + '@testorg.com';
@@ -582,54 +427,40 @@ private class AlertaAutorizarBtnCtrlTest {
 			LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
 			UserName=uniqueUserName + 'DoctorUtils', ProfileId = perfilDoctor.Id
 		);
-		//System.runAs(new User(Id = UserInfo.getUserId())) {
-			insert userDoctor;
-		//}
-
+		insert userDoctor;
 		List<Group> groupMesa = [SELECT Id, Name FROM Group WHERE DeveloperName = 'Mesa_de_ayuda'];
 		GroupMember groupMemberMesa = new GroupMember(groupId = groupMesa[0].Id, UserOrGroupId = userDoctor.Id);
 		System.runAs(new User(Id = UserInfo.getUserId())) {
 			insert groupMemberMesa;
 		}
-		
 		Account acc = Build.anAccountCuentapersonal().build();
 		insert acc;
-
 		Case aCase = new Case();
 		aCase.AccountId = acc.Id;
 		aCase.Nivel_de_derivacion__c = 'Nivel 2';
 		aCase.RecordTypeId = XappiaHelper.getRecordType('Case', 'Autorizacion_previa').Id;
 		insert aCase;
-
 		Prestacion__c prest = new Prestacion__c();
 		prest.Ap__c = aCase.Id;
 		insert prest;
-
 		Alerta__c alert = new Alerta__c();
 		alert.Prestacion__c = prest.Id;
 		alert.Funcion__c = 'AM';
 		alert.Estado__c = 'C1-----A';
 		insert alert;
-		
 		AlertaAutorizarBtnCtrl.Response resp;
 		System.runAs(userDoctor) {
-
 			Test.startTest();
 			resp = AlertaAutorizarBtnCtrl.autoasignarMedico(alert.Id);
 			Test.stopTest();
 		}
-
 		aCase = [SELECT Id, Medico_asignado__c FROM Case WHERE Id =: aCase.Id];
-
-		//System.assert(isAssinged);
-		System.assertEquals(userDoctor.Id, aCase.Medico_asignado__c);
+		System.assertEquals(userDoctor.Id, aCase.Medico_asignado__c, 'El médico asignado al caso debe ser el médico de prueba');
 	}
-
 	@isTest
 	private static void whenACaseDoesntHaveAResponsableAndAnUserWantsToAuthorizeABackAlert_ShowTheErrorMsg() {
 		AlertaAutorizarBtnCtrl.Response responseToAssert;
 		Profile[] backProfile = [SELECT Id FROM Profile WHERE Name = 'Back Administrativo'];
-
 		if(!backProfile.isEmpty()) {
 			userFront.ProfileId = backProfile[0].Id;
 			update userFront;
@@ -637,37 +468,26 @@ private class AlertaAutorizarBtnCtrlTest {
 		else {
 			return;
 		}
-
 		System.runAs(userFront) {
-		
 			Case caso = new Case(Nro_AP__c = '1014010152');
 			caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
 			caso.Nivel_de_derivacion__c = 'Nivel 2';
 			insert caso;
-
 			Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
 			insert pres;
-
 			Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id);
 			alerta.Funcion__c = 'FCION_BACK';
 			insert alerta;
-
 			Test.startTest();
 			responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
 			Test.stopTest();
 		}
-
-		System.assertEquals(
-			'Solo se pueden autorizar alertas Back si hay un responsable asignado al caso', 
-			responseToAssert.message
-		);
+		validateErrorMessage(responseToAssert, System.Label.Alerta_AuthBackIfResponsableAsignado);
 	}
-
 	@isTest
 	private static void whenACaseDoesntHaveAResponsableAndAnUserWantsToAuthorizeAComprasTecnicasAlert_ShowTheErrorMsg() {
 		AlertaAutorizarBtnCtrl.Response responseToAssert;
 		Profile[] comprasProfile = [SELECT Id FROM Profile WHERE Name = 'Compras Tecnicas'];
-
 		if(!comprasProfile.isEmpty()) {
 			userFront.ProfileId = comprasProfile[0].Id;
 			update userFront;
@@ -675,40 +495,26 @@ private class AlertaAutorizarBtnCtrlTest {
 		else {
 			return;
 		}
-
 		System.runAs(userFront) {
-		
 			Case caso = new Case(Nro_AP__c = '1014010152');
 			caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
-			
 			caso.Nivel_de_derivacion__c = 'Nivel 2';
 			insert caso;
-
 			Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
 			insert pres;
-
 			Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id);
 			alerta.Funcion__c = 'CPRAS_TECNI';
 			insert alerta;
-
 			Test.startTest();
 			responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
 			Test.stopTest();
 		}
-
-		System.assertEquals(
-			'Solo se pueden autorizar alertas de Compras Tecnicas si hay un responsable asignado al caso', 
-			responseToAssert.message
-		);
+		validateErrorMessage(responseToAssert, System.Label.Alerta_NoAuth_CPRAS_TECNI_Responsable);
 	}
-
 	@isTest
 	private static void whenACaseDoesntHaveAResponsableAndAnUserWantsToAuthorizeADiscaAlert_ShowTheErrorMsg() {
 		AlertaAutorizarBtnCtrl.Response responseToAssert;
 		Profile[] discaProfile = [SELECT Id FROM Profile WHERE Name = 'Discapacidad'];
-
-		System.debug('##backProfile: ' + discaProfile);
-
 		if(!discaProfile.isEmpty()) {
 			userFront.ProfileId = discaProfile[0].Id;
 			update userFront;
@@ -716,39 +522,26 @@ private class AlertaAutorizarBtnCtrlTest {
 		else {
 			return;
 		}
-
-		System.debug('##userFront.ProfileId: ' + userFront.ProfileId);
-
 		System.runAs(userFront) {
-		
 			Case caso = new Case(Nro_AP__c = '1014010152');
 			caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
 			caso.Nivel_de_derivacion__c = 'Nivel 2';
 			insert caso;
-
 			Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
 			insert pres;
-
 			Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id);
 			alerta.Funcion__c = 'FCION_DISCA';
 			insert alerta;
-
 			Test.startTest();
 			responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
 			Test.stopTest();
 		}
-
-		System.assertEquals(
-			'Solo se pueden autorizar alertas de Discapacidad si hay un responsable asignado al caso', 
-			responseToAssert.message
-		);
+		validateErrorMessage(responseToAssert, System.Label.Alerta_AuthDiscapacidadIfResponsableAsignado);
 	}
-
 	@isTest
 	private static void whenACaseDoesntHaveAResponsableAndAnUserWantsToAuthorizeADiscaIDAlert_ShowTheErrorMsg() {
 		AlertaAutorizarBtnCtrl.Response responseToAssert;
 		Profile[] discaIDProfile = [SELECT Id FROM Profile WHERE Name = 'Discapacidad Interdisciplinario'];
-
 		if(!discaIDProfile.isEmpty()) {
 			userFront.ProfileId = discaIDProfile[0].Id;
 			update userFront;
@@ -756,60 +549,35 @@ private class AlertaAutorizarBtnCtrlTest {
 		else {
 			return;
 		}
-
 		System.runAs(userFront) {
-		
 			Case caso = new Case(Nro_AP__c = '1014010152');
 			caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
 			caso.Nivel_de_derivacion__c = 'Nivel 2';
 			insert caso;
-
 			Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
 			insert pres;
-
 			Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id);
 			alerta.Funcion__c = 'FCION_ID';
 			insert alerta;
-
 			Test.startTest();
 			responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
 			Test.stopTest();
 		}
-
-		System.assertEquals(
-			'Solo se pueden autorizar alertas ID si hay un responsable asignado al caso', 
-			responseToAssert.message
-		);
+		validateErrorMessage(responseToAssert, System.Label.Alerta_AuthIDIfResponsableAsignado);
 	}
-
-	// SE ELIMINO LA VALIDACION
-	//@isTest
-	//private static void whenAFrontUserNotBelongsToDelegacion_showTheErrorMsg() {
-		//Account delegacion = Build.anAccountDelegacion().withCodigoDeDelegacion('123456').build();
-		//insert delegacion;
-		//Case caso = new Case(Nro_AP__c = '1014010152');
-		//caso.OwnerId = userFront.Id;
-		//caso.Nivel_de_derivacion__c = 'Nivel 1';
-		//insert caso;
-
-		//caso.Delegacion__c = delegacion.Id;
-		//update caso;
-
-		//AlertaAutorizarBtnCtrl.Response resp;
-		//System.runAs(userFront) {
-
-
-			//Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042503', Ap__c = caso.Id);
-			//insert pres;
-
-			//Alerta__c alerta = new Alerta__c(idalerta__c = '16461790', Prestacion__c = pres.Id);
-			//insert alerta;
-
-			//Test.startTest();
-			//resp = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
-			//Test.stopTest();
-		//}
-
-		//System.assertEquals('El usuario puede modificar casos de su delegación solamente', resp.message);
-	//}
+	/** Utils */
+	private static void validateErrorMessage (AlertaAutorizarBtnCtrl.Response responseToAssert, String expectedErrorMessage) {
+		System.assert(responseToAssert.hasError, 'Debe haber ocurrido un error');
+		System.assertEquals(expectedErrorMessage, responseToAssert.message, 'El mensaje no indica el error');
+	}
+	private static Alerta__c getAlerts (String alertId) {
+		return [SELECT Estado__c,
+					Resolucion_de_alerta_auditor__c,
+					Fecha_resolucion_de_Alerta__c,
+					Prestacion_de_reintegro__r.Estado__c,
+					Prestacion__r.Ap__r.Nivel_de_derivacion__c,
+					Prestacion__r.Estado__c
+				FROM Alerta__c
+				WHERE idalerta__c =: alertId];
+	}
 }
