@@ -10,25 +10,38 @@ private class AlertaAutorizarBtnCtrlTest {
 	static XHttpCalloutMock getErrorMessageWsResponse;
 	static User userFront;
 	static User userMesa;
+	static User userDiscaID;
 	static CaseTeamRole caseRole;
 	static Profile perfilFront;
 	static Profile perfilMesa;
+	static Profile perfilDiscaID;
 	static {
 		System.runAs(new User(Id = UserInfo.getUserId())) {
+			for (Profile p : [SELECT Id, Name FROM Profile
+								WHERE Name = 'Mesa de ayuda'
+									OR Name = 'Front'
+									OR Name = 'Discapacidad Interdisciplinario']) {
+				if (p.Name == 'Mesa de ayuda') perfilMesa = p;
+				else if (p.Name == 'Front') perfilFront = p;
+				else if (p.Name == 'Discapacidad Interdisciplinario') perfilDiscaID = p;
+			}
 			String uniqueUserName = 'standarduserAutAlert' + DateTime.now().getTime() + '@testorg.com';
 			UserRole role = [SELECT Id,Name FROM UserRole WHERE Name = 'Administrador'];
-			perfilFront = [SELECT Id FROM Profile WHERE Name='Front'];
 			userFront = new User(Alias = 'standt', Email='standarduser@testorg.com',
 				EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='en_US',
 				LocaleSidKey='en_US', TimeZoneSidKey='America/Los_Angeles',
 				UserName=uniqueUserName + 'FrontAutAlert', ProfileId = perfilFront.Id, UserRoleId = role.Id);
 			insert userFront;
-			perfilMesa = [SELECT Id FROM Profile WHERE Name='Mesa de ayuda'];
 			userMesa = new User(Alias = 'standt', Email='standarduser@testorg.com',
 				EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='es',
 				LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
 				UserName=uniqueUserName + 'MesaAutAlert', ProfileId = perfilMesa.Id, UserRoleId = role.Id);
 			insert userMesa;
+			userDiscaID = new User(Alias = 'standt', Email='standarduser@testorg.com',
+				EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='es',
+				LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
+				UserName=uniqueUserName + 'DiscaId', ProfileId = perfilDiscaID.Id, UserRoleId = role.Id);
+			insert userDiscaID;
 			List<Group> groupFront = [SELECT Id, Name FROM Group WHERE DeveloperName = 'Front'];
 			GroupMember groupMemberF = new GroupMember(groupId = groupFront[0].Id, UserOrGroupId = userFront.Id);
 			insert groupMemberF;
@@ -564,6 +577,45 @@ private class AlertaAutorizarBtnCtrlTest {
 			Test.stopTest();
 		}
 		validateErrorMessage(responseToAssert, System.Label.Alerta_AuthIDIfResponsableAsignado);
+	}
+	@isTest
+	private static void ifUserIsDiscaId_shouldSendAlertAndWorkJustFine () {
+		Test.setMock(HttpCalloutMock.class, getResponseFound);
+		Evento_medico__c em = new Evento_medico__c(Nro_de_Evento_Medico_SS__c = '276013', Estado__c = 'En Auditoria');
+		insert em;
+		Segmentos__c seg = new Segmentos__c(Semid__c = '305822', Estado__c = 'En auditoria', Evento_Medico__c = em.Id);
+		insert seg;
+		Case caso = new Case(Nro_AP__c = '1014010147', Evento_Medico__c = em.Id, Responsable_de_presupuesto__c = userDiscaID.Id);
+		caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
+		caso.Correo_asociado__c = 'ej@test.com';
+		insert caso;
+		Prestacion__c pres = new Prestacion__c(Prestacion_CA__c = '74042498', Ap__c = caso.Id);
+		insert pres;
+		Alerta__c alerta = new Alerta__c(idalerta__c = '16461690', Prestacion__c = pres.Id, Evento_Medico__c = em.Id, Funcion__c = 'CPRAS_TECNI');
+		insert alerta;
+		AlertaAutorizarBtnCtrl.Response responseToAssert;
+		System.runAs (userDiscaID) {
+			Test.startTest();
+			responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
+			Test.stopTest();
+		}
+		Alerta__c alertSOQL = getAlerts(alerta.idalerta__c);
+		Evento_medico__c emSOQL = [SELECT Estado__c,
+										(SELECT Semid__c,
+											Estado__c
+										FROM Segmentos__r),
+										(SELECT Nivel_de_derivacion__c
+										FROM Casos__r)
+									FROM Evento_medico__c
+									WHERE Id =: em.Id];
+		System.assert(!responseToAssert.hasError, 'No debe haber un error');
+		System.assertEquals(responseToAssert.message, 'Ok', 'El mensaje debe ser Ok');
+		System.assertEquals('Autorizado', emSOQL.Estado__c, 'El Estado debe ser Autorizado');
+		System.assertEquals('Autorizado', emSOQL.Segmentos__r[0].Estado__c, 'El Estado debe ser Autorizado');
+		System.assertEquals('Nivel 3', emSOQL.Casos__r[0].Nivel_de_derivacion__c, 'El nivel de derivación debe ser 3');
+		System.assertEquals('C1EA--AA', alertSOQL.Prestacion__r.Estado__c, 'El estado de la prestación debe ser C1EA--AA');
+		System.assertEquals('C1EA--AA', alertSOQL.Estado__c, 'El estado de la alerat debe ser C1EA--AA');
+		System.assertEquals(Date.valueOf('2020-02-29'), alertSOQL.Fecha_resolucion_de_Alerta__c, 'Las fechas no coinciden');
 	}
 	/** Utils */
 	private static void validateErrorMessage (AlertaAutorizarBtnCtrl.Response responseToAssert, String expectedErrorMessage) {

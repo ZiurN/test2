@@ -128,7 +128,9 @@ public without sharing class AlertaAutorizarBtnCtrl {
 						|| perfil == 'Coordinador de Mesa de Ayuda'
 						||  perfil == 'Reintegros';
 		Boolean AMNoAdmin = perfil == 'Auditor Medico' || perfil == 'Coordinador de Mesa de Ayuda';
-		Boolean CPRAS_TECNI = admin || perfil == 'Compras Tecnicas' ||  perfil == 'Back CT';
+		Boolean CPRAS_TECNI = admin || perfil == 'Compras Tecnicas'
+								|| perfil == 'Back CT'
+								|| perfil == 'Discapacidad Interdisciplinario';
 		Boolean FCION_DISCA = admin || perfil == 'Discapacidad';
 		Boolean FCION_ID = admin  || perfil == 'Discapacidad Interdisciplinario';
 		Boolean FCION_PRESU = admin  || perfil == 'Presupuesto';
