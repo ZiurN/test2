@@ -1,5 +1,5 @@
 public without sharing class SegmentoActualizarBtnCtrl {
-    /*@AuraEnabled
+    @AuraEnabled
     public static BasicResponse actualizarSegmento(String segmentoId) {
         String body;
         List<Segmentos__c> segList = [
@@ -140,5 +140,5 @@ public without sharing class SegmentoActualizarBtnCtrl {
             //this.hasError = hasError;
             //this.message = message;
         //}
-    //}*/
+    //}
 }
