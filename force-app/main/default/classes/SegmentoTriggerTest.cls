@@ -352,6 +352,45 @@ private class SegmentoTriggerTest {
 		System.assert(oldSeg.Fecha_Inicio_real__c == fechaInicioReal, 'Las fechas no coinciden');
 		System.assert(oldSeg.Fecha_Fin_real__c == fechaFinReal, 'Las fechas no coinciden');
 	}
+	@isTest
+	public static void ifThereIsPreviewsSegmentoAndNewSegmentHasNotCorrectFechasTentativasSendErrorMessage () {
+		Evento_medico__c em = new Evento_medico__c(
+			Nro_de_Evento_Medico_SS__c = '275822',
+			Fecha_y_Hora_inicio_EMS__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 01),
+			Fecha_y_hora_fin_ems__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 02)
+		);
+		insert em;
+		Datetime fechaInicioReal = DateTime.newInstance(Date.today().year(), Date.today().month(), 04);
+		Datetime fechaFinReal = DateTime.newInstance(Date.today().year(), Date.today().month(), 06);
+		Segmentos__c previewSegmento = new Segmentos__c(
+			Semid__c = '305715',
+			Fecha_Inicio_tentativa__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 01),
+			Fecha_Fin_tentativa__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 02),
+			Fecha_Inicio_real__c = fechaInicioReal,
+			Fecha_Fin_real__c = fechaFinReal,
+			Evento_Medico__c = em.Id
+		);
+		insert previewSegmento;
+		Segmentos__c newSegmento = new Segmentos__c(
+			Semid__c = '305716',
+			Fecha_Inicio_tentativa__c = fechaFinReal.addDays(-1),
+			Fecha_Fin_tentativa__c = fechaFinReal.addDays(2),
+			Evento_Medico__c = em.Id
+		);
+		Test.startTest();
+		Database.SaveResult result = Database.insert(newSegmento, false);
+		Test.stopTest();
+		System.assert(!result.isSuccess(), 'El Segmento no se debe guardar');
+		System.assertEquals('La fecha tentativa inicial debe ser igual o posterior a la fecha final real del último segmento actual del evento médico',
+							result.getErrors()[0].getMessage(),
+							'El mensaje no indica el error');
+		newSegmento.Fecha_Inicio_tentativa__c = fechaFinReal.addDays(1);
+		newSegmento.Fecha_Fin_tentativa__c = fechaFinReal.addDays(3);
+		result = Database.insert(newSegmento, false);
+		System.assert(result.isSuccess(), 'El Segmento se debe guardar correctamente');
+		Integer segmentosNumber = [SELECT count() FROM Segmentos__c WHERE Evento_Medico__c =: em.Id];
+		System.assertEquals(2, segmentosNumber, 'Deben haber dos segmentos');
+	}
 	/** Utils */
 	private static void validatePlatformEventFired () {
 		EventBusSubscriber[] subscribers =[SELECT Name,
