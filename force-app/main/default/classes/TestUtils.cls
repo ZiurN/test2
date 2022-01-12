@@ -120,6 +120,16 @@ public without sharing class TestUtils {
 			.withBody(WSAuthTokenMock.getTokenSuccess())
 			.addForAddress(AUTH_TOKEN_URL);
 	}
+	public static void setAuthToken (XHttpCalloutMock mock,
+									String body,
+									Integer statusCode,
+									String status) {
+		mock.buildResponse()
+			.withStatus(status)
+			.withStatusCode(statusCode)
+			.withBody(body)
+			.addForAddress(AUTH_TOKEN_URL);
+	}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Jeferson Ruiz
 	@description	Crea un HTMLBody con contentversions, imitando tener elementos pegados en los correos
@@ -157,5 +167,19 @@ public without sharing class TestUtils {
 		public String status {get;set;}
 		public String body {get;set;}
 		public String url {get;set;}
+	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz
+	@description	Crea un ContentVersion a partir de un recurso estático grande.
+	@return			cvToReturn - el CV para utilizar.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static ContentVersion createContentVersionWithFileBiggerThan3MB () {
+		StaticResource resource = XappiaHelper.getStaticResource('BigFile');
+		ContentVersion cvToReturn = new ContentVersion(
+			Title = 'BigFile',
+			VersionData = Blob.valueOf(resource.body.toString()),
+			PathOnClient = '/BigFile'
+		);
+		return cvToReturn;
 	}
 }

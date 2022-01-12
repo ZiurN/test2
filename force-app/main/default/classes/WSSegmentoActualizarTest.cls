@@ -1,6 +1,6 @@
 @IsTest
 private class WSSegmentoActualizarTest {
-    static XHttpCalloutMock getResponseFound;
+    /*static XHttpCalloutMock getResponseFound;
     static XHttpCalloutMock getErrorResponse;
     static String body;
 
@@ -144,5 +144,5 @@ private class WSSegmentoActualizarTest {
 
         System.assertEquals(true, resp.hasError);
         System.assertEquals('El segmento solicitado es inválido.', resp.message);
-    }
+    }*/
 }

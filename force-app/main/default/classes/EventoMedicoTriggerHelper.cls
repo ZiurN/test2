@@ -119,7 +119,7 @@ public class EventoMedicoTriggerHelper {
 		Boolean isAdmin = currentUser.Profile.Name == 'Administrador del sistema' || currentUser.Profile.Name == 'System Administrator';
 		for (Evento_medico__c em : oldMap.values()) {
 			if(!isAdmin) {
-				em.addError('No tiene permitido eliminar Eventos Medicos');
+				em.addError(System.Label.Alerta_Trigger_EM_CantDeleteEM);
 			}
 		}
 	}
