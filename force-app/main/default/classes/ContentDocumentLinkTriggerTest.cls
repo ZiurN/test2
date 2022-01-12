@@ -105,7 +105,7 @@ private class ContentDocumentLinkTriggerTest {
 		System.assert(!result.isSuccess(), 'Debe ocurrir un error al tratar de guardar el cdLink');
 		System.assertEquals(duplicateMessage, result.getErrors()[0].getMessage(), 'El mensaje debe indicar que ya existe otro archivo');
 	}
-	@isTest(SeeAllData=true)
+	@isTest
 	private static void avoidInsertFilesLargerThan3Mb() {
 		Evento_medico__c em = new Evento_medico__c();
 		insert em;
@@ -125,7 +125,7 @@ private class ContentDocumentLinkTriggerTest {
 		System.assert(!result.isSuccess(), 'Debe ocurrir un error al tratar de guardar el cdLink');
 		System.assertEquals(System.Label.Alerta_ArchivoMayor3MB, result.getErrors()[0].getMessage(), 'El mensaje debe indicar que el archivo es muy grande');
 	}
-	@isTest(SeeAllData=true)
+	@isTest
 	private static void ifEmail_to_Case_AllowInsertFilesLargerThan3Mb() {
 		Case emailToCaseCase = Build.aCaseFromEmail().build();
 		insert emailToCaseCase;

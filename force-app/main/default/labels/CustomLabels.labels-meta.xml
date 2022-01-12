@@ -21,8 +21,8 @@
         <categories>Alertas CDLink</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>Alerta_ArchivoDeOportunidad</shortDescription>
-        <value>No se pueden eliminar archivos de oportunidades</value>
+        <shortDescription>Alerta_ArchivoEnviadoASS2</shortDescription>
+        <value>No se puede eliminar el archivo, ya fue enviado a SaludSoft</value>
     </labels>
     <labels>
         <fullName>Alerta_ArchivoMayor3MB</fullName>
@@ -375,5 +375,13 @@
         <protected>false</protected>
         <shortDescription>PDFIngresoYDDJJ</shortDescription>
         <value>Avalian - Solicitud de ingreso y DDJJ completa.pdf</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_C</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_CPRAS_TECNI</shortDescription>
+        <value>No se permite autorizar alerta de Compras Técnicas</value>
     </labels>
 </CustomLabels>

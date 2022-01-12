@@ -1,6 +1,6 @@
 @IsTest
 private class SegmentoActualizarBtnCtrlTest {
-    static XHttpCalloutMock getResponseFound;
+    /*static XHttpCalloutMock getResponseFound;
     static XHttpCalloutMock getErrorResponse;
 
     static {
@@ -81,5 +81,5 @@ private class SegmentoActualizarBtnCtrlTest {
         System.assertEquals(true, resp.hasError);
         System.debug(resp.message);
         System.assertEquals('El segmento solicitado es inválido.', resp.message);
-    }
+    }*/
 }

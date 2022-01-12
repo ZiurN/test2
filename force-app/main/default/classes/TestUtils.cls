@@ -162,17 +162,10 @@ public without sharing class TestUtils {
 			'</html>';
 		return HtmlBody;
 	}
-	public class mockSettings {
-		public Integer statusCode {get; set;}
-		public String status {get;set;}
-		public String body {get;set;}
-		public String url {get;set;}
-	}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Jeferson Ruiz
 	@description	Crea un ContentVersion a partir de un recurso estático grande.
-	@param			mock - Mock para construir.
-	@return			HtmlBody - El HTMLBody.
+	@return			cvToReturn - el CV para utilizar.
 	------------------------------------------------------------------------------------------------------------------------*/
 	public static ContentVersion createContentVersionWithFileBiggerThan3MB () {
 		StaticResource resource = XappiaHelper.getStaticResource('BigFile');
@@ -182,5 +175,11 @@ public without sharing class TestUtils {
 			PathOnClient = '/BigFile'
 		);
 		return cvToReturn;
+	}
+	public class mockSettings {
+		public Integer statusCode {get; set;}
+		public String status {get;set;}
+		public String body {get;set;}
+		public String url {get;set;}
 	}
 }

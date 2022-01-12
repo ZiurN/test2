@@ -55,10 +55,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Cerrado</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>En Auditoria</fullName>
             <default>false</default>
         </values>
