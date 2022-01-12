@@ -368,7 +368,8 @@ private class SegmentoTriggerTest {
 			Fecha_Fin_tentativa__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 02),
 			Fecha_Inicio_real__c = fechaInicioReal,
 			Fecha_Fin_real__c = fechaFinReal,
-			Evento_Medico__c = em.Id
+			Evento_Medico__c = em.Id,
+			Segmento_actual__c = true
 		);
 		insert previewSegmento;
 		Segmentos__c newSegmento = new Segmentos__c(
@@ -381,7 +382,7 @@ private class SegmentoTriggerTest {
 		Database.SaveResult result = Database.insert(newSegmento, false);
 		Test.stopTest();
 		System.assert(!result.isSuccess(), 'El Segmento no se debe guardar');
-		System.assertEquals('La fecha tentativa inicial debe ser igual o posterior a la fecha final real del último segmento actual del evento médico',
+		System.assertEquals(System.Label.Alerta_Trigger_Seg_FechaTentInicialInvalida,
 							result.getErrors()[0].getMessage(),
 							'El mensaje no indica el error');
 		newSegmento.Fecha_Inicio_tentativa__c = fechaFinReal.addDays(1);

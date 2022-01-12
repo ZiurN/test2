@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class SegmentoHelper {
 	public static void checkSegmentoActualInTheLastSegmento(Map<Id, Segmentos__c[]> emIdsSegmentosMap) {
 		List<Segmentos__c> segmentosList = new List<Segmentos__c>();
@@ -78,11 +79,42 @@ public without sharing class SegmentoHelper {
 	@param			segmentosToCheck - Segmentos para verificar.
 	------------------------------------------------------------------------------------------------------------------------*/
 	public static void checkFechasTentativas (List<Segmentos__c> segmentosToCheck) {
+		Set<Id> eventosMedicosIds = new Set<Id>();
+		for (Segmentos__c segmento : segmentosToCheck) {
+			eventosMedicosIds.add(segmento.Evento_Medico__c);
+		}
+		System.debug(eventosMedicosIds);
+		List<Segmentos__c> lastSegmentos = [SELECT Fecha_Fin_real__c,
+												Evento_Medico__c
+											FROM Segmentos__c
+											WHERE Evento_Medico__c IN: eventosMedicosIds
+												AND Segmento_actual__c = true];
+		System.debug(lastSegmentos);
+		Map<Id, DateTime> fechaFinaRealByEventoMedicoId = new Map<Id, DateTime>();
+		if (!lastSegmentos.isEmpty()) {
+			for (Segmentos__c segmento : lastSegmentos) {
+				if (fechaFinaRealByEventoMedicoId.containsKey(segmento.Evento_Medico__c)) {
+					DateTime currentFechaFinal = fechaFinaRealByEventoMedicoId.get(segmento.Evento_Medico__c);
+					if (currentFechaFinal < segmento.Fecha_Fin_real__c) {
+						fechaFinaRealByEventoMedicoId.put(segmento.Evento_Medico__c, segmento.Fecha_Fin_real__c);
+					}
+				} else {
+					fechaFinaRealByEventoMedicoId.put(segmento.Evento_Medico__c, segmento.Fecha_Fin_real__c);
+				}
+			}
+		}
 		for (Segmentos__c segmento : segmentosToCheck) {
 			Boolean fechaInicialNula =  segmento.Fecha_Inicio_tentativa__c == null;
 			Boolean fechaFinalNula = segmento.Fecha_Fin_tentativa__c == null;
 			if (!fechaInicialNula && !fechaFinalNula && (segmento.Fecha_Inicio_tentativa__c > segmento.Fecha_Fin_tentativa__c)) {
 				segmento.addError(System.Label.Alerta_Segmento_FechasTentativasNoConsecutivas);
+				continue;
+			}
+			if (!fechaFinaRealByEventoMedicoId.isEmpty()) {
+				DateTime lastFechaFinalReal = fechaFinaRealByEventoMedicoId.get(segmento.Evento_Medico__c);
+				if (!fechaInicialNula && (segmento.Fecha_Inicio_tentativa__c < lastFechaFinalReal)){
+					segmento.addError(System.Label.Alerta_Trigger_Seg_FechaTentInicialInvalida);
+				}
 			}
 		}
 	}

@@ -9,6 +9,8 @@ public with sharing class SegmentoTriggerHandler extends TriggerHandler {
 	Map<Id,Segmentos__c> mNew = (Map<Id,Segmentos__c>) Trigger.newMap;
 	Map<Id,Segmentos__c> mOld = (Map<Id,Segmentos__c>) Trigger.oldMap;
 	public override void beforeInsert() {
+		SegmentoHelper.checkFechasTentativas(lNew);
+		SegmentoHelper.checkFechasReales(lNew);
 		Map<Id, Segmentos__c[]> eventoMedicoIdSegmentosMap = new Map<Id, Segmentos__c[]>();
 		for (Segmentos__c segmento : lNew) {
 			if(eventoMedicoIdSegmentosMap.containsKey(segmento.Evento_Medico__c)) {
@@ -23,8 +25,6 @@ public with sharing class SegmentoTriggerHandler extends TriggerHandler {
 		if (!eventoMedicoIdSegmentosMap.isEmpty()) {
 			SegmentoHelper.checkSegmentoActualInTheLastSegmento(eventoMedicoIdSegmentosMap);
 		}
-		SegmentoHelper.checkFechasTentativas(lNew);
-		SegmentoHelper.checkFechasReales(lNew);
 	}
 	public override void beforeUpdate() {
 		List<Segmentos__c> editableSegmentos = SegmentoHelper.checkEventoMedicoStatus(lNew);
