@@ -1976,19 +1976,19 @@ private class CaseTriggerTest {
         insert eventoMedicoInternacion;
 		Case testCase = new Case(
 			Evento_Medico__c = eventoMedicoInternacion.Id,
-			Fecha_probable__c = Date.valueOf(fechaFinEM.addDays(2))
+			Fecha__c = Date.valueOf(fechaFinEM.addDays(2))
 		);
 		Database.SaveResult result;
 		System.runAs(front) {
 			result = Database.insert(testCase, false);
 			validateInsertCaseError(result);
 		}
-		testCase.Fecha_probable__c = Date.valueOf((fechaInicioEM.addDays(-2)));
+		testCase.Fecha__c = Date.valueOf((fechaInicioEM.addDays(-2)));
 		System.runAs(front) {
 			result = Database.insert(testCase, false);
 			validateInsertCaseError(result);
 		}
-		testCase.Fecha_probable__c = Date.valueOf(fechaInicioEM);
+		testCase.Fecha__c = Date.valueOf(fechaInicioEM);
 		System.runAs(front) {
 			result = Database.insert(testCase, false);
 			System.assert(result.isSuccess(), 'El caso se debio guardar correctamente');
@@ -2006,19 +2006,19 @@ private class CaseTriggerTest {
         insert eventoMedicoSeguimiento;
 		Case testCase = new Case(
 			Evento_Medico__c = eventoMedicoSeguimiento.Id,
-			Fecha_probable__c = Date.valueOf(fechaFinEM.addDays(2))
+			Fecha__c = Date.valueOf(fechaFinEM.addDays(2))
 		);
 		Database.SaveResult result;
 		System.runAs(front) {
 			result = Database.insert(testCase, false);
 			validateInsertCaseError(result);
 		}
-		testCase.Fecha_probable__c = Date.valueOf(fechaInicioEM.addDays(-2));
+		testCase.Fecha__c = Date.valueOf(fechaInicioEM.addDays(-2));
 		System.runAs(front) {
 			result = Database.insert(testCase, false);
 			validateInsertCaseError(result);
 		}
-		testCase.Fecha_probable__c = Date.valueOf(fechaInicioEM);
+		testCase.Fecha__c = Date.valueOf(fechaInicioEM);
 		System.runAs(front) {
 			result = Database.insert(testCase, false);
 			System.assert(result.isSuccess(), 'El caso se debio guardar correctamente');

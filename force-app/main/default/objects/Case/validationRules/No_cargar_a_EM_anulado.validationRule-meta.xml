@@ -11,7 +11,7 @@
 	OR(
 		ISNEW(),
 		ISCHANGED(Evento_Medico__c),
-		ISCHANGED(Fecha_probable__c)
+		ISCHANGED(Fecha__c)
 	),
 	OR(
 		OR(
@@ -31,8 +31,8 @@
 				)
 			),
 			OR(
-				DATEVALUE(Evento_Medico__r.Fecha_y_hora_fin_ems__c) &lt; Fecha_probable__c,
-				DATEVALUE(Evento_Medico__r.Fecha_y_Hora_inicio_EMS__c) &gt; Fecha_probable__c
+				DATEVALUE(Evento_Medico__r.Fecha_y_hora_fin_ems__c) &lt; Fecha__c,
+				DATEVALUE(Evento_Medico__r.Fecha_y_Hora_inicio_EMS__c) &gt; Fecha__c
 			)
 		)
 	)
