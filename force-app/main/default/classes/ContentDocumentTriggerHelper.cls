@@ -163,13 +163,14 @@ public without sharing class ContentDocumentTriggerHelper {
 	/** Utils */
 	private static Map<Id, List<ContentDocumentLink>> filteredContentDocuments (Map<Id, List<ContentDocumentLink>> contentDocumentLinksByContentDocumentId,
 																				Set<Id> caseIds) {
+		Map<Id, Case> casesSentToSSMap = new Map<Id, Case>([SELECT Id FROM Case WHERE Id IN :caseIds AND Nro_de_solicitud_SS__c != null]);
 		Map<Id, List<ContentDocumentLink>> filteredMap = new Map<Id, List<ContentDocumentLink>>();
 		for (Id contentDocId : contentDocumentLinksByContentDocumentId.keySet()) {
 			filteredMap.put(contentDocId, new List<ContentDocumentLink>());
 			List<ContentDocumentLink> cDLinkList = contentDocumentLinksByContentDocumentId.get(contentDocId);
 			if (cDLinkList != null && !cDLinkList.isEmpty()) {
 				for (ContentDocumentLink cdLink : cDLinkList) {
-					if (caseIds.contains(cdLink.LinkedEntityId)) {
+					if (!casesSentToSSMap.isEmpty() && casesSentToSSMap.keySet().contains(cdLink.LinkedEntityId)) {
 						filteredMap.get(contentDocId).add(cdLink);
 					}
 				}
