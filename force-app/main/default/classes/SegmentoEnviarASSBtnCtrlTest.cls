@@ -1,2 +1,0 @@
-@isTest 
-private class SegmentoEnviarASSBtnCtrlTest {}
