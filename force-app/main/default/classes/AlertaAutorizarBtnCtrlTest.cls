@@ -10,20 +10,20 @@ private class AlertaAutorizarBtnCtrlTest {
 	static XHttpCalloutMock getErrorMessageWsResponse;
 	static User userFront;
 	static User userMesa;
-	static User userDiscaID;
+	static User userDisca;
 	static CaseTeamRole caseRole;
 	static Profile perfilFront;
 	static Profile perfilMesa;
-	static Profile perfilDiscaID;
+	static Profile perfilDisca;
 	static {
 		System.runAs(new User(Id = UserInfo.getUserId())) {
 			for (Profile p : [SELECT Id, Name FROM Profile
 								WHERE Name = 'Mesa de ayuda'
 									OR Name = 'Front'
-									OR Name = 'Discapacidad Interdisciplinario']) {
+									OR Name = 'Discapacidad']) {
 				if (p.Name == 'Mesa de ayuda') perfilMesa = p;
 				else if (p.Name == 'Front') perfilFront = p;
-				else if (p.Name == 'Discapacidad Interdisciplinario') perfilDiscaID = p;
+				else if (p.Name == 'Discapacidad') perfilDisca = p;
 			}
 			String uniqueUserName = 'standarduserAutAlert' + DateTime.now().getTime() + '@testorg.com';
 			UserRole role = [SELECT Id,Name FROM UserRole WHERE Name = 'Administrador'];
@@ -37,11 +37,11 @@ private class AlertaAutorizarBtnCtrlTest {
 				LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
 				UserName=uniqueUserName + 'MesaAutAlert', ProfileId = perfilMesa.Id, UserRoleId = role.Id);
 			insert userMesa;
-			userDiscaID = new User(Alias = 'standt', Email='standarduser@testorg.com',
+			userDisca = new User(Alias = 'standt', Email='standarduser@testorg.com',
 				EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='es',
 				LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
-				UserName=uniqueUserName + 'DiscaId', ProfileId = perfilDiscaID.Id, UserRoleId = role.Id);
-			insert userDiscaID;
+				UserName=uniqueUserName + 'Disca', ProfileId = perfilDisca.Id, UserRoleId = role.Id);
+			insert userDisca;
 			List<Group> groupFront = [SELECT Id, Name FROM Group WHERE DeveloperName = 'Front'];
 			GroupMember groupMemberF = new GroupMember(groupId = groupFront[0].Id, UserOrGroupId = userFront.Id);
 			insert groupMemberF;
@@ -585,7 +585,7 @@ private class AlertaAutorizarBtnCtrlTest {
 		insert em;
 		Segmentos__c seg = new Segmentos__c(Semid__c = '305822', Estado__c = 'En auditoria', Evento_Medico__c = em.Id);
 		insert seg;
-		Case caso = new Case(Nro_AP__c = '1014010147', Evento_Medico__c = em.Id, Responsable_de_presupuesto__c = userDiscaID.Id);
+		Case caso = new Case(Nro_AP__c = '1014010147', Evento_Medico__c = em.Id, Responsable_de_presupuesto__c = userDisca.Id);
 		caso.RecordTypeId = XappiaHelper.getRecordType('Case', 'Expedientes_legales').Id;
 		caso.Correo_asociado__c = 'ej@test.com';
 		insert caso;
@@ -594,7 +594,7 @@ private class AlertaAutorizarBtnCtrlTest {
 		Alerta__c alerta = new Alerta__c(idalerta__c = '16461690', Prestacion__c = pres.Id, Evento_Medico__c = em.Id, Funcion__c = 'CPRAS_TECNI');
 		insert alerta;
 		AlertaAutorizarBtnCtrl.Response responseToAssert;
-		System.runAs (userDiscaID) {
+		System.runAs (userDisca) {
 			Test.startTest();
 			responseToAssert = AlertaAutorizarBtnCtrl.autorizarAlerta(alerta.idalerta__c);
 			Test.stopTest();
