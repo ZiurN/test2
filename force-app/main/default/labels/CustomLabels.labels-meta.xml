@@ -73,6 +73,14 @@
         <value>No puede generar una baja parcial sin integrantes</value>
     </labels>
     <labels>
+        <fullName>Alerta_CampoCelulaCompleto</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_CampoCelulaCompleto</shortDescription>
+        <value>El campo célula debe estar completo</value>
+    </labels>
+    <labels>
         <fullName>Alerta_CasoBajaTipoInvalido</fullName>
         <categories>Alertas</categories>
         <language>en_US</language>
@@ -81,12 +89,36 @@
         <value>El caso no tiene un tipo de baja válido</value>
     </labels>
     <labels>
+        <fullName>Alerta_CasoDebeSerRechazado</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_CasoDebeSerRechazado</shortDescription>
+        <value>El caso debe estar rechazado</value>
+    </labels>
+    <labels>
         <fullName>Alerta_CasoNoSolicitud</fullName>
         <categories>Alertas</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Alerta_CasoNoSolicitud</shortDescription>
         <value>El caso no es una solicitud</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_DebeSerLiderCelula</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_DebeSerLiderCelula</shortDescription>
+        <value>El usuario debe ser el líder de la célula</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_DebeSerLiderMesaAyuda</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_DebeSerLiderMesaAyuda</shortDescription>
+        <value>El usuario debe ser el líder de Mesa de Ayuda</value>
     </labels>
     <labels>
         <fullName>Alerta_InvalidCaseClosed</fullName>
@@ -225,6 +257,62 @@
         <value>No se puede enviar porque no tiene archivos adjuntos</value>
     </labels>
     <labels>
+        <fullName>Alerta_Segmento_EventoMedicoCerrado</fullName>
+        <categories>Alertas Segmentos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_Segmento_EventoMedicoCerrado</shortDescription>
+        <value>El Evento Médico asociado está cerrado, no puede modificar el segmento</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_Segmento_FechasNoConsecutivas</fullName>
+        <categories>Alertas Segmentos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_Segmento_FechasNoConsecutivas</shortDescription>
+        <value>La fecha final real no puede ser anterior a la fecha de inicio real</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_Segmento_FechasTentativasNoConsecutivas</fullName>
+        <categories>Alertas Segmentos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_Segmento_FechasTentativasNoConsecutivas</shortDescription>
+        <value>La fecha final tentativa no puede ser anterior a la fecha de inicio tentativa</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_Segmento_NoBorrarPrimerSeg</fullName>
+        <categories>Alertas Segmentos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_Segmento_NoBorrarPrimerSeg</shortDescription>
+        <value>No se puede eliminar el primer segmento del Evento Médico</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_Trigger_EM_CantDeleteEM</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_Trigger_EM_CantDeleteEM</shortDescription>
+        <value>No tiene permitido eliminar Eventos Médicos</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_Trigger_EM_FaltanSegmentos</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_Trigger_EM_FaltanSegmentos</shortDescription>
+        <value>Debe cerrar todos los segmentos antes de completar este campo</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_Trigger_EM_FechaCierreMenorAFechaCaso</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_Trigger_EM_FechaCierreMenorAFechaCaso</shortDescription>
+        <value>Fecha de cierre del evento menor o igual a la fecha del caso</value>
+    </labels>
+    <labels>
         <fullName>Alerta_YaExisteArchivoMismoNombre</fullName>
         <categories>Alertas CDLink</categories>
         <language>en_US</language>
@@ -289,91 +377,11 @@
         <value>Avalian - Solicitud de ingreso y DDJJ completa.pdf</value>
     </labels>
     <labels>
-        <fullName>Alerta_CampoCelulaCompleto</fullName>
-        <categories>Alertas</categories>
+        <fullName>VR_Case_No_cargar_a_EM_anulado</fullName>
+        <categories>Validation Rules</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>Alerta_CampoCelulaCompleto</shortDescription>
-        <value>El campo célula debe estar completo</value>
-    </labels>
-    <labels>
-        <fullName>Alerta_CasoDebeSerRechazado</fullName>
-        <categories>Alertas</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Alerta_CasoDebeSerRechazado</shortDescription>
-        <value>El caso debe estar rechazado</value>
-    </labels>
-    <labels>
-        <fullName>Alerta_DebeSerLiderCelula</fullName>
-        <categories>Alertas</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Alerta_DebeSerLiderCelula</shortDescription>
-        <value>El usuario debe ser el líder de la célula</value>
-    </labels>
-    <labels>
-        <fullName>Alerta_DebeSerLiderMesaAyuda</fullName>
-        <categories>Alertas</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Alerta_DebeSerLiderMesaAyuda</shortDescription>
-        <value>El usuario debe ser el líder de Mesa de Ayuda</value>
-    </labels>
-    <labels>
-        <fullName>Alerta_Segmento_EventoMedicoCerrado</fullName>
-        <categories>Alertas Segmentos</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Alerta_Segmento_EventoMedicoCerrado</shortDescription>
-        <value>El Evento Médico asociado está cerrado, no puede modificar el segmento</value>
-    </labels>
-    <labels>
-        <fullName>Alerta_Segmento_FechasNoConsecutivas</fullName>
-        <categories>Alertas Segmentos</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Alerta_Segmento_FechasNoConsecutivas</shortDescription>
-        <value>La fecha final real no puede ser anterior a la fecha de inicio real</value>
-    </labels>
-    <labels>
-        <fullName>Alerta_Segmento_FechasTentativasNoConsecutivas</fullName>
-        <categories>Alertas Segmentos</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Alerta_Segmento_FechasTentativasNoConsecutivas</shortDescription>
-        <value>La fecha final tentativa no puede ser anterior a la fecha de inicio tentativa</value>
-    </labels>
-    <labels>
-        <fullName>Alerta_Segmento_NoBorrarPrimerSeg</fullName>
-        <categories>Alertas Segmentos</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Alerta_Segmento_NoBorrarPrimerSeg</shortDescription>
-        <value>No se puede eliminar el primer segmento del Evento Médico</value>
-    </labels>
-    <labels>
-        <fullName>Alerta_Trigger_EM_CantDeleteEM</fullName>
-        <categories>Alertas</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Alerta_Trigger_EM_CantDeleteEM</shortDescription>
-        <value>No tiene permitido eliminar Eventos Médicos</value>
-    </labels>
-    <labels>
-        <fullName>Alerta_Trigger_EM_FaltanSegmentos</fullName>
-        <categories>Alertas</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Alerta_Trigger_EM_FaltanSegmentos</shortDescription>
-        <value>Debe cerrar todos los segmentos antes de completar este campo</value>
-    </labels>
-    <labels>
-        <fullName>Alerta_Trigger_EM_FechaCierreMenorAFechaCaso</fullName>
-        <categories>Alertas</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Alerta_Trigger_EM_FechaCierreMenorAFechaCaso</shortDescription>
-        <value>Fecha de cierre del evento menor o igual a la fecha del caso</value>
+        <shortDescription>VR_Case_No_cargar_a_EM_anulado</shortDescription>
+        <value>El evento médico esta &amp;quot;Anulado&amp;quot;, &amp;quot;Rechazado&amp;quot;, &amp;quot;Suspendido&amp;quot;. Para EMS en estado &amp;quot;Autorizados&amp;quot; o EMI en estado &amp;quot;Cerrado&amp;quot;, la fecha probable debe estar entre la fecha de inicio y de fin del evento médico asociado</value>
     </labels>
 </CustomLabels>
