@@ -1,4 +1,4 @@
-@isTest 
+@isTest
 private class ContentDocumentTriggerTest {
 	private static XHttpCalloutMock serverMock;
 	private static List<String> nameList = new List<String>{'TESTAWSTRIGGER_solicitudes_sf',
@@ -148,15 +148,15 @@ private class ContentDocumentTriggerTest {
         aCase.Nro_de_solicitud_SS__c = '123456';
 		insert aCase;
         Database.DeleteResult result;
+		ContentVersion cv = new ContentVersion();
+		ContentDocumentLink link = new ContentDocumentLink();
         System.runAs(front) {
-			ContentVersion cv = new ContentVersion();
             cv.Title = 'AVOIDDELETECDSALESCASETEST';
             cv.VersionData = Blob.valueOf('AVOIDDELETECDSALESCASETEST');
             cv.PathOnClient = '/AVOIDDELETECDSALESCASETEST';
             cv.Enviado__c = true;
             insert cv;
-            cv = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id];
-            ContentDocumentLink link = new ContentDocumentLink();
+            cv = [SELECT ContentDocumentId, Id, Enviado__c FROM ContentVersion WHERE Id = :cv.Id];
             link.ContentDocumentId = cv.ContentDocumentId;
             link.LinkedEntityId = aCase.Id;
             insert link;
@@ -165,9 +165,17 @@ private class ContentDocumentTriggerTest {
                 result = Database.delete(cd, false);
             Test.stopTest();
             System.debug(result);
-            System.assertEquals(false, result.isSuccess());
-            System.assertEquals(System.Label.Alerta_ArchivoEnviadoASS, result.getErrors()[0].getMessage()
-            );
+            System.assert(!result.isSuccess(), 'No se debio guardar el archivo');
+            System.assertEquals(System.Label.Alerta_ArchivoEnviadoASS, result.getErrors()[0].getMessage(), 'El mensaje no indica el error');
         }
+		aCase.Nro_de_solicitud_SS__c = null;
+		update aCase;
+		cv.Enviado__c = false;
+		update cv;
+		ContentDocument cd = [SELECT Id FROM ContentDocument WHERE Id = :cv.ContentDocumentId];
+		System.runAs(front) {
+			result = Database.delete(cd, false);
+		}
+		System.assert(result.isSuccess(), 'El Documento se debío borrar correctamente');
     }
 }
