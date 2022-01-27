@@ -1,5 +1,5 @@
 ({
-	handleUpdate: function (component, event, helper) {Graci
+	handleUpdate: function (component, event, helper) {
 		let changeType = event.getParams().changeType;
 		if (changeType === "CHANGED" || changeType === "LOADED") {
 			if(component.get('v.isLeaderVarSetted')) {
