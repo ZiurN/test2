@@ -32,6 +32,10 @@
                 <behavior>Required</behavior>
                 <field>Localidad__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Provincia_de_la_Localidad__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
