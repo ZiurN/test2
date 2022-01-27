@@ -5,17 +5,25 @@
 private class CaseTriggerTest {
 	@TestVisible
 	public static final Webservice_endpoint_setting__mdt SERVICE_CONFIG = ConfigUtils.getWebServiceConfig('SALUDSOFT.TEST');
+	private static final String ERROR_MESSAGE = System.Label.VR_Case_No_cargar_a_EM_anulado;
+	private static Id EMSRTId = XappiaHelper.getRecordType('Evento_medico__c', 'Evento_medico_de_seguimiento').Id;
+	private static ID EMIRTId = XappiaHelper.getRecordType('Evento_medico__c', 'Evento_medico_de_internacion').Id;
+	private static Datetime now = Datetime.now();
+	private static Datetime fechaInicioEM = Datetime.newInstance(now.year() , now.month() , now.day(), 0, 0, 0);
+	private static Datetime fechaFinEM = fechaInicioEM.addDays(5);
 	static XHttpCalloutMock getSuccessResponse;
 	static XHttpCalloutMock getErrorResponse;
 	static User medico;
 	static User medico2;
 	static User userBack;
+	static User front;
 	static Account centro;
 	static CaseTeamRole caseRole;
 	static {
 		String uniqueUserName = 'standardusercasetriggertest' + DateTime.now().getTime() + '@testorg.com';
 		Profile pMedico = [SELECT Id, Name FROM Profile WHERE Name = 'Auditor Medico'];
 		Profile pBack = [SELECT Id FROM Profile WHERE Name='Back Administrativo'];
+		Profile pFront = [SELECT Id FROM Profile WHERE Name='Front'];
 		UserRole role = [SELECT Id,Name FROM UserRole WHERE Name = 'Administrador'];
 		medico = new User(Alias = 'standt', Email='standarduser@testorg.com',
 				EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='es',
@@ -35,6 +43,12 @@ private class CaseTriggerTest {
 				UserName=uniqueUserName + 'Back', ProfileId = pBack.Id, UserRole = role
 		);
 		insert userBack;
+		front = new User(Alias = 'standt', Email='standarduser@testorg.com',
+				EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='es',
+				LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
+				UserName=uniqueUserName + 'front', ProfileId = pFront.Id, UserRole = role
+		);
+		insert front;
 		caseRole = new CaseTeamRole();
 		caseRole.Name = 'Cel Test';
 		caseRole.AccessLevel = 'Edit';
@@ -1916,5 +1930,103 @@ private class CaseTriggerTest {
 		Database.saveResult result = Database.update(caso,false);
 		Test.stopTest();
 		System.assert(result.isSuccess());
+	}
+	/** Validaciones sobre la VR: No_cargar_a_EM_anulado */
+	@isTest
+	public static void siEMTieneEstadoAnuladoRechazadoSuspendidoNoCrearCaso () {
+		Evento_medico__c emAnulado = new Evento_medico__c(
+			Nro_de_Evento_Medico_SS__c = '275822',
+			Estado__c = 'Anulado'
+			);
+        insert emAnulado;
+		Evento_medico__c emRechazado = new Evento_medico__c(
+			Nro_de_Evento_Medico_SS__c = '275823',
+			Estado__c = 'Rechazado'
+			);
+        insert emRechazado;
+		Evento_medico__c emSuspendido = new Evento_medico__c(
+			Nro_de_Evento_Medico_SS__c = '275824',
+			Estado__c = 'Suspendido'
+			);
+        insert emSuspendido;
+		Case badCase = new Case(
+			Evento_Medico__c = emAnulado.Id
+		);
+		Database.SaveResult result;
+		System.runAs(front) {
+			result = Database.insert(badCase, false);
+			validateInsertCaseError(result);
+			badCase.Evento_Medico__c = emRechazado.Id;
+			result = Database.insert(badCase, false);
+			validateInsertCaseError(result);
+			badCase.Evento_Medico__c = emSuspendido.Id;
+			result = Database.insert(badCase, false);
+			validateInsertCaseError(result);
+		}
+	}
+	@isTest
+	private static void siEMIEstaCerradoYCasoTieneFechaProbableFueraDeFechasEMNoCrearCaso () {
+		Evento_medico__c eventoMedicoInternacion = new Evento_medico__c(
+			RecordTypeId = EMIRTId,
+			Nro_de_Evento_Medico_SS__c = '275822',
+			Estado__c = 'Cerrado',
+			Fecha_y_Hora_inicio_EMS__c = fechaInicioEM,
+			Fecha_y_hora_fin_ems__c = fechaFinEM
+		);
+        insert eventoMedicoInternacion;
+		Case testCase = new Case(
+			Evento_Medico__c = eventoMedicoInternacion.Id,
+			Fecha__c = Date.valueOf(fechaFinEM.addDays(2))
+		);
+		Database.SaveResult result;
+		System.runAs(front) {
+			result = Database.insert(testCase, false);
+			validateInsertCaseError(result);
+		}
+		testCase.Fecha__c = Date.valueOf((fechaInicioEM.addDays(-2)));
+		System.runAs(front) {
+			result = Database.insert(testCase, false);
+			validateInsertCaseError(result);
+		}
+		testCase.Fecha__c = Date.valueOf(fechaInicioEM);
+		System.runAs(front) {
+			result = Database.insert(testCase, false);
+			System.assert(result.isSuccess(), 'El caso se debio guardar correctamente');
+		}
+	}
+	@isTest
+	private static void siEMSEstaAutorizadoYCasoTieneFechaProbableFueraDeFechasEMNoCrearCaso () {
+		Evento_medico__c eventoMedicoSeguimiento = new Evento_medico__c(
+			RecordTypeId = EMSRTId,
+			Nro_de_Evento_Medico_SS__c = '275822',
+			Estado__c = 'Autorizado',
+			Fecha_y_Hora_inicio_EMS__c = fechaInicioEM,
+			Fecha_y_hora_fin_ems__c = fechaFinEM
+		);
+        insert eventoMedicoSeguimiento;
+		Case testCase = new Case(
+			Evento_Medico__c = eventoMedicoSeguimiento.Id,
+			Fecha__c = Date.valueOf(fechaFinEM.addDays(2))
+		);
+		Database.SaveResult result;
+		System.runAs(front) {
+			result = Database.insert(testCase, false);
+			validateInsertCaseError(result);
+		}
+		testCase.Fecha__c = Date.valueOf(fechaInicioEM.addDays(-2));
+		System.runAs(front) {
+			result = Database.insert(testCase, false);
+			validateInsertCaseError(result);
+		}
+		testCase.Fecha__c = Date.valueOf(fechaInicioEM);
+		System.runAs(front) {
+			result = Database.insert(testCase, false);
+			System.assert(result.isSuccess(), 'El caso se debio guardar correctamente');
+		}
+	}
+	/** Utils */
+	private static void validateInsertCaseError (Database.SaveResult result) {
+		System.assert(!result.isSuccess(), 'Debe haber ocurrido un error');
+		System.assertEquals(ERROR_MESSAGE, result.getErrors().get(0).getMessage(), 'El mensaje no indica el error');
 	}
 }

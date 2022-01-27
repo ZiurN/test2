@@ -3,19 +3,39 @@
     <fullName>No_cargar_a_EM_anulado</fullName>
     <active>true</active>
     <errorConditionFormula>AND(
-				$Profile.Name &lt;&gt; &quot;Administrador del sistema&quot;,
-    NOT(ISBLANK(Evento_Medico__c)),
-				OR(
-								ISNEW(),
-								ISCHANGED(Evento_Medico__c)
+	OR(
+		$Profile.Name &lt;&gt; &quot;Administrador del sistema&quot;,
+		$Profile.Name &lt;&gt; &quot;System Administrator&quot;
+	),
+	NOT(ISBLANK(Evento_Medico__c)),
+	OR(
+		ISNEW(),
+		ISCHANGED(Evento_Medico__c),
+		ISCHANGED(Fecha__c)
+	),
+	OR(
+		OR(
+			ISPICKVAL( Evento_Medico__r.Estado__c, &quot;Anulado&quot;),
+			ISPICKVAL( Evento_Medico__r.Estado__c, &quot;Rechazado&quot;),
+			ISPICKVAL( Evento_Medico__r.Estado__c, &quot;Suspendido&quot;)
+		),
+		AND(
+			OR(
+				AND(
+					Evento_Medico__r.RecordType.DeveloperName = &apos;Evento_medico_de_internacion&apos;,
+					ISPICKVAL( Evento_Medico__r.Estado__c, &quot;Cerrado&quot;)
 				),
-				OR(
-								ISPICKVAL( Evento_Medico__r.Estado__c, &quot;Anulado&quot;),
-								ISPICKVAL( Evento_Medico__r.Estado__c, &quot;Rechazado&quot;),
-								ISPICKVAL( Evento_Medico__r.Estado__c, &quot;Suspendido&quot;),
-								ISPICKVAL( Evento_Medico__r.Estado__c, &quot;Cerrado&quot;)
+				AND(
+					Evento_Medico__r.RecordType.DeveloperName  = &apos;Evento_medico_de_seguimiento&apos;,
+					ISPICKVAL(Evento_Medico__r.Estado__c, &quot;Autorizado&quot;)
 				)
+			),
+			OR(
+				DATEVALUE(Evento_Medico__r.Fecha_y_hora_fin_ems__c) &lt; Fecha__c,
+				DATEVALUE(Evento_Medico__r.Fecha_y_Hora_inicio_EMS__c) &gt; Fecha__c
+			)
+		)
+	)
 )</errorConditionFormula>
-    <errorDisplayField>Evento_Medico__c</errorDisplayField>
-    <errorMessage>No se puede asociar un caso a un evento médico en estado &quot;Anulado&quot;, &quot;Rechazado&quot;, &quot;Suspendido&quot; o &quot;Cerrado&quot;</errorMessage>
+    <errorMessage>El evento médico esta &quot;Anulado&quot;, &quot;Rechazado&quot;, &quot;Suspendido&quot;. Para EMS en estado &quot;Autorizados&quot; o EMI en estado &quot;Cerrado&quot;, la fecha probable debe estar entre la fecha de inicio y de fin del evento médico asociado</errorMessage>
 </ValidationRule>
