@@ -83,13 +83,11 @@ public without sharing class SegmentoHelper {
 		for (Segmentos__c segmento : segmentosToCheck) {
 			eventosMedicosIds.add(segmento.Evento_Medico__c);
 		}
-		System.debug(eventosMedicosIds);
 		List<Segmentos__c> lastSegmentos = [SELECT Fecha_Fin_real__c,
 												Evento_Medico__c
 											FROM Segmentos__c
 											WHERE Evento_Medico__c IN: eventosMedicosIds
 												AND Segmento_actual__c = true];
-		System.debug(lastSegmentos);
 		Map<Id, DateTime> fechaFinaRealByEventoMedicoId = new Map<Id, DateTime>();
 		if (!lastSegmentos.isEmpty()) {
 			for (Segmentos__c segmento : lastSegmentos) {
