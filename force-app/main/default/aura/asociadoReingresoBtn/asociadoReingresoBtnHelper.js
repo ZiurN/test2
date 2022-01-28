@@ -39,7 +39,7 @@
 							}
 						});
 						createRecordEvent.fire();
-						 component.set('v.isLoading', false);
+						 	component.set('v.isLoading', false);
 					}
 					else {
 						LightningUtils.showToast("Error", result.message, {"type":"error"});
