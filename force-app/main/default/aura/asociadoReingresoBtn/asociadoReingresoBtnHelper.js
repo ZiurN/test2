@@ -2,25 +2,17 @@
 	goToApex: function (component, event, id) {
 		let createRecordEvent = $A.get("e.force:createRecord");
 		let acc = component.get('v.accountSimpleRecord');
-
 		component.set('v.isLoading', true);
-
-		//if(acc.Estado__c != 'B'){
-		//	LightningUtils.showToast("Error",'La cuenta no esta dada de baja' , {"type":"warning"});
-		//	component.set('v.isLoading', false);
-		//	return;
-		//}
-
 		LightningUtils.callApex(
 			component,
 			"assingTo",
 			function(succeed, result, errors) {
 				if(succeed) {
-					if(!result.hasError) {	
+					if(!result.hasError) {
 						let org = acc.Localidad_new__c != null ? acc.Localidad_new__r.Organizador_lookup__c : null;
 						let sexo = acc.Sexo__c == 'Masculino' ? 'M' : acc.Sexo__c == 'Femenino' ? 'F' : null;
-                        let profileOrg = result.profile == 'Front' ? null : org;
-                        createRecordEvent.setParams({
+						let profileOrg = result.profile == 'Front' ? null : org;
+						createRecordEvent.setParams({
 							'entityApiName': 'Opportunity',
 							'recordTypeId' : result.recordTypeIndividuos,
 							'defaultFieldValues': {
@@ -48,15 +40,14 @@
 						});
 						createRecordEvent.fire();
 						 component.set('v.isLoading', false);
-						
 					}
 					else {
 						LightningUtils.showToast("Error", result.message, {"type":"error"});
 					}
 				} else {
-                    LightningUtils.showToast("Error", JSON.stringify(errors), {"type":"error"});
-                }
-                component.set('v.isLoading', false);
+					LightningUtils.showToast("Error", JSON.stringify(errors), {"type":"error"});
+				}
+				component.set('v.isLoading', false);
 			},
 			{
 				accId : id
