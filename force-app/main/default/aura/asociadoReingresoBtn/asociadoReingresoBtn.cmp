@@ -43,7 +43,7 @@
 			LastName"
 		targetFields="{!v.accountSimpleRecord}"
 		targetError="{!v.recordLoadError}"
-		recordUpdated = "{!c.handleClickBtn}"	/>
+		recordUpdated = "{!c.handleClickBtn}" />
 	<aura:if isTrue="{!v.isLoading}">
 		<lightning:spinner alternativeText="Loading" variant="brand"/>
 	</aura:if>
