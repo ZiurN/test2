@@ -1,0 +1,12 @@
+{
+	"data": {
+		"error": true,
+		"errors": {},
+		"errorType": "exception",
+		"httpCode": 422,
+		"message": "The given data was invalid.",
+		"debug_message": [],
+		"exception": "ValidationException",
+		"line": 126
+	}
+}

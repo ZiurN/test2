@@ -1,0 +1,12 @@
+{
+	"data": {
+		"error": true,
+		"errors": [],
+		"errorType": "exception",
+		"httpCode": 404,
+		"message": "El segmento solicitado es inválido.",
+		"debug_message": [],
+		"exception": "NotFoundHttpException",
+		"line": 964
+	}
+}
