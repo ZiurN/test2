@@ -41,7 +41,7 @@ public class WSSendSSResponsesMock {
 								'"ref_externa": null,'+
 								'"urgente": null,'+
 								'"afi_id": "131155",'+
-								'"nro_sf": "'+caseId+'",'+
+								'"nro_sf": "'+ caseId +'",'+
 								'"nivel": "N1",'+
 								'"celula": "Celula 2",' +
 								'"clasificacion": "CUBIERTOS",'+

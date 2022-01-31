@@ -1,173 +1,151 @@
 public with sharing class WSSegmentoAltaMock {
-
-    public String getFound(String alertId){
-        return '{'+
-                '"error": false,'+
-                '"data": {'+
-                '"em": {'+
-                '"em_id": "275822",'+
-                '"fecha_inicio": "01-02-2020 00:00",'+
-                '"estado": "AUTORIZADO",'+
-                '"emitido": "NO EMITIDO",'+
-                '"alerta": null,'+
-                '"fecha_emision": null,'+
-                '"segmento": ['+
-                '{'+
-                '"em_em_id": "275822",'+
-                '"sem_id": "305723",'+
-                '"fecha": "2020-02-18 00:00:00",'+
-                '"solicitante": "708375",'+
-                '"nom_solicitante": "AREVALO JORGE OSCAR",'+
-                '"fecha_desde_tentativa": "02-02-2020 01:00",'+
-                '"fecha_hasta_tentativa": "04-02-2020 00:00",'+
-                '"cant_dias": "1",'+
-                '"estado": "AUTORIZADO",'+
-                '"cod_auditor": null,'+
-                '"ape_auditor": null,'+
-                '"nom_auditor": null,'+
-                '"fecha_real_desde": "03-02-2020 00:00",'+
-                '"fecha_real_hasta": "04-02-2020 00:00",'+
-                '"orig_fecha_real": "MESA CENSO",'+
-                '"cod_audito2": null,'+
-                '"ape_auditor2": null,'+
-                '"nom_auditor2": null,'+
-                '"prestador": null,'+
-                '"pres_nombre": " ",'+
-                '"presentacion": null,'+
-                '"lote": null,'+
-                '"obs": null,'+
-                '"aca_nro_sf": "' + alertId +'"' +
-                '},'+
-                '{'+
-                '"em_em_id": "275822",'+
-                '"sem_id": "305731",'+
-                '"fecha": "2020-02-19 00:00:00",'+
-                '"solicitante": "708375",'+
-                '"nom_solicitante": "AREVALO JORGE OSCAR",'+
-                '"fecha_desde_tentativa": "06-02-2020 01:00",'+
-                '"fecha_hasta_tentativa": "09-02-2020 00:00",'+
-                '"cant_dias": "3",'+
-                '"estado": "AUTORIZADO",'+
-                '"cod_auditor": null,'+
-                '"ape_auditor": null,'+
-                '"nom_auditor": null,'+
-                '"fecha_real_desde": null,'+
-                '"fecha_real_hasta": null,'+
-                '"orig_fecha_real": "MESA CENSO",'+
-                '"cod_audito2": null,'+
-                '"ape_auditor2": null,'+
-                '"nom_auditor2": null,'+
-                '"prestador": null,'+
-                '"pres_nombre": " ",'+
-                '"presentacion": null,'+
-                '"lote": null,'+
-                '"obs": null,'+
-                '"aca_nro_sf": "s0DQ1234007ntsrMAP"'+
-                '},'+
-                '{'+
-                '"em_em_id": "275822",'+
-                '"sem_id": "305715",'+
-                '"fecha": "2020-02-18 00:00:00",'+
-                '"solicitante": "758415",'+
-                '"nom_solicitante": "ZAPATA AGUILA BENJAMIN",'+
-                '"fecha_desde_tentativa": "01-02-2020 00:00",'+
-                '"fecha_hasta_tentativa": "02-02-2020 00:00",'+
-                '"cant_dias": "1",'+
-                '"estado": "AUTORIZADO",'+
-                '"cod_auditor": null,'+
-                '"ape_auditor": null,'+
-                '"nom_auditor": null,'+
-                '"fecha_real_desde": "01-02-2020 00:00",'+
-                '"fecha_real_hasta": "02-02-2020 00:00",'+
-                '"orig_fecha_real": "MESA CENSO",'+
-                '"cod_audito2": null,'+
-                '"ape_auditor2": null,'+
-                '"nom_auditor2": null,'+
-                '"prestador": null,'+
-                '"pres_nombre": " ",'+
-                '"presentacion": null,'+
-                '"lote": null,'+
-                '"obs": null,'+
-                '"aca_nro_sf": "s0DQ1234007ntsrMAR"'+
-                '}'+
-                '],'+
-                '"efe_codigo_lugar": "700616",'+
-                '"cons_lugar": "1",'+
-                '"nom_lugar": "SANATORIO PARQUE",'+
-                '"nom_cons": "CONSULTORIO PPAL PRESTADOR :700616",'+
-                '"efe_codigo_resp": "758415",'+
-                '"nom_resp": "ZAPATA AGUILA BENJAMIN",'+
-                '"efe_codigo_solic": "758415",'+
-                '"nom_solic": "ZAPATA AGUILA BENJAMIN",'+
-                '"tem_codigo": "IA",'+
-                '"nom_tipo": "INTERNACION",'+
-                '"contexto": "INTERNACION",'+
-                '"de_seguimiento": "F",'+
-                '"recupero": "F",'+
-                '"diferido": "F",'+
-                '"suspendido": "F",'+
-                '"fec_vto_certif": null,'+
-                '"cod_motivo": "CLINICO",'+
-                '"nom_motivo": "CLINICO",'+
-                '"mail": null,'+
-                '"diag_codigo": "F10",'+
-                '"diag_nombre": "TRASTORNOS MENTALES Y DEL COMPORTAMIENTO DEBIDOS AL USO DE A",'+
-                '"complicaciones": "SIN COMPLICACIONES",'+
-                '"grup_pres": null,'+
-                '"gpres_nombre": null,'+
-                '"nro_prestacion": "02430199",'+
-                '"nom_prestacion": "INTERNACION CLINICA (FACTURAR CODIGO PENSION)",'+
-                '"aut_previa": "1014010046",'+
-                '"feem_codigo": null,'+
-                '"feem_nombre": null,'+
-                '"domi_entrega": null,'+
-                '"agenia": null,'+
-                '"otro_domi": null,'+
-                '"via_entrega": null,'+
-                '"domicilio": null,'+
-                '"em_de_seguimiento": null,'+
-                '"tipo_seg": null,'+
-                '"nom_tipo_seg": null,'+
-                '"estado_seg": null,'+
-                '"desc_seg": null,'+
-                '"cod_regla": "INT_CLINICA",'+
-                '"nom_regla": "INTERNACION CLINICA",'+
-                '"sistema": "ABIERTO",'+
-                '"descr_em": ".",'+
-                '"nom_delegacion": "650098_ACA SALUD SUC. ROSARIO",'+
-                '"obs_em": null,'+
-                '"afi_afi_id": "274762",'+
-                '"apr_apr_id": "1014010046",'+
-                '"check_mat": null,'+
-                '"check_presu": null,'+
-                '"importe_presu": null,'+
-                '"nro_sf": null,'+
-				'"link_em": "http://www.extranet.acasalud.com.ar/SF/EM_275822.pdf"'+
-                '}'+
-                '},'+
-                '"httpCode": 200,'+
-                '"message": "Se cargó correctamente el segmento.",'+
-                '"meta": {'+
-                '"allowed_includes": [],'+
-                '"default_includes": []'+
-                '}'+
-                '}';
-    }
-
-    public static String getError(){
-        return '{'+
-                '"data": {'+
-                '"error": true,'+
-                '"errors": {'+
-                '},'+
-                '"errorType": "exception",'+
-                '"httpCode": 422,'+
-                '"message": "The given data was invalid.",'+
-                '"debug_message": [],'+
-                '"exception": "ValidationException",'+
-                '"line": 126'+
-                '}'+
-                '}';
-    }
-
+	public String getFound(String alertId){
+		WSSSGenericResponse.Response response = new WSSSGenericResponse.Response();
+		response.error = false;
+		response.httpCode = 200;
+		response.message = 'Se cargó correctamente el segmento.';
+		response.meta = new WSSSGenericResponse.Meta();
+		response.meta.allowed_includes = new List<WSSSGenericResponse.Notas>();
+		response.meta.default_includes = new List<WSSSGenericResponse.Notas>();
+		response.data = new	WSSSGenericResponse.Data();
+		response.data.em = new WSSSGenericResponse.EventoMedico();
+		response.data.em.em_id = '275822';
+		response.data.em.fecha_inicio = '01-02-2020 00:00';
+		response.data.em.estado = 'AUTORIZADO';
+		response.data.em.emitido = 'NO EMITIDO';
+		response.data.em.alerta = null;
+		response.data.em.fecha_emision = null;
+		response.data.em.efe_codigo_lugar = '700616';
+		response.data.em.cons_lugar = '1';
+		response.data.em.nom_lugar = 'SANATORIO PARQUE';
+		response.data.em.nom_cons = 'CONSULTORIO PPAL PRESTADOR :700616';
+		response.data.em.efe_codigo_resp = '758415';
+		response.data.em.nom_resp = 'ZAPATA AGUILA BENJAMIN';
+		response.data.em.efe_codigo_solic = '758415';
+		response.data.em.nom_solic = 'ZAPATA AGUILA BENJAMIN';
+		response.data.em.tem_codigo = 'IA';
+		response.data.em.nom_tipo = 'INTERNACION';
+		response.data.em.contexto = 'INTERNACION';
+		response.data.em.de_seguimiento = 'F';
+		response.data.em.recupero = 'F';
+		response.data.em.diferido = 'F';
+		response.data.em.suspendido = 'F';
+		response.data.em.fec_vto_certif= null;
+		response.data.em.cod_motivo = 'CLINICO';
+		response.data.em.nom_motivo = 'CLINICO';
+		response.data.em.mail = null;
+		response.data.em.diag_codigo = 'F10';
+		response.data.em.diag_nombre = 'TRASTORNOS MENTALES Y DEL COMPORTAMIENTO DEBIDOS AL USO DE A';
+		response.data.em.complicaciones = 'SIN COMPLICACIONES';
+		response.data.em.grup_pres = null;
+		response.data.em.gpres_nombre = null;
+		response.data.em.nro_prestacion = '02430199';
+		response.data.em.nom_prestacion = 'INTERNACION CLINICA (FACTURAR CODIGO PENSION)';
+		response.data.em.aut_previa = '1014010046';
+		response.data.em.feem_codigo = null;
+		response.data.em.feem_nombre = null;
+		response.data.em.domi_entrega = null;
+		response.data.em.agenia = null;
+		response.data.em.otro_domi = null;
+		response.data.em.via_entrega = null;
+		response.data.em.domicilio = null;
+		response.data.em.em_de_seguimiento = null;
+		response.data.em.tipo_seg = null;
+		response.data.em.nom_tipo_seg = null;
+		response.data.em.estado_seg = null;
+		response.data.em.desc_seg = null;
+		response.data.em.cod_regla = 'INT_CLINICA';
+		response.data.em.nom_regla = 'INTERNACION CLINICA';
+		response.data.em.sistema = 'ABIERTO';
+		response.data.em.descr_em = '.';
+		response.data.em.nom_delegacion = '650098_ACA SALUD SUC. ROSARIO';
+		response.data.em.obs_em = null;
+		response.data.em.afi_afi_id = '274762';
+		response.data.em.apr_apr_id = '1014010046';
+		response.data.em.check_mat = null;
+		response.data.em.check_presu = null;
+		response.data.em.importe_presu = null;
+		response.data.em.nro_sf = null;
+		response.data.em.link_em = 'http://www.extranet.acasalud.com.ar/SF/EM_275822.pdf"';
+		response.data.em.segmento = new List<WSSSGenericResponse.Segmento>();
+			WSSSGenericResponse.Segmento segmento1 = new WSSSGenericResponse.Segmento();
+			segmento1.em_em_id = '275822';
+			segmento1.sem_id = '305723';
+			segmento1.fecha = '2020-02-18 00:00:00';
+			segmento1.solicitante = '708375';
+			segmento1.nom_solicitante = 'AREVALO JORGE OSCAR';
+			segmento1.fecha_desde_tentativa = '02-02-2020 01:00';
+			segmento1.fecha_hasta_tentativa = '04-02-2020 00:00';
+			segmento1.cant_dias = '1';
+			segmento1.estado = 'AUTORIZADO';
+			segmento1.cod_auditor = null;
+			segmento1.ape_auditor = null;
+			segmento1.nom_auditor = null;
+			segmento1.fecha_real_desde = '03-02-2020 00:00';
+			segmento1.fecha_real_hasta = '04-02-2020 00:00';
+			segmento1.orig_fecha_real = 'MESA CENSO';
+			segmento1.cod_audito2 = null;
+			segmento1.ape_auditor2 = null;
+			segmento1.nom_auditor2 = null;
+			segmento1.prestador = null;
+			segmento1.pres_nombre = ' ';
+			segmento1.presentacion = null;
+			segmento1.lote = null;
+			segmento1.obs = null;
+			segmento1.aca_nro_sf = alertId;
+		response.data.em.segmento.add(segmento1);
+			WSSSGenericResponse.Segmento segmento2 = new WSSSGenericResponse.Segmento();
+			segmento2.em_em_id = '275822';
+			segmento2.sem_id = '305731';
+			segmento2.fecha = '2020-02-19 00:00:00';
+			segmento2.solicitante = '708375';
+			segmento2.nom_solicitante = 'AREVALO JORGE OSCAR';
+			segmento2.fecha_desde_tentativa = '06-02-2020 01:00';
+			segmento2.fecha_hasta_tentativa = '09-02-2020 00:00';
+			segmento2.cant_dias = '3';
+			segmento2.estado = 'AUTORIZADO';
+			segmento2.cod_auditor = null;
+			segmento2.ape_auditor = null;
+			segmento2.nom_auditor = null;
+			segmento2.fecha_real_desde = null;
+			segmento2.fecha_real_hasta = null;
+			segmento2.orig_fecha_real = 'MESA CENSO';
+			segmento2.cod_audito2 = null;
+			segmento2.ape_auditor2 = null;
+			segmento2.nom_auditor2 = null;
+			segmento2.prestador = null;
+			segmento2.pres_nombre = ' ';
+			segmento2.presentacion = null;
+			segmento2.lote = null;
+			segmento2.obs = null;
+			segmento2.aca_nro_sf = 's0DQ1234007ntsrMAP';
+		response.data.em.segmento.add(segmento2);
+			WSSSGenericResponse.Segmento segmento3 = new WSSSGenericResponse.Segmento();
+			segmento3.em_em_id = '275822';
+			segmento3.sem_id = '305715';
+			segmento3.fecha = '2020-02-18 00:00:00';
+			segmento3.solicitante = '758415';
+			segmento3.nom_solicitante = 'ZAPATA AGUILA BENJAMIN';
+			segmento3.fecha_desde_tentativa = '01-02-2020 00:00';
+			segmento3.fecha_hasta_tentativa = '02-02-2020 00:00';
+			segmento3.cant_dias = '1';
+			segmento3.estado = 'AUTORIZADO';
+			segmento3.cod_auditor = null;
+			segmento3.ape_auditor = null;
+			segmento3.nom_auditor = null;
+			segmento3.fecha_real_desde = '01-02-2020 00:00';
+			segmento3.fecha_real_hasta = '02-02-2020 00:00';
+			segmento3.orig_fecha_real = 'MESA CENSO';
+			segmento3.cod_audito2 = null;
+			segmento3.ape_auditor2 = null;
+			segmento3.nom_auditor2 = null;
+			segmento3.prestador = null;
+			segmento3.pres_nombre = ' ';
+			segmento3.presentacion = null;
+			segmento3.lote = null;
+			segmento3.obs = null;
+			segmento3.aca_nro_sf = 's0DQ1234007ntsrMAR'+
+		response.data.em.segmento.add(segmento3);
+		return JSON.serialize(response);
+	}
 }
