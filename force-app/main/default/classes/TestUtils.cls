@@ -162,12 +162,6 @@ public without sharing class TestUtils {
 			'</html>';
 		return HtmlBody;
 	}
-	public class mockSettings {
-		public Integer statusCode {get; set;}
-		public String status {get;set;}
-		public String body {get;set;}
-		public String url {get;set;}
-	}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Jeferson Ruiz
 	@description	Crea un ContentVersion a partir de un recurso estático grande.
@@ -181,5 +175,11 @@ public without sharing class TestUtils {
 			PathOnClient = '/BigFile'
 		);
 		return cvToReturn;
+	}
+	public class mockSettings {
+		public Integer statusCode {get; set;}
+		public String status {get;set;}
+		public String body {get;set;}
+		public String url {get;set;}
 	}
 }

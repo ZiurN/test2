@@ -377,6 +377,14 @@
         <value>Avalian - Solicitud de ingreso y DDJJ completa.pdf</value>
     </labels>
     <labels>
+        <fullName>Alerta_Trigger_Seg_FechaTentInicialInvalida</fullName>
+        <categories>Alertas Segmentos</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_Trigger_Seg_FechaTentInicialInvalida</shortDescription>
+        <value>La fecha tentativa inicial debe ser igual o posterior a la fecha final real del último segmento actual del evento médico</value>
+	</labels>
+    <labels>
         <fullName>VR_Case_No_cargar_a_EM_anulado</fullName>
         <categories>Validation Rules</categories>
         <language>en_US</language>
