@@ -8,8 +8,6 @@
 		<members>WSSegmentoAltaTest</members>
 		<members>SegmentoAltaBtnCtrl</members>
 		<members>SegmentoAltaBtnCtrlTest</members>
-		<members>SegmentoEnviarASSBtnCtrl</members>
-		<members>SegmentoEnviarASSBtnCtrlTest</members>
         <name>ApexClass</name>
     </types>
 </Package>

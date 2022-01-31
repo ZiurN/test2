@@ -1,2 +1,0 @@
-@IsTest
-private class SegmentoAltaBtnCtrlTest {}
