@@ -2,10 +2,9 @@
 @IsTest
 public class Build {
 	/**-----------------------------------------------------------------------
-	    AccountBuilder
+		AccountBuilder
 	------------------------------------------------------------------------*/
 		public class AccountBuilder {
-			//private Account obj = new Account(LastName = 'STRING');
 			private Account obj = new Account();
 			public AccountBuilder withTitular(Id value) {
 				obj.Titular__c = value;
@@ -111,7 +110,7 @@ public class Build {
 			return val;
 		}
 	/*------------------------------------------------------------------------
-	    MasterConfig
+		MasterConfig
 	------------------------------------------------------------------------*/
 		public class MasterConfigsBuilder {
 			private MasterConfigs__c obj = new MasterConfigs__c();
@@ -190,7 +189,7 @@ public class Build {
 			return new LeadBuilder();
 		}
 	/*------------------------------------------------------------------------
-	    Localidad
+		Localidad
 	------------------------------------------------------------------------*/
 		public class LocalidadBuilder {
 			private Localidad__c obj = new Localidad__c();
@@ -222,7 +221,7 @@ public class Build {
 			return new LocalidadBuilder();
 		}
 	/*------------------------------------------------------------------------
-	    Opportunity
+		Opportunity
 	------------------------------------------------------------------------*/
 		public class OpportunityBuilder {
 			private Opportunity obj = new Opportunity(
@@ -284,7 +283,7 @@ public class Build {
 			return new OpportunityBuilder();
 		}
 	/*------------------------------------------------------------------------
-	    Integrante
+		Integrante
 	------------------------------------------------------------------------*/
 		public class IntegranteBuilder {
 			private Integrante__c obj = new Integrante__c();
@@ -368,8 +367,8 @@ public class Build {
 			return new IntegranteBuilder();
 		}
 	/*------------------------------------------------------------------------
-        IntegranteCaso
-    ------------------------------------------------------------------------*/
+		IntegranteCaso
+	------------------------------------------------------------------------*/
 		public class IntegranteCasoBuilder {
 			private Integrante_caso__c obj = new Integrante_caso__c();
 
@@ -491,8 +490,8 @@ public class Build {
 			return val;
 		}
 	/*------------------------------------------------------------------------
-        CaseBuilder
-     ------------------------------------------------------------------------*/
+		CaseBuilder
+	------------------------------------------------------------------------*/
 		public class CaseBuilder {
 			private Case obj = new Case();
 			public CaseBuilder withLastName(String value) {
@@ -857,4 +856,95 @@ public class Build {
 			aCase.withRecordType('Autorizacion_previa');
 			return aCase;
 		}
+	/*------------------------------------------------------------------------
+		User Builder
+	------------------------------------------------------------------------*/
+		public class UserBuilder {
+			String orgId = UserInfo.getOrganizationId();
+			String dateString = String.valueof(Datetime.now()).replace(' ','').replace(':','').replace('-','') ;
+			Integer randomId = Integer.valueOf(Math.rint(Math.random()*1000000));
+			String uniqueUserName = orgId + dateString + RandomId;
+			public String getUniqueName() {return this.uniqueUserName;}
+			public void setUniqueName(String value) {this.uniqueUserName = value;}
+			private User user = new User(
+				Alias = 'standt',
+				Email ='standarduser@testorg.com',
+				EmailEncodingKey ='UTF-8',
+				LastName ='Testing',
+				LanguageLocaleKey ='es',
+				LocaleSidKey ='es_AR',
+				TimeZoneSidKey ='America/Argentina/Buenos_Aires',
+				UserName = uniqueUserName + '@test' + orgId + '.org'
+			);
+			public UserBuilder withProfile(String value){
+				user.ProfileId = value;
+				return this;
+			}
+			public UserBuilder withProfile(Profile p){
+				user.ProfileId = p.Id;
+				return this;
+			}
+			public UserBuilder withLastname(String value){
+				user.Lastname = value;
+				return this;
+			}
+			public UserBuilder withFistName(String value){
+				user.FirstName = value;
+				return this;
+			}
+			public UserBuilder withManager(String value){
+				user.ManagerId = value;
+				return this;
+			}
+			public UserBuilder withManager(User manager){
+				user.ManagerId = manager.Id;
+				return this;
+			}
+			public UserBuilder isActive(Boolean value){
+				user.IsActive = value;
+				return this;
+			}
+			public UserBuilder withRole(UserRole role){
+				user.UserRoleId = role.id;
+				return this;
+			}
+			public UserBuilder withRole(id roleId){
+				user.UserRoleId = roleId;
+				return this;
+			}
+			public UserBuilder withCodigoDelegacion(String value){
+				user.Codigo_delegacion__c = value;
+				return this;
+			}
+			public User build() {
+				return user;
+			}
+		}
+		public static UserBuilder anUser() { return new UserBuilder(); }
+	/*------------------------------------------------------------------------
+		Nomenclador Builder
+	------------------------------------------------------------------------*/
+		public class NomencladorDePrestacionBuilder {
+			private Nomenclador_de_Prestacion__c nomenclador = new Nomenclador_de_Prestacion__c();
+			public NomencladorDePrestacionBuilder withCodigo (String value) {
+				nomenclador.Codigo__c = value;
+				return this;
+			}
+			public NomencladorDePrestacionBuilder withContexto (String value) {
+				nomenclador.Contexto__c = value;
+				return this;
+			}
+			public NomencladorDePrestacionBuilder withTipoNomenclador (String value) {
+				nomenclador.Tipo_Nomenclador__c = value;
+				return this;
+			}
+			public NomencladorDePrestacionBuilder withEstado (String value) {
+				nomenclador.Estado__c = value;
+				return this;
+			}
+			public Nomenclador_de_Prestacion__c build() {
+				return nomenclador;
+			}
+		}
+		public static NomencladorDePrestacionBuilder aNomencladorDePrestacion() { return new NomencladorDePrestacionBuilder(); }
 }

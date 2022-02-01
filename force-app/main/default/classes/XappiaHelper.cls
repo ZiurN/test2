@@ -271,17 +271,17 @@ public without sharing class XappiaHelper {
 	@return			List<String> - Lista de valores posibles para el campo buscado.
 	------------------------------------------------------------------------------------------------------------------------*/
 	public static List<String> getPicklistFieldValues(String objectName, String pickListFieldName) {
-        List<String> picklistValues = new List<String>();
-        SObjectType objectType = Schema.getGlobalDescribe().get(objectName);
-        List<Schema.PicklistEntry> pick_list_values = objectType.getDescribe()
-                                                       .fields.getMap()
-                                                       .get(pickListFieldName)
-                                                       .getDescribe().getPickListValues();
-        for (Schema.PicklistEntry aPickListValue : pick_list_values) {
-            picklistValues.add(aPickListValue.getValue());
-        }
-        return picklistValues;
-    }
+		List<String> picklistValues = new List<String>();
+		SObjectType objectType = Schema.getGlobalDescribe().get(objectName);
+		List<Schema.PicklistEntry> pick_list_values = objectType.getDescribe()
+													   .fields.getMap()
+													   .get(pickListFieldName)
+													   .getDescribe().getPickListValues();
+		for (Schema.PicklistEntry aPickListValue : pick_list_values) {
+			picklistValues.add(aPickListValue.getValue());
+		}
+		return picklistValues;
+	}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Matias Moll.
 	@description	Método para obtener todos los valores de una picklist
@@ -290,17 +290,17 @@ public without sharing class XappiaHelper {
 	@return			Map<String, String> - Lista de Labels posibles para el campo buscado por su valor correspondiente.
 	------------------------------------------------------------------------------------------------------------------------*/
 	public static Map<String, String> getPicklistLabelAndValues(String objectName, String pickListFieldName) {
-        Map<String, String> picklistValues = new Map<String, String>();
-        SObjectType objectType = Schema.getGlobalDescribe().get(objectName);
-        List<Schema.PicklistEntry> pick_list_values = objectType.getDescribe()
-                                                       .fields.getMap()
-                                                       .get(pickListFieldName)
-                                                       .getDescribe().getPickListValues();
-        for (Schema.PicklistEntry aPickListValue : pick_list_values) {
-            picklistValues.put(aPickListValue.getValue(), aPickListValue.getLabel());
-        }
-        return picklistValues;
-    }
+		Map<String, String> picklistValues = new Map<String, String>();
+		SObjectType objectType = Schema.getGlobalDescribe().get(objectName);
+		List<Schema.PicklistEntry> pick_list_values = objectType.getDescribe()
+														.fields.getMap()
+														.get(pickListFieldName)
+														.getDescribe().getPickListValues();
+		for (Schema.PicklistEntry aPickListValue : pick_list_values) {
+			picklistValues.put(aPickListValue.getValue(), aPickListValue.getLabel());
+		}
+		return picklistValues;
+	}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Matias Moll.
 	@description	Método para Todos los roles hijo de un conjunto de roles.
@@ -308,15 +308,15 @@ public without sharing class XappiaHelper {
 	@return			Set<ID>> - Conjunto de Ids de los roles hijos encontrados.
 	------------------------------------------------------------------------------------------------------------------------*/
 	public static Set<ID> getAllSubRoleIds(Set<ID> roleIds) {
-        Set<ID> currentRoleIds = new Set<ID>();
-        for(UserRole userRole :[SELECT Id FROM UserRole WHERE ParentRoleId IN :roleIds AND ParentRoleID != null]){
-            currentRoleIds.add(userRole.Id);
-        }
-        if(currentRoleIds.size() > 0) {
-            currentRoleIds.addAll(XappiaHelper.getAllSubRoleIds(currentRoleIds));
-        }
-        return currentRoleIds;
-    }
+		Set<ID> currentRoleIds = new Set<ID>();
+		for(UserRole userRole :[SELECT Id FROM UserRole WHERE ParentRoleId IN :roleIds AND ParentRoleID != null]){
+			currentRoleIds.add(userRole.Id);
+		}
+		if(currentRoleIds.size() > 0) {
+			currentRoleIds.addAll(XappiaHelper.getAllSubRoleIds(currentRoleIds));
+		}
+		return currentRoleIds;
+	}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Matias Moll.
 	@description	Método para Todos los roles padre de un conjunto de roles.
@@ -324,16 +324,16 @@ public without sharing class XappiaHelper {
 	@return			Set<ID>> - Conjunto de Ids de los roles padre encontrados.
 	------------------------------------------------------------------------------------------------------------------------*/
 	public static Set<ID> getParentRoleId(Set<ID> roleIds) {
-        Set<ID> currentRoleIds = new Set<ID>();
-        for(UserRole ur :[SELECT Id, ParentRoleId FROM UserRole WHERE Id IN: roleIds]) {
-            currentRoleIds.add(ur.ParentRoleId);
-        }
-        // go fetch some more rolls!
-        if(currentRoleIds.size() > 0) {
-            currentRoleIds.addAll(getParentRoleId(currentRoleIds));
-        }
-        return currentRoleIds;
-    }
+		Set<ID> currentRoleIds = new Set<ID>();
+		for(UserRole ur :[SELECT Id, ParentRoleId FROM UserRole WHERE Id IN: roleIds]) {
+			currentRoleIds.add(ur.ParentRoleId);
+		}
+		// go fetch some more rolls!
+		if(currentRoleIds.size() > 0) {
+			currentRoleIds.addAll(getParentRoleId(currentRoleIds));
+		}
+		return currentRoleIds;
+	}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Matias Moll.
 	@description	Método para obtener el ID de un perfil por su nombre;
@@ -359,5 +359,26 @@ public without sharing class XappiaHelper {
 	}
 	public static Boolean isPlatformUser () {
 		return isPlatformUser;
+	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
+	@description	Método para enviar una notificación personalizada al usuario.
+	@param			notificationTypeId - Id de la notificación personalizada.
+	@param			targetId - Id del registro al que se debe dirigir el usuario al dar clic en la notificación.
+	@param			title - Título de la notificación.
+	@param			body - Texto de la notificación.
+	@param			setUserIds - Conjunto de Ids a los que se les enviará la notificación.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static void sendCustomNotification (String notificationTypeId,
+												String targetId,
+												String title,
+												String body,
+												Set<String> setUserIds) {
+		Messaging.CustomNotification notification = new Messaging.CustomNotification();
+		notification.setNotificationTypeId(notificationTypeId);
+		notification.setTargetId(targetId);
+		notification.setTitle(title);
+		notification.setBody(body);
+		notification.send(setUserIds);
 	}
 }

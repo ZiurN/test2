@@ -1,11 +1,9 @@
 @isTest
 private class CasoEnviarASSBtnCtrlTest {
-	private static final Webservice_endpoint_setting__mdt SERVICE_CONFIG = ConfigUtils.getWebServiceConfig('SALUDSOFT.TEST');
 	private static Map<String, Webservice_endpoint__mdt> endpointsAutorizaciones = ConfigUtils.getEndpointsByTipo('autorizaciones');
 	private static Map<String, Webservice_endpoint__mdt> endpointsReintegros = ConfigUtils.getEndpointsByTipo('reintegros');
-	private static final String AUTH_TOKEN_URL = SERVICE_CONFIG.URL__c + '/oauth/token';
-	private static final String AUTORIZACION_URL = SERVICE_CONFIG.URL__c + endpointsAutorizaciones.get('autorizaciones').Endpoint__c;
-	private static final String REINTEGROS_URL = SERVICE_CONFIG.URL__c + endpointsReintegros.get('reintegros').Endpoint__c;
+	private static final String AUTORIZACION_URL = endpointsAutorizaciones.get('autorizaciones').Endpoint__c;
+	private static final String REINTEGROS_URL = endpointsReintegros.get('reintegros').Endpoint__c;
 	/** Para Reintegro */
 	private static String medicamentoRTId = XappiaHelper.getRecordType('Prestacion_de_reintegro__c', 'Medicamento').Id;
 	private static String odontologicaRTId = XappiaHelper.getRecordType('Prestacion_de_reintegro__c', 'Odontologica').Id;
@@ -153,19 +151,19 @@ private class CasoEnviarASSBtnCtrlTest {
 			prestacion.Cantidad__c = 1;
 		insert prestacion;
 		getResponseFound = new XHttpCalloutMock();
-		setMockResponse (getResponseFound, AUTORIZACION_URL, WSSendSSResponsesMock.getFound(caso.Id), 200);
+		TestUtils.setMockResponse (getResponseFound, AUTORIZACION_URL, WSSendSSResponsesMock.getFound(caso.Id), 200, 'OK');
 		getResponsePresupuestoFound = new XHttpCalloutMock();
-		setMockResponse (getResponsePresupuestoFound, AUTORIZACION_URL, WSSendSSResponsesMock.getFoundPresupuesto(caso.Id), 200);
+		TestUtils.setMockResponse (getResponsePresupuestoFound, AUTORIZACION_URL, WSSendSSResponsesMock.getFoundPresupuesto(caso.Id), 200, 'OK');
 		getResponseMaterialFound = new XHttpCalloutMock();
-		setMockResponse (getResponseMaterialFound, AUTORIZACION_URL, WSSendSSResponsesMock.getFoundMaterial(caso.Id), 200);
+		TestUtils.setMockResponse (getResponseMaterialFound, AUTORIZACION_URL, WSSendSSResponsesMock.getFoundMaterial(caso.Id), 200, 'OK');
 		getResponseFoundWithEM = new XHttpCalloutMock();
-		setMockResponse (getResponseFoundWithEM, AUTORIZACION_URL, WSSendSSResponsesMock.getFoundWithEM(caso.Id), 200);
+		TestUtils.setMockResponse (getResponseFoundWithEM, AUTORIZACION_URL, WSSendSSResponsesMock.getFoundWithEM(caso.Id), 200, 'OK');
 		getErrorResponse = new XHttpCalloutMock();
-		setMockResponse (getErrorResponse, AUTORIZACION_URL, WSSendSSResponsesMock.getError(), 422);
+		TestUtils.setMockResponse (getErrorResponse, AUTORIZACION_URL, WSSendSSResponsesMock.getError(), 422, 'Not Found');
 		getResponseReintegroFound = new XHttpCalloutMock();
-		setMockResponse (getResponseReintegroFound, REINTEGROS_URL, WSSendSSResponsesMock.getFoundReintegro(prestacion.Id), 200);
+		TestUtils.setMockResponse (getResponseReintegroFound, REINTEGROS_URL, WSSendSSResponsesMock.getFoundReintegro(prestacion.Id), 200, 'OK');
 		getErrorReintegroResponse = new XHttpCalloutMock();
-		setMockResponse (getErrorReintegroResponse, REINTEGROS_URL, WSSendSSResponsesMock.getErrorReintegro(), 404);
+		TestUtils.setMockResponse (getErrorReintegroResponse, REINTEGROS_URL, WSSendSSResponsesMock.getErrorReintegro(), 404, 'Not Found');
 	}
 	/**-----------------------------------------------------------------------------------------------------------------------
 		AP
@@ -303,6 +301,7 @@ private class CasoEnviarASSBtnCtrlTest {
 			Segmentos__c seg = new Segmentos__c();
 			seg.Estado__c = 'En Auditoria';
 			seg.Evento_Medico__c = em.Id;
+			seg.Solicitante__c = 'NO ENCOLAR';
 			insert seg;
 			caso.Evento_Medico__c = em.Id;
 			update caso;
@@ -420,16 +419,6 @@ private class CasoEnviarASSBtnCtrlTest {
 			System.assertEquals('No se puede enviar porque no tiene archivos adjuntos', resp.auraMessage.message, 'El mensaje debe indicar que no se puede enviar sin archivos adjuntos');
 		}
 	/** Utils */
-	private static void setMockResponse (XHttpCalloutMock mock, String url, String body, Integer statusCode) {
-		mock.buildResponse()
-			.withStatus('OK')
-			.withStatusCode(200)
-			.withBody(WSAuthTokenMock.getTokenSuccess())
-			.addForAddress(AUTH_TOKEN_URL);
-		mock.buildResponse().withStatus('OK')
-			.withStatusCode(statusCode).withBody(body)
-			.addForAddress(url);
-	}
 	private static void setContentDocLinks (String recordId) {
 		ContentVersion contentVersion = new ContentVersion(
 			Title = 'title',

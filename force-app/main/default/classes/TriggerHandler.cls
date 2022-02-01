@@ -195,4 +195,4 @@ public virtual class TriggerHandler {
 	}
 	// exception class
 	public class TriggerHandlerException extends Exception {}
-  }
+}
