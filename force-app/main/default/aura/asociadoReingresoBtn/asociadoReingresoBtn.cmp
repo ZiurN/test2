@@ -1,37 +1,50 @@
 <aura:component controller="ReingresoBtnCtrl" 
 				implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader,force:appHostable"
-                access="global">
-
-    <aura:attribute name="isLoading" type="Boolean" default="false"/>
-    <aura:attribute name="accountSimpleRecord" type="Object"/>
-    <aura:attribute name="recordLoadError" type="String"/>
-    <aura:attribute name="showConfirmDialog" type="boolean" default="false"/>
-
-    <aura:html tag="style">
-        .forceChatterBasePublisher {
-            padding: 0 !important; 
-        }
-        .forceChatterBasePublisher .cuf-content {
-            padding: 0 !important; 
-        }
-        .slds-spinner_container  {
-            background-color: rgba(0, 0, 0, 0) !important;  
-        }
-    </aura:html>
-
-    <force:recordData
-            aura:id="recordLoader"
-            recordId="{! v.recordId }"
-            fields="Id, Localidad_new__c,Estado__c,Localidad_new__r.Organizador_lookup__c,Codigo_de_Afiliado__c,Tipo_de_documento__c, Numero_de_documento__c, Type, Obra_social__c, Codigo_pais__c, Sexo__c, Segmento_de_grupo_familiar__c,
-				Estado_civil__c, PersonBirthdate, CUIT__c, Delegacion__c, Phone, PersonEmail,
-				FirstName, LastName"
-            targetFields="{! v.accountSimpleRecord }"
-            targetError="{! v.recordLoadError }"
-            recordUpdated = "{! c.handleClickBtn }" 
-    />
-
-	<aura:if isTrue="{! v.isLoading }">
-        <lightning:spinner alternativeText="Loading" variant="brand"/>
-    </aura:if>
-
+				access="global">
+	<!-- Attributes -->
+	<aura:attribute name="isLoading" type="Boolean" default="false"/>
+	<aura:attribute name="accountSimpleRecord" type="Object"/>
+	<aura:attribute name="recordLoadError" type="String"/>
+	<aura:attribute name="showConfirmDialog" type="boolean" default="false"/>
+	<!-- HTML Styles -->
+	<aura:html tag="style">
+		.forceChatterBasePublisher {
+			padding: 0 !important;
+		}
+		.forceChatterBasePublisher .cuf-content {
+			padding: 0 !important;
+		}
+		.slds-spinner_container  {
+			background-color: rgba(0, 0, 0, 0) !important;
+		}
+	</aura:html>
+	<!-- Record Data -->
+	<force:recordData
+		aura:id="recordLoader"
+		recordId="{!v.recordId}"
+		fields="Id,
+			Localidad_new__c,
+			Estado__c,
+			Localidad_new__r.Organizador_lookup__c,
+			Codigo_de_Afiliado__c,
+			Tipo_de_documento__c,
+			Numero_de_documento__c,
+			Type, Obra_social__c,
+			Codigo_pais__c,
+			Sexo__c,
+			Segmento_de_grupo_familiar__c,
+			Estado_civil__c,
+			PersonBirthdate,
+			CUIT__c,
+			Delegacion__c,
+			Phone,
+			PersonEmail,
+			FirstName,
+			LastName"
+		targetFields="{!v.accountSimpleRecord}"
+		targetError="{!v.recordLoadError}"
+		recordUpdated = "{!c.handleClickBtn}" />
+	<aura:if isTrue="{!v.isLoading}">
+		<lightning:spinner alternativeText="Loading" variant="brand"/>
+	</aura:if>
 </aura:component>
