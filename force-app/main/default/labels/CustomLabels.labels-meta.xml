@@ -369,6 +369,38 @@
         <value>¡Hola!</value>
     </labels>
     <labels>
+        <fullName>OppTrigger_Error_CannotDerivateOpp</fullName>
+        <categories>Alerta Opp Trigger</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OppTrigger_Error_CannotDerivateOpp</shortDescription>
+        <value>Sólo se puede derivar a un usuario que pertenezca a la misma estructura de funciones</value>
+    </labels>
+    <labels>
+        <fullName>OppTrigger_Error_NoPuedeCambiarLoc</fullName>
+        <categories>Alerta Opp Trigger</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OppTrigger_Error_NoPuedeCambiarLoc</shortDescription>
+        <value>No puede cambiar la localidad, no pertenece a esa región</value>
+    </labels>
+    <labels>
+        <fullName>OppTrigger_Error_SinArchivoAceptacion</fullName>
+        <categories>Alerta Opp Trigger</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OppTrigger_Error_SinArchivoAceptacion</shortDescription>
+        <value>Deberá adjuntar la nota de aceptación para poder continuar</value>
+    </labels>
+    <labels>
+        <fullName>OppTrigger_Error_SubEstadoTranspasoError</fullName>
+        <categories>Alerta Opp Trigger</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OppTrigger_Error_SubEstadoTranspasoError</shortDescription>
+        <value>Sólo puede cambiar al subestado TRASPASO cuando el subestado actual es FIRMA O.S.</value>
+    </labels>
+    <labels>
         <fullName>PDFIngresoYDDJJ</fullName>
         <categories>Labels documentos</categories>
         <language>es</language>

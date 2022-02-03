@@ -43,8 +43,8 @@ public class Build {
 				return this;
 			}
 			public AccountBuilder withAfiIddelTitular(Double value) {
-					obj.Afi_Id_del_Titular__c = value;
-					return this;
+				obj.Afi_Id_del_Titular__c = value;
+				return this;
 			}
 			public AccountBuilder withAfiId(String value) {
 				obj.Afi_Id__c = value;
@@ -54,9 +54,9 @@ public class Build {
 				obj.Type = value;
 				return this;
 			}
-			public AccountBuilder withCodigodeAfiliado(String value) {
-					obj.Codigo_de_Afiliado__c = value;
-					return this;
+			public AccountBuilder withCodigoDeAfiliado(String value) {
+				obj.Codigo_de_Afiliado__c = value;
+				return this;
 			}
 			public AccountBuilder withCuit(String value) {
 				obj.CUIT__c = value;
@@ -70,44 +70,80 @@ public class Build {
 				obj.Estado__c = value;
 				return this;
 			}
+			public AccountBuilder withSexo (String value) {
+				obj.Sexo__c = value;
+				return this;
+			}
+			public AccountBuilder withObraSocial (String value) {
+				obj.Obra_social__c = value;
+				return this;
+			}
+			public AccountBuilder withFechaNacimiento (Date value) {
+				obj.PersonBirthdate = value;
+				return this;
+			}
+			public AccountBuilder withDelegacionId (Id value) {
+				obj.Delegacion__c = value;
+				return this;
+			}
+			public AccountBuilder withActividadCodigo (String value) {
+				obj.Actividad_codigo__c = value;
+				return this;
+			}
+			public AccountBuilder withActividadNombre (String value) {
+				obj.Actividad_nombre__c = value;
+				return this;
+			}
+			public AccountBuilder withEstadoCivil (String value) {
+				obj.Estado_civil__c = value;
+				return this;
+			}
+			public AccountBuilder withPersonEmail (String value) {
+				obj.PersonEmail = value;
+				return this;
+			}
+			public AccountBuilder withTipoDocumento (String value) {
+				obj.Tipo_de_documento__c = value;
+				return this;
+			}
 			public Account build() {
 				return obj;
 			}
 		}
 		public static AccountBuilder anAccount() {
-			AccountBuilder val = new AccountBuilder();
-			val.obj.LastName = 'STRING';
-			return val;
+			AccountBuilder value = new AccountBuilder();
+			value.obj.LastName = 'STRING';
+			return value;
 		}
 		public static AccountBuilder anAccountEfector() {
-			AccountBuilder val = new AccountBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Account', 'Efector').Id;
-			val.obj.Name = 'STRING';
-			return val;
+			AccountBuilder value = new AccountBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Account', 'Efector').Id;
+			value.obj.Name = 'STRING';
+			return value;
 		}
 		public static AccountBuilder anAccountCuentapersonal() {
-			AccountBuilder val = new AccountBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Account', 'Cuenta_personal').Id;
-			val.obj.LastName = 'STRING';
-			return val;
+			AccountBuilder value = new AccountBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Account', 'Cuenta_personal').Id;
+			value.obj.LastName = 'STRING';
+			return value;
 		}
 		public static AccountBuilder anAccountDelegacion() {
-			AccountBuilder val = new AccountBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Account', 'Delegacion').Id;
-			val.obj.Name = 'STRING';
-			return val;
+			AccountBuilder value = new AccountBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Account', 'Delegacion').Id;
+			value.obj.Name = 'Test Delegación';
+			return value;
 		}
 		public static AccountBuilder anAccountObrasocial() {
-			AccountBuilder val = new AccountBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Account', 'Obra_social').Id;
-			val.obj.Name = 'STRING';
-			return val;
+			AccountBuilder value = new AccountBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Account', 'Obra_social').Id;
+			value.obj.Name = 'Test ObraSocial';
+			return value;
 		}
 		public static AccountBuilder anAccountEmpresa() {
-			AccountBuilder val = new AccountBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Account', 'Empresa').Id;
-			val.obj.Name = 'STRING';
-			return val;
+			AccountBuilder value = new AccountBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Account', 'Empresa').Id;
+			value.obj.Name = 'Test Empresa';
+			return value;
 		}
 	/*------------------------------------------------------------------------
 		MasterConfig
@@ -260,24 +296,112 @@ public class Build {
 				obj.Codigo_Postal__c = value;
 				return this;
 			}
+			public OpportunityBuilder withNumeroDocumento (String value) {
+				obj.Numero_de_documento__c = value;
+				return this;
+			}
+			public OpportunityBuilder withOportunidadCorporativa (String value) {
+				obj.Oportunidad_Corporativa__c = value;
+				return this;
+			}
+			public OpportunityBuilder withNombreINDCORP (String value) {
+				obj.Nombre_INDCORP__c = value;
+				return this;
+			}
+			public OpportunityBuilder withApellidoINDCORP (String value) {
+				obj.Apellido_INDCOR__c = value;
+				return this;
+			}
+			public OpportunityBuilder withFechaNacimiento (Date value) {
+				obj.Fecha_de_Nacimiento__c = value;
+				return this;
+			}
+			public OpportunityBuilder withTipoDocumento (String value) {
+				obj.Tipo_de_Documento__c = value;
+				return this;
+			}
+			public OpportunityBuilder withCUIL (String value) {
+				obj.CUIT__c = value;
+				return this;
+			}
+			public OpportunityBuilder withEstadoCivil (String value) {
+				obj.Estado_Civil__c = value;
+				return this;
+			}
+			public OpportunityBuilder withSexo (String value) {
+				obj.Sexo__c = value;
+				return this;
+			}
+			public OpportunityBuilder withNumeroAsociado (String value) {
+				obj.Nro_de_asociado__c = value;
+				return this;
+			}
+			public OpportunityBuilder withMedioCobro (String value) {
+				obj.Medio_de_cobro__c = value;
+				return this;
+			}
+			public OpportunityBuilder withCBUParaCobroCuota (String value) {
+				obj.Nro_CBU_para_cobro_de_cuota__c = value;
+				return this;
+			}
+			public OpportunityBuilder withTipoCBU (String value) {
+				obj.Tipo_CBU__c = value;
+				return this;
+			}
+			public OpportunityBuilder withCuilDelCBU (String value) {
+				obj.CUIL_del_CBU__c =  value;
+				return this;
+			}
+			public OpportunityBuilder withNroDeSolicitud(String value) {
+				obj.Nro_de_solicitud__c = value;
+				return this;
+			}
+			public OpportunityBuilder withNacionalidad (String value) {
+				obj.Nacionalidad__c = value;
+				return this;
+			}
+			public OpportunityBuilder withObraSocialTitutar (String value) {
+				obj.Obra_social_del_titular__c = value;
+				return this;
+			}
+			public OpportunityBuilder withAgencia(Id value){
+				obj.Agencia__c = value;
+				return this;
+			}
+			public OpportunityBuilder withActividadProfesionTitular (String value) {
+				obj.ActividadProfesion_del_titular__c = value;
+				return this;
+			}
+			public OpportunityBuilder withSegmentoGrupoFamiliar (String value) {
+				obj.Segmento_del_Grupo_Familiar__c = value;
+				return this;
+			}
+			public OpportunityBuilder withLocalidadNew (String value) {
+				obj.Localidad_new__c = value;
+				return this;
+			}
+			public OpportunityBuilder withOwner (User owner) {
+				obj.OwnerId = owner.Id;
+				return this;
+			}
 			public Opportunity build() {
 				return obj;
 			}
 		}
 		public static OpportunityBuilder anOpportunityIndividuos() {
-			OpportunityBuilder val = new OpportunityBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Opportunity', 'Individuos').Id;
-			return val;
+			OpportunityBuilder value = new OpportunityBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Opportunity', 'Individuos').Id;
+			return value;
 		}
 		public static OpportunityBuilder anOpportunityCorporativo() {
-			OpportunityBuilder val = new OpportunityBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Opportunity', 'Corporativo').Id;
-			return val;
+			OpportunityBuilder value = new OpportunityBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Opportunity', 'Corporativo').Id;
+			return value;
 		}
 		public static OpportunityBuilder anOpportunityIndividualCorporativo() {
-			OpportunityBuilder val = new OpportunityBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Opportunity', 'Individual_Corporativo').Id;
-			return val;
+			OpportunityBuilder value = new OpportunityBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Opportunity', 'Individual_Corporativo').Id;
+			return value;
 		}
 		public static OpportunityBuilder anOpportunity() {
 			return new OpportunityBuilder();
@@ -357,6 +481,14 @@ public class Build {
 			}
 			public IntegranteBuilder withOpportunity(Id value) {
 				obj.Oportunidad__c = value;
+				return this;
+			}
+			public IntegranteBuilder withCoberturaAnterior (String value) {
+				obj.Cobertura_anterior__c = value;
+				return this;
+			}
+			public IntegranteBuilder withObraSocialActual (String value) {
+				obj.Obra_social_actual__c = value;
 				return this;
 			}
 			public Integrante__c build() {
@@ -468,8 +600,8 @@ public class Build {
 			return new IntegranteCasoBuilder();
 		}
 		public static IntegranteCasoBuilder anIntegranteCaso(String nroDocumento) {
-			IntegranteCasoBuilder val = new IntegranteCasoBuilder();
-			val.withApellido('test')
+			IntegranteCasoBuilder value = new IntegranteCasoBuilder();
+			value.withApellido('test')
 			.withNombre('tesst')
 			.withTipoDocumento('DNI')
 			.withNroDocumento(nroDocumento)
@@ -482,12 +614,12 @@ public class Build {
 			.withAporte(5000)
 			.withCuit('30720969617')
 			.withTipoDeRelacionConTitular('CO');
-			return val;
+			return value;
 		}
 		public static IntegranteCasoBuilder anIntegranteCasoBajas() {
-			IntegranteCasoBuilder val = new IntegranteCasoBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Integrante_caso__c', 'Bajas').Id;
-			return val;
+			IntegranteCasoBuilder value = new IntegranteCasoBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Integrante_caso__c', 'Bajas').Id;
+			return value;
 		}
 	/*------------------------------------------------------------------------
 		CaseBuilder
@@ -522,109 +654,109 @@ public class Build {
 				obj.DNI__c = value;
 				return this;
 			}
-			public CaseBuilder withAccountId (Id val) {
-				obj.AccountId = val;
+			public CaseBuilder withAccountId (Id value) {
+				obj.AccountId = value;
 				return this;
 			}
-			public CaseBuilder withObraSocial2 (Id val) {
-				obj.Obra_social2__c = val;
+			public CaseBuilder withObraSocial2 (Id value) {
+				obj.Obra_social2__c = value;
 				return this;
 			}
 
-			public CaseBuilder withEmpleador (Id val) {
-				obj.Empleador__c = val;
+			public CaseBuilder withEmpleador (Id value) {
+				obj.Empleador__c = value;
 				return this;
 			}
-			public CaseBuilder withType (String val) {
-				obj.Type = val;
+			public CaseBuilder withType (String value) {
+				obj.Type = value;
 				return this;
 			}
-			public CaseBuilder withNuevoSegmento (String val) {
-				obj.Nuevo_segmento__c = val;
+			public CaseBuilder withNuevoSegmento (String value) {
+				obj.Nuevo_segmento__c = value;
 				return this;
 			}
-			public CaseBuilder withAgenciaDestino (Id val) {
-				obj.Agencia_destino__c = val;
+			public CaseBuilder withAgenciaDestino (Id value) {
+				obj.Agencia_destino__c = value;
 				return this;
 			}
-			public CaseBuilder withPlanDespegue(String val) {
-				obj.Plandespegue__c = val;
+			public CaseBuilder withPlanDespegue(String value) {
+				obj.Plandespegue__c = value;
 				return this;
 			}
-			public CaseBuilder withAgrupacion1(String val) {
-				obj.Agrupacion1__c = val;
+			public CaseBuilder withAgrupacion1(String value) {
+				obj.Agrupacion1__c = value;
 				return this;
 			}
-			public CaseBuilder withAgrupacion3(String val) {
-				obj.Agrupacion3__c = val;
+			public CaseBuilder withAgrupacion3(String value) {
+				obj.Agrupacion3__c = value;
 				return this;
 			}
-			public CaseBuilder withSegmentoGrupoFamiliar(String val) {
-				obj.Segmento_de_grupo_familiar__c = val;
+			public CaseBuilder withSegmentoGrupoFamiliar(String value) {
+				obj.Segmento_de_grupo_familiar__c = value;
 				return this;
 			}
-			public CaseBuilder withCalle(String val) {
-				obj.Calle__c = val;
+			public CaseBuilder withCalle(String value) {
+				obj.Calle__c = value;
 				return this;
 			}
-			public CaseBuilder withNumero(Decimal val) {
-				obj.Numero__c = val;
+			public CaseBuilder withNumero(Decimal value) {
+				obj.Numero__c = value;
 				return this;
 			}
-			public CaseBuilder withPiso(String val) {
-				obj.Piso__c = val;
+			public CaseBuilder withPiso(String value) {
+				obj.Piso__c = value;
 				return this;
 			}
-			public CaseBuilder withDpto(String val) {
-				obj.Dpto__c = val;
+			public CaseBuilder withDpto(String value) {
+				obj.Dpto__c = value;
 				return this;
 			}
-			public CaseBuilder withSupliedEmail(String val) {
-				obj.SuppliedEmail = val;
+			public CaseBuilder withSupliedEmail(String value) {
+				obj.SuppliedEmail = value;
 				return this;
 			}
-			public CaseBuilder withCondicionIva(String val) {
-				obj.Condicion_IVA__c = val;
+			public CaseBuilder withCondicionIva(String value) {
+				obj.Condicion_IVA__c = value;
 				return this;
 			}
-			public CaseBuilder withProvincia (String val) {
-				obj.Provincia__c = val;
+			public CaseBuilder withProvincia (String value) {
+				obj.Provincia__c = value;
 				return this;
 			}
-			public CaseBuilder withNroCBUCuota (String val) {
-				obj.Numero_CBU_cobro_de_cuota__c = val;
+			public CaseBuilder withNroCBUCuota (String value) {
+				obj.Numero_CBU_cobro_de_cuota__c = value;
 				return this;
 			}
-			public CaseBuilder withTipoCBU (String val) {
-				obj.Tipo_CBU__c = val;
+			public CaseBuilder withTipoCBU (String value) {
+				obj.Tipo_CBU__c = value;
 				return this;
 			}
-			public CaseBuilder withTarjetaDeCredito(String val) {
-				obj.Tarjeta_de_credito__c = val;
+			public CaseBuilder withTarjetaDeCredito(String value) {
+				obj.Tarjeta_de_credito__c = value;
 				return this;
 			}
-			public CaseBuilder withNumeroDeTarjetaDeCredito(String val) {
-				obj.Numero_de_tarjeta_de_credito__c = val;
+			public CaseBuilder withNumeroDeTarjetaDeCredito(String value) {
+				obj.Numero_de_tarjeta_de_credito__c = value;
 				return this;
 			}
-			public CaseBuilder withMedioDeCobro(String val) {
-				obj.Medio_de_cobro__c = val;
+			public CaseBuilder withMedioDeCobro(String value) {
+				obj.Medio_de_cobro__c = value;
 				return this;
 			}
-			public CaseBuilder withFacturaSinPapel (String val) {
-				obj.Factura_sin_papel__c = val;
+			public CaseBuilder withFacturaSinPapel (String value) {
+				obj.Factura_sin_papel__c = value;
 				return this;
 			}
-			public CaseBuilder withTelefono(String val) {
-				obj.Telefono__c = val;
+			public CaseBuilder withTelefono(String value) {
+				obj.Telefono__c = value;
 				return this;
 			}
-			public CaseBuilder withLocalidad(Id val) {
-				obj.Localidad__c = val;
+			public CaseBuilder withLocalidad(Id value) {
+				obj.Localidad__c = value;
 				return this;
 			}
-			public CaseBuilder withDelegacionId (Id val) {
-				obj.Delegacion__c = val;
+			public CaseBuilder withDelegacionId (Id value) {
+				obj.Delegacion__c = value;
 				return this;
 			}
 			/** (2020-08-24 15:15:50) Valores disponibles:  'DNI', 'ND', 'PAS', 'LC', 'LE', 'CI' */
@@ -632,56 +764,56 @@ public class Build {
 				obj.Tipo_dni__c = value;
 				return this;
 			}
-			public CaseBuilder withEstadoCivil (String val) {
-				obj.Estado_civil__c = val;
+			public CaseBuilder withEstadoCivil (String value) {
+				obj.Estado_civil__c = value;
 				return this;
 			}
-			public CaseBuilder withSexo (String val) {
-				obj.Sexo__c = val;
+			public CaseBuilder withSexo (String value) {
+				obj.Sexo__c = value;
 				return this;
 			}
-			public CaseBuilder withDiscapacidad (Boolean val) {
-				obj.Discapacidad__c = val;
+			public CaseBuilder withDiscapacidad (Boolean value) {
+				obj.Discapacidad__c = value;
 				return this;
 			}
-			public CaseBuilder withFechaDeNacimiento (Date val) {
-				obj.Fecha_de_nacimiento__c = val;
+			public CaseBuilder withFechaDeNacimiento (Date value) {
+				obj.Fecha_de_nacimiento__c = value;
 				return this;
 			}
-			public CaseBuilder withNacionalidad (String val) {
-				obj.Nacionalidad__c = val;
+			public CaseBuilder withNacionalidad (String value) {
+				obj.Nacionalidad__c = value;
 				return this;
 			}
-			public CaseBuilder withDerivaAportes (Boolean val) {
-				obj.Deriva_aportes__c = val;
+			public CaseBuilder withDerivaAportes (Boolean value) {
+				obj.Deriva_aportes__c = value;
 				return this;
 			}
-			public CaseBuilder withAporte (Decimal val) {
-				obj.Aporte__c = val;
+			public CaseBuilder withAporte (Decimal value) {
+				obj.Aporte__c = value;
 				return this;
 			}
-			public CaseBuilder withCuit (String val) {
-				obj.Cuit__c = val;
+			public CaseBuilder withCuit (String value) {
+				obj.Cuit__c = value;
 				return this;
 			}
-			public CaseBuilder withCuitEmpleador (String val) {
-				obj.Cuit_empleador__c = val;
+			public CaseBuilder withCuitEmpleador (String value) {
+				obj.Cuit_empleador__c = value;
 				return this;
 			}
-			public CaseBuilder withRazonSocial (String val) {
-				obj.Razon_social__c = val;
+			public CaseBuilder withRazonSocial (String value) {
+				obj.Razon_social__c = value;
 				return this;
 			}
-			public CaseBuilder withBebeNacidoEnElSistema (Boolean val) {
-				obj.Bebe_nacido_en_sistema__c = val;
+			public CaseBuilder withBebeNacidoEnElSistema (Boolean value) {
+				obj.Bebe_nacido_en_sistema__c = value;
 				return this;
 			}
-			public CaseBuilder withInformacionAlAsociado (String val) {
-				obj.Informacion_al_asociado__c = val;
+			public CaseBuilder withInformacionAlAsociado (String value) {
+				obj.Informacion_al_asociado__c = value;
 				return this;
 			}
-			public CaseBuilder withBebeSinDNI (Boolean val) {
-				obj.Bebe_sin_DNI__c = val;
+			public CaseBuilder withBebeSinDNI (Boolean value) {
+				obj.Bebe_sin_DNI__c = value;
 				return this;
 			}
 			public CaseBuilder withStatus(String value) {
@@ -692,32 +824,32 @@ public class Build {
 				obj.Motivo_de_baja__c = value;
 				return this;
 			}
-			public CaseBuilder withFechaDeVigencia (Date val) {
-				obj.Fecha_de_vigencia__c = val;
+			public CaseBuilder withFechaDeVigencia (Date value) {
+				obj.Fecha_de_vigencia__c = value;
 				return this;
 			}
-			public CaseBuilder withInformacionCompleta (Boolean val) {
-				obj.Informacion_completa__c = val;
+			public CaseBuilder withInformacionCompleta (Boolean value) {
+				obj.Informacion_completa__c = value;
 				return this;
 			}
-			public CaseBuilder withNroDeSolicitudSS(String val) {
-				obj.Nro_de_solicitud_SS__c = val;
+			public CaseBuilder withNroDeSolicitudSS(String value) {
+				obj.Nro_de_solicitud_SS__c = value;
 				return this;
 			}
-			public CaseBuilder withTitular (Id val) {
-				obj.Titular__c = val;
+			public CaseBuilder withTitular (Id value) {
+				obj.Titular__c = value;
 				return this;
 			}
-			public CaseBuilder withTipoDeParentesco (String val) {
-				obj.Tipo_de_parentesco__c = val;
+			public CaseBuilder withTipoDeParentesco (String value) {
+				obj.Tipo_de_parentesco__c = value;
 				return this;
 			}
-			public CaseBuilder withEstadoDDJJ (String val) {
-				obj.Estado_DDJJ__c = val;
+			public CaseBuilder withEstadoDDJJ (String value) {
+				obj.Estado_DDJJ__c = value;
 				return this;
 			}
-			public CaseBuilder withCuilDelCBU (String val) {
-				obj.CUIL_del_CBU__c =  val;
+			public CaseBuilder withCuilDelCBU (String value) {
+				obj.CUIL_del_CBU__c =  value;
 				return this;
 			}
 			public CaseBuilder withRecordType (String rTDeveloperName) {
@@ -734,9 +866,9 @@ public class Build {
 		}
 		public static CaseBuilder aCase() { return new CaseBuilder(); }
 		public static CaseBuilder aCaseSolicituddealtafamiliar() {
-			CaseBuilder val = new CaseBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Solicitud_de_alta_familiar').Id;
-			val.withDerivaAportes(true)
+			CaseBuilder value = new CaseBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Solicitud_de_alta_familiar').Id;
+			value.withDerivaAportes(true)
 			.withAporte(5000)
 			.withCuit('20414624416')
 			.withCuitEmpleador('20434624726')
@@ -750,44 +882,44 @@ public class Build {
 			.withTipodedocumento('DNI')
 			.withTipoDeParentesco('CO')
 			.withCuil('20414624416');
-			return val;
+			return value;
 		}
 		public static CaseBuilder aCaseSolicitudDeCredencial() {
-			CaseBuilder val = new CaseBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Solicitud_de_nueva_credencial').Id;
-			return val;
+			CaseBuilder value = new CaseBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Solicitud_de_nueva_credencial').Id;
+			return value;
 		}
 		public static CaseBuilder aCaseSolicitudCambioPlan() {
-			CaseBuilder val = new CaseBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Solicitud_de_cambio_de_plan').Id;
-			return val;
+			CaseBuilder value = new CaseBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Solicitud_de_cambio_de_plan').Id;
+			return value;
 		}
 		public static CaseBuilder aCaseSolicitudDeBaja() {
-			CaseBuilder val = new CaseBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Solicitud_de_baja').Id;
-			val.withFechaDeVigencia(Date.newInstance(2020, 01, 01))
+			CaseBuilder value = new CaseBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Solicitud_de_baja').Id;
+			value.withFechaDeVigencia(Date.newInstance(2020, 01, 01))
 			.withMotivoDeLaBaja('2');
-			return val;
+			return value;
 		}
 		public static CaseBuilder aCaseSolicitudDeBajaParcial() {
-			CaseBuilder val = aCaseSolicitudDeBaja();
-			val.withType('Baja parcial');
-			return val;
+			CaseBuilder value = aCaseSolicitudDeBaja();
+			value.withType('Baja parcial');
+			return value;
 		}
 		public static CaseBuilder aCaseSolicitudDeBajaTotal() {
-			CaseBuilder val = aCaseSolicitudDeBaja();
-			val.withType('Baja total');
-			return val;
+			CaseBuilder value = aCaseSolicitudDeBaja();
+			value.withType('Baja total');
+			return value;
 		}
 		public static CaseBuilder aCaseSolicitudInterfazFinanciera() {
-			CaseBuilder val = new CaseBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Interfaz_financiera').Id;
-			return val;
+			CaseBuilder value = new CaseBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Interfaz_financiera').Id;
+			return value;
 		}
 		public static CaseBuilder aCaseSolicitudDedespegues() {
-			CaseBuilder val = new CaseBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Solicitud_de_despegues').Id;
-			val.withDerivaAportes(true)
+			CaseBuilder value = new CaseBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Solicitud_de_despegues').Id;
+			value.withDerivaAportes(true)
 			.withAporte(5000)
 			.withBebeSinDNI(true)
 			.withCuit('20414624416')
@@ -801,12 +933,12 @@ public class Build {
 			.withSexo('Masculino')
 			.withTipodedocumento('DNI')
 			.withCuil('20414624416');
-			return val;
+			return value;
 		}
 		public static CaseBuilder aCaseSolicitudDedespegues (Boolean withDatosGeograficos) {
-			CaseBuilder val = aCaseSolicitudDedespegues();
+			CaseBuilder value = aCaseSolicitudDedespegues();
 			if (withDatosGeograficos) {
-				val.withSupliedEmail('test@example.com')
+				value.withSupliedEmail('test@example.com')
 				.withCalle('25')
 				.withCondicionIva('CF-4')
 				.withFacturaSinPapel('Verdadero')
@@ -816,34 +948,34 @@ public class Build {
 				.withTelefono('123456784')
 				.withProvincia('Buenos Aires');
 			}
-			return val;
+			return value;
 		}
 		public static CaseBuilder aCaseSolicitudDeCambioSegmento() {
-			CaseBuilder val = new CaseBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Solicitud_de_segmento').Id;
-			val.withStatus('Pendiente')
+			CaseBuilder value = new CaseBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Solicitud_de_segmento').Id;
+			value.withStatus('Pendiente')
 			.withType('Pregunta')
 			.withCuitEmpleador('20434624726')
 			.withRazonSocial('Empresa falsa 123')
 			.withNuevoSegmento('OBLDIR')
 			.withAporte(5000)
 			.withCuit('2041462477');
-			return val;
+			return value;
 		}
 		public static CaseBuilder aCaseConsultas() {
-			CaseBuilder val = new CaseBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Consultas').Id;
-			return val;
+			CaseBuilder value = new CaseBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Consultas').Id;
+			return value;
 		}
 		public static CaseBuilder aCaseReclamos() {
-			CaseBuilder val = new CaseBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Reclamos').Id;
-			return val;
+			CaseBuilder value = new CaseBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Reclamos').Id;
+			return value;
 		}
 		public static CaseBuilder aCaseSolicitudDatosParticulares() {
-			CaseBuilder val = new CaseBuilder();
-			val.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Solicitud_de_datos_particulares').Id;
-			return val;
+			CaseBuilder value = new CaseBuilder();
+			value.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Solicitud_de_datos_particulares').Id;
+			return value;
 		}
 		public static CaseBuilder aCaseFromEmail () {
 			CaseBuilder aCase = new CaseBuilder();
@@ -914,6 +1046,14 @@ public class Build {
 			}
 			public UserBuilder withCodigoDelegacion(String value){
 				user.Codigo_delegacion__c = value;
+				return this;
+			}
+			public UserBuilder withAlias (String value) {
+				user.Alias = value;
+				return this;
+			}
+			public UserBuilder withUserName (String value) {
+				user.UserName = value;
 				return this;
 			}
 			public User build() {
