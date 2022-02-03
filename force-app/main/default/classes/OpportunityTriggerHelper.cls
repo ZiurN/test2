@@ -1,4 +1,21 @@
+/**-----------------------------------------------------------------------------------------------------------------------
+@author			Jeferson Ruiz.
+@description	Clase auxiliar para el trigger Oportunidades.
+@date			03/02/2022.
+------------------------------------------------------------------------------------------------------------------------*/
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class OpportunityTriggerHelper {
+	private static List<String> adminProfilesNames = new List<String>{'Administrador del sistema', 'System Administrator'};
+	private static User currentUser = [SELECT ProfileId, Profile.Name FROM User WHERE id =: UserInfo.getUserId()];
+	private static Boolean userIsAdmin = adminProfilesNames.contains(currentUser.Profile.Name);
+	private static Boolean userIsFront = currentUser.Profile.Name == 'Front';
+	private static Boolean userIsAgenteVentas = currentUser.Profile.Name == 'Agente de Ventas';
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Asigna la cuenta de la oportunidad corporativa a las oportunidades individuales corporativas asociadas.
+	@param			opportunityMap - Mapa de la lista de oportunidades individual-corporativas por el Id de la oportunidad
+					corporativa asociada.
+	------------------------------------------------------------------------------------------------------------------------*/
 	public static void addAccountToOpportunityWithRecordTypeIndividualCorporativo(Map<String, List<Opportunity>> opportunityMap) {
 		for (Opportunity opp : [SELECT AccountId FROM Opportunity WHERE Id IN :opportunityMap.keySet()]) {
 			for (Opportunity oportunidad : opportunityMap.get(opp.Id)) {
@@ -6,6 +23,12 @@ public with sharing class OpportunityTriggerHelper {
 			}
 		}
 	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Determina si las nuevas oportunidades son de reintegro, y valida además que no existan otras cuentas con
+					el mismo DNI que esten activas.
+	@param			opps - Lista de oportunidades Individual-corporativa para revisar.
+	------------------------------------------------------------------------------------------------------------------------*/
 	public static void checkReintegroIndCorp(List<Opportunity> opps){
 		List<String> dnis = new List<String>();
 		for (Opportunity opp : opps) {
@@ -32,7 +55,7 @@ public with sharing class OpportunityTriggerHelper {
 		}
 		for(Opportunity opp : opps){
 			if(activeDnis.contains(opp.Numero_de_documento__c)){
-				opp.addError('Ya existe una cuenta activa con el mismo DNI');
+				opp.addError(System.Label.OppTrigger_Error_DuplicateDNI);
 			}
 			if(duplicateDnis.keySet().contains(opp.Numero_de_documento__c)){
 				opp.Tipo_de_Solicitud__c = 'REINGRESO';
@@ -41,6 +64,11 @@ public with sharing class OpportunityTriggerHelper {
 			}
 		}
 	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Crea la cuenta con la información de la oportunidad ganada.
+	@param			oppList - Lista de oportunidades Individual-corporativa para revisar.
+	------------------------------------------------------------------------------------------------------------------------*/
 	public static void createAccWhenOpportunityIndividualCorporativoChangedToClosedWin(List<Opportunity> oppList){
 		Map<Id, Account> accMap = new Map<Id, Account> ();
 		for (Opportunity opp : oppList) {
@@ -163,7 +191,12 @@ public with sharing class OpportunityTriggerHelper {
 		}
 		Database.UpsertResult[] resGFam = Database.upsert(gFamiliarToInsert.values(),false);
 	}
-	public static void activateThePersonAccounts(List<Opportunity> opps) {
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Activa y actualiza las cuentas personales asociadas a las oportunidades
+	@param			opps - Lista de oportunidades Individual-corporativa para revisar.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static void activatePersonAccounts(List<Opportunity> opps) {
 		List<Account> accsToActivateList = new List<Account>();
 		Map<Id, Opportunity> oppsMap = new Map<Id, Opportunity>([SELECT AccountId,
 																	Oportunidad_Corporativa__c,
@@ -186,13 +219,19 @@ public with sharing class OpportunityTriggerHelper {
 			acc.Estado_civil__c = opp.Estado_Civil__c;
 			acc.Localidad_new__c = opp.Localidad_new__c;
 			acc.Segmento_de_grupo_familiar__c = opp.Segmento_del_Grupo_Familiar__c;
-			acc.Empresa__c = oppsMap.get(opp.Id).Oportunidad_Corporativa__c != null ? 
+			acc.Empresa__c = oppsMap.get(opp.Id).Oportunidad_Corporativa__c != null ?
 				oppsMap.get(opp.Id).Oportunidad_Corporativa__r.AccountId : null;
 			accsToActivateList.add(acc);
 		}
 		List<Database.SaveResult> results = Database.update(accsToActivateList);
 	}
-	public static void copyPasteDataFromAccountToOpportunity(List<Opportunity> opps, Map<String, Id> idOppIdAccMap) {
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Actualiza la info de las oportunidades de acuerdo a la info de las cuentas asociadas.
+	@param			opps - Lista de oportunidades Individual-corporativa para revisar.
+	@param			idOppIdAccMap - Mapa de los id de las cuentas por los ids de las oportunidades.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static void copyDataFromAccountToOpportunity(List<Opportunity> opps, Map<String, Id> idOppIdAccMap) {
 		Map<String, Account> accs = new Map<String, Account>([SELECT Tipo_de_documento__c,
 																Numero_de_documento__c,
 																Type,
@@ -259,56 +298,65 @@ public with sharing class OpportunityTriggerHelper {
 	private static String fillIfComplete(String fieldToFill, String fieldFull) {
 		return fieldToFill != null ? fieldToFill : fieldFull;
 	}
-    public static void setImporteToOpps(List<Opportunity> opps){
-        List<Id> cotIds = new List<Id>();
-        for(Opportunity opp : opps){
-            cotIds.add(opp.Cotizacion_elegida__c);
-        }
-        Map<Id,Cotizacion__c> cotMap = new Map<Id,Cotizacion__c>([
-            SELECT Id,Diferencia_a_pagar__c
-            FROM Cotizacion__c
-            WHERE Id IN :cotIds
-        ]);
-        for(Opportunity opp : opps){
-            if(cotMap.get(opp.Cotizacion_elegida__c) != null){
-                opp.Amount = cotMap.get(opp.Cotizacion_elegida__c).Diferencia_a_pagar__c != null ?
-                    Decimal.valueOf(cotMap.get(opp.Cotizacion_elegida__c).Diferencia_a_pagar__c) : null;
-            }
-        }
-    }
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Asigna el importe de la oportunidad a partir de la cotización asociada.
+	@param			opps - Lista de oportunidades Individual-corporativa para revisar.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static void setImporteToOpps(List<Opportunity> opps){
+		List<Id> cotIds = new List<Id>();
+		for(Opportunity opp : opps){
+			cotIds.add(opp.Cotizacion_elegida__c);
+		}
+		Map<Id,Cotizacion__c> cotMap = new Map<Id,Cotizacion__c>([SELECT Id,
+																	Diferencia_a_pagar__c
+																FROM Cotizacion__c
+																WHERE Id IN :cotIds]);
+		for(Opportunity opp : opps){
+			if(cotMap.get(opp.Cotizacion_elegida__c) != null){
+				opp.Amount = cotMap.get(opp.Cotizacion_elegida__c).Diferencia_a_pagar__c != null ?
+					Decimal.valueOf(cotMap.get(opp.Cotizacion_elegida__c).Diferencia_a_pagar__c) : null;
+			}
+		}
+	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Valida si el usuario es el organizador o pertenece a la jerarquía de funciones de este de acuerdo a la
+					localidad del organziador.
+	@param			opps - Lista de oportunidades Individual-corporativa para revisar.
+	------------------------------------------------------------------------------------------------------------------------*/
 	public static void validateRoleInLoc(List<Opportunity> opps){
 		List<Id> locIds = new List<Id>();
 		for(Opportunity opp : opps){
 			locIds.add(opp.Localidad_new__c);
 		}
-		Map<Id,Localidad__c> locWithOrgMap = new Map<Id,Localidad__c>([
-			SELECT Organizador_lookup__r.UserRoleId
-			FROM Localidad__c
-			WHERE Id IN :locIds
-		]);
-		User actualUser = [SELECT Id, Profile.Name FROM User WHERE Id = :UserInfo.getUserId()];
+		Map<Id,Localidad__c> locWithOrgMap = new Map<Id,Localidad__c>([SELECT Organizador_lookup__r.UserRoleId
+																		FROM Localidad__c
+																		WHERE Id IN :locIds]);
 		for(Opportunity opp : opps){
-			if(actualUser.Profile.Name != 'Administrador del sistema' && actualUser.Profile.Name != 'System Administrator' 
-				&& actualUser.Profile.Name != 'Front' && !opp.Sin_cotizacion__c
-			){
+			if(!userIsAdmin && !userIsFront && !opp.Sin_cotizacion__c){
 				Id orga = locWithOrgMap.get(opp.Localidad_new__c).Organizador_lookup__r.UserRoleId;
 				if(orga == null){
-					opp.addError('No se puede cambiar a una localidad sin organizador.');
+					opp.addError(System.Label.OppTrigger_Error_NoOrganizator);
 				}
 				Set<Id> subRoles = XappiaHelper.getAllSubRoleIds(new Set<Id>{orga});
 				Set<Id> upperRoles = XappiaHelper.getParentRoleId(new Set<Id>{orga});
-				if(orga != null && (!subRoles.contains(UserInfo.getUserRoleId()) && 
-									UserInfo.getUserRoleId() != orga &&
-									!upperRoles.contains(UserInfo.getUserRoleId()))){
-					opp.Localidad_new__c.addError('No puede cambiar la localidad. No pertenece a esa region');
+				if(orga != null
+					&& (!subRoles.contains(UserInfo.getUserRoleId())
+					&& !upperRoles.contains(UserInfo.getUserRoleId()))
+					&& UserInfo.getUserRoleId() != orga){
+					opp.Localidad_new__c.addError(System.Label.OppTrigger_Error_NoPuedeCambiarLoc);
 				}
 			}
 		}
 	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Valida si el usuario pertenece a la jerarquía de funciones del dueño de la oportunidad.
+	@param			opps - Lista de oportunidades Individual-corporativa para revisar.
+	------------------------------------------------------------------------------------------------------------------------*/
 	public static void checkNewOwner(List<Opportunity> opps){
-		User actualUser = [SELECT Id, Profile.Name FROM User WHERE Id = :UserInfo.getUserId()];
-		if(actualUser.Profile.Name == 'Administrador del sistema' || actualUser.Profile.Name == 'System Administrator'
-          || actualUser.Profile.Name == 'Front'){
+		if(userIsAdmin || userIsFront){
 			return;
 		}
 		List<Id> ownerIds = new List<Id>();
@@ -321,123 +369,64 @@ public with sharing class OpportunityTriggerHelper {
 		for(Opportunity opp : opps){
 			if(!subRoles.contains(owners.get(opp.OwnerId).UserRoleId) &&
 				!parentRoles.contains(owners.get(opp.OwnerId).UserRoleId)){
-				opp.addError('Solo se puede derivar a un usuario que pertenezca a la misma estructura de funciones.');
+				opp.addError(System.Label.OppTrigger_Error_CannotDerivateOpp);
 			}
 		}
 	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
+	@description	Valida los estados previo y actual del campo DDJJ, junto con el perfil del usuario para determinar si es
+					se puede modificar o no dicho campo.
+	@param			opps - Lista de oportunidades Individual-corporativa para revisar.
+	@param			oldMap - Mapa de las versiones previas de las oportunidades.
+	------------------------------------------------------------------------------------------------------------------------*/
 	public static void validateSubestadoDDJJ(List<Opportunity> opps, Map<Id, Opportunity> oldMap){
 		UserRole[] roles = [SELECT Id,DeveloperName FROM UserRole WHERE Id = :UserInfo.getUserRoleId()];
 		UserRole rol = roles.isEmpty() ? null : roles[0];
-		User usr = [SELECT Id,Profile.Name FROM User WHERE Id = :UserInfo.getUserId()];
 		Map<String, Schema.SObjectField> fieldMap = Schema.SObjectType.Opportunity.fields.getMap();
-		for(Opportunity opp : opps){
-			if(usr.Profile.Name != 'Administrador del sistema' && usr.Profile.Name != 'Front' && opp.Cambio_Manual__c
-			&& opp.Nro_de_asociado__c == null){
-				if(oldMap.get(opp.Id).Estado_de_solicitud__c == 'Transformada' && opp.Cambio_Manual__c){
-					opp.addError('No puede modificar una Oportunidad en Estado de solicitud = Transformada');
+		for (Opportunity opp : opps) {
+			Boolean preConditionsInvalid = !userIsAdmin
+											&& !userIsFront
+											&& opp.Cambio_Manual__c
+											&& opp.Nro_de_asociado__c == null;
+			if (preConditionsInvalid && oldMap.get(opp.Id).Estado_de_solicitud__c == 'Transformada') {
+				opp.addError(System.Label.OppTrigger_Error_OppTransformada);
+				continue;
+			}
+			Boolean estadoSolicitudInvalido = oldMap.get(opp.Id).Estado_de_solicitud__c == 'Completa'
+												|| oldMap.get(opp.Id).Estado_de_solicitud__c == 'Incompleta';
+			Boolean subEstadoDDJJInvalido = oldMap.get(opp.Id).Subestado_de_DDJJ__c == 'FIRMA O.S.'
+												|| oldMap.get(opp.Id).Subestado_de_DDJJ__c == 'PEDIDO ESTUDIO'
+												|| oldMap.get(opp.Id).Subestado_de_DDJJ__c == 'NUEVA';
+			Boolean DDJJHasChanged = oldMap.get(opp.Id).Subestado_de_DDJJ__c != opp.Subestado_de_DDJJ__c;
+			if (preConditionsInvalid && estadoSolicitudInvalido && subEstadoDDJJInvalido) {
+				Boolean esComercial = rol != null && (rol.DeveloperName.contains('Comercial') || isSupOrg(rol.DeveloperName));
+				if (!esComercial && DDJJHasChanged) {
+					opp.addError(System.Label.OppTrigger_Error_DDJJNoProfile);
 					continue;
 				}
-				if((oldMap.get(opp.Id).Estado_de_solicitud__c == 'Completa' || oldMap.get(opp.Id).Estado_de_solicitud__c == 'Incompleta')){
-					if(oldMap.get(opp.Id).Subestado_de_DDJJ__c == 'FIRMA O.S.' || oldMap.get(opp.Id).Subestado_de_DDJJ__c == 'PEDIDO ESTUDIO' || oldMap.get(opp.Id).Subestado_de_DDJJ__c == 'NUEVA'){
-						if(!isSupOrg(rol.DeveloperName) && !rol.DeveloperName.contains('Comercial')){
-							if(oldMap.get(opp.Id).Subestado_de_DDJJ__c != opp.Subestado_de_DDJJ__c){ 
-								opp.addError('No puede modificar el subestado de DDJJ si su perfil no es Comercial, Supervisor o Organizador');
-								continue;
-							}
-						}
-						if(rol != null && isSupOrg(rol.DeveloperName)){
-							if(oldMap.get(opp.Id).Subestado_de_DDJJ__c ==  'FIRMA O.S.'){
-								if(opp.Subestado_de_DDJJ__c == 'TRASPASO' || opp.Subestado_de_DDJJ__c == oldMap.get(opp.Id).Subestado_de_DDJJ__c){
-									continue;
-								}
-								else{
-									opp.Subestado_de_DDJJ__c.addError('Solo puede cambiar al subestado TRASPASO cuando el subestado actual es FIRMA O.S.');
-									continue;
-								}
-							}
-						}
-						if(rol != null && (rol.DeveloperName.contains('Comercial') || isSupOrg(rol.DeveloperName))){
-							if((oldMap.get(opp.Id).Subestado_de_DDJJ__c ==  'PEDIDO ESTUDIO' || oldMap.get(opp.Id).Subestado_de_DDJJ__c ==  'NUEVA')){
-								if(opp.Subestado_de_DDJJ__c == 'AUDITORIA' || opp.Subestado_de_DDJJ__c == oldMap.get(opp.Id).Subestado_de_DDJJ__c){
-									continue;
-								}
-								else{
-									opp.Subestado_de_DDJJ__c.addError('Solo puede cambiar al subestado AUDITORIA cuando el subestado actual es PEDIDO ESTUDIO/NUEVA.');
-									continue;
-								}
-							}
-						}
-						if(oldMap.get(opp.Id).Subestado_de_DDJJ__c == 'FIRMA O.S.' && !isSupOrg(rol.DeveloperName)){
-							if(oldMap.get(opp.Id).Subestado_de_DDJJ__c != opp.Subestado_de_DDJJ__c){ 
-								opp.Subestado_de_DDJJ__c.addError('Solo puede cambiar al subestado TRASPASO cuando el subestado actual es FIRMA O.S.');
-								continue;
-							}
-						}
-					}
-					else{
-						if(oldMap.get(opp.Id).Subestado_de_DDJJ__c != opp.Subestado_de_DDJJ__c){
-							opp.addError('No puede modificar la oportunidad en Estado de solicitud Completa o Incompleta');
-							continue;
-						}
-					}
+				Boolean previewDDJJwasPEDIDONUEVA = oldMap.get(opp.Id).Subestado_de_DDJJ__c == 'PEDIDO ESTUDIO'
+													|| oldMap.get(opp.Id).Subestado_de_DDJJ__c == 'NUEVA';
+				if (esComercial
+					&& previewDDJJwasPEDIDONUEVA
+					&& opp.Subestado_de_DDJJ__c != 'AUDITORIA'
+					&& DDJJHasChanged) {
+					opp.Subestado_de_DDJJ__c.addError(System.Label.OppTrigger_Error_previewDDJJInvalid);
+					continue;
 				}
+				Boolean previewDDJJwasFIRMAOS = oldMap.get(opp.Id).Subestado_de_DDJJ__c == 'FIRMA O.S.';
+				Boolean isSupOrg = rol != null && isSupOrg(rol.DeveloperName);
+				if (previewDDJJwasFIRMAOS
+					&& ((isSupOrg && opp.Subestado_de_DDJJ__c != 'TRASPASO') || !isSupOrg)
+					&& DDJJHasChanged) {
+					opp.Subestado_de_DDJJ__c.addError(System.Label.OppTrigger_Error_SubEstadoTranspasoError);
+					continue;
+				}
+			} else if (preConditionsInvalid && estadoSolicitudInvalido && DDJJHasChanged) {
+				opp.addError(System.Label.OppTrigger_Error_EstadoInvalid);
+				continue;
 			}
 		}
-	}
-	public static void assignDelegacionFromUser(Map<Id, List<Opportunity>> opportunitiesByUserId) {
-		List<Opportunity> opportunitiesToUpdate = new List<Opportunity>();
-        Map<String, List<Opportunity>> opportunitiesByCodDelegacion = new Map<String, List<Opportunity>>();
-		Profile adminProfile = [SELECT Id, Name
-								FROM Profile
-								WHERE (UserType = 'Standard'
-									AND PermissionsCustomizeApplication = true)
-								ORDER BY CreatedDate ASC limit 1];
-        for (User usuario : [SELECT Codigo_delegacion__c,
-								ProfileId,
-								Profile.Name
-							FROM User
-							WHERE Id IN :opportunitiesByUserId.keySet()]) {
-            if (usuario.Codigo_delegacion__c != null &&
-					( usuario.Profile.Name == 'Front' ||
-						usuario.Profile.Name == 'CDC' ||
-						usuario.ProfileId == adminProfile.Id
-					)
-			) {
-                if (!opportunitiesByCodDelegacion.containsKey(usuario.Codigo_delegacion__c)) {
-                    opportunitiesByCodDelegacion.put(usuario.Codigo_delegacion__c, new List<Opportunity>());
-                }
-				opportunitiesByCodDelegacion.get(usuario.Codigo_delegacion__c).addAll(opportunitiesByUserId.get(usuario.Id));
-            }
-        }
-        for(Account delegacion : [
-                SELECT Id, Codigo_de_delegacion__c
-                FROM Account
-                WHERE Codigo_de_delegacion__c IN :opportunitiesByCodDelegacion.keySet()
-        ]) {
-            for (Opportunity opp : opportunitiesByCodDelegacion.get(delegacion.Codigo_de_delegacion__c)) {
-                opp.Delegacion__c = delegacion.Id;
-                opportunitiesToUpdate.add(opp);
-            }
-        }
-        if (!opportunitiesToUpdate.isEmpty()) {
-        	update opportunitiesToUpdate;
-        }
-    }
-	private static Boolean hasAnyChange(Opportunity opp, Opportunity oldOpp, Map<String, Schema.SObjectField> fieldMap){
-		Boolean hasChanged = false;
-		for(String field: fieldMap.keySet()){
-			hasChanged = hasChanged || (opp.get(field)!= oldOpp.get(field));
-		}
-		return hasChanged;
-	}
-	private static Boolean otherFieldsChanged(Opportunity opp, Opportunity oldOpp, Map<String, Schema.SObjectField> fieldMap){
-		Boolean hasChanged = false;
-		for(String field: fieldMap.keySet()){
-			if(field != 'Subestado_de_DDJJ__c'){
-				hasChanged = hasChanged || (opp.get(field)!= oldOpp.get(field));
-			}
-		}
-		return hasChanged;
 	}
 	private static Boolean isSupOrg(String rol){
 		List<String> orgs = new List<String>{'Org_AMBA','Org_Buenos_Aires_Centro','Org_Buenos_Aires_Costa_Atlantica',
@@ -448,12 +437,56 @@ public with sharing class OpportunityTriggerHelper {
 		'Supervisor_Rosario','Supervisor_SFC'};
 		return orgs.contains(rol) || sups.contains(rol);
 	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Asigna la delegación de la oportunidad a partir de la delegación asignada al usuario dueño.
+	@param			opportunitiesByUserId - Mapa de las oportunidades por el Id del dueño de estas.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static void assignDelegacionFromUser(Map<Id, List<Opportunity>> opportunitiesByUserId) {
+		List<Opportunity> opportunitiesToUpdate = new List<Opportunity>();
+		Map<String, List<Opportunity>> opportunitiesByCodDelegacion = new Map<String, List<Opportunity>>();
+		Profile adminProfile = [SELECT Id, Name
+								FROM Profile
+								WHERE (UserType = 'Standard'
+									AND PermissionsCustomizeApplication = true)
+								ORDER BY CreatedDate ASC limit 1];
+		for (User usuario : [SELECT Codigo_delegacion__c,
+								ProfileId,
+								Profile.Name
+							FROM User
+							WHERE Id IN :opportunitiesByUserId.keySet()]) {
+			if (usuario.Codigo_delegacion__c != null
+				&& ( usuario.Profile.Name == 'Front'
+					|| usuario.Profile.Name == 'CDC'
+					|| usuario.ProfileId == adminProfile.Id)) {
+				if (!opportunitiesByCodDelegacion.containsKey(usuario.Codigo_delegacion__c)) {
+					opportunitiesByCodDelegacion.put(usuario.Codigo_delegacion__c, new List<Opportunity>());
+				}
+				opportunitiesByCodDelegacion.get(usuario.Codigo_delegacion__c).addAll(opportunitiesByUserId.get(usuario.Id));
+			}
+		}
+		for(Account delegacion : [SELECT Id, Codigo_de_delegacion__c
+								FROM Account
+								WHERE Codigo_de_delegacion__c IN :opportunitiesByCodDelegacion.keySet()]) {
+			for (Opportunity opp : opportunitiesByCodDelegacion.get(delegacion.Codigo_de_delegacion__c)) {
+				opp.Delegacion__c = delegacion.Id;
+				opportunitiesToUpdate.add(opp);
+			}
+		}
+		if (!opportunitiesToUpdate.isEmpty()) {
+			update opportunitiesToUpdate;
+		}
+	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Verifica si entre los archivos existe uno válido como nota de aceptación.
+	@param			opps - Lista de oportunidades Individual-corporativa para revisar.
+	------------------------------------------------------------------------------------------------------------------------*/
 	public static void checkIfIsAcceptedByAsociado(List<Opportunity> opps) {
-		User actualUser = [SELECT Id, Profile.Name FROM User WHERE Id = :UserInfo.getUserId()];
 		Id individuosRT = XappiaHelper.getRecordType('Opportunity', 'Individuos').Id;
 		Map<Id, Opportunity> oppsToCheckIfHaveFile = new Map<Id, Opportunity>();
-		if(actualUser.Profile.Name == 'Front' || Test.isRunningTest()) {
-			for(Opportunity opp :opps) {
+		if(userIsFront || Test.isRunningTest()) {
+			for(Opportunity opp : opps) {
 				if(opp.Aceptado_por_el_asociado__c && opp.recordTypeId == individuosRT) {
 					oppsToCheckIfHaveFile.put(opp.Id, opp);
 				}
@@ -467,24 +500,26 @@ public with sharing class OpportunityTriggerHelper {
 						dLinks.put(cDL.LinkedEntityId, new List<ContentDocumentLink> {cDL});
 					}
 				}
-				for(Id opp :oppsToCheckIfHaveFile.keySet()) {
+				for(Id opp : oppsToCheckIfHaveFile.keySet()) {
+					Boolean hasFile = false;
 					if(dLinks.containsKey(opp)) {
-						Boolean hasFile = false;
 						for(ContentDocumentLink cDL :dLinks.get(opp)) {
 							if(cDL.ContentDocument.Title.containsIgnoreCase('nota de aceptacion') || cDL.ContentDocument.Title.containsIgnoreCase('nota de aceptación')) {
 								hasFile = true;
+								break;
 							}
 						}
-						if (!hasFile) {
-							oppsToCheckIfHaveFile.get(opp).addError('Deberá adjuntar la nota de aceptacion para poder continuar');
-						}
-					} else {
-						oppsToCheckIfHaveFile.get(opp).addError('Deberá adjuntar la nota de aceptacion para poder continuar');
 					}
+					if (!hasFile) oppsToCheckIfHaveFile.get(opp).addError(System.Label.OppTrigger_Error_SinArchivoAceptacion);
 				}
 			}
 		}
 	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Si se modifica el DNI en la oportunidad, lo modifica en la cuenta correspondiente.
+	@param			opps - Lista de oportunidades Individual-corporativa para revisar.
+	------------------------------------------------------------------------------------------------------------------------*/
 	public static void updateDNIInAccount(List<Opportunity> opps) {
 		List<Account> accsToUpdateDNI = new List<Account>();
 		for(Opportunity opp : opps) {
@@ -495,10 +530,15 @@ public with sharing class OpportunityTriggerHelper {
 		}
 		update accsToUpdateDNI;
 	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Matias Moll.
+	@description	Actualiza el organizador en la oportunidad a partir de la info de la Localidad asociada.
+	@param			localidadIdsByOpp - Mapa del Id de la localidad por la oportunidad respectiva.
+	------------------------------------------------------------------------------------------------------------------------*/
 	public static void changeOganizadorInOpp(Map<Opportunity, Id> localidadIdsByOpp) {
-		Map<Id, Localidad__c> locsWithOrganizador = new Map<Id, Localidad__c>([
-			SELECT Id, Organizador_lookup__c FROM Localidad__c WHERE Id IN :localidadIdsByOpp.values()
-		]);
+		Map<Id, Localidad__c> locsWithOrganizador = new Map<Id, Localidad__c>([SELECT Id, Organizador_lookup__c
+																				FROM Localidad__c
+																				WHERE Id IN :localidadIdsByOpp.values()]);
 		for(Opportunity opp : localidadIdsByOpp.keySet()) {
 			String organizadorId = locsWithOrganizador.get(opp.Localidad_new__c).Organizador_lookup__c;
 			if(String.isNotBlank(organizadorId)) {
