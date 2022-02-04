@@ -382,7 +382,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>OppTrigger_Error_DDJJNoProfile</shortDescription>
-        <value>No puede modificar el subestado de DDJJ si su perfil no es Comercial, Supervisor o Organizador</value>
+        <value>No puede modificar el subestado de DDJJ si su perfil no es Comercial, Supervisor o Organizador, o Agente de Ventas</value>
     </labels>
     <labels>
         <fullName>OppTrigger_Error_DuplicateDNI</fullName>

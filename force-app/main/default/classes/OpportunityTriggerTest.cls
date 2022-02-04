@@ -1,8 +1,9 @@
 @isTest
 private class OpportunityTriggerTest {
 	private static Profile agenteDeVentasProfile = [SELECT Id FROM Profile WHERE Name='Agente de Ventas'];
-	private static Profile fromProfile = [SELECT Id, Name FROM Profile WHERE Name = 'Front' LIMIT 1];
-	private static List<String> roleDevNames = new List<String>{'Comercial_AMBA', 'Org_AMBA', 'Comercial_CS'};
+	private static Profile frontProfile = [SELECT Id, Name FROM Profile WHERE Name = 'Front' LIMIT 1];
+	private static Profile backProfile = [SELECT Id, Name FROM Profile WHERE Name = 'Back' LIMIT 1];
+	private static List<String> roleDevNames = new List<String>{'Comercial_AMBA', 'Org_AMBA', 'Comercial_CS', 'Encargado_Filial_central'};
 	private static List<UserRole> roles = [SELECT Id, Name, DeveloperName FROM UserRole WHERE DeveloperName IN: roleDevNames];
 	private static User comercialAMBAUser = Build.anUser()
 		.withUserName('comercialAMBAUser' + DateTime.now().getTime() + '@testorg.com')
@@ -24,6 +25,11 @@ private class OpportunityTriggerTest {
 		.withProfile(agenteDeVentasProfile)
 		.withAlias('Front')
 		.build();
+	private static User backInvalidUser = Build.anUser()
+		.withUserName('userInvalidBack' + DateTime.now().getTime() + '@testorg.com')
+		.withProfile(backProfile)
+		.withAlias('Inval')
+		.build();
 	private static List<User> usersToInsert = new List<User>();
 	private static Map<String, String> paramsMap;
 	static {
@@ -39,6 +45,9 @@ private class OpportunityTriggerTest {
 			} else if (role.DeveloperName == 'Comercial_CS') {
 				comercialCSUser.UserRoleId = role.Id;
 				usersToInsert.add(comercialCSUser);
+			} else if (role.DeveloperName == 'Encargado_Filial_central') {
+				backInvalidUser.UserRoleId = role.Id;
+				usersToInsert.add(backInvalidUser);
 			}
 		}
 		System.runAs(new User(Id=UserInfo.getUserId())){
@@ -468,6 +477,59 @@ private class OpportunityTriggerTest {
 		validateDMLError(result, 'Subestado_de_DDJJ__c', System.Label.OppTrigger_Error_SubEstadoTranspasoError);
 	}
 	@IsTest
+	private static void testEstadoDDJJValidations_Comercial_Error_Solicitud_Transformada () {
+		Account acc = setTestAccount().build();
+		insert acc;
+		Database.SaveResult result;
+		System.runAs(comercialAMBAUser){
+			Opportunity opp = setTestOppIndividuosDDJJ(acc.Id).build();
+			insert opp;
+			opp.Estado_de_solicitud__c = 'Transformada';
+			update opp;
+			Test.startTest();
+			opp.Subestado_de_DDJJ__c = 'TRASPASO';
+			result = Database.update(opp, false);
+			Test.stopTest();
+		}
+		validateDMLError(result, System.Label.OppTrigger_Error_OppTransformada);
+	}
+	@IsTest
+	private static void testEstadoDDJJValidations_Comercial_Error_Solicitud_CompletaIncompleta () {
+		Account acc = setTestAccount().build();
+		insert acc;
+		Database.SaveResult result;
+		System.runAs(comercialAMBAUser){
+			Opportunity opp = setTestOppIndividuosDDJJ(acc.Id).build();
+			insert opp;
+			opp.Estado_de_solicitud__c = 'Incompleta';
+			opp.Subestado_de_DDJJ__c = 'LEGALES';
+			update opp;
+			Test.startTest();
+			opp.Subestado_de_DDJJ__c = 'TRASPASO';
+			result = Database.update(opp, false);
+			Test.stopTest();
+		}
+		validateDMLError(result, System.Label.OppTrigger_Error_EstadoInvalid);
+	}
+	@IsTest
+	private static void testEstadoDDJJValidations_Comercial_Error_InvalidToAUDITORIA () {
+		Account acc = setTestAccount().build();
+		insert acc;
+		Database.SaveResult result;
+		System.runAs(comercialAMBAUser){
+			Opportunity opp = setTestOppIndividuosDDJJ(acc.Id).build();
+			insert opp;
+			opp.Estado_de_solicitud__c = 'Completa';
+			opp.Subestado_de_DDJJ__c = 'PEDIDO ESTUDIO';
+			update opp;
+			Test.startTest();
+			opp.Subestado_de_DDJJ__c = 'VALORIZAR';
+			result = Database.update(opp, false);
+			Test.stopTest();
+		}
+		validateDMLError(result, 'Subestado_de_DDJJ__c', System.Label.OppTrigger_Error_previewDDJJInvalid);
+	}
+	@IsTest
 	private static void testEstadoDDJJValidations_ORG_SubEstadoDDJJ_DePEDIDOESTUDIO_AAUDITORIA () {
 		Account acc = setTestAccount().build();
 		insert acc;
@@ -558,6 +620,24 @@ private class OpportunityTriggerTest {
 			Test.stopTest();
 		}
 		System.assert(result.isSuccess(), 'No debio ocurrir ningún error');
+	}
+	@IsTest
+	private static void testEstadoDDJJValidations_InvalidUser_Error_NotAuthProfile () {
+		Account acc = setTestAccount().build();
+		insert acc;
+		Database.SaveResult result;
+		System.runAs(backInvalidUser){
+			Opportunity opp = setTestOppIndividuosDDJJ(acc.Id).build();
+			insert opp;
+			opp.Estado_de_solicitud__c = 'Completa';
+			opp.Subestado_de_DDJJ__c = 'NUEVA';
+			update opp;
+			Test.startTest();
+			opp.Subestado_de_DDJJ__c = 'AUDITORIA';
+			result = Database.update(opp,false);
+			Test.stopTest();
+		}
+		validateDMLError(result, System.Label.OppTrigger_Error_DDJJNoProfile);
 	}
 	@IsTest
 	static void delegacion_assignItFromUserTest () {
@@ -844,7 +924,7 @@ private class OpportunityTriggerTest {
 	private static User setDelegacionTestUser (String codigoDelegacion) {
 		User usuario = Build.anUser()
 			.withUserName('usertotestassignDelegacionFromUser' + DateTime.now().getTime() + '@testorg.com')
-			.withProfile(fromProfile)
+			.withProfile(frontProfile)
 			.withAlias('user1')
 			.withCodigoDelegacion(codigoDelegacion)
 			.build();
