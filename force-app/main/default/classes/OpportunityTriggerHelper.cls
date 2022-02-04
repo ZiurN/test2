@@ -401,7 +401,7 @@ public with sharing class OpportunityTriggerHelper {
 			Boolean DDJJHasChanged = oldMap.get(opp.Id).Subestado_de_DDJJ__c != opp.Subestado_de_DDJJ__c;
 			if (preConditionsInvalid && estadoSolicitudInvalido && subEstadoDDJJInvalido) {
 				Boolean esComercial = rol != null && (rol.DeveloperName.contains('Comercial') || isSupOrg(rol.DeveloperName));
-				if (!esComercial && DDJJHasChanged) {
+				if (!esComercial && DDJJHasChanged && !userIsAgenteVentas) {
 					opp.addError(System.Label.OppTrigger_Error_DDJJNoProfile);
 					continue;
 				}
