@@ -407,7 +407,7 @@ public with sharing class OpportunityTriggerHelper {
 				}
 				Boolean previewDDJJwasPEDIDONUEVA = oldMap.get(opp.Id).Subestado_de_DDJJ__c == 'PEDIDO ESTUDIO'
 													|| oldMap.get(opp.Id).Subestado_de_DDJJ__c == 'NUEVA';
-				if (esComercial
+				if ((esComercial || userIsAgenteVentas)
 					&& previewDDJJwasPEDIDONUEVA
 					&& opp.Subestado_de_DDJJ__c != 'AUDITORIA'
 					&& DDJJHasChanged) {
