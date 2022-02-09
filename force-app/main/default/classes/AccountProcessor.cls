@@ -45,6 +45,7 @@ public without sharing class AccountProcessor implements IMasterBuilder {
 		List<Account> accountList = new List<Account>();
 		List<Account> familiares = new List<Account>();
 		List<Account> menores = new List<Account>();
+		List<String> AccountsAfiIdsToCheckDDJJ = new List<String>();
 		Map<String, Account> titularesRelacionadosAFamiliares = new Map<String, Account>();
 		Set<Agrupacion__c> agrupacionSet = new Set<Agrupacion__c>();
 		List<Cuenta_Agrupacion__c> cuentaAgrupacionList = new List<Cuenta_Agrupacion__c>();
@@ -123,6 +124,8 @@ public without sharing class AccountProcessor implements IMasterBuilder {
 			}
 			if(asociado.estado != 'B' && String.isNotBlank(asociado.localidad)) {
 				acc.Localidad_new__r = new Localidad__c(Loc_Id__c = asociado.localidad);
+			} else if (asociado.estado == 'B') {
+				AccountsAfiIdsToCheckDDJJ.add(asociado.afi_id);
 			}
 			if(String.isNotBlank(asociado.agencia_codigo)) {
 				acc.Delegacion__r = new Account(Codigo_de_delegacion__c = asociado.agencia_codigo);
@@ -237,6 +240,7 @@ public without sharing class AccountProcessor implements IMasterBuilder {
 		Utils.insertBatchLogs(results, null, null, rfuTitulares.externalIds, 'Asociados(titulares)');
 		Utils.insertBatchLogs(resultsFamiliares, null, null, rfuFamiliares.externalIds, 'Asociados(familiares)');
 		Utils.insertBatchLogs(resultsMenores, null, null, afiIdMenores, 'Asociados(menores)');
+		if (!AccountsAfiIdsToCheckDDJJ.isEmpty()) closeCasesDDFF(AccountsAfiIdsToCheckDDJJ);
 	}
 	public void updateDate() {
 		if (!hasNext) {
@@ -251,6 +255,25 @@ public without sharing class AccountProcessor implements IMasterBuilder {
 		} else {
 			AccountProcessor nextProcessor = new AccountProcessor(pageSize, currentPage, lastPage, runTime);
 			Database.executeBatch(new MasterBatch(nextProcessor));
+		}
+	}
+	public void closeCasesDDFF (List<String> AccountsAfiIdsToCheckDDJJ) {
+		Id casoFalseamientoRTID = XappiaHelper.getRecordType('Case', 'Falseamiento_DDJJ').Id;
+		List<Case> casesToClose = [SELECT Status FROM Case
+									WHERE RecordTypeId =: casoFalseamientoRTID
+										AND Account.Afi_Id__c IN: AccountsAfiIdsToCheckDDJJ];
+		if (!casesToClose.isEmpty()) {
+			for (case casoDDJJ : casesToClose) {
+				casoDDJJ.Status = 'Closed';
+			}
+		}
+		Database.SaveResult[] results = Database.update(casesToClose, false);
+		for (Database.SaveResult result : results) {
+			if(!result.isSuccess()){
+				for(Database.Error err : result.getErrors()){
+					System.debug(err.getMessage());
+				}
+			}
 		}
 	}
 }
