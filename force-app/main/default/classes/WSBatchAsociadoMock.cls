@@ -1099,7 +1099,6 @@ public class WSBatchAsociadoMock  {
 				'}' +
 			'}';
 	}
-
 	public static String getFoundSecondPage(){
 		return
 			'{' +
@@ -1807,6 +1806,263 @@ public class WSBatchAsociadoMock  {
 						'"f_modif": "2019-12-17 00:00:00",' +
 						'"entidad_codigo": "69799",' +
 						'"full_name": "LEDESMA MORENA"' +
+					'}' +
+				'],' +
+				'"links": {' +
+					'"first": "https://api-test.acasalud.com.ar/aca_salud_test/public//v1/salud/batch/afiliados/17-12-2019?page=1",' +
+					'"last": "https://api-test.acasalud.com.ar/aca_salud_test/public//v1/salud/batch/afiliados/17-12-2019?page=2",' +
+					'"prev": "https://api-test.acasalud.com.ar/aca_salud_test/public//v1/salud/batch/afiliados/17-12-2019?page=1",' +
+					'"next": null' +
+				'},' +
+				'"meta": {' +
+					'"current_page": 2,' +
+					'"from": 16,' +
+					'"last_page": 2,' +
+					'"path": "https://api-test.acasalud.com.ar/aca_salud_test/public//v1/salud/batch/afiliados/17-12-2019",' +
+					'"per_page": 15,' +
+					'"to": 25,' +
+					'"total": 25,' +
+					'"allowed_filters": [],' +
+					'"allowed_sorts": [],' +
+					'"allowed_appends": [],' +
+					'"allowed_fields": [],' +
+					'"allowed_includes": [],' +
+					'"default_includes": [],' +
+					'"optional_get_vars": {' +
+						'"sortBy": [],' +
+						'"sortOrder": [' +
+							'"asc",' +
+							'"desc"' +
+						'],' +
+						'"pageSize": {' +
+							'"0": "?pageSize=0",' +
+							'"15": "?pageSize=15",' +
+							'"50": "?pageSize=50",' +
+							'"100": "?pageSize=100"' +
+						'}' +
+					'}' +
+				'}' +
+			'}';
+	}
+	public static String getFoundBajaAccounts () {
+		return
+			'{' +
+				'"data": [' +
+					'{' +
+						'"rn": "1",' +
+						'"afi_id": 140975,' +
+						'"afi_id_tit": null,' +
+						'"entidad": "69791",' +
+						'"codigo": "69791/17",' +
+						'"apellidos": "ESPINOSA GABRIEL ERNESTO",' +
+						'"nombres": ".",' +
+						'"pam": "F",' +
+						'"tipo_afiliado": "TIT",' +
+						'"parentesco": null,' +
+						'"tiene_alertas": "F",' +
+						'"estado": "B",' +
+						'"plan_codigo": "AS300",' +
+						'"plan_nombre": "SUPERIOR AS300",' +
+						'"modelo_plan_codigo": "AS300",' +
+						'"modelo_plan_nombre": "SUPERIOR AS300",' +
+						'"agencia_codigo": "650098",' +
+						'"agencia_nombre": "650098_ACA SALUD SUC. ROSARIO",' +
+						'"categoria_codigo": "GEN",' +
+						'"categoria_nombre": "GENERICO",' +
+						'"agrupacion_codigo": "OBLEMP",' +
+						'"agrupacion_nombre": "AFILIADOS OBLIGATORIOS POR EMPRESA",' +
+						'"agrupacion1_codigo": "MEN",' +
+						'"agrupacion1_nombre": "AFILIADOS CON FACTURACION MENSUAL",' +
+						'"agrupacion2_codigo": "OTROS",' +
+						'"agrupacion2_nombre": "OTROS PAGOS DISTINTOS DE DEBITO AUTOMATICO",' +
+						'"agrupacion3_codigo": "SC",' +
+						'"agrupacion3_nombre": "SIN CARENCIAS",' +
+						'"agrupacion4_codigo": null,' +
+						'"agrupacion4_nombre": null,' +
+						'"empresa_codigo": "600011",' +
+						'"empresa_sucursal": "1",' +
+						'"empresa_nombre": "ACA SALUD COOP.PRESTACION SERV. MEDICO ASIST.LTDA",' +
+						'"empresa_sucursal_nombre": "ACA SALUD C.P.S.M.A.L. - PLANES AL PERSONAL",' +
+						'"afiliacion": "Aporte Obligatorio",' +
+						'"aporta": "Falso",' +
+						'"obra_social_codigo": "640008",' +
+						'"obra_social_nombre": "O.S.P.ACA",' +
+						'"obra_social_ant_codigo": null,' +
+						'"obra_social_ant_nombre": null,' +
+						'"tipo_documento": "DNI",' +
+						'"numero_documento": "20173680",' +
+						'"sexo": "M",' +
+						'"fecha_nacimiento": "1968-03-12",' +
+						'"edad": "51",' +
+						'"estado_civil": "C",' +
+						'"codigo_1": "054",' +
+						'"gentilicio": "ARGENTINO",' +
+						'"actividad_codigo": "EMPL",' +
+						'"actividad_nombre": "EMPLEADO",' +
+						'"titular_codigo": null,' +
+						'"titular_apellidos": null,' +
+						'"titular_nombres": null,' +
+						'"antiguedad_reconocida": "0",' +
+						'"ultima_alta": "2002-09-01",' +
+						'"fecha_alta_administrativa": "2002-09-01",' +
+						'"fecha_alta": "2002-10-02",' +
+						'"fecha_vigencia": "2017-07-01",' +
+						'"cuit": "20201736804",' +
+						'"sujeto_facturacion": "Verdadero",' +
+						'"adherente": "Falso",' +
+						'"tipo_baja_codigo": null,' +
+						'"tipo_baja_nombre": null,' +
+						'"motivo_de_baja": null,' +
+						'"excedente": null,' +
+						'"f_modif": "2019-12-17 00:00:00",' +
+						'"entidad_codigo": "69791",' +
+						'"mail": "vmartinez@bbe-sa.com.ar",' +
+						'"provincia": "A",' +
+						'"localidad": "1200",' +
+						'"tipo_telefono": "TEL",' +
+						'"fecha_baja": "2019-10-01 00:00:00",' +
+						'"pais_codigo": "AR",' +
+						'"full_name": "ESPINOSA GABRIEL ERNESTO"' +
+					'},' +
+					'{' +
+						'"rn": "2",' +
+						'"afi_id": 140976,' +
+						'"afi_id_tit": null,' +
+						'"entidad": "69792",' +
+						'"codigo": "69792/16",' +
+						'"apellidos": "SAVORETTI GABRIEL GERMAN",' +
+						'"nombres": ".",' +
+						'"pam": "V",' +
+						'"tipo_afiliado": "TIT",' +
+						'"parentesco": null,' +
+						'"tiene_alertas": "F",' +
+						'"estado": "B",' +
+						'"plan_codigo": "AS300",' +
+						'"plan_nombre": "SUPERIOR AS300",' +
+						'"modelo_plan_codigo": "AS300",' +
+						'"modelo_plan_nombre": "SUPERIOR AS300",' +
+						'"agencia_codigo": "650098",' +
+						'"agencia_nombre": "650098_ACA SALUD SUC. ROSARIO",' +
+						'"categoria_codigo": "GEN",' +
+						'"categoria_nombre": "GENERICO",' +
+						'"agrupacion_codigo": "OBLEMP",' +
+						'"agrupacion_nombre": "AFILIADOS OBLIGATORIOS POR EMPRESA",' +
+						'"agrupacion1_codigo": "MEN",' +
+						'"agrupacion1_nombre": "AFILIADOS CON FACTURACION MENSUAL",' +
+						'"agrupacion2_codigo": "OTROS",' +
+						'"agrupacion2_nombre": "OTROS PAGOS DISTINTOS DE DEBITO AUTOMATICO",' +
+						'"agrupacion3_codigo": "SC",' +
+						'"agrupacion3_nombre": "SIN CARENCIAS",' +
+						'"agrupacion4_codigo": null,' +
+						'"agrupacion4_nombre": null,' +
+						'"empresa_codigo": "600011",' +
+						'"empresa_sucursal": "1",' +
+						'"empresa_nombre": "ACA SALUD COOP.PRESTACION SERV. MEDICO ASIST.LTDA",' +
+						'"empresa_sucursal_nombre": "ACA SALUD C.P.S.M.A.L. - PLANES AL PERSONAL",' +
+						'"afiliacion": "Aporte Obligatorio",' +
+						'"aporta": "Falso",' +
+						'"obra_social_codigo": "640008",' +
+						'"obra_social_nombre": "O.S.P.ACA",' +
+						'"obra_social_ant_codigo": null,' +
+						'"obra_social_ant_nombre": null,' +
+						'"tipo_documento": "DNI",' +
+						'"numero_documento": "22725723",' +
+						'"sexo": "M",' +
+						'"fecha_nacimiento": "1972-07-06",' +
+						'"edad": "47",' +
+						'"estado_civil": "S",' +
+						'"codigo_1": "054",' +
+						'"gentilicio": "ARGENTINO",' +
+						'"actividad_codigo": "EMPL",' +
+						'"actividad_nombre": "EMPLEADO",' +
+						'"titular_codigo": null,' +
+						'"titular_apellidos": null,' +
+						'"titular_nombres": null,' +
+						'"antiguedad_reconocida": "0",' +
+						'"ultima_alta": "2002-09-01",' +
+						'"fecha_alta_administrativa": "2002-09-01",' +
+						'"fecha_alta": "2002-10-02",' +
+						'"fecha_vigencia": "2017-07-01",' +
+						'"cuit": "20227257238",' +
+						'"sujeto_facturacion": "Verdadero",' +
+						'"adherente": "Falso",' +
+						'"tipo_baja_codigo": null,' +
+						'"tipo_baja_nombre": null,' +
+						'"motivo_de_baja": null,' +
+						'"excedente": null,' +
+						'"f_modif": "2019-12-17 00:00:00",' +
+						'"entidad_codigo": "69792",' +
+						'"full_name": "SAVORETTI GABRIEL GERMAN"' +
+					'},' +
+					'{' +
+						'"rn": "3",' +
+						'"afi_id": 140977,' +
+						'"afi_id_tit": null,' +
+						'"entidad": "69793",' +
+						'"codigo": "69793/15",' +
+						'"apellidos": "CRUCIANI SILVIA ELENA",' +
+						'"nombres": ".",' +
+						'"pam": "F",' +
+						'"tipo_afiliado": "TIT",' +
+						'"parentesco": null,' +
+						'"tiene_alertas": "F",' +
+						'"estado": "B",' +
+						'"plan_codigo": "AS300",' +
+						'"plan_nombre": "SUPERIOR AS300",' +
+						'"modelo_plan_codigo": "AS300",' +
+						'"modelo_plan_nombre": "SUPERIOR AS300",' +
+						'"agencia_codigo": "650098",' +
+						'"agencia_nombre": "650098_ACA SALUD SUC. ROSARIO",' +
+						'"categoria_codigo": "GEN",' +
+						'"categoria_nombre": "GENERICO",' +
+						'"agrupacion_codigo": "OBLEMP",' +
+						'"agrupacion_nombre": "AFILIADOS OBLIGATORIOS POR EMPRESA",' +
+						'"agrupacion1_codigo": "MEN",' +
+						'"agrupacion1_nombre": "AFILIADOS CON FACTURACION MENSUAL",' +
+						'"agrupacion2_codigo": "OTROS",' +
+						'"agrupacion2_nombre": "OTROS PAGOS DISTINTOS DE DEBITO AUTOMATICO",' +
+						'"agrupacion3_codigo": "SC",' +
+						'"agrupacion3_nombre": "SIN CARENCIAS",' +
+						'"agrupacion4_codigo": null,' +
+						'"agrupacion4_nombre": null,' +
+						'"empresa_codigo": "600011",' +
+						'"empresa_sucursal": "1",' +
+						'"empresa_nombre": "ACA SALUD COOP.PRESTACION SERV. MEDICO ASIST.LTDA",' +
+						'"empresa_sucursal_nombre": "ACA SALUD C.P.S.M.A.L. - PLANES AL PERSONAL",' +
+						'"afiliacion": "Aporte Obligatorio",' +
+						'"aporta": "Falso",' +
+						'"obra_social_codigo": "640008",' +
+						'"obra_social_nombre": "O.S.P.ACA",' +
+						'"obra_social_ant_codigo": null,' +
+						'"obra_social_ant_nombre": null,' +
+						'"tipo_documento": "DNI",' +
+						'"numero_documento": "14666853",' +
+						'"sexo": "F",' +
+						'"fecha_nacimiento": "1961-03-15",' +
+						'"edad": "58",' +
+						'"estado_civil": "P",' +
+						'"codigo_1": "054",' +
+						'"gentilicio": "ARGENTINO",' +
+						'"actividad_codigo": "EMPL",' +
+						'"actividad_nombre": "EMPLEADO",' +
+						'"titular_codigo": null,' +
+						'"titular_apellidos": null,' +
+						'"titular_nombres": null,' +
+						'"antiguedad_reconocida": "0",' +
+						'"ultima_alta": "2002-09-01",' +
+						'"fecha_alta_administrativa": "2002-09-01",' +
+						'"fecha_alta": "2002-10-02",' +
+						'"fecha_vigencia": "2017-07-01",' +
+						'"cuit": "23146668534",' +
+						'"sujeto_facturacion": "Verdadero",' +
+						'"adherente": "Falso",' +
+						'"tipo_baja_codigo": null,' +
+						'"tipo_baja_nombre": null,' +
+						'"motivo_de_baja": null,' +
+						'"excedente": null,' +
+						'"f_modif": "2019-12-17 00:00:00",' +
+						'"entidad_codigo": "69793",' +
+						'"full_name": "CRUCIANI SILVIA ELENA"' +
 					'}' +
 				'],' +
 				'"links": {' +

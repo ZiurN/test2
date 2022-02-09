@@ -4,11 +4,13 @@ public class AccountProcessorTest  {
 	private static final String BATCH_AFILIADOS_URL = ConfigUtils.getEndpointsByTipo('batch').get('afiliados').Endpoint__c;
 	private static final String BATCH_AFILIADOS_URL_PAGE_1 = BATCH_AFILIADOS_URL +'/' + today + '?pageSize=15&page=1';
 	private static final String BATCH_AFILIADOS_URL_PAGE_2 = BATCH_AFILIADOS_URL +'/' + today + '?pageSize=15&page=2';
+	private static final String BATCH_AFILIADOS_URL_PAGE_3 = BATCH_AFILIADOS_URL +'/' + today + '?pageSize=3&page=3';
 	private static MasterConfigs__c config;
 	private static XHttpCalloutMock getResponseFound = new XHttpCalloutMock();
 	private static XHttpCalloutMock getErrorResponse  = new XHttpCalloutMock();
 	private static XHttpCalloutMock getEmptyListResponse = new XHttpCalloutMock();
 	private static XHttpCalloutMock getResponseFoundSecondPageOnly = new XHttpCalloutMock();
+	private static XHttpCalloutMock getFoundBajaAccounts = new XHttpCalloutMock();
 	private static Account empresa;
 	private static Account delegacion;
 	private static Account os;
@@ -32,6 +34,10 @@ public class AccountProcessorTest  {
 			getResponseFoundSecondPageOnly,
 			BATCH_AFILIADOS_URL_PAGE_2,
 			WSBatchAsociadoMock.getFoundSecondPage());
+		TestUtils.setMockResponse(
+			getFoundBajaAccounts,
+			BATCH_AFILIADOS_URL_PAGE_3,
+			WSBatchAsociadoMock.getFoundBajaAccounts());
 		config = Build.aMasterConfigs().build();
 		insert config;
 		empresa = Build.anAccountEmpresa().withCodigoEmpresa('600011').build();
@@ -123,20 +129,23 @@ public class AccountProcessorTest  {
 		List<Account> accountsToInsert = new List<Account>();
 		Account acc1 = Build.anAccountCuentapersonal()
 			.withLastName('Test1')
-			.withAfiId('180018')
-			.withNroDeDocumento('43713260')
+			.withEstado('A')
+			.withAfiId('140975')
+			.withNroDeDocumento('20173680')
 			.build();
 		accountsToInsert.add(acc1);
 		Account acc2 = Build.anAccountCuentapersonal()
 			.withLastName('Test2')
-			.withAfiId('180019')
-			.withNroDeDocumento('43713261')
+			.withEstado('A')
+			.withAfiId('140976')
+			.withNroDeDocumento('22725723')
 			.build();
 		accountsToInsert.add(acc2);
 		Account acc3 = Build.anAccountCuentapersonal()
 			.withLastName('Test3')
-			.withAfiId('180020')
-			.withNroDeDocumento('43713263')
+			.withEstado('A')
+			.withAfiId('140977')
+			.withNroDeDocumento('14666853')
 			.build();
 		accountsToInsert.add(acc3);
 		insert accountsToInsert;
@@ -148,9 +157,9 @@ public class AccountProcessorTest  {
 		Case casoFalseamiento3 = Build.aCaseFalseamientoDDJJ().withAccount(acc3).build();
 		casesToInsert.add(casoFalseamiento3);
 		insert casesToInsert;
-		Test.setMock(HttpCalloutMock.class, getResponseFoundSecondPageOnly);
+		Test.setMock(HttpCalloutMock.class, getFoundBajaAccounts);
 		Test.startTest();
-		Database.executeBatch(new MasterBatch(new AccountProcessor(15, 2, 2, System.now())));
+		Database.executeBatch(new MasterBatch(new AccountProcessor(3, 3, 3, System.now())));
 		Test.stopTest();
 		List<Account> updatedAccounts = [SELECT Estado__c FROM Account WHERE Id IN: accountsToInsert];
 		System.assertEquals(3, updatedAccounts.size(), 'Deben haber tres cuentas actualizadas');
