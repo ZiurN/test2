@@ -201,12 +201,44 @@
         <value>No se puede autorizar porque hay una alerta, con un nivel de auditoría menor, sin resolver aún</value>
     </labels>
     <labels>
+        <fullName>Alerta_NoAuth_CPRAS_TECNI</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_CPRAS_TECNI</shortDescription>
+        <value>No se permite autorizar alerta de Compras Técnicas</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_CPRAS_TECNI_Responsable</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_CPRAS_TECNI_Responsable</shortDescription>
+        <value>Sólo se pueden autorizar alertas de Compras Técnicas si hay un responsable asignado al caso</value>
+    </labels>
+    <labels>
         <fullName>Alerta_NoAuth_EstadoOrdenDebeSerEmitida</fullName>
         <categories>Alertas</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Alerta_NoAuth_EstadoOrdenDebeSerEmitida</shortDescription>
         <value>- El estado debe ser Orden Emitida</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_FCION_PRESU_Responsable</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_FCION_PRESU_Responsable</shortDescription>
+        <value>Sólo se pueden autorizar alertas de Presupuesto si hay un responsable asignado al caso</value>
+    </labels>
+    <labels>
+        <fullName>Alerta_NoAuth_JustAsingMedAM</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_NoAuth_JustAsingMedAM</shortDescription>
+        <value>Solo el medico asignado al caso puede autorizar alertas AM</value>
     </labels>
     <labels>
         <fullName>Alerta_NoAuth_NoId</fullName>
@@ -456,6 +488,14 @@
         <shortDescription>PDFIngresoYDDJJ</shortDescription>
         <value>Avalian - Solicitud de ingreso y DDJJ completa.pdf</value>
     </labels>
+    <labels>
+        <fullName>Alerta_CaseStatusInCorrect</fullName>
+        <categories>Alertas</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Alerta_CaseStatusInCorrect</shortDescription>
+        <value>El estado debe ser Centro Autorizador o Autorizada</value>
+	</labels>
     <labels>
         <fullName>Alerta_Trigger_Seg_FechaTentInicialInvalida</fullName>
         <categories>Alertas Segmentos</categories>

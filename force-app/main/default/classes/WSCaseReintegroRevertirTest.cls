@@ -15,7 +15,7 @@ public class WSCaseReintegroRevertirTest  {
                 .withStatus('OK')
                 .withStatusCode(200)
                 .withBody(WSCaseReintegroRevertirMock.getFound())
-                .addForAddress(WSCaseAPRevertir.SERVICE_CONFIG.URL__c + '/v1/salud/reintegros/553276');
+                .addForAddress(WSCaseEnviarASSHelper.SERVICE_CONFIG.URL__c + '/v1/salud/reintegros/553276');
 
         getErrorResponse = new XHttpCalloutMock();
         getErrorResponse.buildResponse()
@@ -27,7 +27,7 @@ public class WSCaseReintegroRevertirTest  {
                 .withStatus('Error')
                 .withStatusCode(500)
                 .withBody(WSCaseReintegroRevertirMock.getError())
-                .addForAddress(WSCaseAPRevertir.SERVICE_CONFIG.URL__c + '/v1/salud/reintegros/553276');
+                .addForAddress(WSCaseEnviarASSHelper.SERVICE_CONFIG.URL__c + '/v1/salud/reintegros/553276');
 
     }
 

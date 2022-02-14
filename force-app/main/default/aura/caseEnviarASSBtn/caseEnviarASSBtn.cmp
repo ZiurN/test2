@@ -13,8 +13,7 @@
 		fields="Status, Nro_AP__c, Evento_Medico__c, Caso_Rechazado__c"
 		targetFields="{!v.caseSimpleRecord}"
 		targetError="{!v.recordLoadError}"
-		recordUpdated="{!c.doInit}"
-	/>
+		recordUpdated="{!c.doInit}"	/>
 	<!-- Component -->
 	<lightning:button
 		variant="neutral"

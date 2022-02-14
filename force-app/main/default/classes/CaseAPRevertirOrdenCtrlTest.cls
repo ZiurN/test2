@@ -82,7 +82,7 @@ private class CaseAPRevertirOrdenCtrlTest {
 				.withStatus('OK')
 				.withStatusCode(200)
 				.withBody(WSCaseAPRevertirOrdenMock.getFound())
-				.addForAddress(WSCaseAPRevertir.SERVICE_CONFIG.URL__c + '/v1/salud/autorizaciones/revertir/1017985413');
+				.addForAddress(WSCaseEnviarASSHelper.SERVICE_CONFIG.URL__c + '/v1/salud/autorizaciones/revertir/1017985413');
 		getResponseError = new XHttpCalloutMock();
 		getResponseError.buildResponse()
 				.withStatus('OK')
@@ -93,7 +93,7 @@ private class CaseAPRevertirOrdenCtrlTest {
 				.withStatus('Error')
 				.withStatusCode(404)
 				.withBody(WSCaseAPRevertirOrdenMock.getError())
-				.addForAddress(WSCaseAPRevertir.SERVICE_CONFIG.URL__c + '/v1/salud/autorizaciones/revertir/1017985413');
+				.addForAddress(WSCaseEnviarASSHelper.SERVICE_CONFIG.URL__c + '/v1/salud/autorizaciones/revertir/1017985413');
 	}
 	@isTest
 	private static void deleteAlertasRelatedToCaseAndChangeStatusFromCaseTest() {
