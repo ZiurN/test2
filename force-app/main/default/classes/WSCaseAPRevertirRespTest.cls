@@ -1,2 +1,0 @@
-@IsTest
-public class WSCaseAPRevertirRespTest {}
