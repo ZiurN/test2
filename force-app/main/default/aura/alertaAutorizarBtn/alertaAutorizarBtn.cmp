@@ -1,23 +1,22 @@
 <aura:component implements="force:hasRecordId" controller="AlertaAutorizarBtnCtrl" access="global">
-    <ltng:require scripts="{!$Resource.LightningUtils}" />
-
-    <aura:attribute name="isLoading" type="Boolean" default="false"/>
-    <aura:attribute name="alertaSimpleRecord" type="Object"/>
-    <aura:attribute name="recordLoadError" type="String"/>
-
-    <force:recordData
-            aura:id="recordLoader"
-            recordId="{!v.recordId}"
-            fields="idalerta__c"
-            targetFields="{!v.alertaSimpleRecord}"
-            targetError="{!v.recordLoadError}"/>
-
-    <aura:if isTrue="{!v.isLoading}">
-        <lightning:spinner alternativeText="Loading" variant="brand"/>
-    </aura:if>
-
-    <lightning:overlayLibrary aura:id="overlayLib"/>
-
-    <lightning:button variant="neutral" onclick="{!c.handleClickBtn}"
-                      title="Autorizar Alerta" label="Autorizar Alerta"/>
+	<!-- External Resources -->
+	<ltng:require scripts="{!$Resource.LightningUtils}" />
+	<!-- Attributes -->
+	<aura:attribute name="isLoading" type="Boolean" default="false"/>
+	<aura:attribute name="alertaSimpleRecord" type="Object"/>
+	<aura:attribute name="recordLoadError" type="String"/>
+	<!-- Record Data -->
+	<force:recordData
+			aura:id="recordLoader"
+			recordId="{!v.recordId}"
+			fields="idalerta__c"
+			targetFields="{!v.alertaSimpleRecord}"
+			targetError="{!v.recordLoadError}"/>
+	<!-- Component -->
+	<aura:if isTrue="{!v.isLoading}">
+		<lightning:spinner alternativeText="Loading" variant="brand"/>
+	</aura:if>
+	<lightning:overlayLibrary aura:id="overlayLib"/>
+	<lightning:button variant="neutral" onclick="{!c.handleClickBtn}"
+					  title="Autorizar Alerta" label="Autorizar Alerta"/>
 </aura:component>

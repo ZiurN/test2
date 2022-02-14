@@ -117,7 +117,12 @@ public class WSSSGenericResponse {
 								} when 'notas' {
 									notas = arrayOfNotas(parser);
 								} when 'ap' {
-									ap = arrayOfAp(parser);
+									if (parser.getCurrentToken() == System.JSONToken.START_ARRAY) {
+										ap = arrayOfAp(parser);
+									} else if (parser.getCurrentToken() == System.JSONToken.START_OBJECT) {
+										Ap apToList =  new Ap(parser);
+										ap = new List<Ap>{apToList};
+									}
 								} when 'error' {
 									error = parser.getBooleanValue();
 								} when 'errors' {
