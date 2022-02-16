@@ -401,6 +401,86 @@
         <value>¡Hola!</value>
     </labels>
     <labels>
+        <fullName>OppTrigger_Error_CannotDerivateOpp</fullName>
+        <categories>Alerta Opp Trigger</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OppTrigger_Error_CannotDerivateOpp</shortDescription>
+        <value>Sólo se puede derivar a un usuario que pertenezca a la misma estructura de funciones</value>
+    </labels>
+    <labels>
+        <fullName>OppTrigger_Error_DDJJNoProfile</fullName>
+        <categories>Alerta Opp Trigger</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OppTrigger_Error_DDJJNoProfile</shortDescription>
+        <value>No puede modificar el subestado de DDJJ si su perfil no es Comercial, Supervisor o Organizador, o Agente de Ventas</value>
+    </labels>
+    <labels>
+        <fullName>OppTrigger_Error_DuplicateDNI</fullName>
+        <categories>Alerta Opp Trigger</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OppTrigger_Error_DuplicateDNI</shortDescription>
+        <value>Ya existe una cuenta activa con el mismo DNI</value>
+    </labels>
+    <labels>
+        <fullName>OppTrigger_Error_EstadoInvalid</fullName>
+        <categories>Alerta Opp Trigger</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OppTrigger_Error_EstadoInvalid</shortDescription>
+        <value>No puede modificar la oportunidad en Estado de solicitud Completa o Incompleta</value>
+    </labels>
+    <labels>
+        <fullName>OppTrigger_Error_NoOrganizator</fullName>
+        <categories>Alerta Opp Trigger</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OppTrigger_Error_NoOrganizator</shortDescription>
+        <value>No se puede cambiar a una localidad sin organizador</value>
+    </labels>
+    <labels>
+        <fullName>OppTrigger_Error_NoPuedeCambiarLoc</fullName>
+        <categories>Alerta Opp Trigger</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OppTrigger_Error_NoPuedeCambiarLoc</shortDescription>
+        <value>No puede cambiar la localidad, no pertenece a esa región</value>
+    </labels>
+    <labels>
+        <fullName>OppTrigger_Error_OppTransformada</fullName>
+        <categories>Alerta Opp Trigger</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OppTrigger_Error_OppTransformada</shortDescription>
+        <value>No puede modificar una Oportunidad en Estado de solicitud igual a Transformada</value>
+    </labels>
+    <labels>
+        <fullName>OppTrigger_Error_SinArchivoAceptacion</fullName>
+        <categories>Alerta Opp Trigger</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OppTrigger_Error_SinArchivoAceptacion</shortDescription>
+        <value>Deberá adjuntar la nota de aceptación para poder continuar</value>
+    </labels>
+    <labels>
+        <fullName>OppTrigger_Error_SubEstadoTranspasoError</fullName>
+        <categories>Alerta Opp Trigger</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OppTrigger_Error_SubEstadoTranspasoError</shortDescription>
+        <value>Sólo puede cambiar al subestado TRASPASO cuando el subestado actual es FIRMA O.S.</value>
+    </labels>
+    <labels>
+        <fullName>OppTrigger_Error_previewDDJJInvalid</fullName>
+        <categories>Alerta Opp Trigger</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OppTrigger_Error_previewDDJJInvalid</shortDescription>
+        <value>Sólo puede cambiar al subestado AUDITORIA cuando el subestado actual es PEDIDO ESTUDIO o NUEVA</value>
+    </labels>
+    <labels>
         <fullName>PDFIngresoYDDJJ</fullName>
         <categories>Labels documentos</categories>
         <language>es</language>
