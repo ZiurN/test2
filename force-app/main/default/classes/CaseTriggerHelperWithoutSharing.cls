@@ -158,7 +158,7 @@ public with sharing class CaseTriggerHelperWithoutSharing {
 					update casesToUpdate;
 				}
 				if(!userIdCasesMap.isEmpty()){
-					CaseHelper.assignDelegacionFromUser(userIdCasesMap);
+					CaseTriggerHelper.assignDelegacionFromUser(userIdCasesMap);
 				}
 			}
 		}
