@@ -1,4 +1,4 @@
-private /**
+/**
  * Created by xappia on 12/2/20.
  */
 @IsTest
@@ -11,14 +11,14 @@ private class CaseTriggerTest {
 	private static Datetime now = Datetime.now();
 	private static Datetime fechaInicioEM = Datetime.newInstance(now.year() , now.month() , now.day(), 0, 0, 0);
 	private static Datetime fechaFinEM = fechaInicioEM.addDays(5);
-	private static XHttpCalloutMock getSuccessResponse;
-	private static XHttpCalloutMock getErrorResponse;
-	private static User medico;
-	private static User medico2;
-	private static User userBack;
-	private static User front;
-	private static Account centro;
-	private static CaseTeamRole caseRole;
+	static XHttpCalloutMock getSuccessResponse;
+	static XHttpCalloutMock getErrorResponse;
+	static User medico;
+	static User medico2;
+	static User userBack;
+	static User front;
+	static Account centro;
+	static CaseTeamRole caseRole;
 	static {
 		String uniqueUserName = 'standardusercasetriggertest' + DateTime.now().getTime() + '@testorg.com';
 		Profile pMedico = [SELECT Id, Name FROM Profile WHERE Name = 'Auditor Medico'];
