@@ -106,7 +106,7 @@ public without sharing class AlertaAutorizarBtnCtrl {
 			}
 		}
 		if(!hasLessNivelDeAuditoria) {
-			return new Response(true, System.Label.Alerta_NoAuth_AuditoriaMenor); 
+			return new Response(true, System.Label.Alerta_NoAuth_AuditoriaMenor);
 		} else {
 			return new Response(false, 'Ok');
 		}
