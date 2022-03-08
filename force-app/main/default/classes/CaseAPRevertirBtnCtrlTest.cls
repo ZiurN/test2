@@ -1,9 +1,10 @@
-@isTest 
+@isTest
 private class CaseAPRevertirBtnCtrlTest {
 	private static String AUTORIZACIONES_URL = ConfigUtils.getEndpointsByTipo('autorizaciones').get('centro-autorizador/revertir').Endpoint__c;
 	private static XHttpCalloutMock getResponseFound;
 	private static User usuarioFront;
 	private static User usuarioMesa;
+	private static User userEncargado;
 	private static CaseTeamRole caseRole;
 	private static Case caso;
 	private static Prestacion__c prestacion;
@@ -38,6 +39,15 @@ private class CaseAPRevertirBtnCtrlTest {
 			caseRole.Name = 'Cel Test';
 			caseRole.AccessLevel = 'Edit';
 			insert caseRole;
+			UserRole roleEncargado = [SELECT Id,Name, DeveloperName FROM UserRole WHERE DeveloperName = 'Encargado_Filial_Mar_del_Plata'];
+			userEncargado = new User(Alias = 'standtEn', Email='standarduser@testorg.com',
+				EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='es',
+				LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
+				UserName=uniqueUserName + 'EncargadoFilial', ProfileId = pFront.Id, UserRoleId = roleEncargado.Id
+			);
+			System.runAs(new User(Id = UserInfo.getUserId())) {
+				insert userEncargado;
+			}
 		}
 		delegacion = Build.anAccountDelegacion().withCodigoDeDelegacion('650886').build();
 		insert delegacion;
@@ -163,16 +173,26 @@ private class CaseAPRevertirBtnCtrlTest {
 	@isTest
 	private static void whenTheUserIsLeaderReturnTrue() {
 		Test.startTest();
-		Boolean resp = CaseAPRevertirBtnCtrl.isLeader();
+		Boolean resp = CaseAPRevertirBtnCtrl.canRevertAPs();
 		Test.stopTest();
 		System.assert(resp);
+	}
+	@isTest
+	private static void whenTheUserIsEncargadoReturnTrue() {
+		Boolean resp;
+		System.runAs(userEncargado) {
+			Test.startTest();
+			resp = CaseAPRevertirBtnCtrl.canRevertAPs();
+			Test.stopTest();
+		}
+		System.assert(resp, 'La respuesta debe ser verdadera');
 	}
 	@isTest
 	private static void whenTheUserIsNotLeaderReturnFalse() {
 		Boolean resp;
 		System.runAs(usuarioFront) {
 			Test.startTest();
-			resp = CaseAPRevertirBtnCtrl.isLeader();
+			resp = CaseAPRevertirBtnCtrl.canRevertAPs();
 			Test.stopTest();
 		}
 		System.assert(!resp);
