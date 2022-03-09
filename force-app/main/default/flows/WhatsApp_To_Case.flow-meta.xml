@@ -10,7 +10,7 @@
             <assignToReference>CasoACrear.AccountId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Encontrar_cuentas_basado_en_el_n_mero_de_WhatApp.Id</elementReference>
+                <elementReference>Encontrar_cuenta_basado_en_el_numero_de_WhatApp.Id</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -81,7 +81,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Encontrar_cuentas_basado_en_el_n_mero_de_WhatApp</targetReference>
+            <targetReference>Encontrar_cuenta_basado_en_el_numero_de_WhatApp</targetReference>
         </connector>
     </assignments>
     <decisions>
@@ -97,7 +97,7 @@
             <name>Si_Asignar_Cuenta</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Encontrar_cuentas_basado_en_el_n_mero_de_WhatApp</leftValueReference>
+                <leftValueReference>Encontrar_cuenta_basado_en_el_numero_de_WhatApp</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -139,13 +139,20 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.MessagingEndUser.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>whatsapp:+5491558649293</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Obtener_Datos_CDC</targetReference>
             </connector>
             <label>Si</label>
         </rules>
     </decisions>
-    <description>Crea Casos a partir de MessagingSessions, y trata de ligar dichos casos a una cuenta con el número de WhatsApp de la sesión</description>
+    <description>Versión de prueba Tel Mariana</description>
     <formulas>
         <name>ReturnNumber</name>
         <dataType>String</dataType>
@@ -180,8 +187,8 @@
         <inputReference>CasoACrear</inputReference>
     </recordCreates>
     <recordLookups>
-        <name>Encontrar_cuentas_basado_en_el_n_mero_de_WhatApp</name>
-        <label>Encontrar cuentas basado en el número de WhatApp</label>
+        <name>Encontrar_cuenta_basado_en_el_numero_de_WhatApp</name>
+        <label>Encontrar cuenta basado en el número de WhatApp</label>
         <locationX>182</locationX>
         <locationY>935</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
@@ -198,6 +205,20 @@
             <operator>EqualTo</operator>
             <value>
                 <elementReference>WhatsAppNumber</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Codigo_de_Afiliado__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsPersonAccount</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
