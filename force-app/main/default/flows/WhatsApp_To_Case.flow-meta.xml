@@ -64,6 +64,13 @@
                 <elementReference>Obtener_Datos_CDC.Id</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>CasoACrear.Description</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Creado desde Flujo de WhatsApp-to-Case</stringValue>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Establecer_Numero_de_WhatsApp</targetReference>
         </connector>
@@ -117,7 +124,7 @@
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Si_Crear_Caso</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND 2 AND (3 OR 4 OR 5 OR 6 OR 7)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.CaseId</leftValueReference>
                 <operator>IsNull</operator>
@@ -133,22 +140,44 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>IsChanged</operator>
+                <leftValueReference>$Record.MessagingEndUser.Name</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <stringValue>whatsapp:+5493416764830</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>$Record.MessagingEndUser.Name</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>whatsapp:+5491558649293</stringValue>
+                    <stringValue>whatsapp:+5493413142283</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.MessagingEndUser.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>whatsapp:+5493416864999</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.MessagingEndUser.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>whatsapp:+5493416764830</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.MessagingEndUser.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>whatsapp:+5491158649293</stringValue>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>Obtener_Datos_CDC</targetReference>
             </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
             <label>Si</label>
         </rules>
     </decisions>
