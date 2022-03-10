@@ -860,6 +860,14 @@ public class Build {
 				obj.Origin = value;
 				return this;
 			}
+			public CaseBuilder withNroAP (String value) {
+				obj.Nro_AP__c = value;
+				return this;
+			}
+			public CaseBuilder withNivelDerivacion (String value) {
+				obj.Nivel_de_derivacion__c = value;
+				return this;
+			}
 			public Case build() {
 				return obj;
 			}

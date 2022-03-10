@@ -3,7 +3,7 @@ private class CaseAPAnularBtnCtrlTest {
 	private static String AUTORIZACIONES_ANULAR = ConfigUtils.getEndpointsByTipo('autorizaciones').get('orden-ap/anular').Endpoint__c;
 	private static XHttpCalloutMock getResponseFound = new XHttpCalloutMock();
 	private static XHttpCalloutMock getErrorResponse = new XHttpCalloutMock();
-	private static List<String> profilesList = new List<String>{'Front', 'Mesa de ayuda'};
+	private static List<String> profilesList = new List<String>{'Front', 'Mesa de ayuda', 'Discapacidad'};
 	private static List<String> userRolesList = new List<String>{'Filial_Casa_central', 'Encargado_Filial_Mar_del_Plata'};
 	private static List<String> queuesList =  new List<String>{'Front', 'Mesa_de_ayuda'};
 	private static String uniqueUserName = 'standarduserRevertirCase' + DateTime.now().getTime() + '@testorg.com';
@@ -16,11 +16,16 @@ private class CaseAPAnularBtnCtrlTest {
 	private static User userEncargado = Build.anUser()
 		.withUserName(uniqueUserName + 'EncargadoFilial')
 		.build();
+	private static User userDiscapacidad = build.anUser()
+		.withUserName(uniqueUserName + 'Discapacidad')
+		.build();
+	private static Account testAccount = Build.anAccountCuentapersonal().build();
 	private static CaseTeamRole caseRole = new CaseTeamRole(Name = 'Cel Test', AccessLevel = 'Edit');
 	private static Case caso;
 	static {
 		System.runAs(new User(Id = UserInfo.getUserId())) {
 			insert caseRole;
+			insert testAccount;
 			List<Profile> profiles = [SELECT Id, Name FROM Profile WHERE Name IN: profilesList];
 			List<UserRole> roles = [SELECT Id, Name, DeveloperName FROM UserRole WHERE DeveloperName IN: userRolesList];
 			List<Group> queues = [SELECT Id, Name, DeveloperName FROM Group WHERE Type = 'Queue' AND DeveloperName IN: queuesList];
@@ -32,6 +37,9 @@ private class CaseAPAnularBtnCtrlTest {
 						userEncargado.profileId = profileToAssign.Id;
 					} when 'Mesa de ayuda'{
 						usuarioMesa.profileId = profileToAssign.Id;
+					} when 'Discapacidad' {
+						userDiscapacidad.ProfileId = profileToAssign.Id;
+						usersToInsert.add(userDiscapacidad);
 					}
 				}
 			}
@@ -189,6 +197,29 @@ private class CaseAPAnularBtnCtrlTest {
 		System.assertEquals('CA-----N', casoToAssert.Status, 'El estado del caso debe ser CA-----G');
 	}
 	@isTest
+	private static void validateUserDiscapacidadWhenBelongsToTeamCaseAndCaseIsNivel3 () {
+		CaseAPAnularBtnCtrl.Response resp;
+		Case newCaso = Build.aCaseAP()
+			.withNroAP('12345678')
+			.withStatus('CA-----A')
+			.withNivelDerivacion('Nivel 3')
+			.withAccountId(testAccount.Id)
+			.build();
+		insert newCaso;
+		System.runAs(new User(Id = UserInfo.getUserId())) {
+			insert new CaseTeamMember(ParentId = newCaso.Id, MemberId = userDiscapacidad.Id, TeamRoleId = caseRole.Id);
+		}
+		Test.setMock(HttpCalloutMock.class, getResponseFound);
+		System.runAs(userDiscapacidad) {
+			Test.startTest();
+			resp = CaseAPAnularBtnCtrl.ifStatusIsOrdenEmitidaAndRecordTypeIsSeguimientoCancelCase(newCaso.Id);
+			Test.stopTest();
+		}
+		System.assertEquals('ok', resp.message, 'El mensaje no debe indicar error');
+		Case caseToAssert = [SELECT Status FROM Case WHERE Id =: newCaso.Id];
+		System.assertEquals('CA-----N', caseToAssert.Status, 'El estado del caso debe ser CA-----N');
+	}
+	@isTest
 	private static void whenTheUserIsLeaderReturnTrue() {
 		Test.startTest();
 		Boolean resp = CaseAPAnularBtnCtrl.canCancelAPs();
@@ -214,5 +245,15 @@ private class CaseAPAnularBtnCtrlTest {
 			Test.stopTest();
 		}
 		System.assert(!resp, 'La respuesta debe ser falsa');
+	}
+	@isTest
+	private static void whenUserIsCellLeaderAndHaveDiscapacidadProfileReturnsTrue () {
+		Boolean resp;
+		System.runAs(userDiscapacidad) {
+			Test.startTest();
+			resp = CaseAPAnularBtnCtrl.canCancelAPs();
+			Test.stopTest();
+		}
+		System.assert(resp, 'La respuesta debe ser verdadera');
 	}
 }
