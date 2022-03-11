@@ -10,7 +10,7 @@
             <assignToReference>CasoACrear.AccountId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Encontrar_cuenta_basado_en_el_numero_de_WhatApp.Id</elementReference>
+                <elementReference>Encontrar_cuentas_basado_en_el_n_mero_de_WhatApp.Id</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -23,7 +23,7 @@
         <locationX>182</locationX>
         <locationY>695</locationY>
         <assignmentItems>
-            <assignToReference>CasoACrear.iOrigen__c</assignToReference>
+            <assignToReference>CasoACrear.Origin</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>WhatsApp Automatico</stringValue>
@@ -68,7 +68,7 @@
             <assignToReference>CasoACrear.Description</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Creado desde Flujo de WhatsApp-to-Case</stringValue>
+                <stringValue>Caso creado desde Chat de WhatsApp</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -88,7 +88,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Encontrar_cuenta_basado_en_el_numero_de_WhatApp</targetReference>
+            <targetReference>Encontrar_cuentas_basado_en_el_n_mero_de_WhatApp</targetReference>
         </connector>
     </assignments>
     <decisions>
@@ -104,7 +104,7 @@
             <name>Si_Asignar_Cuenta</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Encontrar_cuenta_basado_en_el_numero_de_WhatApp</leftValueReference>
+                <leftValueReference>Encontrar_cuentas_basado_en_el_n_mero_de_WhatApp</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -119,12 +119,12 @@
     <decisions>
         <name>Crear_Caso</name>
         <label>¿Crear Caso?</label>
-        <locationX>468</locationX>
+        <locationX>600</locationX>
         <locationY>335</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Si_Crear_Caso</name>
-            <conditionLogic>1 AND 2 AND (3 OR 4 OR 5 OR 6 OR 7)</conditionLogic>
+            <conditionLogic>1 AND 2 AND 3 AND (4 OR 5 OR 6 OR 7)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.CaseId</leftValueReference>
                 <operator>IsNull</operator>
@@ -137,6 +137,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Active</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -164,24 +171,16 @@
                 <leftValueReference>$Record.MessagingEndUser.Name</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>whatsapp:+5493416764830</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.MessagingEndUser.Name</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
                     <stringValue>whatsapp:+5491158649293</stringValue>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>Obtener_Datos_CDC</targetReference>
             </connector>
-            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
             <label>Si</label>
         </rules>
     </decisions>
-    <description>Versión de prueba Tel Mariana</description>
+    <description>Versión de prueba para producción</description>
     <formulas>
         <name>ReturnNumber</name>
         <dataType>String</dataType>
@@ -213,11 +212,14 @@
         <label>Insertar Caso</label>
         <locationX>182</locationX>
         <locationY>1391</locationY>
+        <connector>
+            <targetReference>Asociar_Caso_Creado_a_la_Sesion</targetReference>
+        </connector>
         <inputReference>CasoACrear</inputReference>
     </recordCreates>
     <recordLookups>
-        <name>Encontrar_cuenta_basado_en_el_numero_de_WhatApp</name>
-        <label>Encontrar cuenta basado en el número de WhatApp</label>
+        <name>Encontrar_cuentas_basado_en_el_n_mero_de_WhatApp</name>
+        <label>Encontrar cuentas basado en el número de WhatApp</label>
         <locationX>182</locationX>
         <locationY>935</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
@@ -310,8 +312,21 @@
         <object>RecordType</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordUpdates>
+        <name>Asociar_Caso_Creado_a_la_Sesion</name>
+        <label>Asociar Caso Creado a la Sesión</label>
+        <locationX>182</locationX>
+        <locationY>1511</locationY>
+        <inputAssignments>
+            <field>CaseId</field>
+            <value>
+                <elementReference>CasoACrear.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <start>
-        <locationX>342</locationX>
+        <locationX>474</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Crear_Caso</targetReference>
