@@ -20,7 +20,7 @@
     </values>
     <values>
         <field>URL__c</field>
-        <value xsi:type="xsd:string">https://api-test.acasalud.com.ar/aca_salud_test/public</value>
+		<value xsi:type="xsd:string">https://api-test.avalian.com/aca_salud_test/public</value>
     </values>
     <values>
         <field>User__c</field>
