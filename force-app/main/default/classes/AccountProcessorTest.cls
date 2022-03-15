@@ -166,10 +166,11 @@ public class AccountProcessorTest  {
 		for (Account acc : updatedAccounts) {
 			System.assertEquals('B', acc.Estado__c, 'La cuenta debe estar dada de baja');
 		}
-		List<Case> closedCases = [SELECT Status FROM Case WHERE AccountId IN: accountsToInsert];
+		List<Case> closedCases = [SELECT Status, isClosed FROM Case WHERE AccountId IN: accountsToInsert];
 		System.assertEquals(3, closedCases.size(), 'Deben haber tres casos actualizados');
 		for (Case casoDDFF : closedCases) {
-			System.assertEquals('Closed', casoDDFF.Status, 'La cuenta debe estar dada de baja');
+			System.assertEquals('Cerrado', casoDDFF.Status, 'El caso debe estar cerrado');
+			System.assert(casoDDFF.isClosed, 'El caso debe estar cerrado');
 		}
 	}
 }

@@ -264,7 +264,7 @@ public without sharing class AccountProcessor implements IMasterBuilder {
 										AND Account.Afi_Id__c IN: AccountsAfiIdsToCheckDDJJ];
 		if (!casesToClose.isEmpty()) {
 			for (case casoDDJJ : casesToClose) {
-				casoDDJJ.Status = 'Closed';
+				casoDDJJ.Status = 'Cerrado';
 			}
 		}
 		Database.SaveResult[] results = Database.update(casesToClose, false);
