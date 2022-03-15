@@ -19,7 +19,7 @@ global class ReintegroReintentoReasignacionBatch implements Database.Batchable<S
 		//Map<Id,Lote__c> lotesMap = new Map<Id,Lote__c>([SELECT Id_lote_SS__c FROM Lote__c WHERE Id IN :lotesId]);
 		
 		for(Case caso : scope){
-			CaseHelper.reasignarLote(caso,caso.Usuario_error_reasignar__c);
+			CaseTriggerHelper.reasignarLote(caso,caso.Usuario_error_reasignar__c);
 		}
 
 		if(!scope.isEmpty()){

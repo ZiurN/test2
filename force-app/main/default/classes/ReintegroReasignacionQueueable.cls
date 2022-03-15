@@ -11,7 +11,7 @@ public class ReintegroReasignacionQueueable  implements Queueable, Database.Allo
 			User usuario = [SELECT CommunityNickname FROM User WHERE Id =:UserInfo.getUserId()];
 			String nick = usuario.CommunityNickname.toUpperCase();
 			Case reintegro = reintegros.remove(0).clone(true,true,false,false);
-			CaseHelper.reasignarLote(reintegro, nick);
+			CaseTriggerHelper.reasignarLote(reintegro, nick);
 			update reintegro;
 			if(!reintegros.isEmpty()){
 				System.enqueueJob(new ReintegroReasignacionQueueable(reintegros));
