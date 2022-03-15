@@ -1,7 +1,7 @@
 @isTest
 private class TranscriptionChatCloseCasesTest {
 
-    public static String CRON_EXP = '0 0 0 15 3 ? 2022';
+    public static String CRON_EXP = '0 0 0 15 3 ? 2023';
 
     @isTest
     private static void WhenBatchExecutesBatchShouldCloseCasesOnlyWhenChatIsOnlyBot() {

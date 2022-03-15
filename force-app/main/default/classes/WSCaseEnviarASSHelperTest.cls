@@ -1,21 +1,19 @@
 @isTest
 public with sharing class WSCaseEnviarASSHelperTest {
-    static XHttpCalloutMock getResponseFound;
-    static XHttpCalloutMock getErrorResponse;
+	private static String AUTORIZACIONES_URL = ConfigUtils.getEndpointsByTipo('autorizaciones').get('autorizaciones').Endpoint__c;
+	private static String REVERTIR_URL = ConfigUtils.getEndpointsByTipo('autorizaciones').get('centro-autorizador/revertir').Endpoint__c;
+    private static XHttpCalloutMock getResponseFound;
+	private static XHttpCalloutMock getResponseRevertFound;
+    private static XHttpCalloutMock getErrorRevertResponse;
     static {
 		Case ap = new Case();
 		insert ap;
         getResponseFound = new XHttpCalloutMock();
-        getResponseFound.buildResponse()
-                .withStatus('OK')
-                .withStatusCode(200)
-                .withBody(WSAuthTokenMock.getTokenSuccess())
-                .addForAddress(WSAuthToken.SERVICE_CONFIG.URL__c + '/oauth/token');
-        getResponseFound.buildResponse()
-                .withStatus('OK')
-                .withStatusCode(200)
-                .withBody(WSCaseAPGenerarCentroMock.getFound(ap.Id))
-                .addForAddress(WSCaseEnviarASSHelper.SERVICE_CONFIG.URL__c + '/v1/salud/autorizaciones');
+		TestUtils.setMockResponse(getResponseFound, AUTORIZACIONES_URL, WSCaseAPGenerarCentroMock.getFound(ap.Id), 200, 'Ok');
+		getResponseRevertFound = new XHttpCalloutMock();
+		TestUtils.setMockResponse(getResponseRevertFound, REVERTIR_URL + '/1014009821', WSCasoEnviarASSMock.getFound(), 200, 'Ok');
+		getErrorRevertResponse = new XHttpCalloutMock();
+        TestUtils.setMockResponse(getErrorRevertResponse, REVERTIR_URL + '/1014009821', WSCaseAPRevertirMock.getError(), 404, 'Ok');
     }
     @IsTest
     private static void whenTheWSIsConsume_APUpdated() {
@@ -47,8 +45,29 @@ public with sharing class WSCaseEnviarASSHelperTest {
         Test.startTest();
         WSCaseEnviarASSHelper.Response responseToAssert = WSCaseEnviarASSHelper.enviarASS(body, 'autorizaciones', 'autorizaciones');
         Test.stopTest();
-        System.assertEquals(false, responseToAssert.hasError);
-        System.assertEquals(200, responseToAssert.response.getStatusCode());
-        System.assertEquals('OK', responseToAssert.response.getStatus());
+        System.assert(!responseToAssert.hasError, 'No debe haber ningun error');
+        System.assertEquals(200, responseToAssert.response.getStatusCode(), 'El código de respuesta debe ser 200');
+        System.assertEquals('Ok', responseToAssert.response.getStatus(), 'El mensaje debe ser Ok');
+    }
+    @IsTest
+    static void revertValidAP() {
+        Case ap = new Case(Nro_AP__c = '1014009821');
+        Test.setMock(HttpCalloutMock.class, getResponseRevertFound);
+        Test.startTest();
+		WSCaseEnviarASSHelper.Response response = WSCaseEnviarASSHelper.enviarASS('{"username":"CRIOS"}', 'autorizaciones', 'centro-autorizador/revertir', ap.Nro_AP__c);
+        Test.stopTest();
+        System.assert(!response.hasError, 'No debe haber ningun error');
+        System.assertEquals('Ok', response.message, 'El mensaje debe ser OK');
+    }
+    @IsTest
+    static void revertInvalidAP() {
+        Case ap = new Case(Nro_AP__c = '1014009821');
+		String errorMsg = 'No se pudo generar el centro autorizador. Intente nuevamente. LA AP NO ESTA EN CENTRO AUTORIZADOR\n';
+        Test.setMock(HttpCalloutMock.class, getErrorRevertResponse);
+        Test.startTest();
+		WSCaseEnviarASSHelper.Response response = WSCaseEnviarASSHelper.enviarASS('{"username":"CRIOS"}', 'autorizaciones', 'centro-autorizador/revertir', ap.Nro_AP__c);
+        Test.stopTest();
+        System.assert(response.hasError, 'Debe haber ocurrido un error');
+        System.assertEquals(errorMsg, response.message, 'El mensaje no indica el error');
     }
 }

@@ -17,7 +17,7 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 	public override void beforeInsert() {
 		rolEjecutivoId = [SELECT Id FROM UserRole WHERE DeveloperName = 'Ejecutivo_de_cuenta_corporativo' LIMIT 1].Id;
 		Id perfilFrontId = XappiaHelper.getProfileIdByName('Front');
-		Map<String, List<Opportunity>> oportunidadCorporativaIdOportunidadMap = new Map<String, List<Opportunity>>();
+		Map<String, List<Opportunity>> oppsIndividualCorporativaListByOppCorporativaId = new Map<String, List<Opportunity>>();
 		List<Opportunity> oppsToUpdate = new List<Opportunity>();
 		Map<String, Id> idsOppAccMap = new Map<String, Id>();
 		Map<String, Id> idsOppAccFromLeadMap = new Map<String, Id>();
@@ -35,10 +35,10 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 			}
 			if (oportunidad.RecordTypeId == recordTypeIdIndividalCorp) {
 				oppsToCheckReingreso.add(oportunidad);
-				if(oportunidadCorporativaIdOportunidadMap.keySet().contains(oportunidad.Oportunidad_Corporativa__c)) {
-					oportunidadCorporativaIdOportunidadMap.get(oportunidad.Oportunidad_Corporativa__c).add(oportunidad);
+				if (oppsIndividualCorporativaListByOppCorporativaId.keySet().contains(oportunidad.Oportunidad_Corporativa__c)) {
+					oppsIndividualCorporativaListByOppCorporativaId.get(oportunidad.Oportunidad_Corporativa__c).add(oportunidad);
 				} else {
-					oportunidadCorporativaIdOportunidadMap.put(oportunidad.Oportunidad_Corporativa__c, new List<Opportunity>{oportunidad});
+					oppsIndividualCorporativaListByOppCorporativaId.put(oportunidad.Oportunidad_Corporativa__c, new List<Opportunity>{oportunidad});
 				}
 			}
 			Boolean shouldMapOrgFromAcc = (oportunidad.Tipo_de_Solicitud__c != null ?
@@ -46,27 +46,27 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 			Boolean shouldMapIfAltaFromClosed = (oportunidad.Tipo_de_Solicitud__c != null ?
 			oportunidad.Tipo_de_Solicitud__c.contains('ALTA') : false ) && UserInfo.getProfileId() != perfilFrontId && oportunidad.Account.Codigo_de_Afiliado__c == null;
 			Boolean shouldMapOrgFromAccIfIndCoorp = UserInfo.getProfileId() != perfilFrontId && oportunidad.RecordTypeId == recordTypeIdIndividalCorp;
-			if( shouldMapOrgFromAcc || shouldMapOrgFromAccIfIndCoorp || shouldMapIfAltaFromClosed) {
+			if (shouldMapOrgFromAcc || shouldMapOrgFromAccIfIndCoorp || shouldMapIfAltaFromClosed) {
 				idsOppAccMap.put(oportunidad.Id, oportunidad.AccountId);
 				oppsToUpdate.add(oportunidad);
 			}
 		}
-		if(!oportunidadCorporativaIdOportunidadMap.isEmpty()) {
-			OpportunityHelper.addAccountToOpportunityWithRecordTypeIndividualCorporativo(oportunidadCorporativaIdOportunidadMap);
+		if (!oppsIndividualCorporativaListByOppCorporativaId.isEmpty()) {
+			OpportunityTriggerHelper.addAccountToOpportunityWithRecordTypeIndividualCorporativo(oppsIndividualCorporativaListByOppCorporativaId);
 		}
-		if(!idsOppAccMap.isEmpty()) {
-			OpportunityHelper.copyPasteDataFromAccountToOpportunity(oppsToUpdate, idsOppAccMap);
+		if (!idsOppAccMap.isEmpty()) {
+			OpportunityTriggerHelper.copyDataFromAccountToOpportunity(oppsToUpdate, idsOppAccMap);
 		}
-		if(!oppsLocChanged.isEmpty()){
-			OpportunityHelper.validateRoleInLoc(oppsLocChanged);
+		if (!oppsLocChanged.isEmpty()) {
+			OpportunityTriggerHelper.validateRoleInLoc(oppsLocChanged);
 		}
-		if(!oppsToCheckReingreso.isEmpty()){
-			OpportunityHelper.checkReintegroIndCorp(oppsToCheckReingreso);
+		if (!oppsToCheckReingreso.isEmpty()) {
+			OpportunityTriggerHelper.checkReintegroIndCorp(oppsToCheckReingreso);
 		}
 	}
 	public override void beforeUpdate() {
 		rolEjecutivoId = [SELECT Id FROM UserRole WHERE DeveloperName = 'Ejecutivo_de_cuenta_corporativo' LIMIT 1].Id;
-		OpportunityHelper.checkIfIsAcceptedByAsociado(lNew);
+		OpportunityTriggerHelper.checkIfIsAcceptedByAsociado(lNew);
 		List<Opportunity> oppsToSetImporte = new List<Opportunity>();
 		List<Id> oppsToUpdate = new List<Id>();
 		List<Opportunity> oppsValidateRol = new List<Opportunity>();
@@ -104,19 +104,19 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 			}
 		}
 		if(!oppsToSetImporte.isEmpty()) {
-			OpportunityHelper.setImporteToOpps(oppsToSetImporte);
+			OpportunityTriggerHelper.setImporteToOpps(oppsToSetImporte);
 		}
 		if(!oppsValidateRol.isEmpty()) {
-			OpportunityHelper.validateRoleInLoc(oppsValidateRol);
+			OpportunityTriggerHelper.validateRoleInLoc(oppsValidateRol);
 		}
 		if(!oppsOwnerChanged.isEmpty()) {
-			OpportunityHelper.checkNewOwner(oppsOwnerChanged);
+			OpportunityTriggerHelper.checkNewOwner(oppsOwnerChanged);
 		}
 		if(!oppsWithDNIChanged.isEmpty()) {
-			OpportunityHelper.updateDNIInAccount(oppsWithDNIChanged);
+			OpportunityTriggerHelper.updateDNIInAccount(oppsWithDNIChanged);
 		}
 		if(!oppsLocChanged.isEmpty()) {
-			OpportunityHelper.changeOganizadorInOpp(localidadIdsByOpp);
+			OpportunityTriggerHelper.changeOganizadorInOpp(localidadIdsByOpp);
 		}
 	}
 	public override void beforeDelete() {
@@ -131,14 +131,14 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 			opportunitiesByUserId.get(opp.OwnerId).add(new Opportunity(Id = opp.Id));
 		}
 		if (!opportunitiesByUserId.isEmpty()) {
-			OpportunityHelper.assignDelegacionFromUser(opportunitiesByUserId);
+			OpportunityTriggerHelper.assignDelegacionFromUser(opportunitiesByUserId);
 		}
 	}
 	public override void afterUpdate() {
 		List<Opportunity> oppsToActivateThePersonAccountList = new List<Opportunity>();
 		List<Opportunity> oppsToUpdateRTIndvCorp = new List<Opportunity>();
 		List<Id> oppsToUpdateRTIndividuos = new List<Id>();
-		OpportunityHelper.validateSubestadoDDJJ(lNew, mOld);
+		OpportunityTriggerHelper.validateSubestadoDDJJ(lNew, mOld);
 		for(Opportunity opp : lNew){
 			if(opp.StageName == 'Cerrada ganada'
 				&& opp.StageName != mOld.get(opp.Id).StageName){
@@ -160,13 +160,13 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 			}
 		}
 		if(!oppsToUpdateRTIndvCorp.isEmpty()) {
-			OpportunityHelper.createAccWhenOpportunityIndividualCorporativoChangedToClosedWin(oppsToUpdateRTIndvCorp);
+			OpportunityTriggerHelper.createAccWhenOpportunityIndividualCorporativoChangedToClosedWin(oppsToUpdateRTIndvCorp);
 		}
 		if(!oppsToUpdateRTIndividuos.isEmpty()){
-			OpportunityHelper.createGrupoFamiliarWhenOpportunityIndividuosChangedToClosedWin(oppsToUpdateRTIndividuos,null);
+			OpportunityTriggerHelper.createGrupoFamiliarWhenOpportunityIndividuosChangedToClosedWin(oppsToUpdateRTIndividuos,null);
 		}
 		if(!oppsToActivateThePersonAccountList.isEmpty()) {
-			OpportunityHelper.activateThePersonAccounts(oppsToActivateThePersonAccountList);
+			OpportunityTriggerHelper.activatePersonAccounts(oppsToActivateThePersonAccountList);
 		}
 	}
 	public override void afterDelete() {
