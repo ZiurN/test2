@@ -119,12 +119,12 @@
     <decisions>
         <name>Crear_Caso</name>
         <label>¿Crear Caso?</label>
-        <locationX>600</locationX>
+        <locationX>468</locationX>
         <locationY>335</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>Si_Crear_Caso</name>
-            <conditionLogic>1 AND 2 AND 3 AND (4 OR 5 OR 6 OR 7)</conditionLogic>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.CaseId</leftValueReference>
                 <operator>IsNull</operator>
@@ -146,41 +146,13 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>$Record.MessagingEndUser.Name</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>whatsapp:+5493416764830</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.MessagingEndUser.Name</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>whatsapp:+5493413142283</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.MessagingEndUser.Name</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>whatsapp:+5493416864999</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.MessagingEndUser.Name</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>whatsapp:+5491158649293</stringValue>
-                </rightValue>
-            </conditions>
             <connector>
                 <targetReference>Obtener_Datos_CDC</targetReference>
             </connector>
             <label>Si</label>
         </rules>
     </decisions>
-    <description>Versión de prueba para producción</description>
+    <description>Versión de prueba para producción sin teléfonos de prueba</description>
     <formulas>
         <name>ReturnNumber</name>
         <dataType>String</dataType>
@@ -326,7 +298,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>474</locationX>
+        <locationX>342</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Crear_Caso</targetReference>
