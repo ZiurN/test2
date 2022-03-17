@@ -71,6 +71,10 @@
                 <behavior>Readonly</behavior>
                 <field>Viene_de_Cuentas_a_Cobrar__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Viene_de_Aportes__c</field>
+            </layoutItems>            
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
