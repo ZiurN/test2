@@ -1316,7 +1316,7 @@
             <label>Caso que viene de Cuentas a Cobrar</label>
         </rules>
     </decisions>
-    <description>V14-Prueba 443</description>
+    <description>Modificación al PB para visualizar casos cola Aportes - JIRA DES 1206</description>
     <formulas>
         <processMetadataValues>
             <name>originalFormula</name>
@@ -1324,7 +1324,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Aportes.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_15_myRule_14_A1_2773412694</name>
+        <name>formula_15_myRule_14_A1_3233747569</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Aportes.Id_de_cola__c}</expression>
     </formulas>
@@ -1335,7 +1335,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Cuentas_a_cobrar.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_18_myRule_17_A1_1546185044</name>
+        <name>formula_18_myRule_17_A1_1393943805</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Cuentas_a_cobrar.Id_de_cola__c}</expression>
     </formulas>
@@ -1346,7 +1346,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Reintegros.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_21_myRule_20_A10_8412729440</name>
+        <name>formula_21_myRule_20_A10_0563614684</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Reintegros.Id_de_cola__c}</expression>
     </formulas>
@@ -1357,7 +1357,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Medicacion_alto_costo.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_22_myRule_20_A9_8107034189</name>
+        <name>formula_22_myRule_20_A9_8220341932</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Medicacion_alto_costo.Id_de_cola__c}</expression>
     </formulas>
@@ -1368,7 +1368,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Programas.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_23_myRule_20_A8_5289314095</name>
+        <name>formula_23_myRule_20_A8_7092243602</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Programas.Id_de_cola__c}</expression>
     </formulas>
@@ -1379,7 +1379,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Tramites_con_material.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_24_myRule_20_A7_6664193964</name>
+        <name>formula_24_myRule_20_A7_4172470514</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Tramites_con_material.Id_de_cola__c}</expression>
     </formulas>
@@ -1390,7 +1390,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Oxigenoterapia.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_25_myRule_20_A6_3554126572</name>
+        <name>formula_25_myRule_20_A6_8672190931</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Oxigenoterapia.Id_de_cola__c}</expression>
     </formulas>
@@ -1401,7 +1401,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.IDOM.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_26_myRule_20_A5_8858307650</name>
+        <name>formula_26_myRule_20_A5_0859549071</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.IDOM.Id_de_cola__c}</expression>
     </formulas>
@@ -1412,7 +1412,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Fertilidad.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_27_myRule_20_A4_0112628572</name>
+        <name>formula_27_myRule_20_A4_8488186014</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Fertilidad.Id_de_cola__c}</expression>
     </formulas>
@@ -1423,7 +1423,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Falseamiento_DDJJ.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_28_myRule_20_A3_7715407197</name>
+        <name>formula_28_myRule_20_A3_7259854984</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Falseamiento_DDJJ.Id_de_cola__c}</expression>
     </formulas>
@@ -1434,7 +1434,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Discapacidad.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_29_myRule_20_A2_8412286244</name>
+        <name>formula_29_myRule_20_A2_3548422780</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Discapacidad.Id_de_cola__c}</expression>
     </formulas>
@@ -1445,7 +1445,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Emi_sin_material.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_30_myRule_20_A1_0896297150</name>
+        <name>formula_30_myRule_20_A1_8365446709</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Emi_sin_material.Id_de_cola__c}</expression>
     </formulas>
@@ -1456,7 +1456,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Administracion_de_la_venta.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_33_myRule_32_A1_6962865094</name>
+        <name>formula_33_myRule_32_A1_5192315373</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Administracion_de_la_venta.Id_de_cola__c}</expression>
     </formulas>
@@ -1467,7 +1467,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Servicios.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_36_myRule_35_A2_3177750829</name>
+        <name>formula_36_myRule_35_A2_2398635438</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Servicios.Id_de_cola__c}</expression>
     </formulas>
@@ -1478,7 +1478,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Liquidacion_de_prestaciones.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_37_myRule_35_A1_6584634700</name>
+        <name>formula_37_myRule_35_A1_5501293997</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Liquidacion_de_prestaciones.Id_de_cola__c}</expression>
     </formulas>
@@ -1489,7 +1489,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Front.Id_de_cola__c</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_44_myRule_43_A5_3043437619</name>
+        <name>formula_44_myRule_43_A5_9310467095</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Front.Id_de_cola__c}</expression>
     </formulas>
@@ -1500,7 +1500,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Front.Id_de_cola__c</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_45_myRule_43_A4_0985564517</name>
+        <name>formula_45_myRule_43_A4_7452767354</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Front.Id_de_cola__c}</expression>
     </formulas>
@@ -1511,7 +1511,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Front.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_46_myRule_43_A3_1406228371</name>
+        <name>formula_46_myRule_43_A3_9508541977</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Front.Id_de_cola__c}</expression>
     </formulas>
@@ -1522,7 +1522,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Legales.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_49_myRule_48_A5_5800854961</name>
+        <name>formula_49_myRule_48_A5_8444072392</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Legales.Id_de_cola__c}</expression>
     </formulas>
@@ -1533,7 +1533,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Legales.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_50_myRule_48_A4_1566436169</name>
+        <name>formula_50_myRule_48_A4_3289702836</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Legales.Id_de_cola__c}</expression>
     </formulas>
@@ -1544,7 +1544,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Tesoreria.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_51_myRule_48_A3_1787621157</name>
+        <name>formula_51_myRule_48_A3_9481879966</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Tesoreria.Id_de_cola__c}</expression>
     </formulas>
@@ -1555,7 +1555,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Adminsitracion_de_convenios_prestadores.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_52_myRule_48_A2_2428718568</name>
+        <name>formula_52_myRule_48_A2_3399422604</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Adminsitracion_de_convenios_prestadores.Id_de_cola__c}</expression>
     </formulas>
@@ -1566,7 +1566,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Adminsitracion_de_convenios_prestadores.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_53_myRule_48_A1_5307815762</name>
+        <name>formula_53_myRule_48_A1_9213208580</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Adminsitracion_de_convenios_prestadores.Id_de_cola__c}</expression>
     </formulas>
@@ -1577,7 +1577,7 @@
                 <stringValue>[Case].Id </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_56_myRule_55_A1_7031982250</name>
+        <name>formula_56_myRule_55_A1_0162313074</name>
         <dataType>String</dataType>
         <expression>{!myVariable_current.Id}</expression>
     </formulas>
@@ -1588,7 +1588,7 @@
                 <stringValue>$CustomMetadata.Tipo_de_registro__mdt.Falseamiento_DDJJ.idtipoderegistro__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_59_myRule_58_A1_6776426018</name>
+        <name>formula_59_myRule_58_A1_7178244876</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Tipo_de_registro__mdt.Falseamiento_DDJJ.idtipoderegistro__c}</expression>
     </formulas>
@@ -1599,7 +1599,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.CDC.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_66_myRule_65_A1_3698670371</name>
+        <name>formula_66_myRule_65_A1_7893151573</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.CDC.Id_de_cola__c}</expression>
     </formulas>
@@ -1610,7 +1610,7 @@
                 <stringValue>$CustomMetadata.Tipo_de_registro__mdt.caso_a_tipificar.idtipoderegistro__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_67_myRule_65_A1_0342881496</name>
+        <name>formula_67_myRule_65_A1_6230819147</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Tipo_de_registro__mdt.caso_a_tipificar.idtipoderegistro__c}</expression>
     </formulas>
@@ -1621,7 +1621,7 @@
                 <stringValue>&quot;Apellido&quot;</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_70_myRule_69_A1_2621651519</name>
+        <name>formula_70_myRule_69_A1_3773496580</name>
         <dataType>String</dataType>
         <expression>&quot;Apellido&quot;</expression>
     </formulas>
@@ -1632,7 +1632,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.CDC.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_71_myRule_69_A1_4894871653</name>
+        <name>formula_71_myRule_69_A1_2643968921</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.CDC.Id_de_cola__c}</expression>
     </formulas>
@@ -1643,7 +1643,7 @@
                 <stringValue>$CustomMetadata.Tipo_de_registro__mdt.Candidato_individual.idtipoderegistro__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_72_myRule_69_A1_5714212466</name>
+        <name>formula_72_myRule_69_A1_1054522593</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Tipo_de_registro__mdt.Candidato_individual.idtipoderegistro__c}</expression>
     </formulas>
@@ -1654,7 +1654,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Front.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_75_myRule_74_A1_5912311597</name>
+        <name>formula_75_myRule_74_A1_0911029570</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Front.Id_de_cola__c}</expression>
     </formulas>
@@ -1665,7 +1665,7 @@
                 <stringValue>NOW() </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_8_myRule_7_A1_3626476481</name>
+        <name>formula_8_myRule_7_A1_5711519615</name>
         <dataType>DateTime</dataType>
         <expression>NOW()</expression>
     </formulas>
@@ -2534,23 +2534,37 @@ OR(
         <processMetadataValues>
             <name>originalFormula</name>
             <value>
-                <stringValue>AND(
-ISCHANGED([Case].OwnerId ),
-[Case].Owner:Queue.DeveloperName = &quot;Cuentas_a_cobrar&quot;
-)
+                <stringValue>OR( 
+AND(
+ISCHANGED([Case].OwnerId),
+[Case].Owner:Queue.DeveloperName = &quot;Cuentas_a_cobrar&quot;,
+NOT([Case].Viene_de_Cuentas_a_Cobrar__c)
+),
+AND(
+ISCHANGED([Case].OwnerId),
+[Case].Owner:Queue.DeveloperName = &quot;Aportes&quot;,
+NOT([Case].Viene_de_Aportes__c )
+))
 </stringValue>
             </value>
         </processMetadataValues>
         <name>formula_myRule_93</name>
         <dataType>Boolean</dataType>
-        <expression>AND(
-ISCHANGED({!myVariable_current.OwnerId} ),
-{!myVariable_current.Owner:Queue.DeveloperName} = &quot;Cuentas_a_cobrar&quot;
-)</expression>
+        <expression>OR( 
+AND(
+ISCHANGED({!myVariable_current.OwnerId}),
+{!myVariable_current.Owner:Queue.DeveloperName} = &quot;Cuentas_a_cobrar&quot;,
+NOT({!myVariable_current.Viene_de_Cuentas_a_Cobrar__c})
+),
+AND(
+ISCHANGED({!myVariable_current.OwnerId}),
+{!myVariable_current.Owner:Queue.DeveloperName} = &quot;Aportes&quot;,
+NOT({!myVariable_current.Viene_de_Aportes__c} )
+))</expression>
     </formulas>
-    <interviewLabel>Automatizaciones_casos_consultas_y_reclamos-13_InterviewLabel</interviewLabel>
+    <interviewLabel>Automatizaciones_casos_consultas_y_reclamos-17_InterviewLabel</interviewLabel>
     <isTemplate>true</isTemplate>
-    <label>Automatizaciones casos consultas y reclamos</label>
+    <label>V15- Automatizaciones casos consultas y reclamos</label>
     <processMetadataValues>
         <name>ObjectType</name>
         <value>
@@ -2797,7 +2811,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>RecordTypeId</field>
             <value>
-                <elementReference>formula_59_myRule_58_A1_6776426018</elementReference>
+                <elementReference>formula_59_myRule_58_A1_7178244876</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -2972,7 +2986,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>LastName</field>
             <value>
-                <elementReference>formula_70_myRule_69_A1_2621651519</elementReference>
+                <elementReference>formula_70_myRule_69_A1_3773496580</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -3080,7 +3094,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_71_myRule_69_A1_4894871653</elementReference>
+                <elementReference>formula_71_myRule_69_A1_2643968921</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -3116,7 +3130,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>RecordTypeId</field>
             <value>
-                <elementReference>formula_72_myRule_69_A1_5714212466</elementReference>
+                <elementReference>formula_72_myRule_69_A1_1054522593</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -3751,7 +3765,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_15_myRule_14_A1_2773412694</elementReference>
+                <elementReference>formula_15_myRule_14_A1_3233747569</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -3824,6 +3838,42 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             <field>Tiempo_SLA__c</field>
             <value>
                 <stringValue>360</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Boolean</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Viene de Aportes</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Boolean</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Viene_de_Aportes__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </inputAssignments>
         <object>Case</object>
@@ -3904,7 +3954,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_18_myRule_17_A1_1546185044</elementReference>
+                <elementReference>formula_18_myRule_17_A1_1393943805</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -4193,7 +4243,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_30_myRule_20_A1_0896297150</elementReference>
+                <elementReference>formula_30_myRule_20_A1_8365446709</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -4323,7 +4373,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_21_myRule_20_A10_8412729440</elementReference>
+                <elementReference>formula_21_myRule_20_A10_0563614684</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -4456,7 +4506,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_29_myRule_20_A2_8412286244</elementReference>
+                <elementReference>formula_29_myRule_20_A2_3548422780</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -4589,7 +4639,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_28_myRule_20_A3_7715407197</elementReference>
+                <elementReference>formula_28_myRule_20_A3_7259854984</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -4722,7 +4772,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_27_myRule_20_A4_0112628572</elementReference>
+                <elementReference>formula_27_myRule_20_A4_8488186014</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -4855,7 +4905,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_26_myRule_20_A5_8858307650</elementReference>
+                <elementReference>formula_26_myRule_20_A5_0859549071</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -4988,7 +5038,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_25_myRule_20_A6_3554126572</elementReference>
+                <elementReference>formula_25_myRule_20_A6_8672190931</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -5121,7 +5171,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_24_myRule_20_A7_6664193964</elementReference>
+                <elementReference>formula_24_myRule_20_A7_4172470514</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -5254,7 +5304,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_23_myRule_20_A8_5289314095</elementReference>
+                <elementReference>formula_23_myRule_20_A8_7092243602</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -5387,7 +5437,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_22_myRule_20_A9_8107034189</elementReference>
+                <elementReference>formula_22_myRule_20_A9_8220341932</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -5504,7 +5554,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_33_myRule_32_A1_6962865094</elementReference>
+                <elementReference>formula_33_myRule_32_A1_5192315373</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -5709,7 +5759,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_37_myRule_35_A1_6584634700</elementReference>
+                <elementReference>formula_37_myRule_35_A1_5501293997</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -5911,7 +5961,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_36_myRule_35_A2_3177750829</elementReference>
+                <elementReference>formula_36_myRule_35_A2_2398635438</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -7377,7 +7427,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_46_myRule_43_A3_1406228371</elementReference>
+                <elementReference>formula_46_myRule_43_A3_9508541977</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -7631,7 +7681,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_45_myRule_43_A4_0985564517</elementReference>
+                <elementReference>formula_45_myRule_43_A4_7452767354</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -7833,7 +7883,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_44_myRule_43_A5_3043437619</elementReference>
+                <elementReference>formula_44_myRule_43_A5_9310467095</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -8038,7 +8088,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_53_myRule_48_A1_5307815762</elementReference>
+                <elementReference>formula_53_myRule_48_A1_9213208580</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -8243,7 +8293,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_52_myRule_48_A2_2428718568</elementReference>
+                <elementReference>formula_52_myRule_48_A2_3399422604</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -8448,7 +8498,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_51_myRule_48_A3_1787621157</elementReference>
+                <elementReference>formula_51_myRule_48_A3_9481879966</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -8689,7 +8739,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_50_myRule_48_A4_1566436169</elementReference>
+                <elementReference>formula_50_myRule_48_A4_3289702836</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -8891,7 +8941,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_49_myRule_48_A5_5800854961</elementReference>
+                <elementReference>formula_49_myRule_48_A5_8444072392</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -9008,7 +9058,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>Caso__c</field>
             <value>
-                <elementReference>formula_56_myRule_55_A1_7031982250</elementReference>
+                <elementReference>formula_56_myRule_55_A1_0162313074</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -9374,7 +9424,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_66_myRule_65_A1_3698670371</elementReference>
+                <elementReference>formula_66_myRule_65_A1_7893151573</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -9410,7 +9460,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>RecordTypeId</field>
             <value>
-                <elementReference>formula_67_myRule_65_A1_0342881496</elementReference>
+                <elementReference>formula_67_myRule_65_A1_6230819147</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -9530,7 +9580,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_75_myRule_74_A1_5912311597</elementReference>
+                <elementReference>formula_75_myRule_74_A1_0911029570</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
@@ -9782,7 +9832,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             </processMetadataValues>
             <field>CompletionDate</field>
             <value>
-                <elementReference>formula_8_myRule_7_A1_3626476481</elementReference>
+                <elementReference>formula_8_myRule_7_A1_5711519615</elementReference>
             </value>
         </inputAssignments>
         <object>CaseMilestone</object>
@@ -10244,7 +10294,7 @@ ISCHANGED({!myVariable_current.OwnerId} ),
         <processMetadataValues>
             <name>evaluationType</name>
             <value>
-                <stringValue>always</stringValue>
+                <stringValue>criteria</stringValue>
             </value>
         </processMetadataValues>
         <processMetadataValues>
@@ -10269,6 +10319,9 @@ ISCHANGED({!myVariable_current.OwnerId} ),
         <label>Flag Caso viene de Cuentas a Cobrar</label>
         <locationX>8800</locationX>
         <locationY>200</locationY>
+        <connector>
+            <targetReference>myRule_93_A2</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
@@ -10281,6 +10334,55 @@ ISCHANGED({!myVariable_current.OwnerId} ),
             <operator>EqualTo</operator>
             <value>
                 <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>inputDataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Propietario del caso</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>operatorDataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Propietario_del_caso__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Cuentas a cobrar</stringValue>
             </value>
         </filters>
         <inputAssignments>
@@ -10315,6 +10417,136 @@ ISCHANGED({!myVariable_current.OwnerId} ),
                 </value>
             </processMetadataValues>
             <field>Viene_de_Cuentas_a_Cobrar__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>criteria</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Case]</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_93_A2</name>
+        <label>Flag Caso viene de Aportes</label>
+        <locationX>8800</locationX>
+        <locationY>300</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>inputDataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Propietario del caso</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>operatorDataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Propietario_del_caso__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Aportes</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Boolean</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Viene de Aportes</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Boolean</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Viene_de_Aportes__c</field>
             <value>
                 <booleanValue>true</booleanValue>
             </value>
