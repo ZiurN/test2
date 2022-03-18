@@ -25,9 +25,9 @@
                 <stringValue>record</stringValue>
             </value>
         </processMetadataValues>
-        <name>myRule_63_A1</name>
+        <name>myRule_61_A1</name>
         <label>Expediente RES 078</label>
-        <locationX>6300</locationX>
+        <locationX>6100</locationX>
         <locationY>200</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
@@ -101,7 +101,7 @@
             </processMetadataValues>
             <name>recipientIds</name>
             <value>
-                <elementReference>myCollection_myRule_63_A1recipientIds</elementReference>
+                <elementReference>myCollection_myRule_61_A1recipientIds</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
@@ -124,14 +124,14 @@
                 <stringValue>reference</stringValue>
             </value>
         </processMetadataValues>
-        <name>myRule_87_A1</name>
+        <name>myRule_85_A1</name>
         <label>Notifica cambio de estado</label>
-        <locationX>8700</locationX>
+        <locationX>8500</locationX>
         <locationY>200</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
-            <targetReference>myDecision88</targetReference>
+            <targetReference>myDecision86</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -203,7 +203,7 @@
             </processMetadataValues>
             <name>recipientIds</name>
             <value>
-                <elementReference>myCollection_myRule_87_A1recipientIds</elementReference>
+                <elementReference>myCollection_myRule_85_A1recipientIds</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
@@ -226,14 +226,14 @@
                 <stringValue>reference</stringValue>
             </value>
         </processMetadataValues>
-        <name>myRule_89_A1</name>
+        <name>myRule_87_A1</name>
         <label>Notifica cambio de estado DDJJ</label>
-        <locationX>8800</locationX>
+        <locationX>8700</locationX>
         <locationY>200</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
-            <targetReference>myDecision90</targetReference>
+            <targetReference>myDecision88</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -305,25 +305,41 @@
             </processMetadataValues>
             <name>recipientIds</name>
             <value>
-                <elementReference>myCollection_myRule_89_A1recipientIds</elementReference>
+                <elementReference>myCollection_myRule_87_A1recipientIds</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
-    <apiVersion>50.0</apiVersion>
+    <apiVersion>54.0</apiVersion>
     <assignments>
-        <name>myAssignment_myRule_63_A1</name>
-        <label>myAssignment_myRule_63_A1</label>
+        <name>myAssignment_myRule_61_A1</name>
+        <label>myAssignment_myRule_61_A1</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignmentItems>
-            <assignToReference>myCollection_myRule_63_A1recipientIds</assignToReference>
+            <assignToReference>myCollection_myRule_61_A1recipientIds</assignToReference>
             <operator>Add</operator>
             <value>
                 <stringValue>00GV0000002QoInMAK</stringValue>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>myRule_63_A1</targetReference>
+            <targetReference>myRule_61_A1</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>myAssignment_myRule_85_A1</name>
+        <label>myAssignment_myRule_85_A1</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>myCollection_myRule_85_A1recipientIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>myVariable_current.Usuario__r.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>myRule_85_A1</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -340,22 +356,6 @@
         </assignmentItems>
         <connector>
             <targetReference>myRule_87_A1</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>myAssignment_myRule_89_A1</name>
-        <label>myAssignment_myRule_89_A1</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>myCollection_myRule_89_A1recipientIds</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>myVariable_current.Usuario__r.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>myRule_89_A1</targetReference>
         </connector>
     </assignments>
     <decisions>
@@ -386,7 +386,7 @@
             <connector>
                 <targetReference>myRule_1_A1</targetReference>
             </connector>
-            <label>Nuevo caso de Whatsapp</label>
+            <label>FACTURA ONLINE</label>
         </rules>
     </decisions>
     <decisions>
@@ -401,7 +401,7 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>myDecision13</targetReference>
+            <targetReference>myDecision14</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
@@ -417,7 +417,7 @@
             <connector>
                 <targetReference>myRule_12_A1</targetReference>
             </connector>
-            <label>Consultas prioridad alta, media alta</label>
+            <label>Reclamos tipo aportes</label>
         </rules>
     </decisions>
     <decisions>
@@ -427,28 +427,28 @@
                 <numberValue>6.0</numberValue>
             </value>
         </processMetadataValues>
-        <name>myDecision13</name>
-        <label>myDecision13</label>
+        <name>myDecision14</name>
+        <label>myDecision14</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>myDecision16</targetReference>
+            <targetReference>myDecision17</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>myRule_14</name>
+            <name>myRule_15</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>formula_myRule_14</leftValueReference>
+                <leftValueReference>formula_myRule_15</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_14_A1</targetReference>
+                <targetReference>myRule_15_A1</targetReference>
             </connector>
-            <label>Reclamos tipo aportes</label>
+            <label>Reclamos de Cuentas a Cobrar mismo SLA y prioridad</label>
         </rules>
     </decisions>
     <decisions>
@@ -458,57 +458,26 @@
                 <numberValue>7.0</numberValue>
             </value>
         </processMetadataValues>
-        <name>myDecision16</name>
-        <label>myDecision16</label>
+        <name>myDecision17</name>
+        <label>myDecision17</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>myDecision19</targetReference>
+            <targetReference>myDecision29</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>myRule_17</name>
+            <name>myRule_18</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>formula_myRule_17</leftValueReference>
+                <leftValueReference>formula_myRule_18</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_17_A1</targetReference>
-            </connector>
-            <label>Reclamos de Cuentas a Cobrar mismo SLA y prioridad</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <processMetadataValues>
-            <name>index</name>
-            <value>
-                <numberValue>8.0</numberValue>
-            </value>
-        </processMetadataValues>
-        <name>myDecision19</name>
-        <label>myDecision19</label>
-        <locationX>50</locationX>
-        <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>myDecision31</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>default</defaultConnectorLabel>
-        <rules>
-            <name>myRule_20</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>formula_myRule_20</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myRule_20_A1</targetReference>
+                <targetReference>myRule_18_A1</targetReference>
             </connector>
             <label>Derivan reclamo o consulta a celula</label>
         </rules>
@@ -541,7 +510,38 @@
             <connector>
                 <targetReference>myRule_3_A1</targetReference>
             </connector>
-            <label>FACTURA ONLINE</label>
+            <label>FACTURA PAPEL</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>8.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision29</name>
+        <label>myDecision29</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision32</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_30</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_30</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_30_A1</targetReference>
+            </connector>
+            <label>Reclamos de Administracion ventas mismo SLA y prioridad</label>
         </rules>
     </decisions>
     <decisions>
@@ -551,28 +551,28 @@
                 <numberValue>9.0</numberValue>
             </value>
         </processMetadataValues>
-        <name>myDecision31</name>
-        <label>myDecision31</label>
+        <name>myDecision32</name>
+        <label>myDecision32</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>myDecision34</targetReference>
+            <targetReference>myDecision36</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>myRule_32</name>
+            <name>myRule_33</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>formula_myRule_32</leftValueReference>
+                <leftValueReference>formula_myRule_33</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_32_A1</targetReference>
+                <targetReference>myRule_33_A1</targetReference>
             </connector>
-            <label>Reclamos de Administracion ventas mismo SLA y prioridad</label>
+            <label>Reclamos Tipo Copago</label>
         </rules>
     </decisions>
     <decisions>
@@ -582,8 +582,8 @@
                 <numberValue>10.0</numberValue>
             </value>
         </processMetadataValues>
-        <name>myDecision34</name>
-        <label>myDecision34</label>
+        <name>myDecision36</name>
+        <label>myDecision36</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
@@ -591,19 +591,19 @@
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>myRule_35</name>
+            <name>myRule_37</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>formula_myRule_35</leftValueReference>
+                <leftValueReference>formula_myRule_37</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_35_A1</targetReference>
+                <targetReference>myRule_37_A1</targetReference>
             </connector>
-            <label>Reclamos Tipo Copago</label>
+            <label>Reclamos asignación cola manual</label>
         </rules>
     </decisions>
     <decisions>
@@ -634,7 +634,7 @@
             <connector>
                 <targetReference>myRule_39_A1</targetReference>
             </connector>
-            <label>Reclamos asignación cola manual</label>
+            <label>Reclamos sin SLA</label>
         </rules>
     </decisions>
     <decisions>
@@ -649,7 +649,7 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>myDecision6</targetReference>
+            <targetReference>myDecision7</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
@@ -665,7 +665,7 @@
             <connector>
                 <targetReference>myRule_5_A1</targetReference>
             </connector>
-            <label>FACTURA PAPEL</label>
+            <label>Cerrar SLA Asignación de caso</label>
         </rules>
     </decisions>
     <decisions>
@@ -680,7 +680,7 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>myDecision42</targetReference>
+            <targetReference>myDecision45</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
@@ -696,7 +696,7 @@
             <connector>
                 <targetReference>myRule_41_A1</targetReference>
             </connector>
-            <label>Reclamos sin SLA</label>
+            <label>Reclamos Resolucion Front</label>
         </rules>
     </decisions>
     <decisions>
@@ -706,28 +706,28 @@
                 <numberValue>13.0</numberValue>
             </value>
         </processMetadataValues>
-        <name>myDecision42</name>
-        <label>myDecision42</label>
+        <name>myDecision45</name>
+        <label>myDecision45</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>myDecision47</targetReference>
+            <targetReference>myDecision52</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>myRule_43</name>
+            <name>myRule_46</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>formula_myRule_43</leftValueReference>
+                <leftValueReference>formula_myRule_46</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_43_A1</targetReference>
+                <targetReference>myRule_46_A1</targetReference>
             </connector>
-            <label>Reclamos Resolucion Front</label>
+            <label>Reclamos cola Admin convenios, legales, sistemas tesoreria</label>
         </rules>
     </decisions>
     <decisions>
@@ -737,28 +737,28 @@
                 <numberValue>14.0</numberValue>
             </value>
         </processMetadataValues>
-        <name>myDecision47</name>
-        <label>myDecision47</label>
+        <name>myDecision52</name>
+        <label>myDecision52</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>myDecision54</targetReference>
+            <targetReference>myDecision55</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>myRule_48</name>
+            <name>myRule_53</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>formula_myRule_48</leftValueReference>
+                <leftValueReference>formula_myRule_53</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_48_A1</targetReference>
+                <targetReference>myRule_53_A1</targetReference>
             </connector>
-            <label>Reclamos cola Admin convenios, legales, sistemas tesoreria</label>
+            <label>Cuando se crea un informe estrategico</label>
         </rules>
     </decisions>
     <decisions>
@@ -768,28 +768,28 @@
                 <numberValue>15.0</numberValue>
             </value>
         </processMetadataValues>
-        <name>myDecision54</name>
-        <label>myDecision54</label>
+        <name>myDecision55</name>
+        <label>myDecision55</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>myDecision57</targetReference>
+            <targetReference>myDecision58</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>myRule_55</name>
+            <name>myRule_56</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>formula_myRule_55</leftValueReference>
+                <leftValueReference>formula_myRule_56</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_55_A1</targetReference>
+                <targetReference>myRule_56_A1</targetReference>
             </connector>
-            <label>Cuando se crea un informe estrategico</label>
+            <label>Preexistencia true</label>
         </rules>
     </decisions>
     <decisions>
@@ -799,8 +799,8 @@
                 <numberValue>16.0</numberValue>
             </value>
         </processMetadataValues>
-        <name>myDecision57</name>
-        <label>myDecision57</label>
+        <name>myDecision58</name>
+        <label>myDecision58</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
@@ -808,50 +808,19 @@
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>myRule_58</name>
+            <name>myRule_59</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>formula_myRule_58</leftValueReference>
+                <leftValueReference>formula_myRule_59</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_58_A1</targetReference>
+                <targetReference>myRule_59_A1</targetReference>
             </connector>
-            <label>Preexistencia true</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <processMetadataValues>
-            <name>index</name>
-            <value>
-                <numberValue>3.0</numberValue>
-            </value>
-        </processMetadataValues>
-        <name>myDecision6</name>
-        <label>myDecision6</label>
-        <locationX>50</locationX>
-        <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>myDecision9</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>default</defaultConnectorLabel>
-        <rules>
-            <name>myRule_7</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>formula_myRule_7</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myRule_7_A1</targetReference>
-            </connector>
-            <label>Cerrar SLA Asignación de caso</label>
+            <label>Contador prexi</label>
         </rules>
     </decisions>
     <decisions>
@@ -880,9 +849,9 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_61_A1</targetReference>
+                <targetReference>myAssignment_myRule_61_A1</targetReference>
             </connector>
-            <label>Contador prexi</label>
+            <label>Cambio de Reclamo a EXP Legal</label>
         </rules>
     </decisions>
     <decisions>
@@ -897,7 +866,7 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>myDecision64</targetReference>
+            <targetReference>myDecision66</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
@@ -911,9 +880,9 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myAssignment_myRule_63_A1</targetReference>
+                <targetReference>myRule_63_A1</targetReference>
             </connector>
-            <label>Cambio de Reclamo a EXP Legal</label>
+            <label>Casos redes sociales</label>
         </rules>
     </decisions>
     <decisions>
@@ -923,28 +892,59 @@
                 <numberValue>19.0</numberValue>
             </value>
         </processMetadataValues>
-        <name>myDecision64</name>
-        <label>myDecision64</label>
+        <name>myDecision66</name>
+        <label>myDecision66</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>myDecision68</targetReference>
+            <targetReference>myDecision71</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>myRule_65</name>
+            <name>myRule_67</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>formula_myRule_65</leftValueReference>
+                <leftValueReference>formula_myRule_67</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_65_A1</targetReference>
+                <targetReference>myRule_67_A1</targetReference>
             </connector>
-            <label>Casos redes sociales</label>
+            <label>Crear candidato casos por chat</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>3.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision7</name>
+        <label>myDecision7</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision9</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_8</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_8</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_8_A1</targetReference>
+            </connector>
+            <label>Consultas Tipos prioridad maxima</label>
         </rules>
     </decisions>
     <decisions>
@@ -954,28 +954,28 @@
                 <numberValue>20.0</numberValue>
             </value>
         </processMetadataValues>
-        <name>myDecision68</name>
-        <label>myDecision68</label>
+        <name>myDecision71</name>
+        <label>myDecision71</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>myDecision73</targetReference>
+            <targetReference>myDecision74</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>myRule_69</name>
+            <name>myRule_72</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>formula_myRule_69</leftValueReference>
+                <leftValueReference>formula_myRule_72</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_69_A1</targetReference>
+                <targetReference>myRule_72_A1</targetReference>
             </connector>
-            <label>Crear candidato casos por chat</label>
+            <label>Si son solicitudes y el creador es front</label>
         </rules>
     </decisions>
     <decisions>
@@ -985,8 +985,8 @@
                 <numberValue>21.0</numberValue>
             </value>
         </processMetadataValues>
-        <name>myDecision73</name>
-        <label>myDecision73</label>
+        <name>myDecision74</name>
+        <label>myDecision74</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
@@ -994,19 +994,19 @@
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>myRule_74</name>
+            <name>myRule_75</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>formula_myRule_74</leftValueReference>
+                <leftValueReference>formula_myRule_75</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_74_A1</targetReference>
+                <targetReference>myRule_75_A1</targetReference>
             </connector>
-            <label>Si son solicitudes y el creador es front</label>
+            <label>SLA 16 solicitudes</label>
         </rules>
     </decisions>
     <decisions>
@@ -1037,7 +1037,7 @@
             <connector>
                 <targetReference>myRule_77_A1</targetReference>
             </connector>
-            <label>SLA 16 solicitudes</label>
+            <label>Automatizar responsable</label>
         </rules>
     </decisions>
     <decisions>
@@ -1068,7 +1068,7 @@
             <connector>
                 <targetReference>myRule_79_A1</targetReference>
             </connector>
-            <label>Automatizar responsable</label>
+            <label>Si el tipo de registro es Alta familiar o solicitud de despegue</label>
         </rules>
     </decisions>
     <decisions>
@@ -1099,7 +1099,7 @@
             <connector>
                 <targetReference>myRule_81_A1</targetReference>
             </connector>
-            <label>Si el tipo de registro es Alta familiar o solicitud de despegue</label>
+            <label>Se se completa empleador</label>
         </rules>
     </decisions>
     <decisions>
@@ -1130,7 +1130,7 @@
             <connector>
                 <targetReference>myRule_83_A1</targetReference>
             </connector>
-            <label>Se se completa empleador</label>
+            <label>Si se completa empleador alta familiar</label>
         </rules>
     </decisions>
     <decisions>
@@ -1159,9 +1159,9 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_85_A1</targetReference>
+                <targetReference>myAssignment_myRule_85_A1</targetReference>
             </connector>
-            <label>Si se completa empleador alta familiar</label>
+            <label>Notificación cambio de estado</label>
         </rules>
     </decisions>
     <decisions>
@@ -1192,7 +1192,7 @@
             <connector>
                 <targetReference>myAssignment_myRule_87_A1</targetReference>
             </connector>
-            <label>Notificación cambio de estado</label>
+            <label>Notificación cambio de estado DDJJ</label>
         </rules>
     </decisions>
     <decisions>
@@ -1221,9 +1221,9 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myAssignment_myRule_89_A1</targetReference>
+                <targetReference>myRule_89_A1</targetReference>
             </connector>
-            <label>Notificación cambio de estado DDJJ</label>
+            <label>Si es bebe sin DNI</label>
         </rules>
     </decisions>
     <decisions>
@@ -1254,7 +1254,7 @@
             <connector>
                 <targetReference>myRule_10_A1</targetReference>
             </connector>
-            <label>Consultas Tipos prioridad maxima</label>
+            <label>Consultas prioridad alta, media alta</label>
         </rules>
     </decisions>
     <decisions>
@@ -1268,9 +1268,6 @@
         <label>myDecision90</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>myDecision92</targetReference>
-        </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_91</name>
@@ -1285,38 +1282,10 @@
             <connector>
                 <targetReference>myRule_91_A1</targetReference>
             </connector>
-            <label>Si es bebe sin DNI</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <processMetadataValues>
-            <name>index</name>
-            <value>
-                <numberValue>30.0</numberValue>
-            </value>
-        </processMetadataValues>
-        <name>myDecision92</name>
-        <label>myDecision92</label>
-        <locationX>50</locationX>
-        <locationY>0</locationY>
-        <defaultConnectorLabel>default</defaultConnectorLabel>
-        <rules>
-            <name>myRule_93</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>formula_myRule_93</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myRule_93_A1</targetReference>
-            </connector>
             <label>Caso que viene de Cuentas a Cobrar</label>
         </rules>
     </decisions>
-    <description>Modificación al PB para visualizar casos cola Aportes - JIRA DES 1206</description>
+    <description>Automatizaciones de casos consultas y reclamos para prioridad y SLA - Eliminada Lógica de WhatsApp</description>
     <formulas>
         <processMetadataValues>
             <name>originalFormula</name>
@@ -1324,7 +1293,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Aportes.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_15_myRule_14_A1_3233747569</name>
+        <name>formula_13_myRule_12_A1_7643964915</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Aportes.Id_de_cola__c}</expression>
     </formulas>
@@ -1335,7 +1304,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Cuentas_a_cobrar.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_18_myRule_17_A1_1393943805</name>
+        <name>formula_16_myRule_15_A1_1899989081</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Cuentas_a_cobrar.Id_de_cola__c}</expression>
     </formulas>
@@ -1346,7 +1315,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Reintegros.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_21_myRule_20_A10_0563614684</name>
+        <name>formula_19_myRule_18_A10_9406274587</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Reintegros.Id_de_cola__c}</expression>
     </formulas>
@@ -1357,7 +1326,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Medicacion_alto_costo.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_22_myRule_20_A9_8220341932</name>
+        <name>formula_20_myRule_18_A9_5171236925</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Medicacion_alto_costo.Id_de_cola__c}</expression>
     </formulas>
@@ -1368,7 +1337,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Programas.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_23_myRule_20_A8_7092243602</name>
+        <name>formula_21_myRule_18_A8_4815171832</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Programas.Id_de_cola__c}</expression>
     </formulas>
@@ -1379,7 +1348,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Tramites_con_material.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_24_myRule_20_A7_4172470514</name>
+        <name>formula_22_myRule_18_A7_2031608834</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Tramites_con_material.Id_de_cola__c}</expression>
     </formulas>
@@ -1390,7 +1359,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Oxigenoterapia.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_25_myRule_20_A6_8672190931</name>
+        <name>formula_23_myRule_18_A6_5260717552</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Oxigenoterapia.Id_de_cola__c}</expression>
     </formulas>
@@ -1401,7 +1370,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.IDOM.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_26_myRule_20_A5_0859549071</name>
+        <name>formula_24_myRule_18_A5_6401661375</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.IDOM.Id_de_cola__c}</expression>
     </formulas>
@@ -1412,7 +1381,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Fertilidad.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_27_myRule_20_A4_8488186014</name>
+        <name>formula_25_myRule_18_A4_4078158911</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Fertilidad.Id_de_cola__c}</expression>
     </formulas>
@@ -1423,7 +1392,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Falseamiento_DDJJ.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_28_myRule_20_A3_7259854984</name>
+        <name>formula_26_myRule_18_A3_3323066219</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Falseamiento_DDJJ.Id_de_cola__c}</expression>
     </formulas>
@@ -1434,7 +1403,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Discapacidad.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_29_myRule_20_A2_3548422780</name>
+        <name>formula_27_myRule_18_A2_2483399742</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Discapacidad.Id_de_cola__c}</expression>
     </formulas>
@@ -1445,7 +1414,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Emi_sin_material.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_30_myRule_20_A1_8365446709</name>
+        <name>formula_28_myRule_18_A1_4954141799</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Emi_sin_material.Id_de_cola__c}</expression>
     </formulas>
@@ -1456,7 +1425,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Administracion_de_la_venta.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_33_myRule_32_A1_5192315373</name>
+        <name>formula_31_myRule_30_A1_8007719566</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Administracion_de_la_venta.Id_de_cola__c}</expression>
     </formulas>
@@ -1467,7 +1436,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Servicios.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_36_myRule_35_A2_2398635438</name>
+        <name>formula_34_myRule_33_A2_4226837160</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Servicios.Id_de_cola__c}</expression>
     </formulas>
@@ -1478,7 +1447,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Liquidacion_de_prestaciones.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_37_myRule_35_A1_5501293997</name>
+        <name>formula_35_myRule_33_A1_6268659941</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Liquidacion_de_prestaciones.Id_de_cola__c}</expression>
     </formulas>
@@ -1489,7 +1458,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Front.Id_de_cola__c</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_44_myRule_43_A5_9310467095</name>
+        <name>formula_42_myRule_41_A5_7611364956</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Front.Id_de_cola__c}</expression>
     </formulas>
@@ -1500,7 +1469,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Front.Id_de_cola__c</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_45_myRule_43_A4_7452767354</name>
+        <name>formula_43_myRule_41_A4_4508123664</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Front.Id_de_cola__c}</expression>
     </formulas>
@@ -1511,7 +1480,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Front.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_46_myRule_43_A3_9508541977</name>
+        <name>formula_44_myRule_41_A3_7445469423</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Front.Id_de_cola__c}</expression>
     </formulas>
@@ -1522,7 +1491,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Legales.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_49_myRule_48_A5_8444072392</name>
+        <name>formula_47_myRule_46_A5_0955058849</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Legales.Id_de_cola__c}</expression>
     </formulas>
@@ -1533,7 +1502,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Legales.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_50_myRule_48_A4_3289702836</name>
+        <name>formula_48_myRule_46_A4_3594620053</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Legales.Id_de_cola__c}</expression>
     </formulas>
@@ -1544,7 +1513,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Tesoreria.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_51_myRule_48_A3_9481879966</name>
+        <name>formula_49_myRule_46_A3_4763616359</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Tesoreria.Id_de_cola__c}</expression>
     </formulas>
@@ -1555,7 +1524,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Adminsitracion_de_convenios_prestadores.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_52_myRule_48_A2_3399422604</name>
+        <name>formula_50_myRule_46_A2_6692261816</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Adminsitracion_de_convenios_prestadores.Id_de_cola__c}</expression>
     </formulas>
@@ -1566,7 +1535,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Adminsitracion_de_convenios_prestadores.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_53_myRule_48_A1_9213208580</name>
+        <name>formula_51_myRule_46_A1_9851473291</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Adminsitracion_de_convenios_prestadores.Id_de_cola__c}</expression>
     </formulas>
@@ -1577,7 +1546,7 @@
                 <stringValue>[Case].Id </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_56_myRule_55_A1_0162313074</name>
+        <name>formula_54_myRule_53_A1_6254112656</name>
         <dataType>String</dataType>
         <expression>{!myVariable_current.Id}</expression>
     </formulas>
@@ -1588,7 +1557,7 @@
                 <stringValue>$CustomMetadata.Tipo_de_registro__mdt.Falseamiento_DDJJ.idtipoderegistro__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_59_myRule_58_A1_7178244876</name>
+        <name>formula_57_myRule_56_A1_4883721802</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Tipo_de_registro__mdt.Falseamiento_DDJJ.idtipoderegistro__c}</expression>
     </formulas>
@@ -1599,7 +1568,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.CDC.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_66_myRule_65_A1_7893151573</name>
+        <name>formula_64_myRule_63_A1_6178926577</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.CDC.Id_de_cola__c}</expression>
     </formulas>
@@ -1610,7 +1579,7 @@
                 <stringValue>$CustomMetadata.Tipo_de_registro__mdt.caso_a_tipificar.idtipoderegistro__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_67_myRule_65_A1_6230819147</name>
+        <name>formula_65_myRule_63_A1_6440872135</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Tipo_de_registro__mdt.caso_a_tipificar.idtipoderegistro__c}</expression>
     </formulas>
@@ -1621,7 +1590,7 @@
                 <stringValue>&quot;Apellido&quot;</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_70_myRule_69_A1_3773496580</name>
+        <name>formula_68_myRule_67_A1_0221502601</name>
         <dataType>String</dataType>
         <expression>&quot;Apellido&quot;</expression>
     </formulas>
@@ -1632,9 +1601,20 @@
                 <stringValue>$CustomMetadata.Cola__mdt.CDC.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_71_myRule_69_A1_2643968921</name>
+        <name>formula_69_myRule_67_A1_8788937393</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.CDC.Id_de_cola__c}</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>NOW() </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_6_myRule_5_A1_1726882839</name>
+        <dataType>DateTime</dataType>
+        <expression>NOW()</expression>
     </formulas>
     <formulas>
         <processMetadataValues>
@@ -1643,7 +1623,7 @@
                 <stringValue>$CustomMetadata.Tipo_de_registro__mdt.Candidato_individual.idtipoderegistro__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_72_myRule_69_A1_1054522593</name>
+        <name>formula_70_myRule_67_A1_6566935024</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Tipo_de_registro__mdt.Candidato_individual.idtipoderegistro__c}</expression>
     </formulas>
@@ -1654,7 +1634,7 @@
                 <stringValue>$CustomMetadata.Cola__mdt.Front.Id_de_cola__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_75_myRule_74_A1_0911029570</name>
+        <name>formula_73_myRule_72_A1_2810228014</name>
         <dataType>String</dataType>
         <expression>{!$CustomMetadata.Cola__mdt.Front.Id_de_cola__c}</expression>
     </formulas>
@@ -1662,80 +1642,21 @@
         <processMetadataValues>
             <name>originalFormula</name>
             <value>
-                <stringValue>NOW() </stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_8_myRule_7_A1_5711519615</name>
-        <dataType>DateTime</dataType>
-        <expression>NOW()</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
                 <stringValue>AND(
-ISNEW(),
-ISPICKVAL([Case].Origin , &quot;WhatsApp Automatico&quot;),
-NOT(ISBLANK([Case].Sesion_de_Mensajeria__c ))
-)
-</stringValue>
+[Case].RecordType.Name  = &quot;Consultas&quot;,
+ISPICKVAL([Case].Type,&quot;Factura en Papel&quot;),
+ISPICKVAL([Case].Envio_de_recibo__c ,&quot;Factura online&quot;)
+
+)</stringValue>
             </value>
         </processMetadataValues>
         <name>formula_myRule_1</name>
         <dataType>Boolean</dataType>
         <expression>AND(
-ISNEW(),
-ISPICKVAL({!myVariable_current.Origin} , &quot;WhatsApp Automatico&quot;),
-NOT(ISBLANK({!myVariable_current.Sesion_de_Mensajeria__c} ))
-)</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>AND(
-        OR( 
-                 ISNEW(),
-                 ISCHANGED([Case].RecordTypeId)),
-                 [Case].RecordType.DeveloperName = &quot;Consultas&quot;,
+{!myVariable_current.RecordType.Name}  = &quot;Consultas&quot;,
+ISPICKVAL({!myVariable_current.Type},&quot;Factura en Papel&quot;),
+ISPICKVAL({!myVariable_current.Envio_de_recibo__c} ,&quot;Factura online&quot;)
 
-OR(
-        ISPICKVAL([Case].Type,&quot;Validacion en prestadores&quot;),
-        ISPICKVAL([Case].Type,&quot;Factura en Papel&quot;),
-        ISPICKVAL([Case].Type,&quot;Estado de Cuenta&quot;),
-        ISPICKVAL([Case].Type,&quot;Consulta estado de tramite&quot;),
-        ISPICKVAL([Case].Type,&quot;Cartilla&quot;),
-        ISPICKVAL([Case].Type,&quot;Credenciales&quot;),
-        ISPICKVAL([Case].Type,&quot;Copagos&quot;),
-        ISPICKVAL([Case].Type,&quot;Cobertura de plan&quot;),
-        ISPICKVAL([Case].Type,&quot;Asesoramiento administrativo&quot;),
-        ISPICKVAL([Case].Type,&quot;Actualiza deuda&quot;),
-        ISPICKVAL([Case].Type,&quot;Autorizaciones CDC&quot;),
-        ISPICKVAL([Case].Type,&quot;Pagos proveedores&quot;))
-)</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_myRule_10</name>
-        <dataType>Boolean</dataType>
-        <expression>AND(
-        OR( 
-                 ISNEW(),
-                 ISCHANGED({!myVariable_current.RecordTypeId})),
-                 {!myVariable_current.RecordType.DeveloperName} = &quot;Consultas&quot;,
-
-OR(
-        ISPICKVAL({!myVariable_current.Type},&quot;Validacion en prestadores&quot;),
-        ISPICKVAL({!myVariable_current.Type},&quot;Factura en Papel&quot;),
-        ISPICKVAL({!myVariable_current.Type},&quot;Estado de Cuenta&quot;),
-        ISPICKVAL({!myVariable_current.Type},&quot;Consulta estado de tramite&quot;),
-        ISPICKVAL({!myVariable_current.Type},&quot;Cartilla&quot;),
-        ISPICKVAL({!myVariable_current.Type},&quot;Credenciales&quot;),
-        ISPICKVAL({!myVariable_current.Type},&quot;Copagos&quot;),
-        ISPICKVAL({!myVariable_current.Type},&quot;Cobertura de plan&quot;),
-        ISPICKVAL({!myVariable_current.Type},&quot;Asesoramiento administrativo&quot;),
-        ISPICKVAL({!myVariable_current.Type},&quot;Actualiza deuda&quot;),
-        ISPICKVAL({!myVariable_current.Type},&quot;Autorizaciones CDC&quot;),
-        ISPICKVAL({!myVariable_current.Type},&quot;Pagos proveedores&quot;))
 )</expression>
     </formulas>
     <formulas>
@@ -1754,7 +1675,7 @@ OR(
 ) </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_12</name>
+        <name>formula_myRule_10</name>
         <dataType>Boolean</dataType>
         <expression>AND(
           OR( 
@@ -1785,7 +1706,7 @@ OR(
 </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_14</name>
+        <name>formula_myRule_12</name>
         <dataType>Boolean</dataType>
         <expression>AND(
           OR(ISNEW(),
@@ -1816,7 +1737,7 @@ OR(
 )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_17</name>
+        <name>formula_myRule_15</name>
         <dataType>Boolean</dataType>
         <expression>AND(
           OR(ISNEW(),
@@ -1855,7 +1776,7 @@ OR(
 </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_20</name>
+        <name>formula_myRule_18</name>
         <dataType>Boolean</dataType>
         <expression>AND(
 ISCHANGED({!myVariable_current.OwnerId} ),
@@ -1883,7 +1804,7 @@ OR(
                 <stringValue>AND(
 [Case].RecordType.Name  = &quot;Consultas&quot;,
 ISPICKVAL([Case].Type,&quot;Factura en Papel&quot;),
-ISPICKVAL([Case].Envio_de_recibo__c ,&quot;Factura online&quot;)
+ISPICKVAL([Case].Envio_de_recibo__c ,&quot;Factura Papel&quot;)
 
 )</stringValue>
             </value>
@@ -1893,7 +1814,7 @@ ISPICKVAL([Case].Envio_de_recibo__c ,&quot;Factura online&quot;)
         <expression>AND(
 {!myVariable_current.RecordType.Name}  = &quot;Consultas&quot;,
 ISPICKVAL({!myVariable_current.Type},&quot;Factura en Papel&quot;),
-ISPICKVAL({!myVariable_current.Envio_de_recibo__c} ,&quot;Factura online&quot;)
+ISPICKVAL({!myVariable_current.Envio_de_recibo__c} ,&quot;Factura Papel&quot;)
 
 )</expression>
     </formulas>
@@ -1912,7 +1833,7 @@ OR(
 )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_32</name>
+        <name>formula_myRule_30</name>
         <dataType>Boolean</dataType>
         <expression>AND(
          OR(ISNEW(),
@@ -1939,7 +1860,7 @@ OR(
 )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_35</name>
+        <name>formula_myRule_33</name>
         <dataType>Boolean</dataType>
         <expression>AND(
           OR(ISNEW(),
@@ -1968,7 +1889,7 @@ OR(
 )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_39</name>
+        <name>formula_myRule_37</name>
         <dataType>Boolean</dataType>
         <expression>AND(
          OR(ISNEW(),
@@ -1996,7 +1917,7 @@ OR(
        ISPICKVAL([Case].Type, &quot;Aumento de cuota&quot;)))</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_41</name>
+        <name>formula_myRule_39</name>
         <dataType>Boolean</dataType>
         <expression>AND( 
           {!myVariable_current.RecordType.DeveloperName} = &quot;Reclamos&quot;,
@@ -2026,7 +1947,7 @@ OR(
 )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_43</name>
+        <name>formula_myRule_41</name>
         <dataType>Boolean</dataType>
         <expression>AND(
           OR(
@@ -2061,7 +1982,7 @@ OR(
 )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_48</name>
+        <name>formula_myRule_46</name>
         <dataType>Boolean</dataType>
         <expression>AND(
          OR(ISNEW(),
@@ -2082,20 +2003,21 @@ OR(
             <name>originalFormula</name>
             <value>
                 <stringValue>AND(
-[Case].RecordType.Name  = &quot;Consultas&quot;,
-ISPICKVAL([Case].Type,&quot;Factura en Papel&quot;),
-ISPICKVAL([Case].Envio_de_recibo__c ,&quot;Factura Papel&quot;)
-
-)</stringValue>
+ISCHANGED([Case].RecordTypeId ),
+(BEGINS( PRIORVALUE([Case].RecordType.DeveloperName  ) , &quot;Caso_a_tipificar&quot;)),
+NOT([Case].cambiort__c ),
+NOT([Case].IsClosed)
+)
+</stringValue>
             </value>
         </processMetadataValues>
         <name>formula_myRule_5</name>
         <dataType>Boolean</dataType>
         <expression>AND(
-{!myVariable_current.RecordType.Name}  = &quot;Consultas&quot;,
-ISPICKVAL({!myVariable_current.Type},&quot;Factura en Papel&quot;),
-ISPICKVAL({!myVariable_current.Envio_de_recibo__c} ,&quot;Factura Papel&quot;)
-
+ISCHANGED({!myVariable_current.RecordTypeId} ),
+(BEGINS( PRIORVALUE({!myVariable_current.RecordType.DeveloperName}  ) , &quot;Caso_a_tipificar&quot;)),
+NOT({!myVariable_current.cambiort__c} ),
+NOT({!myVariable_current.IsClosed})
 )</expression>
     </formulas>
     <formulas>
@@ -2109,7 +2031,7 @@ ISPICKVAL({!myVariable_current.Envio_de_recibo__c} ,&quot;Factura Papel&quot;)
 </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_55</name>
+        <name>formula_myRule_53</name>
         <dataType>Boolean</dataType>
         <expression>AND(
           ISBLANK({!myVariable_current.Informe_estratagico__r.Caso__c}),
@@ -2130,7 +2052,7 @@ OR(
 )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_58</name>
+        <name>formula_myRule_56</name>
         <dataType>Boolean</dataType>
         <expression>AND(
 OR(
@@ -2152,7 +2074,7 @@ ISNEW(),
 )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_61</name>
+        <name>formula_myRule_59</name>
         <dataType>Boolean</dataType>
         <expression>AND(
 ISNEW(),
@@ -2173,7 +2095,7 @@ ISPICKVAL([Case].Type , &quot;RESOL 075/98 Cobertura&quot;)
 )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_63</name>
+        <name>formula_myRule_61</name>
         <dataType>Boolean</dataType>
         <expression>AND(
 {!myVariable_current.RecordType.Name} = &quot;Reclamos&quot;,
@@ -2200,7 +2122,7 @@ ISPICKVAL([Case].Origin, &quot;YouTube&quot;)
 )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_65</name>
+        <name>formula_myRule_63</name>
         <dataType>Boolean</dataType>
         <expression>AND(
 ISNEW(),
@@ -2224,33 +2146,11 @@ ISBLANK([Case].Candidato__c)
 </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_69</name>
+        <name>formula_myRule_67</name>
         <dataType>Boolean</dataType>
         <expression>AND(
 {!myVariable_current.Posible_candidato_BOT__c},
 ISBLANK({!myVariable_current.Candidato__c})
-)</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>AND(
-ISCHANGED([Case].RecordTypeId ),
-(BEGINS( PRIORVALUE([Case].RecordType.DeveloperName  ) , &quot;Caso_a_tipificar&quot;)),
-NOT([Case].cambiort__c ),
-NOT([Case].IsClosed)
-)
-</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_myRule_7</name>
-        <dataType>Boolean</dataType>
-        <expression>AND(
-ISCHANGED({!myVariable_current.RecordTypeId} ),
-(BEGINS( PRIORVALUE({!myVariable_current.RecordType.DeveloperName}  ) , &quot;Caso_a_tipificar&quot;)),
-NOT({!myVariable_current.cambiort__c} ),
-NOT({!myVariable_current.IsClosed})
 )</expression>
     </formulas>
     <formulas>
@@ -2274,7 +2174,7 @@ OR(
 [Case].CreatedBy.Profile.Name =&quot;Front&quot;)</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_74</name>
+        <name>formula_myRule_72</name>
         <dataType>Boolean</dataType>
         <expression>AND(
           OR(ISCHANGED({!myVariable_current.RecordTypeId}),
@@ -2310,7 +2210,7 @@ OR(
 </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_77</name>
+        <name>formula_myRule_75</name>
         <dataType>Boolean</dataType>
         <expression>AND(
           OR(
@@ -2343,7 +2243,7 @@ OR(
 )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_79</name>
+        <name>formula_myRule_77</name>
         <dataType>Boolean</dataType>
         <expression>AND(
           OR(
@@ -2377,7 +2277,7 @@ OR(
 )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_81</name>
+        <name>formula_myRule_79</name>
         <dataType>Boolean</dataType>
         <expression>AND(
           OR(
@@ -2394,6 +2294,55 @@ OR(
             <name>originalFormula</name>
             <value>
                 <stringValue>AND(
+        OR( 
+                 ISNEW(),
+                 ISCHANGED([Case].RecordTypeId)),
+                 [Case].RecordType.DeveloperName = &quot;Consultas&quot;,
+
+OR(
+        ISPICKVAL([Case].Type,&quot;Validacion en prestadores&quot;),
+        ISPICKVAL([Case].Type,&quot;Factura en Papel&quot;),
+        ISPICKVAL([Case].Type,&quot;Estado de Cuenta&quot;),
+        ISPICKVAL([Case].Type,&quot;Consulta estado de tramite&quot;),
+        ISPICKVAL([Case].Type,&quot;Cartilla&quot;),
+        ISPICKVAL([Case].Type,&quot;Credenciales&quot;),
+        ISPICKVAL([Case].Type,&quot;Copagos&quot;),
+        ISPICKVAL([Case].Type,&quot;Cobertura de plan&quot;),
+        ISPICKVAL([Case].Type,&quot;Asesoramiento administrativo&quot;),
+        ISPICKVAL([Case].Type,&quot;Actualiza deuda&quot;),
+        ISPICKVAL([Case].Type,&quot;Autorizaciones CDC&quot;),
+        ISPICKVAL([Case].Type,&quot;Pagos proveedores&quot;))
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_8</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+        OR( 
+                 ISNEW(),
+                 ISCHANGED({!myVariable_current.RecordTypeId})),
+                 {!myVariable_current.RecordType.DeveloperName} = &quot;Consultas&quot;,
+
+OR(
+        ISPICKVAL({!myVariable_current.Type},&quot;Validacion en prestadores&quot;),
+        ISPICKVAL({!myVariable_current.Type},&quot;Factura en Papel&quot;),
+        ISPICKVAL({!myVariable_current.Type},&quot;Estado de Cuenta&quot;),
+        ISPICKVAL({!myVariable_current.Type},&quot;Consulta estado de tramite&quot;),
+        ISPICKVAL({!myVariable_current.Type},&quot;Cartilla&quot;),
+        ISPICKVAL({!myVariable_current.Type},&quot;Credenciales&quot;),
+        ISPICKVAL({!myVariable_current.Type},&quot;Copagos&quot;),
+        ISPICKVAL({!myVariable_current.Type},&quot;Cobertura de plan&quot;),
+        ISPICKVAL({!myVariable_current.Type},&quot;Asesoramiento administrativo&quot;),
+        ISPICKVAL({!myVariable_current.Type},&quot;Actualiza deuda&quot;),
+        ISPICKVAL({!myVariable_current.Type},&quot;Autorizaciones CDC&quot;),
+        ISPICKVAL({!myVariable_current.Type},&quot;Pagos proveedores&quot;))
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND(
           OR(
                   [Case].RecordType.Name  = &quot;Solicitud de despegues&quot;,
                   [Case].RecordType.Name  = &quot;Solicitud de segmento&quot;),
@@ -2403,7 +2352,7 @@ OR(
 )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_83</name>
+        <name>formula_myRule_81</name>
         <dataType>Boolean</dataType>
         <expression>AND(
           OR(
@@ -2428,7 +2377,7 @@ OR(
 )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_85</name>
+        <name>formula_myRule_83</name>
         <dataType>Boolean</dataType>
         <expression>AND(
                   {!myVariable_current.RecordType.Name}  = &quot;Solicitud de alta familiar&quot;,
@@ -2444,72 +2393,64 @@ OR(
             <name>originalFormula</name>
             <value>
                 <stringValue>AND(
-        OR(
-            [Case].RecordType.DeveloperName =&quot;Solicitud_de_alta_familiar&quot;,
-            [Case].RecordType.DeveloperName =&quot;Solicitud_de_despegues&quot;,
-            [Case].RecordType.DeveloperName =&quot;Solicitud_de_segmento&quot;,
-            [Case].RecordType.DeveloperName =&quot;Solicitud_de_datos_particulares&quot;,
-            [Case].RecordType.DeveloperName =&quot;Solicitud_de_nueva_credencial&quot;,
-            [Case].RecordType.DeveloperName =&quot;Solicitud_de_cambio_de_plan&quot;,
-            [Case].RecordType.DeveloperName =&quot;Solicitud_de_baja&quot;,
-            [Case].RecordType.DeveloperName =&quot;Interfaz_financiera&quot;
-            ),
-        NOT(ISBLANK([Case].Usuario__c)),  
-        ISCHANGED([Case].Estado_de_solicitud__c ),
-        [Case].Usuario__r.IsActive,
-        NOT([Case].Usuario__r.Alias = &apos;platint&apos;) 
-    )     
-</stringValue>
+         OR(
+                [Case].RecordType.DeveloperName =&quot;Solicitud_de_alta_familiar&quot;,
+                [Case].RecordType.DeveloperName =&quot;Solicitud_de_despegues&quot;,
+                [Case].RecordType.DeveloperName =&quot;Solicitud_de_segmento&quot;,
+                [Case].RecordType.DeveloperName =&quot;Solicitud_de_datos_particulares&quot;,
+                [Case].RecordType.DeveloperName =&quot;Solicitud_de_nueva_credencial&quot;,
+                [Case].RecordType.DeveloperName =&quot;Solicitud_de_cambio_de_plan&quot;,
+                [Case].RecordType.DeveloperName =&quot;Solicitud_de_baja&quot;,
+                [Case].RecordType.DeveloperName =&quot;Interfaz_financiera&quot;
+                ),
+                NOT(ISBLANK([Case].Usuario__c)),  
+                    ISCHANGED([Case].Estado_de_solicitud__c )
+)</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_87</name>
+        <name>formula_myRule_85</name>
         <dataType>Boolean</dataType>
         <expression>AND(
-        OR(
-            {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_alta_familiar&quot;,
-            {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_despegues&quot;,
-            {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_segmento&quot;,
-            {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_datos_particulares&quot;,
-            {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_nueva_credencial&quot;,
-            {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_cambio_de_plan&quot;,
-            {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_baja&quot;,
-            {!myVariable_current.RecordType.DeveloperName} =&quot;Interfaz_financiera&quot;
-            ),
-        NOT(ISBLANK({!myVariable_current.Usuario__c})),  
-        ISCHANGED({!myVariable_current.Estado_de_solicitud__c} ),
-        {!myVariable_current.Usuario__r.IsActive},
-        NOT({!myVariable_current.Usuario__r.Alias} = &apos;platint&apos;) 
-    )</expression>
+         OR(
+                {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_alta_familiar&quot;,
+                {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_despegues&quot;,
+                {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_segmento&quot;,
+                {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_datos_particulares&quot;,
+                {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_nueva_credencial&quot;,
+                {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_cambio_de_plan&quot;,
+                {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_baja&quot;,
+                {!myVariable_current.RecordType.DeveloperName} =&quot;Interfaz_financiera&quot;
+                ),
+                NOT(ISBLANK({!myVariable_current.Usuario__c})),  
+                    ISCHANGED({!myVariable_current.Estado_de_solicitud__c} )
+)</expression>
     </formulas>
     <formulas>
         <processMetadataValues>
             <name>originalFormula</name>
             <value>
                 <stringValue>AND(
-     OR(
-        [Case].RecordType.DeveloperName =&quot;Solicitud_de_alta_familiar&quot;,
-        [Case].RecordType.DeveloperName =&quot;Solicitud_de_despegues&quot;
-        ),
-        NOT(ISBLANK([Case].Usuario__c)),
-        ISCHANGED([Case].Estado_DDJJ__c ),
-        [Case].Usuario__r.IsActive,
-        NOT([Case].Usuario__r.Alias = &apos;platint&apos;) 
-    )
-</stringValue>
+         OR(
+                [Case].RecordType.DeveloperName =&quot;Solicitud_de_alta_familiar&quot;,
+                [Case].RecordType.DeveloperName =&quot;Solicitud_de_despegues&quot;
+                
+                ),
+              NOT(ISBLANK([Case].Usuario__c)),
+                    ISCHANGED([Case].Estado_DDJJ__c )
+)</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_89</name>
+        <name>formula_myRule_87</name>
         <dataType>Boolean</dataType>
         <expression>AND(
-     OR(
-        {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_alta_familiar&quot;,
-        {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_despegues&quot;
-        ),
-        NOT(ISBLANK({!myVariable_current.Usuario__c})),
-        ISCHANGED({!myVariable_current.Estado_DDJJ__c} ),
-        {!myVariable_current.Usuario__r.IsActive},
-        NOT({!myVariable_current.Usuario__r.Alias} = &apos;platint&apos;) 
-    )</expression>
+         OR(
+                {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_alta_familiar&quot;,
+                {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_despegues&quot;
+                
+                ),
+              NOT(ISBLANK({!myVariable_current.Usuario__c})),
+                    ISCHANGED({!myVariable_current.Estado_DDJJ__c} )
+)</expression>
     </formulas>
     <formulas>
         <processMetadataValues>
@@ -2522,7 +2463,7 @@ OR(
   )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_91</name>
+        <name>formula_myRule_89</name>
         <dataType>Boolean</dataType>
         <expression>AND( 
           {!myVariable_current.RecordType.DeveloperName} =&quot;Solicitud_de_alta_familiar&quot;,
@@ -2534,37 +2475,23 @@ OR(
         <processMetadataValues>
             <name>originalFormula</name>
             <value>
-                <stringValue>OR( 
-AND(
-ISCHANGED([Case].OwnerId),
-[Case].Owner:Queue.DeveloperName = &quot;Cuentas_a_cobrar&quot;,
-NOT([Case].Viene_de_Cuentas_a_Cobrar__c)
-),
-AND(
-ISCHANGED([Case].OwnerId),
-[Case].Owner:Queue.DeveloperName = &quot;Aportes&quot;,
-NOT([Case].Viene_de_Aportes__c )
-))
+                <stringValue>AND(
+ISCHANGED([Case].OwnerId ),
+[Case].Owner:Queue.DeveloperName = &quot;Cuentas_a_cobrar&quot;
+)
 </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_myRule_93</name>
+        <name>formula_myRule_91</name>
         <dataType>Boolean</dataType>
-        <expression>OR( 
-AND(
-ISCHANGED({!myVariable_current.OwnerId}),
-{!myVariable_current.Owner:Queue.DeveloperName} = &quot;Cuentas_a_cobrar&quot;,
-NOT({!myVariable_current.Viene_de_Cuentas_a_Cobrar__c})
-),
-AND(
-ISCHANGED({!myVariable_current.OwnerId}),
-{!myVariable_current.Owner:Queue.DeveloperName} = &quot;Aportes&quot;,
-NOT({!myVariable_current.Viene_de_Aportes__c} )
-))</expression>
+        <expression>AND(
+ISCHANGED({!myVariable_current.OwnerId} ),
+{!myVariable_current.Owner:Queue.DeveloperName} = &quot;Cuentas_a_cobrar&quot;
+)</expression>
     </formulas>
-    <interviewLabel>Automatizaciones_casos_consultas_y_reclamos-17_InterviewLabel</interviewLabel>
+    <interviewLabel>Automatizaciones_casos_consultas_y_reclamos-89_InterviewLabel</interviewLabel>
     <isTemplate>true</isTemplate>
-    <label>V15- Automatizaciones casos consultas y reclamos</label>
+    <label>Automatizaciones casos consultas y reclamos</label>
     <processMetadataValues>
         <name>ObjectType</name>
         <value>
@@ -2597,12 +2524,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
     </processMetadataValues>
     <processType>Workflow</processType>
     <recordCreates>
-        <name>myRule_58_A1</name>
+        <name>myRule_56_A1</name>
         <label>Crea caso falseamiento</label>
-        <locationX>5800</locationX>
+        <locationX>5600</locationX>
         <locationY>200</locationY>
         <connector>
-            <targetReference>myRule_58_A2</targetReference>
+            <targetReference>myRule_56_A2</targetReference>
         </connector>
         <inputAssignments>
             <processMetadataValues>
@@ -2811,7 +2738,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>RecordTypeId</field>
             <value>
-                <elementReference>formula_59_myRule_58_A1_7178244876</elementReference>
+                <elementReference>formula_57_myRule_56_A1_4883721802</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -2847,9 +2774,9 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <object>Case</object>
     </recordCreates>
     <recordCreates>
-        <name>myRule_69_A1</name>
+        <name>myRule_67_A1</name>
         <label>Crear candidato</label>
-        <locationX>6900</locationX>
+        <locationX>6700</locationX>
         <locationY>200</locationY>
         <inputAssignments>
             <processMetadataValues>
@@ -2986,7 +2913,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>LastName</field>
             <value>
-                <elementReference>formula_70_myRule_69_A1_3773496580</elementReference>
+                <elementReference>formula_68_myRule_67_A1_0221502601</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -3094,7 +3021,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_71_myRule_69_A1_2643968921</elementReference>
+                <elementReference>formula_69_myRule_67_A1_8788937393</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -3130,7 +3057,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>RecordTypeId</field>
             <value>
-                <elementReference>formula_72_myRule_69_A1_1054522593</elementReference>
+                <elementReference>formula_70_myRule_67_A1_6566935024</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -3241,123 +3168,6 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>evaluationType</name>
             <value>
-                <stringValue>always</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>extraTypeInfo</name>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>isChildRelationship</name>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>reference</name>
-            <value>
-                <stringValue>[Case]</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>referenceTargetField</name>
-        </processMetadataValues>
-        <name>myRule_10_A1</name>
-        <label>Asigna prioridad</label>
-        <locationX>1000</locationX>
-        <locationY>200</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Boolean</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>No tiene SLA</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Boolean</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>No_tiene_SLA__c</field>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Prioridad</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Priority</field>
-            <value>
-                <stringValue>Maxima</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Case</object>
-    </recordUpdates>
-    <recordUpdates>
-        <processMetadataValues>
-            <name>evaluationType</name>
-            <value>
                 <stringValue>criteria</stringValue>
             </value>
         </processMetadataValues>
@@ -3379,12 +3189,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_12_A1</name>
+        <name>myRule_10_A1</name>
         <label>Asigna SLA prioridad Alta</label>
-        <locationX>1200</locationX>
+        <locationX>1000</locationX>
         <locationY>200</locationY>
         <connector>
-            <targetReference>myRule_12_A2</targetReference>
+            <targetReference>myRule_10_A2</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -3548,9 +3358,9 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_12_A2</name>
+        <name>myRule_10_A2</name>
         <label>Asigna SLA prioridad Media/alta</label>
-        <locationX>1200</locationX>
+        <locationX>1000</locationX>
         <locationY>300</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -3714,9 +3524,9 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_14_A1</name>
+        <name>myRule_12_A1</name>
         <label>SLA 5 prioridad baja</label>
-        <locationX>1400</locationX>
+        <locationX>1200</locationX>
         <locationY>200</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -3765,7 +3575,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_15_myRule_14_A1_3233747569</elementReference>
+                <elementReference>formula_13_myRule_12_A1_7643964915</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -3840,42 +3650,6 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
                 <stringValue>360</stringValue>
             </value>
         </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Boolean</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Viene de Aportes</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Boolean</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Viene_de_Aportes__c</field>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputAssignments>
         <object>Case</object>
     </recordUpdates>
     <recordUpdates>
@@ -3903,9 +3677,9 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_17_A1</name>
+        <name>myRule_15_A1</name>
         <label>Asignacion SLA, propietario y prioridad</label>
-        <locationX>1700</locationX>
+        <locationX>1500</locationX>
         <locationY>200</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -3954,7 +3728,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_18_myRule_17_A1_1393943805</elementReference>
+                <elementReference>formula_16_myRule_15_A1_1899989081</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -4071,90 +3845,6 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>evaluationType</name>
             <value>
-                <stringValue>always</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>extraTypeInfo</name>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>isChildRelationship</name>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>reference</name>
-            <value>
-                <stringValue>[Case].Sesión de Mensajería</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>referenceTargetField</name>
-        </processMetadataValues>
-        <name>myRule_1_A1</name>
-        <label>Actualizar sesion de mensajeria</label>
-        <locationX>100</locationX>
-        <locationY>200</locationY>
-        <connector>
-            <targetReference>myDecision2</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.Sesion_de_Mensajeria__c</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Id. del caso</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue>Case</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>CaseId</field>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>MessagingSession</object>
-    </recordUpdates>
-    <recordUpdates>
-        <processMetadataValues>
-            <name>evaluationType</name>
-            <value>
                 <stringValue>criteria</stringValue>
             </value>
         </processMetadataValues>
@@ -4176,12 +3866,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_20_A1</name>
+        <name>myRule_18_A1</name>
         <label>Emi sin material</label>
-        <locationX>2000</locationX>
+        <locationX>1800</locationX>
         <locationY>200</locationY>
         <connector>
-            <targetReference>myRule_20_A2</targetReference>
+            <targetReference>myRule_18_A2</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -4243,7 +3933,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_30_myRule_20_A1_8365446709</elementReference>
+                <elementReference>formula_28_myRule_18_A1_4954141799</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -4309,9 +3999,9 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_20_A10</name>
+        <name>myRule_18_A10</name>
         <label>Reintegros</label>
-        <locationX>2000</locationX>
+        <locationX>1800</locationX>
         <locationY>1100</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -4373,7 +4063,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_21_myRule_20_A10_0563614684</elementReference>
+                <elementReference>formula_19_myRule_18_A10_9406274587</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -4439,12 +4129,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_20_A2</name>
+        <name>myRule_18_A2</name>
         <label>Discapacidad</label>
-        <locationX>2000</locationX>
+        <locationX>1800</locationX>
         <locationY>300</locationY>
         <connector>
-            <targetReference>myRule_20_A3</targetReference>
+            <targetReference>myRule_18_A3</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -4506,7 +4196,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_29_myRule_20_A2_3548422780</elementReference>
+                <elementReference>formula_27_myRule_18_A2_2483399742</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -4572,12 +4262,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_20_A3</name>
+        <name>myRule_18_A3</name>
         <label>Falseamiento DDJJ</label>
-        <locationX>2000</locationX>
+        <locationX>1800</locationX>
         <locationY>400</locationY>
         <connector>
-            <targetReference>myRule_20_A4</targetReference>
+            <targetReference>myRule_18_A4</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -4639,7 +4329,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_28_myRule_20_A3_7259854984</elementReference>
+                <elementReference>formula_26_myRule_18_A3_3323066219</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -4705,12 +4395,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_20_A4</name>
+        <name>myRule_18_A4</name>
         <label>Fertilidad</label>
-        <locationX>2000</locationX>
+        <locationX>1800</locationX>
         <locationY>500</locationY>
         <connector>
-            <targetReference>myRule_20_A5</targetReference>
+            <targetReference>myRule_18_A5</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -4772,7 +4462,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_27_myRule_20_A4_8488186014</elementReference>
+                <elementReference>formula_25_myRule_18_A4_4078158911</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -4838,12 +4528,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_20_A5</name>
+        <name>myRule_18_A5</name>
         <label>IDOM</label>
-        <locationX>2000</locationX>
+        <locationX>1800</locationX>
         <locationY>600</locationY>
         <connector>
-            <targetReference>myRule_20_A6</targetReference>
+            <targetReference>myRule_18_A6</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -4905,7 +4595,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_26_myRule_20_A5_0859549071</elementReference>
+                <elementReference>formula_24_myRule_18_A5_6401661375</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -4971,12 +4661,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_20_A6</name>
+        <name>myRule_18_A6</name>
         <label>Oxigenoterapia</label>
-        <locationX>2000</locationX>
+        <locationX>1800</locationX>
         <locationY>700</locationY>
         <connector>
-            <targetReference>myRule_20_A7</targetReference>
+            <targetReference>myRule_18_A7</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -5038,7 +4728,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_25_myRule_20_A6_8672190931</elementReference>
+                <elementReference>formula_23_myRule_18_A6_5260717552</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -5104,12 +4794,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_20_A7</name>
+        <name>myRule_18_A7</name>
         <label>Trámites con material</label>
-        <locationX>2000</locationX>
+        <locationX>1800</locationX>
         <locationY>800</locationY>
         <connector>
-            <targetReference>myRule_20_A8</targetReference>
+            <targetReference>myRule_18_A8</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -5171,7 +4861,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_24_myRule_20_A7_4172470514</elementReference>
+                <elementReference>formula_22_myRule_18_A7_2031608834</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -5237,12 +4927,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_20_A8</name>
+        <name>myRule_18_A8</name>
         <label>Programas</label>
-        <locationX>2000</locationX>
+        <locationX>1800</locationX>
         <locationY>900</locationY>
         <connector>
-            <targetReference>myRule_20_A9</targetReference>
+            <targetReference>myRule_18_A9</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -5304,7 +4994,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_23_myRule_20_A8_7092243602</elementReference>
+                <elementReference>formula_21_myRule_18_A8_4815171832</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -5370,12 +5060,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_20_A9</name>
+        <name>myRule_18_A9</name>
         <label>Alto costo</label>
-        <locationX>2000</locationX>
+        <locationX>1800</locationX>
         <locationY>1000</locationY>
         <connector>
-            <targetReference>myRule_20_A10</targetReference>
+            <targetReference>myRule_18_A10</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -5437,7 +5127,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             <field>OwnerId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>formula_22_myRule_20_A9_8220341932</elementReference>
+                <elementReference>formula_20_myRule_18_A9_5171236925</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -5497,15 +5187,99 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>reference</name>
             <value>
+                <stringValue>[Case].Id. de la cuenta</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_1_A1</name>
+        <label>Cambiar envio de recibo a online</label>
+        <locationX>100</locationX>
+        <locationY>200</locationY>
+        <connector>
+            <targetReference>myDecision2</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.AccountId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Envío de recibo</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Envio_de_recibo__c</field>
+            <value>
+                <stringValue>Factura online</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
                 <stringValue>[Case]</stringValue>
             </value>
         </processMetadataValues>
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_32_A1</name>
+        <name>myRule_30_A1</name>
         <label>Asignacion SLA, prioridad y cola</label>
-        <locationX>3200</locationX>
+        <locationX>3000</locationX>
         <locationY>200</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -5554,7 +5328,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_33_myRule_32_A1_5192315373</elementReference>
+                <elementReference>formula_31_myRule_30_A1_8007719566</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -5656,12 +5430,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_35_A1</name>
+        <name>myRule_33_A1</name>
         <label>Asignacion SLA, prioridad y cola subtipo No corresponde</label>
-        <locationX>3500</locationX>
+        <locationX>3300</locationX>
         <locationY>200</locationY>
         <connector>
-            <targetReference>myRule_35_A2</targetReference>
+            <targetReference>myRule_33_A2</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -5759,7 +5533,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_37_myRule_35_A1_5501293997</elementReference>
+                <elementReference>formula_35_myRule_33_A1_6268659941</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -5861,9 +5635,9 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_35_A2</name>
+        <name>myRule_33_A2</name>
         <label>Asignacion SLA, prioridad y cola subtipo error de importe</label>
-        <locationX>3500</locationX>
+        <locationX>3300</locationX>
         <locationY>300</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -5961,7 +5735,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_36_myRule_35_A2_2398635438</elementReference>
+                <elementReference>formula_34_myRule_33_A2_4226837160</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -6063,12 +5837,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_39_A1</name>
+        <name>myRule_37_A1</name>
         <label>Asigna SLA y prioridad tipo tramite del caso prestacional</label>
-        <locationX>3900</locationX>
+        <locationX>3700</locationX>
         <locationY>200</locationY>
         <connector>
-            <targetReference>myRule_39_A2</targetReference>
+            <targetReference>myRule_37_A2</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -6232,12 +6006,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_39_A2</name>
+        <name>myRule_37_A2</name>
         <label>Asigna SLA, prioridad tipo reclamos varios</label>
-        <locationX>3900</locationX>
+        <locationX>3700</locationX>
         <locationY>300</locationY>
         <connector>
-            <targetReference>myRule_39_A3</targetReference>
+            <targetReference>myRule_37_A3</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -6401,12 +6175,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_39_A3</name>
+        <name>myRule_37_A3</name>
         <label>Asigna SLA, prioridad tipo tramite no registrado</label>
-        <locationX>3900</locationX>
+        <locationX>3700</locationX>
         <locationY>400</locationY>
         <connector>
-            <targetReference>myRule_39_A4</targetReference>
+            <targetReference>myRule_37_A4</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -6570,9 +6344,9 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_39_A4</name>
+        <name>myRule_37_A4</name>
         <label>Asinga SLA, prioridad tipo cobro por otras entidades</label>
-        <locationX>3900</locationX>
+        <locationX>3700</locationX>
         <locationY>500</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -6730,99 +6504,15 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>reference</name>
             <value>
-                <stringValue>[Case].Id. de la cuenta</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>referenceTargetField</name>
-        </processMetadataValues>
-        <name>myRule_3_A1</name>
-        <label>Cambiar envio de recibo a online</label>
-        <locationX>300</locationX>
-        <locationY>200</locationY>
-        <connector>
-            <targetReference>myDecision4</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.AccountId</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Envío de recibo</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Envio_de_recibo__c</field>
-            <value>
-                <stringValue>Factura online</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Account</object>
-    </recordUpdates>
-    <recordUpdates>
-        <processMetadataValues>
-            <name>evaluationType</name>
-            <value>
-                <stringValue>always</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>extraTypeInfo</name>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>isChildRelationship</name>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>reference</name>
-            <value>
                 <stringValue>[Case]</stringValue>
             </value>
         </processMetadataValues>
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_41_A1</name>
+        <name>myRule_39_A1</name>
         <label>Asigna prioridad</label>
-        <locationX>4100</locationX>
+        <locationX>3900</locationX>
         <locationY>200</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -6916,6 +6606,90 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>evaluationType</name>
             <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Case].Id. de la cuenta</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_3_A1</name>
+        <label>Cambiar Envio de recibo del asociado</label>
+        <locationX>300</locationX>
+        <locationY>200</locationY>
+        <connector>
+            <targetReference>myDecision4</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.AccountId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Envío de recibo</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Envio_de_recibo__c</field>
+            <value>
+                <stringValue>Factura papel</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
                 <stringValue>criteria</stringValue>
             </value>
         </processMetadataValues>
@@ -6937,12 +6711,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_43_A1</name>
+        <name>myRule_41_A1</name>
         <label>Asigna SLA, prioridad tipo cobertura plan</label>
-        <locationX>4300</locationX>
+        <locationX>4100</locationX>
         <locationY>200</locationY>
         <connector>
-            <targetReference>myRule_43_A2</targetReference>
+            <targetReference>myRule_41_A2</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -7106,12 +6880,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_43_A2</name>
+        <name>myRule_41_A2</name>
         <label>Asigna SLA, prioridad tipo Cobro indebido</label>
-        <locationX>4300</locationX>
+        <locationX>4100</locationX>
         <locationY>300</locationY>
         <connector>
-            <targetReference>myRule_43_A3</targetReference>
+            <targetReference>myRule_41_A3</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -7275,12 +7049,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_43_A3</name>
+        <name>myRule_41_A3</name>
         <label>Asigna SLA, prioridad tipo Credenciales Fisicas</label>
-        <locationX>4300</locationX>
+        <locationX>4100</locationX>
         <locationY>400</locationY>
         <connector>
-            <targetReference>myRule_43_A4</targetReference>
+            <targetReference>myRule_41_A4</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -7427,7 +7201,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_46_myRule_43_A3_9508541977</elementReference>
+                <elementReference>formula_44_myRule_41_A3_7445469423</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -7529,12 +7303,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_43_A4</name>
+        <name>myRule_41_A4</name>
         <label>Asigna SLA, prioridad tipo Credenciales Digitales</label>
-        <locationX>4300</locationX>
+        <locationX>4100</locationX>
         <locationY>500</locationY>
         <connector>
-            <targetReference>myRule_43_A5</targetReference>
+            <targetReference>myRule_41_A5</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -7681,7 +7455,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_45_myRule_43_A4_7452767354</elementReference>
+                <elementReference>formula_43_myRule_41_A4_4508123664</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -7783,9 +7557,9 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_43_A5</name>
+        <name>myRule_41_A5</name>
         <label>Asigna SLA, prioridad tipo Canales Digitales</label>
-        <locationX>4300</locationX>
+        <locationX>4100</locationX>
         <locationY>600</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -7883,7 +7657,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_44_myRule_43_A5_9310467095</elementReference>
+                <elementReference>formula_42_myRule_41_A5_7611364956</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -7985,12 +7759,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_48_A1</name>
+        <name>myRule_46_A1</name>
         <label>Asigna SLA, cola, prioridad tipo Cartilla - Falta prestador</label>
-        <locationX>4800</locationX>
+        <locationX>4600</locationX>
         <locationY>200</locationY>
         <connector>
-            <targetReference>myRule_48_A2</targetReference>
+            <targetReference>myRule_46_A2</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -8088,7 +7862,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_53_myRule_48_A1_9213208580</elementReference>
+                <elementReference>formula_51_myRule_46_A1_9851473291</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -8190,12 +7964,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_48_A2</name>
+        <name>myRule_46_A2</name>
         <label>Asigna SLA, cola, prioridad tipo: Prestadores corte servicios</label>
-        <locationX>4800</locationX>
+        <locationX>4600</locationX>
         <locationY>300</locationY>
         <connector>
-            <targetReference>myRule_48_A3</targetReference>
+            <targetReference>myRule_46_A3</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -8293,7 +8067,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_52_myRule_48_A2_3399422604</elementReference>
+                <elementReference>formula_50_myRule_46_A2_6692261816</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -8395,12 +8169,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_48_A3</name>
+        <name>myRule_46_A3</name>
         <label>Asigna SLA, prioridad, tipo Reintegros no tranferidos</label>
-        <locationX>4800</locationX>
+        <locationX>4600</locationX>
         <locationY>400</locationY>
         <connector>
-            <targetReference>myRule_48_A4</targetReference>
+            <targetReference>myRule_46_A4</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -8498,7 +8272,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_51_myRule_48_A3_9481879966</elementReference>
+                <elementReference>formula_49_myRule_46_A3_4763616359</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -8600,12 +8374,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_48_A4</name>
+        <name>myRule_46_A4</name>
         <label>Asigna Cola y SLA</label>
-        <locationX>4800</locationX>
+        <locationX>4600</locationX>
         <locationY>500</locationY>
         <connector>
-            <targetReference>myRule_48_A5</targetReference>
+            <targetReference>myRule_46_A5</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -8739,7 +8513,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_50_myRule_48_A4_3289702836</elementReference>
+                <elementReference>formula_48_myRule_46_A4_3594620053</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -8805,9 +8579,9 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_48_A5</name>
+        <name>myRule_46_A5</name>
         <label>Asigna Cola y SLA</label>
-        <locationX>4800</locationX>
+        <locationX>4600</locationX>
         <locationY>600</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -8941,7 +8715,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_49_myRule_48_A5_8444072392</elementReference>
+                <elementReference>formula_47_myRule_46_A5_0955058849</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -9007,9 +8781,9 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_55_A1</name>
+        <name>myRule_53_A1</name>
         <label>Rellena el id del caso en el informe creado</label>
-        <locationX>5500</locationX>
+        <locationX>5300</locationX>
         <locationY>200</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -9058,7 +8832,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>Caso__c</field>
             <value>
-                <elementReference>formula_56_myRule_55_A1_0162313074</elementReference>
+                <elementReference>formula_54_myRule_53_A1_6254112656</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -9124,12 +8898,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_58_A2</name>
+        <name>myRule_56_A2</name>
         <label>Flag caso creado</label>
-        <locationX>5800</locationX>
+        <locationX>5600</locationX>
         <locationY>300</locationY>
         <connector>
-            <targetReference>myDecision60</targetReference>
+            <targetReference>myDecision58</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -9208,93 +8982,9 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_5_A1</name>
-        <label>Cambiar Envio de recibo del asociado</label>
-        <locationX>500</locationX>
-        <locationY>200</locationY>
-        <connector>
-            <targetReference>myDecision6</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.AccountId</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Envío de recibo</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Envio_de_recibo__c</field>
-            <value>
-                <stringValue>Factura papel</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Account</object>
-    </recordUpdates>
-    <recordUpdates>
-        <processMetadataValues>
-            <name>evaluationType</name>
-            <value>
-                <stringValue>always</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>extraTypeInfo</name>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>isChildRelationship</name>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>reference</name>
-            <value>
-                <stringValue>[Case].Id. de la cuenta</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>referenceTargetField</name>
-        </processMetadataValues>
-        <name>myRule_61_A1</name>
+        <name>myRule_59_A1</name>
         <label>Contador</label>
-        <locationX>6100</locationX>
+        <locationX>5900</locationX>
         <locationY>200</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -9361,411 +9051,6 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>isChildRelationship</name>
             <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>reference</name>
-            <value>
-                <stringValue>[Case]</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>referenceTargetField</name>
-        </processMetadataValues>
-        <name>myRule_65_A1</name>
-        <label>Actualizar caso</label>
-        <locationX>6500</locationX>
-        <locationY>200</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Id. del propietario</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue>Group;User</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Formula</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>OwnerId</field>
-            <value>
-                <elementReference>formula_66_myRule_65_A1_7893151573</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Id. de tipo de registro</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue>RecordType</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Formula</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>RecordTypeId</field>
-            <value>
-                <elementReference>formula_67_myRule_65_A1_6230819147</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Estado</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Status</field>
-            <value>
-                <stringValue>Pendiente</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Case</object>
-    </recordUpdates>
-    <recordUpdates>
-        <processMetadataValues>
-            <name>evaluationType</name>
-            <value>
-                <stringValue>always</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>extraTypeInfo</name>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>isChildRelationship</name>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>reference</name>
-            <value>
-                <stringValue>[Case]</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>referenceTargetField</name>
-        </processMetadataValues>
-        <name>myRule_74_A1</name>
-        <label>Si son solicitudes</label>
-        <locationX>7400</locationX>
-        <locationY>200</locationY>
-        <connector>
-            <targetReference>myDecision76</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Id. del propietario</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue>Group;User</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Formula</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>OwnerId</field>
-            <value>
-                <elementReference>formula_75_myRule_74_A1_0911029570</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Case</object>
-    </recordUpdates>
-    <recordUpdates>
-        <processMetadataValues>
-            <name>evaluationType</name>
-            <value>
-                <stringValue>always</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>extraTypeInfo</name>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>isChildRelationship</name>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>reference</name>
-            <value>
-                <stringValue>[Case]</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>referenceTargetField</name>
-        </processMetadataValues>
-        <name>myRule_77_A1</name>
-        <label>Asigna SLA 16</label>
-        <locationX>7700</locationX>
-        <locationY>200</locationY>
-        <connector>
-            <targetReference>myDecision78</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Tiempo SLA</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Tiempo_SLA__c</field>
-            <value>
-                <stringValue>16</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Case</object>
-    </recordUpdates>
-    <recordUpdates>
-        <processMetadataValues>
-            <name>evaluationType</name>
-            <value>
-                <stringValue>always</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>extraTypeInfo</name>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>isChildRelationship</name>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>reference</name>
-            <value>
-                <stringValue>[Case]</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>referenceTargetField</name>
-        </processMetadataValues>
-        <name>myRule_79_A1</name>
-        <label>Actualiza responsable el creador</label>
-        <locationX>7900</locationX>
-        <locationY>200</locationY>
-        <connector>
-            <targetReference>myDecision80</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Responsable</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue>User</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Usuario__c</field>
-            <value>
-                <elementReference>myVariable_current.CreatedById</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Case</object>
-    </recordUpdates>
-    <recordUpdates>
-        <processMetadataValues>
-            <name>evaluationType</name>
-            <value>
-                <stringValue>always</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>extraTypeInfo</name>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>isChildRelationship</name>
-            <value>
                 <booleanValue>true</booleanValue>
             </value>
         </processMetadataValues>
@@ -9778,12 +9063,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_7_A1</name>
+        <name>myRule_5_A1</name>
         <label>Cerrar SLA</label>
-        <locationX>700</locationX>
+        <locationX>500</locationX>
         <locationY>200</locationY>
         <connector>
-            <targetReference>myRule_7_A2</targetReference>
+            <targetReference>myRule_5_A2</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -9832,7 +9117,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
             </processMetadataValues>
             <field>CompletionDate</field>
             <value>
-                <elementReference>formula_8_myRule_7_A1_5711519615</elementReference>
+                <elementReference>formula_6_myRule_5_A1_1726882839</elementReference>
             </value>
         </inputAssignments>
         <object>CaseMilestone</object>
@@ -9862,12 +9147,12 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_7_A2</name>
+        <name>myRule_5_A2</name>
         <label>Activar Flag</label>
-        <locationX>700</locationX>
+        <locationX>500</locationX>
         <locationY>300</locationY>
         <connector>
-            <targetReference>myDecision9</targetReference>
+            <targetReference>myDecision7</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -9982,12 +9267,417 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_81_A1</name>
-        <label>Asigna SLA</label>
-        <locationX>8100</locationX>
+        <name>myRule_63_A1</name>
+        <label>Actualizar caso</label>
+        <locationX>6300</locationX>
+        <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Id. del propietario</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>Group;User</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>formula_64_myRule_63_A1_6178926577</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Id. de tipo de registro</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>RecordType</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>formula_65_myRule_63_A1_6440872135</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Estado</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Status</field>
+            <value>
+                <stringValue>Pendiente</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Case]</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_72_A1</name>
+        <label>Si son solicitudes</label>
+        <locationX>7200</locationX>
         <locationY>200</locationY>
         <connector>
-            <targetReference>myDecision82</targetReference>
+            <targetReference>myDecision74</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Id. del propietario</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>Group;User</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>formula_73_myRule_72_A1_2810228014</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Case]</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_75_A1</name>
+        <label>Asigna SLA 16</label>
+        <locationX>7500</locationX>
+        <locationY>200</locationY>
+        <connector>
+            <targetReference>myDecision76</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Tiempo SLA</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Tiempo_SLA__c</field>
+            <value>
+                <stringValue>16</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Case]</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_77_A1</name>
+        <label>Actualiza responsable el creador</label>
+        <locationX>7700</locationX>
+        <locationY>200</locationY>
+        <connector>
+            <targetReference>myDecision78</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Responsable</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>User</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Reference</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Usuario__c</field>
+            <value>
+                <elementReference>myVariable_current.CreatedById</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Case]</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_79_A1</name>
+        <label>Asigna SLA</label>
+        <locationX>7900</locationX>
+        <locationY>200</locationY>
+        <connector>
+            <targetReference>myDecision80</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -10066,8 +9756,92 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_83_A1</name>
+        <name>myRule_81_A1</name>
         <label>Actualiza Cuit empleador</label>
+        <locationX>8100</locationX>
+        <locationY>200</locationY>
+        <connector>
+            <targetReference>myDecision82</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Cuit empleador</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Reference</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Cuit_empleador__c</field>
+            <value>
+                <elementReference>myVariable_current.Empleador__r.CUIT__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Case]</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_83_A1</name>
+        <label>Actualiza el cuit del empleador</label>
         <locationX>8300</locationX>
         <locationY>200</locationY>
         <connector>
@@ -10150,91 +9924,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_85_A1</name>
-        <label>Actualiza el cuit del empleador</label>
-        <locationX>8500</locationX>
-        <locationY>200</locationY>
-        <connector>
-            <targetReference>myDecision86</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Cuit empleador</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Cuit_empleador__c</field>
-            <value>
-                <elementReference>myVariable_current.Empleador__r.CUIT__c</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Case</object>
-    </recordUpdates>
-    <recordUpdates>
-        <processMetadataValues>
-            <name>evaluationType</name>
-            <value>
-                <stringValue>always</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>extraTypeInfo</name>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>isChildRelationship</name>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>reference</name>
-            <value>
-                <stringValue>[Case]</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>referenceTargetField</name>
-        </processMetadataValues>
-        <name>myRule_91_A1</name>
+        <name>myRule_89_A1</name>
         <label>Actualiza DNi del titular</label>
         <locationX>8800</locationX>
         <locationY>200</locationY>
@@ -10294,7 +9984,7 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>evaluationType</name>
             <value>
-                <stringValue>criteria</stringValue>
+                <stringValue>always</stringValue>
             </value>
         </processMetadataValues>
         <processMetadataValues>
@@ -10315,13 +10005,10 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_93_A1</name>
-        <label>Flag Caso viene de Cuentas a Cobrar</label>
-        <locationX>8800</locationX>
+        <name>myRule_8_A1</name>
+        <label>Asigna prioridad</label>
+        <locationX>800</locationX>
         <locationY>200</locationY>
-        <connector>
-            <targetReference>myRule_93_A2</targetReference>
-        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
@@ -10336,23 +10023,23 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
                 <elementReference>myVariable_current.Id</elementReference>
             </value>
         </filters>
-        <filters>
+        <inputAssignments>
             <processMetadataValues>
-                <name>implicit</name>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Boolean</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
                 <value>
                     <booleanValue>false</booleanValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
-                <name>inputDataType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
                 <name>leftHandSideLabel</name>
                 <value>
-                    <stringValue>Propietario del caso</stringValue>
+                    <stringValue>No tiene SLA</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
@@ -10362,27 +10049,95 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
                 </value>
             </processMetadataValues>
             <processMetadataValues>
-                <name>leftHandSideType</name>
+                <name>rightHandSideType</name>
                 <value>
-                    <stringValue>String</stringValue>
+                    <stringValue>Boolean</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>No_tiene_SLA__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
-                <name>operatorDataType</name>
+                <name>isRequired</name>
                 <value>
-                    <stringValue>String</stringValue>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Prioridad</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
                 <name>rightHandSideType</name>
                 <value>
-                    <stringValue>String</stringValue>
+                    <stringValue>Picklist</stringValue>
                 </value>
             </processMetadataValues>
-            <field>Propietario_del_caso__c</field>
+            <field>Priority</field>
+            <value>
+                <stringValue>Maxima</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Case]</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_91_A1</name>
+        <label>Flag Caso viene de Cuentas a Cobrar</label>
+        <locationX>8800</locationX>
+        <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Cuentas a cobrar</stringValue>
+                <elementReference>myVariable_current.Id</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -10423,140 +10178,17 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
         </inputAssignments>
         <object>Case</object>
     </recordUpdates>
-    <recordUpdates>
-        <processMetadataValues>
-            <name>evaluationType</name>
-            <value>
-                <stringValue>criteria</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>extraTypeInfo</name>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>isChildRelationship</name>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>reference</name>
-            <value>
-                <stringValue>[Case]</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>referenceTargetField</name>
-        </processMetadataValues>
-        <name>myRule_93_A2</name>
-        <label>Flag Caso viene de Aportes</label>
-        <locationX>8800</locationX>
-        <locationY>300</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>inputDataType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Propietario del caso</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>operatorDataType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>String</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Propietario_del_caso__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Aportes</stringValue>
-            </value>
-        </filters>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Boolean</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Viene de Aportes</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Boolean</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Viene_de_Aportes__c</field>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputAssignments>
-        <object>Case</object>
-    </recordUpdates>
     <startElementReference>myDecision</startElementReference>
     <status>Active</status>
     <variables>
-        <name>myCollection_myRule_63_A1recipientIds</name>
+        <name>myCollection_myRule_61_A1recipientIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>myCollection_myRule_85_A1recipientIds</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
@@ -10564,13 +10196,6 @@ NOT({!myVariable_current.Viene_de_Aportes__c} )
     </variables>
     <variables>
         <name>myCollection_myRule_87_A1recipientIds</name>
-        <dataType>String</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>myCollection_myRule_89_A1recipientIds</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
