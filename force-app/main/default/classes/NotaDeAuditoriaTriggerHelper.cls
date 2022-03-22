@@ -44,7 +44,7 @@ public class NotaDeAuditoriaTriggerHelper  {
 		]) {
 			if(isDoctor && String.isBlank(aCase.Medico_asignado__c) && aCase.Contiene_alerta_AM__c
 				&& (aCase.Nivel_de_derivacion__c == 'Nivel 2' || aCase.Nivel_de_derivacion__c == 'Nivel 3')
-				&& CaseHelper.hasARecordTypeWithMedicoAsignado(aCase)
+				&& CaseTriggerHelper.hasARecordTypeWithMedicoAsignado(aCase)
 			) {
 				aCase.Medico_asignado__c = usuario.Id;
 
