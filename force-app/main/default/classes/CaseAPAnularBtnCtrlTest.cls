@@ -1,70 +1,90 @@
 @isTest
 private class CaseAPAnularBtnCtrlTest {
-	private static XHttpCalloutMock getResponseFound;
-	private static XHttpCalloutMock getErrorResponse;
-	private static CaseTeamRole caseRole;
+	private static String AUTORIZACIONES_ANULAR = ConfigUtils.getEndpointsByTipo('autorizaciones').get('orden-ap/anular').Endpoint__c;
+	private static XHttpCalloutMock getResponseFound = new XHttpCalloutMock();
+	private static XHttpCalloutMock getErrorResponse = new XHttpCalloutMock();
+	private static List<String> profilesList = new List<String>{'Front', 'Mesa de ayuda', 'Discapacidad'};
+	private static List<String> userRolesList = new List<String>{'Filial_Casa_central', 'Encargado_Filial_Mar_del_Plata'};
+	private static List<String> queuesList =  new List<String>{'Front', 'Mesa_de_ayuda'};
+	private static String uniqueUserName = 'standarduserRevertirCase' + DateTime.now().getTime() + '@testorg.com';
+	private static User usuarioFront = Build.anUser()
+		.withUserName(uniqueUserName + 'Front')
+		.build();
+	private static User usuarioMesa = Build.anUser()
+		.withUserName(uniqueUserName + 'Mesa')
+		.build();
+	private static User userEncargado = Build.anUser()
+		.withUserName(uniqueUserName + 'EncargadoFilial')
+		.build();
+	private static User userDiscapacidad = build.anUser()
+		.withUserName(uniqueUserName + 'Discapacidad')
+		.build();
+	private static Account testAccount = Build.anAccountCuentapersonal().build();
+	private static CaseTeamRole caseRole = new CaseTeamRole(Name = 'Cel Test', AccessLevel = 'Edit');
 	private static Case caso;
-	private static User usuarioFront;
-	private static User usuarioMesa;
-	private static User userEncargado;
 	static {
 		System.runAs(new User(Id = UserInfo.getUserId())) {
-			String uniqueUserName = 'standarduser' + DateTime.now().getTime() + '@testorg.com';
-			Profile pFront = [SELECT Id FROM Profile WHERE Name='Front'];
-			UserRole role = [SELECT Id,Name FROM UserRole WHERE Name = 'Administrador'];
-			usuarioFront = new User(Alias = 'standt', Email='standarduser@testorg.com',
-					EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='es',
-					LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
-					UserName=uniqueUserName + 'Front', ProfileId = pFront.Id, UserRole = role);
-			insert usuarioFront;
-			Profile pMesa = [SELECT Id FROM Profile WHERE Name='Mesa de ayuda'];
-			usuarioMesa = new User(Alias = 'standt', Email='standarduser@testorg.com',
-					EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='es',
-					LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
-					UserName=uniqueUserName + 'Mesa', ProfileId = pMesa.Id, UserRole = role);
-			insert usuarioMesa;
-			List<Group> groupFront = [SELECT Id, Name FROM Group WHERE DeveloperName = 'Front'];
-			GroupMember groupMemberF = new GroupMember(groupId = groupFront[0].Id, UserOrGroupId = usuarioFront.Id);
-			insert groupMemberF;
-			List<Group> groupMesa = [SELECT Id, Name FROM Group WHERE DeveloperName = 'Mesa_de_ayuda'];
-			GroupMember groupMemberM = new GroupMember(groupId = groupMesa[0].Id, UserOrGroupId = usuarioMesa.Id);
-			insert groupMemberM;
-			caseRole = new CaseTeamRole();
-			caseRole.Name = 'Cel Test';
-			caseRole.AccessLevel = 'Edit';
 			insert caseRole;
-			UserRole roleEncargado = [SELECT Id,Name, DeveloperName FROM UserRole WHERE DeveloperName = 'Encargado_Filial_Mar_del_Plata'];
-			userEncargado = new User(Alias = 'standtEn', Email='standarduser@testorg.com',
-				EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='es',
-				LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
-				UserName=uniqueUserName + 'EncargadoFilial', ProfileId = pFront.Id, UserRoleId = roleEncargado.Id
-			);
-			System.runAs(new User(Id = UserInfo.getUserId())) {
-				insert userEncargado;
+			insert testAccount;
+			List<Profile> profiles = [SELECT Id, Name FROM Profile WHERE Name IN: profilesList];
+			List<UserRole> roles = [SELECT Id, Name, DeveloperName FROM UserRole WHERE DeveloperName IN: userRolesList];
+			List<Group> queues = [SELECT Id, Name, DeveloperName FROM Group WHERE Type = 'Queue' AND DeveloperName IN: queuesList];
+			List<User> usersToInsert = new List<User>();
+			for (Profile profileToAssign : profiles) {
+				switch on profileToAssign.Name {
+					when 'Front' {
+						usuarioFront.profileId = profileToAssign.Id;
+						userEncargado.profileId = profileToAssign.Id;
+					} when 'Mesa de ayuda'{
+						usuarioMesa.profileId = profileToAssign.Id;
+					} when 'Discapacidad' {
+						userDiscapacidad.ProfileId = profileToAssign.Id;
+						usersToInsert.add(userDiscapacidad);
+					}
+				}
 			}
+			for (UserRole role : roles) {
+				switch on role.DeveloperName {
+					when 'Filial_Casa_central' {
+						usuarioFront.UserRoleId = role.Id;
+						usersToInsert.add(usuarioFront);
+						usuarioMesa.UserRoleId = role.Id;
+						usersToInsert.add(usuarioMesa);
+					} when 'Encargado_Filial_Mar_del_Plata'{
+						userEncargado.UserRoleId = role.Id;
+						usersToInsert.add(userEncargado);
+					}
+				}
+			}
+			insert usersToInsert;
+			List<GroupMember> membersToInsert = new List<GroupMember>();
+			for (Group queue : queues) {
+				GroupMember memberToinsert;
+				switch on queue.DeveloperName {
+					when 'Front' {
+						memberToinsert = new GroupMember(
+							groupId = queue.Id,
+							UserOrGroupId = usuarioFront.Id
+						);
+					} when 'Mesa_de_ayuda'{
+						memberToinsert = new GroupMember(
+							groupId = queue.Id,
+							UserOrGroupId = usuarioMesa.Id
+						);
+					}
+				}
+				membersToInsert.add(memberToinsert);
+			}
+			insert membersToInsert;
 		}
-		getResponseFound = new XHttpCalloutMock();
-		getResponseFound.buildResponse()
-				.withStatus('OK')
-				.withStatusCode(200)
-				.withBody(WSAuthTokenMock.getTokenSuccess())
-				.addForAddress(WSAuthToken.SERVICE_CONFIG.URL__c + '/oauth/token');
-		getResponseFound.buildResponse()
-				.withStatus('OK')
-				.withStatusCode(200)
-				.withBody(WSCaseAPAnularMock.getFound())
-				.addForAddress(WSCaseAPAnular.SERVICE_CONFIG.URL__c + '/v1/salud/autorizaciones/orden-ap/anular/12345678');
-		getErrorResponse = new XHttpCalloutMock();
-		getErrorResponse.buildResponse()
-				.withStatus('OK')
-				.withStatusCode(200)
-				.withBody(WSAuthTokenMock.getTokenSuccess())
-				.addForAddress(WSAuthToken.SERVICE_CONFIG.URL__c + '/oauth/token');
-		getErrorResponse.buildResponse()
-				.withStatus('La autorización solicitada es inválida.')
-				.withStatusCode(404)
-				.withBody(WSCaseAPAnularMock.getError())
-				.addForAddress(WSCaseAPAnular.SERVICE_CONFIG.URL__c + '/v1/salud/autorizaciones/orden-ap/anular/12345678');
+		TestUtils.setMockResponse(getResponseFound, AUTORIZACIONES_ANULAR + '/12345678', WSCaseAPAnularMock.getFound());
+		TestUtils.setMockResponse(
+			getErrorResponse,
+			AUTORIZACIONES_ANULAR + '/12345678',
+			WSCaseAPAnularMock.getError(),
+			404,
+			'La autorización solicitada es inválida.'
+		);
 	}
 	@isTest
 	private static void checkCancelCaseTest() {
@@ -177,6 +197,29 @@ private class CaseAPAnularBtnCtrlTest {
 		System.assertEquals('CA-----N', casoToAssert.Status, 'El estado del caso debe ser CA-----G');
 	}
 	@isTest
+	private static void validateUserDiscapacidadWhenBelongsToTeamCaseAndCaseIsNivel3 () {
+		CaseAPAnularBtnCtrl.Response resp;
+		Case newCaso = Build.aCaseAP()
+			.withNroAP('12345678')
+			.withStatus('CA-----A')
+			.withNivelDerivacion('Nivel 3')
+			.withAccountId(testAccount.Id)
+			.build();
+		insert newCaso;
+		System.runAs(new User(Id = UserInfo.getUserId())) {
+			insert new CaseTeamMember(ParentId = newCaso.Id, MemberId = userDiscapacidad.Id, TeamRoleId = caseRole.Id);
+		}
+		Test.setMock(HttpCalloutMock.class, getResponseFound);
+		System.runAs(userDiscapacidad) {
+			Test.startTest();
+			resp = CaseAPAnularBtnCtrl.ifStatusIsOrdenEmitidaAndRecordTypeIsSeguimientoCancelCase(newCaso.Id);
+			Test.stopTest();
+		}
+		System.assertEquals('ok', resp.message, 'El mensaje no debe indicar error');
+		Case caseToAssert = [SELECT Status FROM Case WHERE Id =: newCaso.Id];
+		System.assertEquals('CA-----N', caseToAssert.Status, 'El estado del caso debe ser CA-----N');
+	}
+	@isTest
 	private static void whenTheUserIsLeaderReturnTrue() {
 		Test.startTest();
 		Boolean resp = CaseAPAnularBtnCtrl.canCancelAPs();
@@ -202,5 +245,15 @@ private class CaseAPAnularBtnCtrlTest {
 			Test.stopTest();
 		}
 		System.assert(!resp, 'La respuesta debe ser falsa');
+	}
+	@isTest
+	private static void whenUserIsCellLeaderAndHaveDiscapacidadProfileReturnsTrue () {
+		Boolean resp;
+		System.runAs(userDiscapacidad) {
+			Test.startTest();
+			resp = CaseAPAnularBtnCtrl.canCancelAPs();
+			Test.stopTest();
+		}
+		System.assert(resp, 'La respuesta debe ser verdadera');
 	}
 }

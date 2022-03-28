@@ -354,7 +354,8 @@ public without sharing class Utils {
 		String[] ADMIN_PROFILES = new List<String> {'System Administrator',
 													'Administrador del sistema',
 													'Administrador de Servicio',
-													'CDC'};
+													'CDC',
+													'Discapacidad'};
 		String[] CellProfiles = new List<String> {'Back CT', 'Back Administrativo', 'Discapacidad Interdisciplinario'};
 		String[] leaderProfiles = ADMIN_PROFILES.clone();
 		leaderProfiles.add('Coordinador de Mesa de Ayuda');
