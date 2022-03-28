@@ -1,10 +1,26 @@
-@isTest 
+@isTest
 private class CaseAPRevertirBtnCtrlTest {
 	private static String AUTORIZACIONES_URL = ConfigUtils.getEndpointsByTipo('autorizaciones').get('centro-autorizador/revertir').Endpoint__c;
-	private static XHttpCalloutMock getResponseFound;
-	private static User usuarioFront;
-	private static User usuarioMesa;
-	private static CaseTeamRole caseRole;
+	private static XHttpCalloutMock getResponseFound = new XHttpCalloutMock();
+	private static List<String> profilesList = new List<String>{'Front', 'Mesa de ayuda', 'Discapacidad'};
+	private static List<String> userRolesList = new List<String>{'Filial_Casa_central', 'Encargado_Filial_Mar_del_Plata'};
+	private static List<String> queuesList =  new List<String>{'Front', 'Mesa_de_ayuda'};
+	private static String uniqueUserName = 'standarduserRevertirCase' + DateTime.now().getTime() + '@testorg.com';
+	private static User usuarioFront = Build.anUser()
+		.withUserName(uniqueUserName + 'Front')
+		.withCodigoDelegacion('650886')
+		.build();
+	private static User usuarioMesa = Build.anUser()
+		.withUserName(uniqueUserName + 'Mesa')
+		.build();
+	private static User userEncargado = Build.anUser()
+		.withUserName(uniqueUserName + 'EncargadoFilial')
+		.build();
+	private static User userDiscapacidad = build.anUser()
+		.withUserName(uniqueUserName + 'Discapacidad')
+		.build();
+	private static Account testAccount = Build.anAccountCuentapersonal().build();
+	private static CaseTeamRole caseRole = new CaseTeamRole(Name = 'Cel Test', AccessLevel = 'Edit');
 	private static Case caso;
 	private static Prestacion__c prestacion;
 	private static Prestacion__c prestacion2;
@@ -14,35 +30,65 @@ private class CaseAPRevertirBtnCtrlTest {
 	private static Account delegacion;
     static {
 		System.runAs(new User(Id = UserInfo.getUserId())) {
-			String uniqueUserName = 'standarduserRevertirCase' + DateTime.now().getTime() + '@testorg.com';
-			Profile pFront = [SELECT Id FROM Profile WHERE Name='Front'];
-			UserRole role = [SELECT Id, Name, DeveloperName FROM UserRole WHERE DeveloperName = 'Filial_Casa_central'];
-			usuarioFront = new User(Alias = 'standt', Email='standarduser@testorg.com', Codigo_delegacion__c = '650886',
-					EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='es',
-					LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
-					UserName=uniqueUserName + 'Front', ProfileId = pFront.Id, UserRoleId = role.Id);
-			insert usuarioFront;
-			Profile pMesa = [SELECT Id FROM Profile WHERE Name='Mesa de ayuda'];
-			usuarioMesa = new User(Alias = 'standt', Email='standarduser@testorg.com',
-					EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='es',
-					LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
-					UserName=uniqueUserName + 'Mesa', ProfileId = pMesa.Id, UserRole = role);
-			insert usuarioMesa;
-			List<Group> groupFront = [SELECT Id, Name FROM Group WHERE DeveloperName = 'Front'];
-			GroupMember groupMemberF = new GroupMember(groupId = groupFront[0].Id, UserOrGroupId = usuarioFront.Id);
-			insert groupMemberF;
-			List<Group> groupMesa = [SELECT Id, Name FROM Group WHERE DeveloperName = 'Mesa_de_ayuda'];
-			GroupMember groupMemberM = new GroupMember(groupId = groupMesa[0].Id, UserOrGroupId = usuarioMesa.Id);
-			insert groupMemberM;
-			caseRole = new CaseTeamRole();
-			caseRole.Name = 'Cel Test';
-			caseRole.AccessLevel = 'Edit';
+			delegacion = Build.anAccountDelegacion().withCodigoDeDelegacion('650886').build();
+			insert delegacion;
 			insert caseRole;
+			insert testAccount;
+			List<Profile> profiles = [SELECT Id, Name FROM Profile WHERE Name IN: profilesList];
+			List<UserRole> roles = [SELECT Id, Name, DeveloperName FROM UserRole WHERE DeveloperName IN: userRolesList];
+			List<Group> queues = [SELECT Id, Name, DeveloperName FROM Group WHERE Type = 'Queue' AND DeveloperName IN: queuesList];
+			List<User> usersToInsert = new List<User>();
+			for (Profile profileToAssign : profiles) {
+				switch on profileToAssign.Name {
+					when 'Front' {
+						usuarioFront.profileId = profileToAssign.Id;
+						userEncargado.profileId = profileToAssign.Id;
+					} when 'Mesa de ayuda'{
+						usuarioMesa.profileId = profileToAssign.Id;
+					} when 'Discapacidad' {
+						userDiscapacidad.ProfileId = profileToAssign.Id;
+						usersToInsert.add(userDiscapacidad);
+					}
+				}
+			}
+			for (UserRole role : roles) {
+				switch on role.DeveloperName {
+					when 'Filial_Casa_central' {
+						usuarioFront.UserRoleId = role.Id;
+						usersToInsert.add(usuarioFront);
+						usuarioMesa.UserRoleId = role.Id;
+						usersToInsert.add(usuarioMesa);
+					} when 'Encargado_Filial_Mar_del_Plata'{
+						userEncargado.UserRoleId = role.Id;
+						usersToInsert.add(userEncargado);
+					}
+				}
+			}
+			insert usersToInsert;
+			List<GroupMember> membersToInsert = new List<GroupMember>();
+			for (Group queue : queues) {
+				GroupMember memberToinsert;
+				switch on queue.DeveloperName {
+					when 'Front' {
+						memberToinsert = new GroupMember(
+							groupId = queue.Id,
+							UserOrGroupId = usuarioFront.Id
+						);
+					} when 'Mesa_de_ayuda'{
+						memberToinsert = new GroupMember(
+							groupId = queue.Id,
+							UserOrGroupId = usuarioMesa.Id
+						);
+					}
+				}
+				membersToInsert.add(memberToinsert);
+			}
+			insert membersToInsert;
 		}
-		delegacion = Build.anAccountDelegacion().withCodigoDeDelegacion('650886').build();
-		insert delegacion;
-		caso = new Case();
-		caso.Status = 'CA-----A';
+		caso = Build.aCaseAP()
+			.withStatus('CA-----A')
+			.withAccountId(testAccount.Id)
+			.build();
 		insert caso;
 		System.runAs(new User(Id = UserInfo.getUserId())) {
 			insert new CaseTeamMember(ParentId = caso.Id, MemberId = usuarioFront.Id, TeamRoleId = caseRole.Id);
@@ -50,19 +96,20 @@ private class CaseAPRevertirBtnCtrlTest {
 		prestacion = new Prestacion__c();
 		prestacion.Ap__c = Caso.Id;
 		insert prestacion;
+		List<Alerta__c> alertsToInsert = new List<Alerta__c>();
 		alerta1 = new Alerta__c();
 		alerta1.Prestacion__c = prestacion.Id;
-		insert alerta1;
+		alertsToInsert.add(alerta1);
 		alerta2 = new Alerta__c();
 		alerta2.Prestacion__c = prestacion.Id;
-		insert alerta2;
+		alertsToInsert.add(alerta2);
 		prestacion2 = new Prestacion__c();
 		prestacion2.Ap__c = Caso.Id;
 		insert prestacion2;
 		alerta3 = new Alerta__c();
 		alerta3.Prestacion__c = prestacion2.Id;
-		insert alerta3;
-		getResponseFound = new XHttpCalloutMock();
+		alertsToInsert.add(alerta3);
+		insert alertsToInsert;
 		TestUtils.setMockResponse(getResponseFound, AUTORIZACIONES_URL + '/1014009821', WSCasoEnviarASSMock.getFound());
 	}
 	@isTest
@@ -75,8 +122,8 @@ private class CaseAPRevertirBtnCtrlTest {
 		Test.stopTest();
 		Integer cantAlertas = [SELECT COUNT() FROM Alerta__c];
 		Case casoToAssert = [SELECT Status FROM Case WHERE Id =: caso.Id];
-		System.assertEquals('CA-----G', casoToAssert.Status);
-		System.assertEquals(0, cantAlertas);
+		System.assertEquals('CA-----G', casoToAssert.Status, 'El Estado del caso debe ser CA-----G');
+		System.assertEquals(0, cantAlertas, 'No deben haber alertas asociadas');
 	}
 	@isTest
 	private static void ifStatusIsNotCentroAutorizadorDontDoAnythingTest() {
@@ -88,7 +135,7 @@ private class CaseAPRevertirBtnCtrlTest {
 		CaseAPRevertirBtnCtrl.deleteAlertasRelatedToCaseAndChangeStatusFromCase(caso.Nro_AP__c);
 		Test.stopTest();
 		Integer cantAlertas = [SELECT COUNT() FROM Alerta__c];
-		System.assertEquals(3, cantAlertas);
+		System.assertEquals(3, cantAlertas, 'Deben haber tres alertas asociadas');
 	}
 	@isTest
 	private static void validateUserWhenNoBelongsToFrontQueueAndCaseIsNivel1() {
@@ -103,7 +150,7 @@ private class CaseAPRevertirBtnCtrlTest {
 			resp = CaseAPRevertirBtnCtrl.deleteAlertasRelatedToCaseAndChangeStatusFromCase(newCaso.Nro_AP__c);
 			Test.stopTest();
 		}
-		System.assertEquals('- El usuario no pertenece a Front', resp.message);
+		System.assertEquals(System.Label.Alerta_NoAuth_UsuarioNoFront, resp.message, 'El mensaje no indica el error');
 	}
 	@isTest
 	private static void validateUserWhenNoBelongsToMesaQueueAndCaseIsNivel2() {
@@ -119,7 +166,7 @@ private class CaseAPRevertirBtnCtrlTest {
 			resp = CaseAPRevertirBtnCtrl.deleteAlertasRelatedToCaseAndChangeStatusFromCase(newCaso.Nro_AP__c);
 			Test.stopTest();
 		}
-		System.assertEquals('- El usuario no pertenece a Mesa de Ayuda', resp.message);
+		System.assertEquals(System.Label.Alerta_NoAuth_UsuarioNoMesaAyuda, resp.message, 'El mensaje no indica el error');
 	}
 	@isTest
 	private static void validateUserWhenNoBelongsToTeamCaseAndCaseIsNivel3() {
@@ -134,7 +181,7 @@ private class CaseAPRevertirBtnCtrlTest {
 			resp = CaseAPRevertirBtnCtrl.deleteAlertasRelatedToCaseAndChangeStatusFromCase(newCaso.Nro_AP__c);
 			Test.stopTest();
 		}
-		System.assertEquals('- El usuario no pertenece al equipo del caso', resp.message);
+		System.assertEquals(System.Label.Alerta_NoAuth_UsuarioNoEquipoCaso, resp.message, 'El mensaje no indica el error');
 	}
 	@isTest
 	private static void whenAFrontUserBelongsToFrontQueue_revertirAP() {
@@ -157,24 +204,65 @@ private class CaseAPRevertirBtnCtrlTest {
 			Test.stopTest();
 		}
 		Case casoToAssert = [SELECT Status FROM Case WHERE Id =: newCaso.Id];
-		System.assertEquals('ok', resp.message);
-		System.assertEquals('CA-----G', casoToAssert.Status);
+		System.assertEquals('ok', resp.message, 'El mensaje no coincide');
+		System.assertEquals('CA-----G', casoToAssert.Status, 'El Estado del caso debe ser CA-----G');
+	}
+	@isTest
+	private static void validateUserDiscapacidadWhenBelongsToTeamCaseAndCaseIsNivel3 () {
+		CaseAPRevertirBtnCtrl.Response resp;
+		caso.Nro_AP__c = '1014009821';
+		caso.Nivel_de_derivacion__c = 'Nivel 3';
+		update caso;
+		System.runAs(new User(Id = UserInfo.getUserId())) {
+			insert new CaseTeamMember(ParentId = caso.Id, MemberId = userDiscapacidad.Id, TeamRoleId = caseRole.Id);
+		}
+		Test.setMock(HttpCalloutMock.class, getResponseFound);
+		System.runAs(userDiscapacidad) {
+			Test.startTest();
+			resp = CaseAPRevertirBtnCtrl.deleteAlertasRelatedToCaseAndChangeStatusFromCase(caso.Nro_AP__c);
+			Test.stopTest();
+		}
+		Integer cantAlertas = [SELECT COUNT() FROM Alerta__c];
+		Case casoToAssert = [SELECT Status FROM Case WHERE Id =: caso.Id];
+		System.assertEquals('ok', resp.message, 'El mensaje no debe indicar error');
+		System.assertEquals('CA-----G', casoToAssert.Status, 'El Estado del caso debe ser CA-----G');
+		System.assertEquals(0, cantAlertas, 'No deben haber alertas asociadas');
 	}
 	@isTest
 	private static void whenTheUserIsLeaderReturnTrue() {
 		Test.startTest();
-		Boolean resp = CaseAPRevertirBtnCtrl.isLeader();
+		Boolean resp = CaseAPRevertirBtnCtrl.canRevertAPs();
 		Test.stopTest();
-		System.assert(resp);
+		System.assert(resp, 'La respuesta debe ser verdadera');
+	}
+	@isTest
+	private static void whenTheUserIsEncargadoReturnTrue() {
+		Boolean resp;
+		System.runAs(userEncargado) {
+			Test.startTest();
+			resp = CaseAPRevertirBtnCtrl.canRevertAPs();
+			Test.stopTest();
+		}
+		System.assert(resp, 'La respuesta debe ser verdadera');
 	}
 	@isTest
 	private static void whenTheUserIsNotLeaderReturnFalse() {
 		Boolean resp;
 		System.runAs(usuarioFront) {
 			Test.startTest();
-			resp = CaseAPRevertirBtnCtrl.isLeader();
+			resp = CaseAPRevertirBtnCtrl.canRevertAPs();
 			Test.stopTest();
 		}
-		System.assert(!resp);
+		System.assert(!resp, 'La respuesta debe ser false');
+	}
+	@isTest
+	private static void whenUserIsCellLeaderAndHaveDiscapacidadProfileReturnsTrue () {
+		Boolean resp;
+		System.runAs(userDiscapacidad) {
+			Test.startTest();
+			resp = CaseAPAnularBtnCtrl.canCancelAPs();
+			Test.stopTest();
+		}
+		System.assert(resp, 'La respuesta debe ser verdadera');
 	}
 }

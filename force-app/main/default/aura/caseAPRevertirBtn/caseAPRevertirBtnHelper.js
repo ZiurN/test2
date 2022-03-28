@@ -43,10 +43,10 @@
 		}
 		LightningUtils.showToast("Error", errorMsg , {"type":"error"});
 	},
-	isLeader: function (component) {
+	canRevertAPs: function (component) {
 		return new Promise(
 		  $A.getCallback(function(resolve, reject) {
-			let action = component.get("c.isLeader");
+			let action = component.get("c.canRevertAPs");
 			action.setCallback(this, function(response) {
 				if(response.getState() === 'SUCCESS') {
 					component.set('v.isLeader', response.getReturnValue());

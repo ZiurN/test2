@@ -89,6 +89,7 @@ public class WSSSGenericResponse {
 			public String exception_text {get; set;}
 			public Integer line {get; set;}
 			public EventoMedico em {get; set;}
+			public List<Prestaciones> prestaciones {get;set;}
 			public Data() {}
 			public Data(JSONParser parser) {
 				while (parser.nextToken() != System.JSONToken.END_OBJECT) {
@@ -152,6 +153,8 @@ public class WSSSGenericResponse {
 									reintegro = new Reintegro(parser);
 								} when 'em' {
 									em = new EventoMedico(parser);
+								} when 'prestaciones' {
+									prestaciones = arrayOfPrestaciones(parser);
 								} when else {
 									System.debug(LoggingLevel.WARN, 'Data consuming unrecognized property: ' + text);
 									consumeObject(parser);
