@@ -5,5 +5,7 @@ trigger SegmentoTrigger on Segmentos__c (before insert,
 										after update,
 										after delete,
 										after undelete) {
-	new SegmentoTriggerHandler().run();
+	if(!XappiaHelper.isPlatformUser()) {
+		new SegmentoTriggerHandler().run();
+	}
 }
