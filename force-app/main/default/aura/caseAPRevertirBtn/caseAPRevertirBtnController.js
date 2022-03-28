@@ -6,9 +6,8 @@
 				helper.toggleEnableButton(component);
 			}
 			else {
-				helper.isLeader(component)
+				helper.canRevertAPs(component)
 					.then(function(result) {
-						let isLeader = component.get('v.isLeader');
 						helper.toggleEnableButton(component);
 				});
 			}

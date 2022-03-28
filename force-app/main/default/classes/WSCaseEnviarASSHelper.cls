@@ -6,7 +6,7 @@ public with sharing class WSCaseEnviarASSHelper {
 		return enviarASS(body, serviceType, service, null);
 	}
 	public static Response enviarASS (String body, String serviceType, String service, String extraParams) {
-		System.debug('BODY SOLICITUD: ');System.debug(body);
+		System.debug('BODY SOLICITUD: '); System.debug(body);
 		ENDPOINTS = ConfigUtils.getEndpointsByTipo(serviceType);
 		String url = SERVICE_CONFIG.URL__c + ENDPOINTS.get(service).Endpoint__c;
 		if (!String.isBlank(extraParams)) url += '/' + extraParams;
@@ -18,15 +18,17 @@ public with sharing class WSCaseEnviarASSHelper {
 		WSAuthToken.manageTokenResponse(tokenResp);
 		return res;
 	}
+	private static WSSSGenericResponse processResponse (HttpResponse response) {
+		System.debug('BODY Respuesta: '); System.debug(response.getBody());
+		return WSSSGenericResponse.parse(response.getBody());
+	}
 	public class Response extends WSResult {
 		public WSSSGenericResponse result;
 		public override void processResponse(HttpResponse response) {
-			System.debug('BODY Respuesta: ');System.debug(response.getBody());
-			result = WSSSGenericResponse.parse(response.getBody());
+			result = WSCaseEnviarASSHelper.processResponse(response);
 		}
 		public override void processError(HttpResponse response) {
-			System.debug('BODY Respuesta: ');System.debug(response.getBody());
-			result = WSSSGenericResponse.parse(response.getBody());
+			result = WSCaseEnviarASSHelper.processResponse(response);
 			this.message = result.processMessage();
 		}
 	}
