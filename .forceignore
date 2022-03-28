@@ -12,4 +12,4 @@ package.xml
 **/__tests__/**
 
 #Metadata de configuracion de Endpoint
-force-app\main\default\customMetadata\Webservice_endpoint_setting*
+force-app/main/default/customMetadata/Webservice_endpoint_setting*

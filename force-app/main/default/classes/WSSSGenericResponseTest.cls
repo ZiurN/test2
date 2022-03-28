@@ -811,4 +811,149 @@ public class WSSSGenericResponseTest {
 		System.assert(r != null, 'No debe ser nulo');
 		System.assert(r.data[0].em.segmento!= null, 'No debe ser nulo');
 	}
+	@isTest
+	static void testParseAnularResponse () {
+		String json = '{'+
+					'\"data\": {'+
+						'\"ap\": {'+
+							'\"apr_id\": \"1014009953\",'+
+							'\"fecha\": \"2020-02-12 00:00:00\",'+
+							'\"conexion\": \"CX--MOST\",'+
+							'\"nombre_conexion\": \"Mostrador\",'+
+							'\"delegacion\": \"650098\",'+
+							'\"nombre_delegacion\": \"650098_ACA SALUD SUC. ROSARIO\",'+
+							'\"fecha_probable\": \"2020-02-12 00:00:00\",'+
+							'\"estado\": \"CA-----N\",'+
+							'\"nombre_estado\": \"ANULADA\",'+
+							'\"user_insert\": \"CRIOS\",'+
+							'\"fecha_insert\": \"2020-02-12 13:59:15\",'+
+							'\"codigo_afiliado\": \"69794/38\",'+
+							'\"apellidos_afiliado\": \"ORLOW\",'+
+							'\"nombres_afiliado\": \"SOFIA\",'+
+							'\"doc_afiliado\": \"DNI 35128344\",'+
+							'\"evento_medico\": null,'+
+							'\"fecha_prescripcion\": \"2020-01-20 00:00:00\",'+
+							'\"diagnostico\": \"999\",'+
+							'\"desc_diagnostico\": \"DIAGNOSTICO INDETERMINADO\",'+
+							'\"prescriptor\": \"758415\",'+
+							'\"nombre_prescriptor\": \"ZAPATA AGUILA BENJAMIN\",'+
+							'\"prestador_dirige\": null,'+
+							'\"nombre_prestador_dirige\": null,'+
+							'\"prestador\": null,'+
+							'\"nombre_prestador\": null,'+
+							'\"consultorio\": null,'+
+							'\"nombre_consultorio\": null,'+
+							'\"observaciones\": null,'+
+							'\"mail\": \"crios@acasalud.com.ar\",'+
+							'\"otros_mail\": null,'+
+							'\"aca_agencia\": null,'+
+							'\"tran_alta\": null,'+
+							'\"tran_anulacion\": null,'+
+							'\"ref_externa\": null,'+
+							'\"urgente\": null,'+
+							'\"afi_id\": \"180015\",'+
+							'\"nro_sf\": null,'+
+							'\"nivel\": \"N1\",'+
+							'\"clasificacion\": \"BAJA COMPLEJIDAD\"'+
+						'},'+
+						'\"prestaciones\": ['+
+							'{'+
+								'\"apr_id\": \"1014009953\",'+
+								'\"estado_prestacion\": \"C1----AS\",'+
+								'\"estado_descripcion\": \"AUTORIZADO POR EL SISTEMA\",'+
+								'\"contexto\": \"Ambulatorio\",'+
+								'\"cantidad\": \"1\",'+
+								'\"prestacion\": \"02170101\",'+
+								'\"nombre_prestacion\": \"ELECTROCARDIOGRAMA EN CONSULTORIO\",'+
+								'\"tipo_prestacion\": \"N\",'+
+								'\"troquel\": null,'+
+								'\"grupo_prestacion\": null,'+
+								'\"pca_id\": \"74042314\",'+
+								'\"alerta\": null,'+
+								'\"texto_aclarativo\": null'+
+							'}'+
+						']'+
+					'},'+
+					'\"meta\": {'+
+						'\"allowed_includes\": [],'+
+						'\"default_includes\": []'+
+					'}'+
+				'}';
+		WSSSGenericResponse r = WSSSGenericResponse.parse(json);
+		System.assert(r != null, 'El objeto no debe ser nulo');
+		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
+		WSSSGenericResponse.Meta objMeta = new WSSSGenericResponse.Meta(System.JSON.createParser(json));
+		System.assert(objMeta != null, 'El objeto no debe ser nulo');
+		System.assert(objMeta.allowed_includes == null, 'El valor debe ser nulo');
+		System.assert(objMeta.default_includes == null, 'El valor debe ser nulo');
+		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
+		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
+		WSSSGenericResponse.Prestaciones objPrestaciones = new WSSSGenericResponse.Prestaciones(System.JSON.createParser(json));
+		System.assert(objPrestaciones != null, 'El valor debe ser nulo');
+		System.assert(objPrestaciones.apr_id == null, 'El valor deber ser nulo');
+		System.assert(objPrestaciones.estado_prestacion == null, 'El valor deber ser nulo');
+		System.assert(objPrestaciones.estado_descripcion == null, 'El valor deber ser nulo');
+		System.assert(objPrestaciones.contexto == null, 'El valor deber ser nulo');
+		System.assert(objPrestaciones.cantidad == null, 'El valor deber ser nulo');
+		System.assert(objPrestaciones.prestacion == null, 'El valor deber ser nulo');
+		System.assert(objPrestaciones.nombre_prestacion == null, 'El valor deber ser nulo');
+		System.assert(objPrestaciones.tipo_prestacion == null, 'El valor deber ser nulo');
+		System.assert(objPrestaciones.troquel == null, 'El valor deber ser nulo');
+		System.assert(objPrestaciones.grupo_prestacion == null, 'El valor deber ser nulo');
+		System.assert(objPrestaciones.pca_id == null, 'El valor deber ser nulo');
+		System.assert(objPrestaciones.alerta == null, 'El valor deber ser nulo');
+		System.assert(objPrestaciones.texto_aclarativo == null, 'El valor deber ser nulo');
+		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
+		WSSSGenericResponse objWSSSGenericResponse = new WSSSGenericResponse(System.JSON.createParser(json));
+		System.assert(objWSSSGenericResponse != null, 'El objeto no debe ser nulo');
+		System.assert(objWSSSGenericResponse.data == null, 'El valor deber ser nulo');
+		System.assert(objWSSSGenericResponse.meta == null, 'El valor deber ser nulo');
+		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
+		WSSSGenericResponse.Data objData = new WSSSGenericResponse.Data(System.JSON.createParser(json));
+		System.assert(objData != null, 'El objeto no debe ser nulo');
+		System.assert(objData.ap == null, 'El valor deber ser nulo');
+		System.assert(objData.prestaciones == null, 'El valor deber ser nulo');
+		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
+		WSSSGenericResponse.Ap objAp = new WSSSGenericResponse.Ap(System.JSON.createParser(json));
+		System.assert(objAp != null, 'El objeto no debe ser nulo');
+		System.assert(objAp.apr_id == null, 'El valor deber ser nulo');
+		System.assert(objAp.fecha == null, 'El valor deber ser nulo');
+		System.assert(objAp.conexion == null, 'El valor deber ser nulo');
+		System.assert(objAp.nombre_conexion == null, 'El valor deber ser nulo');
+		System.assert(objAp.delegacion == null, 'El valor deber ser nulo');
+		System.assert(objAp.nombre_delegacion == null, 'El valor deber ser nulo');
+		System.assert(objAp.fecha_probable == null, 'El valor deber ser nulo');
+		System.assert(objAp.estado == null, 'El valor deber ser nulo');
+		System.assert(objAp.nombre_estado == null, 'El valor deber ser nulo');
+		System.assert(objAp.user_insert == null, 'El valor deber ser nulo');
+		System.assert(objAp.fecha_insert == null, 'El valor deber ser nulo');
+		System.assert(objAp.codigo_afiliado == null, 'El valor deber ser nulo');
+		System.assert(objAp.apellidos_afiliado == null, 'El valor deber ser nulo');
+		System.assert(objAp.nombres_afiliado == null, 'El valor deber ser nulo');
+		System.assert(objAp.doc_afiliado == null, 'El valor deber ser nulo');
+		System.assert(objAp.evento_medico == null, 'El valor deber ser nulo');
+		System.assert(objAp.fecha_prescripcion == null, 'El valor deber ser nulo');
+		System.assert(objAp.diagnostico == null, 'El valor deber ser nulo');
+		System.assert(objAp.desc_diagnostico == null, 'El valor deber ser nulo');
+		System.assert(objAp.prescriptor == null, 'El valor deber ser nulo');
+		System.assert(objAp.nombre_prescriptor == null, 'El valor deber ser nulo');
+		System.assert(objAp.prestador_dirige == null, 'El valor deber ser nulo');
+		System.assert(objAp.nombre_prestador_dirige == null, 'El valor deber ser nulo');
+		System.assert(objAp.prestador == null, 'El valor deber ser nulo');
+		System.assert(objAp.nombre_prestador == null, 'El valor deber ser nulo');
+		System.assert(objAp.consultorio == null, 'El valor deber ser nulo');
+		System.assert(objAp.nombre_consultorio == null, 'El valor deber ser nulo');
+		System.assert(objAp.observaciones == null, 'El valor deber ser nulo');
+		System.assert(objAp.mail == null, 'El valor deber ser nulo');
+		System.assert(objAp.otros_mail == null, 'El valor deber ser nulo');
+		System.assert(objAp.aca_agencia == null, 'El valor deber ser nulo');
+		System.assert(objAp.tran_alta == null, 'El valor deber ser nulo');
+		System.assert(objAp.tran_anulacion == null, 'El valor deber ser nulo');
+		System.assert(objAp.ref_externa == null, 'El valor deber ser nulo');
+		System.assert(objAp.urgente == null, 'El valor deber ser nulo');
+		System.assert(objAp.afi_id == null, 'El valor deber ser nulo');
+		System.assert(objAp.nro_sf == null, 'El valor deber ser nulo');
+		System.assert(objAp.nivel == null, 'El valor deber ser nulo');
+		System.assert(objAp.clasificacion == null, 'El valor deber ser nulo');
+	}
 }
