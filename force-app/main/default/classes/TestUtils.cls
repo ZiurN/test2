@@ -40,7 +40,7 @@ public without sharing class TestUtils {
 			.withBody(body)
 			.addForAddress(SERVICE_CONFIG.URL__c + url);
 	}
-	public static void setMockResponse (XHttpCalloutMock mock, mockSettings settings) {
+	public static void setMockResponse (XHttpCalloutMock mock, MockSettings settings) {
 		setAuthToken(mock);
 		mock.buildResponse()
 			.withStatus(settings.status)
@@ -48,9 +48,9 @@ public without sharing class TestUtils {
 			.withBody(settings.body)
 			.addForAddress(SERVICE_CONFIG.URL__c + settings.url);
 	}
-	public static void setMockResponse (XHttpCalloutMock mock, List<mockSettings> settingsList) {
+	public static void setMockResponse (XHttpCalloutMock mock, List<MockSettings> settingsList) {
 		setAuthToken(mock);
-		for (mockSettings settings : settingsList) {
+		for (MockSettings settings : settingsList) {
 			mock.buildResponse()
 				.withStatus(settings.status)
 				.withStatusCode(settings.statusCode)
@@ -88,7 +88,7 @@ public without sharing class TestUtils {
 	}
 	public static void setMockResponse (Boolean setAuthToken,
 										XHttpCalloutMock mock,
-										mockSettings settings) {
+										MockSettings settings) {
 		if (setAuthToken) {
 			setAuthToken(mock);
 		}
@@ -100,35 +100,17 @@ public without sharing class TestUtils {
 	}
 	public static void setMockResponse (Boolean setAuthToken,
 										XHttpCalloutMock mock,
-										List<mockSettings> settingsList) {
+										List<MockSettings> settingsList) {
 		if (setAuthToken) {
 			setAuthToken(mock);
 		}
-		for (mockSettings settings : settingsList) {
+		for (MockSettings settings : settingsList) {
 			mock.buildResponse()
 				.withStatus(settings.status)
 				.withStatusCode(settings.statusCode)
 				.withBody(settings.body)
 				.addForAddress(SERVICE_CONFIG.URL__c + settings.url);
 		}
-	}
-	/** Utils */
-	public static void setAuthToken (XHttpCalloutMock mock) {
-		mock.buildResponse()
-			.withStatus('OK')
-			.withStatusCode(200)
-			.withBody(WSAuthTokenMock.getTokenSuccess())
-			.addForAddress(AUTH_TOKEN_URL);
-	}
-	public static void setAuthToken (XHttpCalloutMock mock,
-									String body,
-									Integer statusCode,
-									String status) {
-		mock.buildResponse()
-			.withStatus(status)
-			.withStatusCode(statusCode)
-			.withBody(body)
-			.addForAddress(AUTH_TOKEN_URL);
 	}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Jeferson Ruiz
@@ -176,7 +158,25 @@ public without sharing class TestUtils {
 		);
 		return cvToReturn;
 	}
-	public class mockSettings {
+	/** Utils */
+	public static void setAuthToken (XHttpCalloutMock mock) {
+		mock.buildResponse()
+			.withStatus('OK')
+			.withStatusCode(200)
+			.withBody(WSAuthTokenMock.getTokenSuccess())
+			.addForAddress(AUTH_TOKEN_URL);
+	}
+	public static void setAuthToken (XHttpCalloutMock mock,
+									String body,
+									Integer statusCode,
+									String status) {
+		mock.buildResponse()
+			.withStatus(status)
+			.withStatusCode(statusCode)
+			.withBody(body)
+			.addForAddress(AUTH_TOKEN_URL);
+	}
+	public class MockSettings {
 		public Integer statusCode {get; set;}
 		public String status {get;set;}
 		public String body {get;set;}
