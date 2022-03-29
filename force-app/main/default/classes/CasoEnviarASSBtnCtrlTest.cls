@@ -384,6 +384,8 @@ private class CasoEnviarASSBtnCtrlTest {
 			System.assertEquals(true, reintegroToAssert.Existente_SS__c, 'El campo Existente debe ser true');
 			System.assertEquals('Celula 8', reintegroToAssert.Celula__c, 'Debe ser la célula 8');
 			System.assertEquals('240', reintegroToAssert.Tiempo_SLA__c , 'EL tiempo del SLA debe ser 240');
+			System.assertEquals('0001-005953', reintegroToAssert.Nro_comprobante__c, 'El número de comprobante no coincide');
+			System.assertEquals(Date.valueOf('2020-02-10'),reintegroToAssert.Fecha_comprobante__c, 'La fecha de comprobante no coincide');
 			List<Prestacion_de_reintegro__c> prestacionesToAssert = [SELECT Estado__c,
 																		(SELECT Id FROM Alertas__r)
 																	FROM Prestacion_de_reintegro__c WHERE Caso__c =: reintegro.Id];
@@ -448,7 +450,9 @@ private class CasoEnviarASSBtnCtrlTest {
 					Codigo_reintegro_SS__c,
 					Existente_SS__c,
 					Celula__c,
-					Tiempo_SLA__c
+					Tiempo_SLA__c,
+					Nro_comprobante__c,
+					Fecha_comprobante__c
 				FROM Case
 				WHERE Id = :casoId];
 	}
