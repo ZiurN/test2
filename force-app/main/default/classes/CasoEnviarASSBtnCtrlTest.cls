@@ -4,19 +4,22 @@ private class CasoEnviarASSBtnCtrlTest {
 	private static Map<String, Webservice_endpoint__mdt> endpointsReintegros = ConfigUtils.getEndpointsByTipo('reintegros');
 	private static final String AUTORIZACION_URL = endpointsAutorizaciones.get('autorizaciones').Endpoint__c;
 	private static final String REINTEGROS_URL = endpointsReintegros.get('reintegros').Endpoint__c;
+	private static final String UNIQUE_USER_NAME = 'standarduser' + DateTime.now().getTime() + '@testorg.com';
+	private static Profile pFront = [SELECT Id FROM Profile WHERE Name='Front'];
+	private static List<UserRole> roles = [SELECT Id, Name FROM UserRole WHERE Name = 'Administrador' OR Name = 'Filial_Casa_central'];
 	/** Para Reintegro */
 	private static String medicamentoRTId = XappiaHelper.getRecordType('Prestacion_de_reintegro__c', 'Medicamento').Id;
 	private static String odontologicaRTId = XappiaHelper.getRecordType('Prestacion_de_reintegro__c', 'Odontologica').Id;
 	private static String prestacionalRTId = XappiaHelper.getRecordType('Prestacion_de_reintegro__c', 'Prestacional').Id;
 	/** Mocks para AP */
-	private static XHttpCalloutMock getResponseFound;
-	private static XHttpCalloutMock getResponseMaterialFound;
-	private static XHttpCalloutMock getErrorResponse;
-	private static XHttpCalloutMock getResponsePresupuestoFound;
-	private static XHttpCalloutMock getResponseFoundWithEM;
+	private static XHttpCalloutMock getResponseFound = new XHttpCalloutMock();
+	private static XHttpCalloutMock getResponseMaterialFound = new XHttpCalloutMock();
+	private static XHttpCalloutMock getErrorResponse = new XHttpCalloutMock();
+	private static XHttpCalloutMock getResponsePresupuestoFound = new XHttpCalloutMock();
+	private static XHttpCalloutMock getResponseFoundWithEM = new XHttpCalloutMock();
 	/** Mocks para Reintegro */
-	private static XHttpCalloutMock getResponseReintegroFound;
-	private static XHttpCalloutMock getErrorReintegroResponse;
+	private static XHttpCalloutMock getResponseReintegroFound = new XHttpCalloutMock();
+	private static XHttpCalloutMock getErrorReintegroResponse = new XHttpCalloutMock();
 	/** Generales */
 	private static Diagnostico__c diagnostico;
 	private static Case caso;
@@ -29,27 +32,29 @@ private class CasoEnviarASSBtnCtrlTest {
 	private static Prestacion__c prest1;
 	private static Account prestador;
 	private static Account afiliado;
-	private static User usuario;
+	private static User usuario = Build.anUser()
+		.withUserName(UNIQUE_USER_NAME)
+		.withProfile(pFront)
+		.build();
 	/** Para Reintegro */
 	private static Case reintegro;
 	private static Lote__c lote;
 	static Prestacion_de_reintegro__c prestacion;
-	private static User userFront;
+	private static User userFront = Build.anUser()
+		.withUserName(UNIQUE_USER_NAME + 'FrontEnviarReintegro')
+		.withProfile(pFront)
+		.withCodigoDelegacion('650886')
+		.build();
 	static {
-		String uniqueUserName = 'standarduser' + DateTime.now().getTime() + '@testorg.com';
-		Profile pFront = [SELECT Id FROM Profile WHERE Name='Front'];
-		UserRole role = [SELECT Id, Name FROM UserRole WHERE Name = 'Administrador'];
+		for (UserRole role : roles) {
+			if (role.Name == 'Administrador') {
+				usuario.UserRoleId = role.Id;
+			} else if (role.Name == 'Filial_Casa_central') {
+				userFront.UserRoleId = role.Id;
+			}
+		}
 		List<User> usersToInsert = new List<User>();
-		usuario = new User(Alias = 'standt', Email='standarduser@testorg.com',
-				EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='es',
-				LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
-				UserName=uniqueUserName, ProfileId = pFront.Id, UserRoleId = role.Id);
 		usersToInsert.add(usuario);
-		role = [SELECT Id, Name, DeveloperName FROM UserRole WHERE DeveloperName = 'Filial_Casa_central'];
-		userFront = new User(Alias = 'standt', Email='standarduser@testorg.com', Codigo_delegacion__c = '650886',
-				EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='es',
-				LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
-				UserName=uniqueUserName + 'FrontEnviarReintegro', ProfileId = pFront.Id, UserRoleId = role.Id);
 		usersToInsert.add(userFront);
 		System.runAs (new User(Id = UserInfo.getUserId())) {
 			insert usersToInsert;
@@ -150,19 +155,12 @@ private class CasoEnviarASSBtnCtrlTest {
 			prestacion.Importe_total__c = 2000;
 			prestacion.Cantidad__c = 1;
 		insert prestacion;
-		getResponseFound = new XHttpCalloutMock();
 		TestUtils.setMockResponse (getResponseFound, AUTORIZACION_URL, WSSendSSResponsesMock.getFound(caso.Id), 200, 'OK');
-		getResponsePresupuestoFound = new XHttpCalloutMock();
 		TestUtils.setMockResponse (getResponsePresupuestoFound, AUTORIZACION_URL, WSSendSSResponsesMock.getFoundPresupuesto(caso.Id), 200, 'OK');
-		getResponseMaterialFound = new XHttpCalloutMock();
 		TestUtils.setMockResponse (getResponseMaterialFound, AUTORIZACION_URL, WSSendSSResponsesMock.getFoundMaterial(caso.Id), 200, 'OK');
-		getResponseFoundWithEM = new XHttpCalloutMock();
 		TestUtils.setMockResponse (getResponseFoundWithEM, AUTORIZACION_URL, WSSendSSResponsesMock.getFoundWithEM(caso.Id), 200, 'OK');
-		getErrorResponse = new XHttpCalloutMock();
 		TestUtils.setMockResponse (getErrorResponse, AUTORIZACION_URL, WSSendSSResponsesMock.getError(), 422, 'Not Found');
-		getResponseReintegroFound = new XHttpCalloutMock();
 		TestUtils.setMockResponse (getResponseReintegroFound, REINTEGROS_URL, WSSendSSResponsesMock.getFoundReintegro(prestacion.Id), 200, 'OK');
-		getErrorReintegroResponse = new XHttpCalloutMock();
 		TestUtils.setMockResponse (getErrorReintegroResponse, REINTEGROS_URL, WSSendSSResponsesMock.getErrorReintegro(), 404, 'Not Found');
 	}
 	/**-----------------------------------------------------------------------------------------------------------------------
@@ -191,14 +189,10 @@ private class CasoEnviarASSBtnCtrlTest {
 			Test.startTest();
 			CasoEnviarASSBtnCtrl.Response responseToAssert = CasoEnviarASSBtnCtrl.sendCaseToSS(caso.Id);
 			Test.stopTest();
-			Case casoPadre = [
-				SELECT Id, Celula__c, RecordType.Name, Type, Sub_tipo__c, Tiempo_SLA__c FROM Case WHERE Nro_AP__c = '1014010015'
-			];
+			Case casoPadre = getCaseByNroAP('1014010015');
 			System.assertEquals('Celula 2', casoPadre.Celula__c, 'La célula debe ser 2');
 			System.assertEquals('24', casoPadre.Tiempo_SLA__c, 'El SLA es de 24');
-			Case casoMaterial = [
-				SELECT Id, Celula__c, RecordType.Name, Type, Sub_tipo__c, Tiempo_SLA__c FROM Case WHERE Nro_AP__c = '1014010632'
-			];
+			Case casoMaterial = getCaseByNroAP('1014010632');
 			System.assertEquals('Celula 1', casoMaterial.Celula__c, 'La célula debe ser 1');
 			System.assertEquals('Material', casoMaterial.Sub_tipo__c, 'El subtipo debe ser Material');
 			System.assertEquals('48', casoMaterial.Tiempo_SLA__c, 'El tiempo SLA debe ser 48');
@@ -383,9 +377,7 @@ private class CasoEnviarASSBtnCtrlTest {
 			Test.startTest();
 			CasoEnviarASSBtnCtrl.Response resp = CasoEnviarASSBtnCtrl.sendReintegroToSS(reintegro.Id);
 			Test.stopTest();
-			Case reintegroToAssert = [SELECT Codigo_reintegro_SS__c, Status, Existente_SS__c, Celula__c, Tiempo_SLA__c
-										FROM Case
-										WHERE Id =: reintegro.Id];
+			Case reintegroToAssert = getCase(reintegro.Id);
 			System.assertEquals(false, resp.hasError, 'No debe haber errores');
 			System.assertEquals('553276', reintegroToAssert.Codigo_reintegro_SS__c, 'El código de reingreso debe ser 553276');
 			System.assertEquals('CA-----A', reintegroToAssert.Status, 'El estado del caso debe ser CA-----A');
@@ -435,22 +427,62 @@ private class CasoEnviarASSBtnCtrlTest {
 		insert cdl;
 	}
 	private static Case getCase (Id casoId) {
-		return [SELECT Id, Nro_AP__c, Fecha__c, Fecha_probable__c, Status, Consultorio__r.Secuencia__c,
-					Account.Codigo_de_Afiliado__c, Fecha_prescripcion__c, Diagnostico__r.Codigo_del_Diagnostico__c,
-					Prescriptor__r.Codigo_de_efector__c, Prestador__r.Codigo_de_efector__c, Consultorio__r.Codigo_externo__c,
-					Observaciones__c, Mail__c, Otros_Mail__c, Delegacion__r.Codigo_de_delegacion__c, Nivel_de_derivacion__c, Type
+		return [SELECT Id,
+					Nro_AP__c,
+					Fecha__c,
+					Fecha_probable__c,
+					Status,
+					Consultorio__r.Secuencia__c,
+					Account.Codigo_de_Afiliado__c,
+					Fecha_prescripcion__c,
+					Diagnostico__r.Codigo_del_Diagnostico__c,
+					Prescriptor__r.Codigo_de_efector__c,
+					Prestador__r.Codigo_de_efector__c,
+					Consultorio__r.Codigo_externo__c,
+					Observaciones__c,
+					Mail__c,
+					Otros_Mail__c,
+					Delegacion__r.Codigo_de_delegacion__c,
+					Nivel_de_derivacion__c,
+					Type,
+					Codigo_reintegro_SS__c,
+					Existente_SS__c,
+					Celula__c,
+					Tiempo_SLA__c
 				FROM Case
 				WHERE Id = :casoId];
 	}
+	private static Case getCaseByNroAP (String nroAP) {
+		return [SELECT Id,
+					Celula__c,
+					RecordType.Name,
+					Type,
+					Sub_tipo__c,
+					Tiempo_SLA__c
+				FROM Case
+				WHERE Nro_AP__c =: nroAP];
+	}
 	private static Prestacion__c[] getPrestacion (Id casoId) {
-		return [SELECT Id, Estado__c, Prestacion_CA__c, Texto_aclarativo_alerta__c, Alerta__c, Nombre_de_Prestacion__c,
+		return [SELECT Id,
+					Estado__c,
+					Prestacion_CA__c,
+					Texto_aclarativo_alerta__c,
+					Alerta__c,
+					Nombre_de_Prestacion__c,
 					Cambio_automatico__c
 				FROM Prestacion__c
 				WHERE Ap__c = :casoId];
 	}
 	private static Alerta__c[] getAlertas (Id prestacionId) {
-		return [SELECT Id, Control__c, Funcion__c, Texto_aclarativo__c, Fecha_de_generacion_de_Alerta__c,
-						Lectura_de_alerta_auditor__c, Resolucion_de_alerta_auditor__c, Fecha_resolucion_de_Alerta__c, idalerta__c
+		return [SELECT Id,
+					Control__c,
+					Funcion__c,
+					Texto_aclarativo__c,
+					Fecha_de_generacion_de_Alerta__c,
+					Lectura_de_alerta_auditor__c,
+					Resolucion_de_alerta_auditor__c,
+					Fecha_resolucion_de_Alerta__c,
+					idalerta__c
 				FROM Alerta__c
 				WHERE Prestacion__c = :prestacionId];
 	}
