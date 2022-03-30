@@ -658,8 +658,12 @@ public class Build {
 				obj.AccountId = value;
 				return this;
 			}
-			public CaseBuilder withObraSocial2 (Id value) {
-				obj.Obra_social2__c = value;
+			public CaseBuilder withAccount (Account acc) {
+				obj.AccountId = acc.Id;
+				return this;
+			}
+			public CaseBuilder withObraSocial2 (Id val) {
+				obj.Obra_social2__c = val;
 				return this;
 			}
 
@@ -994,6 +998,12 @@ public class Build {
 		public static CaseBuilder aCaseAP () {
 			CaseBuilder aCase = new CaseBuilder();
 			aCase.withRecordType('Autorizacion_previa');
+			return aCase;
+		}
+		public static CaseBuilder aCaseFalseamientoDDJJ () {
+			CaseBuilder aCase = new CaseBuilder();
+			aCase.withRecordType('Falseamiento_DDJJ');
+			aCase.withStatus('En Proceso');
 			return aCase;
 		}
 	/*------------------------------------------------------------------------

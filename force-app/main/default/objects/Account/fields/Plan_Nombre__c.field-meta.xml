@@ -681,6 +681,11 @@
                 <default>false</default>
                 <label>CERCA AS100</label>
             </value>
+            <value>
+                <fullName>AS110</fullName>
+                <default>false</default>
+                <label>AS110</label>
+            </value>            
         </valueSetDefinition>
     </valueSet>
 </CustomField>
