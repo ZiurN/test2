@@ -8,12 +8,12 @@ private class SegmentoTriggerTest {
 	private static XHttpCalloutMock getErrorResponse = new XHttpCalloutMock();
 	private static XHttpCalloutMock getErrorResponseAlta = new XHttpCalloutMock();
 	private static XHttpCalloutMock getErrorResponseActualizacion = new XHttpCalloutMock();
-	private static User platIntUser {get {
-		if (platIntUser == null) {
-			List<User> platIntUsers = [SELECT Id FROM User WHERE isActive = true AND UserName LIKE 'automatedcase%'];
-			platIntUser = platIntUsers.isEmpty() ? null : platIntUsers[0];
+	private static User integracionSSUser {get {
+		if (integracionSSUser == null) {
+			List<User> integracionSSUsers = [SELECT Id FROM User WHERE isActive = true AND UserName LIKE 'dev@acasalud%'];
+			integracionSSUser = integracionSSUsers.isEmpty() ? null : integracionSSUsers[0];
 		}
-		return platIntUser;
+		return integracionSSUser;
 	} set;}
 	static {
 		TestUtils.setMockResponse(
@@ -417,7 +417,7 @@ private class SegmentoTriggerTest {
 			);
 			insert seg;
 			Segmentos__c seg2 = new Segmentos__c(Evento_Medico__c = em.Id);
-			System.runAs(platIntUser) {
+			System.runAs(integracionSSUser) {
 				Test.startTest();
 				XappiaHelper.isPlatformUser = null;
 				insert seg2;
@@ -457,7 +457,7 @@ private class SegmentoTriggerTest {
 			seg.Fecha_Fin_real__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 03);
 			seg.Fecha_Inicio_real__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 04);
 			Database.SaveResult result;
-			System.runAs(platIntUser) {
+			System.runAs(integracionSSUser) {
 				Test.startTest();
 				XappiaHelper.isPlatformUser = null;
 				result = Database.update(seg, false);
@@ -487,7 +487,7 @@ private class SegmentoTriggerTest {
 			seg.Fecha_Inicio_real__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 04);
 			seg.Fecha_Fin_real__c = DateTime.newInstance(Date.today().year(), Date.today().month(), 06);
 			Database.SaveResult result;
-			System.runAs(platIntUser) {
+			System.runAs(integracionSSUser) {
 				Test.startTest();
 				XappiaHelper.isPlatformUser = null;
 				result = Database.update(seg, false);
@@ -523,7 +523,7 @@ private class SegmentoTriggerTest {
 				Evento_Medico__c = em.Id
 			);
 			Database.SaveResult result;
-			System.runAs(platIntUser) {
+			System.runAs(integracionSSUser) {
 				Test.startTest();
 				XappiaHelper.isPlatformUser = null;
 				result = Database.insert(newSegmento, false);
