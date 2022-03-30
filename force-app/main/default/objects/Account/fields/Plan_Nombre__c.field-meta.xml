@@ -682,9 +682,9 @@
                 <label>CERCA AS100</label>
             </value>
             <value>
-                <fullName>AS110</fullName>
+                <fullName>CERCA AS110</fullName>
                 <default>false</default>
-                <label>AS110</label>
+                <label>CERCA AS110</label>
             </value>            
         </valueSetDefinition>
     </valueSet>
