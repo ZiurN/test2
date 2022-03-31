@@ -7,13 +7,15 @@
 		NOT(ISNEW()),
 		OR (
 			AND(
-				NOT(BEGINS(Codigo_Nomenclador__c, &apos;70&apos;)),
+				ISCHANGED(Codigo_Nomenclador__c),
 				BEGINS(PRIORVALUE(Codigo_Nomenclador__c) , &apos;70&apos;),
+				NOT(BEGINS(Codigo_Nomenclador__c, &apos;70&apos;)),
 				ISPICKVAL(Ap__r.Sub_tipo__c, &apos;Material&apos;)
 			),
 			AND(
+				ISCHANGED(Ap_Sub_Tipo__c),
 				BEGINS(Codigo_Nomenclador__c,&apos;70&apos;),
-				NOT(ISPICKVAL(Ap__r.Sub_tipo__c, &apos;Material&apos;)),
+				NOT(Ap_Sub_Tipo__c = &apos;Material&apos;),
 				PRIORVALUE(Ap_Sub_Tipo__c) = &apos;Material&apos;
 			)
 		)
