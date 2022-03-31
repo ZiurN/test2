@@ -3,7 +3,7 @@ private class SegmentoTriggerTest {
 	private static final String EVENTO_MEDICO_URL = ConfigUtils.getEndpointsByTipo('eventos-medicos').get('eventos-medicos').Endpoint__c;
 	private static final String SEGMENTO_URL = EVENTO_MEDICO_URL + '/275822/segmentos/305715';
 	private static XHttpCalloutMock getResponseFound = new XHttpCalloutMock();
-	private static XHttpCalloutMock getResponseFoundAlta;
+	private static XHttpCalloutMock getResponseFoundAlta = new XHttpCalloutMock();
 	private static XHttpCalloutMock getResponseFoundActualizacion = new XHttpCalloutMock();
 	private static XHttpCalloutMock getErrorResponse = new XHttpCalloutMock();
 	private static XHttpCalloutMock getErrorResponseAlta = new XHttpCalloutMock();
@@ -123,7 +123,6 @@ private class SegmentoTriggerTest {
 			insert seg1;
 			WSSegmentoAltaMock mock = new WSSegmentoAltaMock();
 			String body = mock.getFound(seg1.Id);
-			getResponseFoundAlta = new XHttpCalloutMock();
 			List<TestUtils.mockSettings> mocks = new List<TestUtils.mockSettings>();
 			TestUtils.mockSettings mock1 = new TestUtils.mockSettings();
 			mock1.statusCode = 200;
@@ -419,7 +418,7 @@ private class SegmentoTriggerTest {
 			Segmentos__c seg2 = new Segmentos__c(Evento_Medico__c = em.Id);
 			System.runAs(integracionSSUser) {
 				Test.startTest();
-				XappiaHelper.isPlatformUser = null;
+				XappiaHelper.isIntegracionSSUser= null;
 				insert seg2;
 				Test.stopTest();
 			}
@@ -459,7 +458,7 @@ private class SegmentoTriggerTest {
 			Database.SaveResult result;
 			System.runAs(integracionSSUser) {
 				Test.startTest();
-				XappiaHelper.isPlatformUser = null;
+				XappiaHelper.isIntegracionSSUser= null;
 				result = Database.update(seg, false);
 				Test.stopTest();
 			}
@@ -489,7 +488,7 @@ private class SegmentoTriggerTest {
 			Database.SaveResult result;
 			System.runAs(integracionSSUser) {
 				Test.startTest();
-				XappiaHelper.isPlatformUser = null;
+				XappiaHelper.isIntegracionSSUser= null;
 				result = Database.update(seg, false);
 				Test.stopTest();
 			}
@@ -525,7 +524,7 @@ private class SegmentoTriggerTest {
 			Database.SaveResult result;
 			System.runAs(integracionSSUser) {
 				Test.startTest();
-				XappiaHelper.isPlatformUser = null;
+				XappiaHelper.isIntegracionSSUser= null;
 				result = Database.insert(newSegmento, false);
 				Test.stopTest();
 			}
