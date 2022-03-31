@@ -4,11 +4,13 @@
     <active>true</active>
     <description>Validacion de modificacion ni creacion de segmentos cuando el EM este en un estado distinto a &quot;Autorizado&quot;</description>
     <errorConditionFormula>AND(
-    ISNEW(),
-    NOT(ISPICKVAL( Evento_Medico__r.Estado__c, &quot;Autorizado&quot;)),
-    $Profile.Name &lt;&gt; &quot;Administrador del sistema&quot;,
-				/*Numero_del_segmento__c  &gt; 1*/
-				NOT( Creado_Automaticamente__c )
+	ISNEW(),
+	NOT(ISPICKVAL(Evento_Medico__r.Estado__c, &quot;Autorizado&quot;)),
+	$Profile.Name &lt;&gt; &quot;Administrador del sistema&quot;,
+	$Profile.Name &lt;&gt; &quot;System Administrator&quot;,
+	$User.Alias &lt;&gt; &quot;platint&quot;,
+	/*Numero_del_segmento__c  &gt; 1*/
+	NOT(Creado_Automaticamente__c)
 )</errorConditionFormula>
-    <errorMessage>No puede Crear Segmentos si el Evento medico no ha sido &quot;Autorizado&quot;</errorMessage>
+    <errorMessage>No puede Crear Segmentos si el Evento médico no ha sido &quot;Autorizado&quot;</errorMessage>
 </ValidationRule>

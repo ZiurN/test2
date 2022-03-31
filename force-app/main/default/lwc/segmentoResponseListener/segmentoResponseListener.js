@@ -54,6 +54,7 @@ export default class SegmentoResponseListener extends LightningElement {
 			this.sendMessageToUser('success', 'Segmento actualizado en SS');
 		}
 		getRecordNotifyChange([{recordId: this.recordId}]);
+		this.handleUnsubscribe();
 	}
 	registerErrorListener() {
 		// Invoke onError empApi method
