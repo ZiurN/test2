@@ -2,10 +2,12 @@
 public without sharing class XappiaHelper {
 	static Map<String, Map<String, RecordTypeInfo>> mapRecordTypesBySObjectName = new Map<String, Map<String, RecordTypeInfo>>();
 	public static Boolean isPlatformUser {get {
-		return isUserValidatedByAlias(isPlatformUser, 'platint');
+		isPlatformUser = isUserValidatedByAlias(isPlatformUser, 'platint');
+		return isPlatformUser;
 	} set;}
 	public static Boolean isIntegracionSSUser {get {
-		return isUserValidatedByAlias(isIntegracionSSUser, 'UsuarioI');
+		isIntegracionSSUser = isUserValidatedByAlias(isIntegracionSSUser, 'UsuarioI');
+		return isIntegracionSSUser;
 	} set;}
 	public static Boolean eventFired {get{
 		if (eventFired == null) return false;
