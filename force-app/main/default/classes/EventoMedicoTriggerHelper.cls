@@ -7,15 +7,15 @@ public without sharing class EventoMedicoTriggerHelper {
 											(SELECT Id, Estado__c FROM Segmentos__r WHERE Fecha_Inicio_real__c = null OR Fecha_Fin_real__c = null)
 										FROM Evento_medico__c
 										WHERE Id IN :newMap.keySet()];
-        for(Evento_medico__c em : eventos) {
+        for (Evento_medico__c em : eventos) {
 			Evento_medico__c oldEm = oldMap.get(em.Id);
             if(newMap.get(em.Id).Forma_de_egreso__c != oldEm.Forma_de_egreso__c) {
 				if(newMap.get(em.Id).Forma_de_egreso__c != null && !em.Segmentos__r.isEmpty()) {
 					newMap.get(em.Id).Forma_de_egreso__c.addError(System.Label.Alerta_Trigger_EM_FaltanSegmentos);
 				}
-				if(em.RecordTypeId == rTSeguimientoID) {
-					for(Case caso : em.Casos__r) {
-						if(em.Fecha_y_hora_fin_ems__c.date() <= caso.Fecha__c) {
+				if (em.RecordTypeId == rTSeguimientoID) {
+					for (Case caso : em.Casos__r) {
+						if (em.Fecha_y_hora_fin_ems__c.date() < caso.Fecha__c) {
 							newMap.get(em.Id).Forma_de_egreso__c.addError(System.Label.Alerta_Trigger_EM_FechaCierreMenorAFechaCaso);
 						}
 					}
