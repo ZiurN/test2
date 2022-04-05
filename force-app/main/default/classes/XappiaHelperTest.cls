@@ -175,4 +175,19 @@ private class XappiaHelperTest {
 		}
 		System.assert(isPlatformUser, 'Debe ser un platformUser');
 	}
+	@isTest
+	static void testisIntegracionSSUserFalse () {
+		Boolean isIntegracionSSUser = XappiaHelper.isIntegracionSSUser();
+		System.assert(!isIntegracionSSUser, 'El admin no debe ser Usuario de Integración');
+	}
+	@isTest
+	static void testisIntegracionSSUserTrue () {
+		Boolean isIntegracionSSUser;
+		List<User> integracionSSUsers = [SELECT Id FROM User WHERE isActive = true AND UserName LIKE 'dev@acasalud%'];
+		System.assertEquals(1, integracionSSUsers.size(), 'Debe haber un usuario de Integración SS');
+		System.runAs (integracionSSUsers[0]) {
+			isIntegracionSSUser = XappiaHelper.isIntegracionSSUser();
+		}
+		System.assert(isIntegracionSSUser, 'Debe ser un usuario de Integración');
+	}
 }

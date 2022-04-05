@@ -2,17 +2,18 @@
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Modificacion_fecha_Segmento_enviado_SS</fullName>
     <active>true</active>
-    <description>No puede modificar de un Segmento si enviado a SS los campos &apos;Fecha_Inicio_tentativa__c&apos; y &apos;Fecha_Fin_tentativa__c&apos;</description>
+    <description>No puede modificar la &apos;fecha inicio tentativa&apos; ni &apos;fecha fin tentativa&apos; si el Segmento ya fue enviado a SS</description>
     <errorConditionFormula>AND(
-				AND($Profile.Name &lt;&gt; &apos;Administrador del sistema&apos;,
-						$Profile.Name &lt;&gt; &apos;System Administrator&apos;), 
-    NOT(ISBLANK(Semid__c)),
-				AND(
-								OR(
-				        ISCHANGED(Fecha_Inicio_tentativa__c),
-												ISCHANGED(Fecha_Fin_tentativa__c)
-								)
-				)		
+	AND(
+		$Profile.Name &lt;&gt; &apos;Administrador del sistema&apos;,
+		$Profile.Name &lt;&gt; &apos;System Administrator&apos;,
+		$User.Alias &lt;&gt; &quot;platint&quot;
+	),
+	NOT(ISBLANK(Semid__c)),
+	OR(
+		ISCHANGED(Fecha_Inicio_tentativa__c),
+		ISCHANGED(Fecha_Fin_tentativa__c)
+	)
 )</errorConditionFormula>
     <errorMessage>No puede modificar la &apos;fecha inicio tentativa&apos; ni &apos;fecha fin tentativa&apos; si el Segmento ya fue enviado a SS</errorMessage>
 </ValidationRule>
