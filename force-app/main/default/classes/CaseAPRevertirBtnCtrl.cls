@@ -90,8 +90,10 @@ public without sharing class CaseAPRevertirBtnCtrl {
 		return new Response(false, 'ok');
 	}
 	@AuraEnabled
-	public static Boolean isLeader() {
-		return Utils.isLeader();
+	public static Boolean canRevertAPs() {
+		Boolean isLider = Utils.isLeader();
+		Boolean isEncargado = Utils.isEncargado();
+		return isLider || isEncargado;
 	}
 	public class Response {
 		@AuraEnabled public Boolean hasError;

@@ -2,19 +2,13 @@
 public without sharing class XappiaHelper {
 	static Map<String, Map<String, RecordTypeInfo>> mapRecordTypesBySObjectName = new Map<String, Map<String, RecordTypeInfo>>();
 	public static Boolean isPlatformUser {get {
-		Boolean isPlatUser = false;
-		if (isPlatformUser == null) {
-			for (User platUser : [SELECT Id FROM User WHERE Alias = 'platint']) {
-				if (Userinfo.getUserId() == platUser.Id) {
-					isPlatUser = true;
-					isPlatformUser = true;
-					break;
-				} else if (isPlatformUser == null) {
-					isPlatformUser = false;
-				}
-			}
-		}
-		return isPlatformUser == null ? isPlatUser: isPlatformUser;} set;}
+		isPlatformUser = isUserValidatedByAlias(isPlatformUser, 'platint');
+		return isPlatformUser;
+	} set;}
+	public static Boolean isIntegracionSSUser {get {
+		isIntegracionSSUser = isUserValidatedByAlias(isIntegracionSSUser, 'UsuarioI');
+		return isIntegracionSSUser;
+	} set;}
 	public static Boolean eventFired {get{
 		if (eventFired == null) return false;
 		else return eventFired;
@@ -357,8 +351,21 @@ public without sharing class XappiaHelper {
 	public static StaticResource getStaticResource (String staticResourceName) {
 		return [SELECT Body FROM StaticResource WHERE Name =: staticResourceName LIMIT 1];
 	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
+	@description	Método para validar si el usuario ejecutante es un usuario Platint.
+	@return			Boolean - Si el usuario es o no un usuario Platint.
+	------------------------------------------------------------------------------------------------------------------------*/
 	public static Boolean isPlatformUser () {
 		return isPlatformUser;
+	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
+	@description	Método para validar si el usuario ejecutante es el usuario de Integración de SS.
+	@return			Boolean - Si el usuario es o no el usuario de integración de SS.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static Boolean isIntegracionSSUser () {
+		return isIntegracionSSUser;
 	}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Jeferson Ruiz.
@@ -380,5 +387,21 @@ public without sharing class XappiaHelper {
 		notification.setTitle(title);
 		notification.setBody(body);
 		notification.send(setUserIds);
+	}
+	/** Utils */
+	private static Boolean isUserValidatedByAlias (Boolean currentValue, String alias) {
+		Boolean isValidUser = false;
+		if (currentValue == null) {
+			for (User userToCheck : [SELECT Id FROM User WHERE Alias =: alias]) {
+				if (Userinfo.getUserId() == userToCheck.Id) {
+					isValidUser = true;
+					currentValue = true;
+					break;
+				} else if (currentValue == null) {
+					currentValue = false;
+				}
+			}
+		}
+		return currentValue == null ? isValidUser : currentValue;
 	}
 }

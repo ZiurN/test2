@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_permitir_Modificar_Tipo_de_Solicitud</fullName>
+    <active>true</active>
+    <description>No permite editar el valor del campo Tipo de Solicitud, si el Campo Nro. de Solicitud se encuentra completo, lo que indica que la Solicitud ya ha sido enviada a SaludSoft- JIRA DES 7814/7870</description>
+    <errorConditionFormula>AND
+	(
+		AND(
+			NOT ( $Profile.Name = &apos;System Administrator&apos; ),
+			NOT ( $Profile.Name  = &apos;Administrador del sistema&apos; )
+			),
+			ISCHANGED(Tipo_de_Solicitud__c),
+			NOT(ISBLANK( Nro_de_solicitud__c)
+	)
+)</errorConditionFormula>
+    <errorMessage>No puede modificar el campo &quot;Tipo de Solicitud&quot; tiene Nro. de Solicitud, lo que significa que ha sido enviada a SaludSoft</errorMessage>
+</ValidationRule>
