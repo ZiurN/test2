@@ -145,11 +145,11 @@ private class EventoMedicoTriggerTest {
 		System.assertEquals('ALTA_MEDICA', em.Forma_de_egreso__c, 'La forma de egreso debe ser ALTA MEDICA');
 	}
 	@IsTest
-	static void tryUpdateFormaDeEgresoWithFechaFinEMLessThanOrEqualFechaDelCaso_UpdateFail() {
+	static void tryUpdateFormaDeEgresoWithFechaFinEMLessThanFechaDelCaso_UpdateFail() {
 		String error;
 		Evento_medico__c em = new Evento_medico__c(
 			Fecha_y_Hora_inicio_EMS__c = DateTime.now().addDays(-2),
-			Fecha_y_hora_fin_ems__c = DateTime.now(),
+			Fecha_y_hora_fin_ems__c = DateTime.now().addDays(-1),
 			RecordTypeId = XappiaHelper.getRecordType('Evento_medico__c', 'Evento_medico_de_seguimiento').Id
 		);
 		insert em;
@@ -169,6 +169,27 @@ private class EventoMedicoTriggerTest {
 		Evento_medico__c eventoToAssert = [SELECT Forma_de_egreso__c FROM Evento_medico__c WHERE Id = :em.Id];
 		System.assertEquals(null, eventoToAssert.Forma_de_egreso__c, 'No debe haber una forma de egreso');
 		System.assert(error.contains(System.Label.Alerta_Trigger_EM_FechaCierreMenorAFechaCaso), 'El mensaje no indica el error esperado');
+	}
+	@IsTest
+	static void tryUpdateFormaDeEgresoWithFechaFinEMEqualFechaDelCaso_UpdateEM() {
+		String error;
+		Evento_medico__c em = new Evento_medico__c(
+			Fecha_y_Hora_inicio_EMS__c = DateTime.now().addDays(-2),
+			Fecha_y_hora_fin_ems__c = DateTime.now(),
+			RecordTypeId = XappiaHelper.getRecordType('Evento_medico__c', 'Evento_medico_de_seguimiento').Id
+		);
+		insert em;
+		Case aCase = new Case(
+			Evento_Medico__c = em.Id,
+			Fecha__c = Date.today()
+		);
+		insert aCase;
+		Test.startTest();
+			em.Forma_de_egreso__c = 'ALTA_MEDICA';
+			update em;
+		Test.stopTest();
+		Evento_medico__c eventoToAssert = [SELECT Forma_de_egreso__c FROM Evento_medico__c WHERE Id = :em.Id];
+		System.assertEquals('ALTA_MEDICA', eventoToAssert.Forma_de_egreso__c, 'La forma de egreso debe ser ALTA MEDICA');
 	}
 	@IsTest
 	static void whenFormaEgresoIsChanged_SendTheEMIToSS() {
