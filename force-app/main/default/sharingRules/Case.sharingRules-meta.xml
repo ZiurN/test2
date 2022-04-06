@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
     <sharingCriteriaRules>
+        <fullName>Aportes</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>Ampliar la visibilidad de los casos a usuarios para poder visualizar casos que pasaron por cola Aportes- Jira DES 1206</description>
+        <label>Aportes</label>
+        <sharedTo>
+            <group>Aportes</group>
+        </sharedTo>
+        <booleanFilter>1 OR (2 AND 3)</booleanFilter>
+        <criteriaItems>
+            <field>Viene_de_Aportes__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Reclamos</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Type</field>
+            <operation>equals</operation>
+            <value>Aportes</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>Cuentas_a_Cobrar</fullName>
         <accessLevel>Read</accessLevel>
         <description>Ampliar la visibilidad de los reclamos para el grupo Cuentas a Cobrar</description>
@@ -45,7 +71,7 @@
             <operation>equals</operation>
             <value>True</value>
         </criteriaItems>
-        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingOwnerRules>
         <fullName>Bs_As_norte</fullName>
