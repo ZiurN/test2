@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validacion_Campo_Delegacion</fullName>
+    <active>true</active>
+    <description>JIRA DES 7970- para los perfiles que tienen asignados el Layout Caso a Tipificar CDC que tiene editable el campo &quot;Delegación&quot; se agrega la presente delegación para evitar la selección de una delegación que no esté activa o no sea tipo Delegación</description>
+    <errorConditionFormula>AND(
+	OR(
+		$Profile.Name = &quot;Front&quot;,
+		$Profile.Name = &quot;CDC&quot;),
+	RecordType.DeveloperName = &quot;Caso_a_tipificar&quot;,
+	OR
+		(
+		NOT(ISPICKVAL(Delegacion__r.Type, &quot;Filial&quot;)),
+		NOT(ISPICKVAL(Delegacion__r.Estado__c, &quot;A&quot;))
+		)
+	)</errorConditionFormula>
+    <errorDisplayField>Delegacion__c</errorDisplayField>
+    <errorMessage>La delegación del Caso debe ser una Delegación Tipo Filial en Estado Activo. Verifique la misma antes de continuar con el caso.</errorMessage>
+</ValidationRule>
