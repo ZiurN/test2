@@ -106,6 +106,14 @@ public class Build {
 				obj.Tipo_de_documento__c = value;
 				return this;
 			}
+			public AccountBuilder withDelegacion2 (Account delegacion) {
+				obj.Delegacion2__c = delegacion.Id;
+				return this;
+			}
+			public AccountBuilder withName (String value) {
+				obj.Name = value;
+				return this;
+			}
 			public Account build() {
 				return obj;
 			}
@@ -127,10 +135,16 @@ public class Build {
 			value.obj.LastName = 'STRING';
 			return value;
 		}
-		public static AccountBuilder anAccountDelegacion() {
+		public static AccountBuilder anAccountDelegacion () {
 			AccountBuilder value = new AccountBuilder();
 			value.obj.RecordTypeId = XappiaHelper.getRecordType('Account', 'Delegacion').Id;
 			value.obj.Name = 'Test Delegación';
+			return value;
+		}
+		public static AccountBuilder anAccountDelegacion (String type, String codigoDelegacion) {
+			AccountBuilder value = anAccountDelegacion()
+				.withType(type)
+				.withCodigoDeDelegacion(codigoDelegacion);
 			return value;
 		}
 		public static AccountBuilder anAccountObrasocial() {
@@ -764,7 +778,7 @@ public class Build {
 				return this;
 			}
 			/** (2020-08-24 15:15:50) Valores disponibles:  'DNI', 'ND', 'PAS', 'LC', 'LE', 'CI' */
-			public CaseBuilder withTipodedocumento(String value) {
+			public CaseBuilder withTipoDeDocumento(String value) {
 				obj.Tipo_dni__c = value;
 				return this;
 			}
@@ -891,7 +905,7 @@ public class Build {
 			.withLastName('Test')
 			.withNacionalidad('Argentina')
 			.withSexo('Masculino')
-			.withTipodedocumento('DNI')
+			.withTipoDeDocumento('DNI')
 			.withTipoDeParentesco('CO')
 			.withCuil('20414624416');
 			return value;
@@ -943,7 +957,7 @@ public class Build {
 			.withLastName('Test')
 			.withNacionalidad('Argentina')
 			.withSexo('Masculino')
-			.withTipodedocumento('DNI')
+			.withTipoDeDocumento('DNI')
 			.withCuil('20414624416');
 			return value;
 		}
