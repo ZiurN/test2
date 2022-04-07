@@ -13,38 +13,54 @@ private class CaseTriggerTest {
 	private static final Id AUTORIZACION_PREVIA_ID = XappiaHelper.getRecordType('Case', 'Autorizacion_previa').Id;
 	private static final Id REINTEGRO_ID = XappiaHelper.getRecordType('Case', 'Reintegro').Id;
 	private static final Id SEGUIMIENTO_ID = XappiaHelper.getRecordType('Case', 'Seguimiento').Id;
-	/** RT de Accounts */
-	private static final Id DELEGACION_ID = XappiaHelper.getRecordType('Account', 'Delegacion').Id;
+	private static final Id A_TIPIFICAR_ID = XappiaHelper.getRecordType('Case', 'Caso_a_tipificar').Id;
+	private static final Id DESPEGUE_ID = XappiaHelper.getRecordType('Case','Solicitud_de_despegues').Id;
 	/** Variables */
-	private static List<String> profilesList = new List<String>{'Auditor Medico', 'Back Administrativo', 'Front', 'Administrador del sistema', 'System Administrator'};
+	private static List<String> profilesList = new List<String>{'Auditor Medico', 'Back Administrativo', 'Front', 'Administrador del sistema', 'System Administrator', 'CDC'};
 	private static List<Profile> profiles = [SELECT Id, Name FROM Profile WHERE Name IN: profilesList];
 	private static Profile backAdministrativoProfile;
 	private static Profile adminProfile;
+	private static Profile CDCProfile;
+	private static Profile frontProfile;
 	private static UserRole role = [SELECT Id,Name FROM UserRole WHERE Name = 'Administrador'];
+	private static List<String> queuesList = new List<String>{'CDC', 'Front'};
+	private static List<Group> queues = [SELECT Id, DeveloperName FROM Group WHERE Type = 'Queue' AND DeveloperName IN: queuesList];
+	private static Group colaCDC;
+	private static Group colaFront;
 	private static Datetime now = Datetime.now();
 	private static Datetime fechaInicioEM = Datetime.newInstance(now.year() , now.month() , now.day(), 0, 0, 0);
 	private static Datetime fechaFinEM = fechaInicioEM.addDays(5);
-	static XHttpCalloutMock getSuccessResponse = new XHttpCalloutMock();
-	static XHttpCalloutMock getErrorResponse = new XHttpCalloutMock();
-	static User medico = Build.anUser()
+	private static XHttpCalloutMock getSuccessResponse = new XHttpCalloutMock();
+	private static XHttpCalloutMock getErrorResponse = new XHttpCalloutMock();
+	private static User medico = Build.anUser()
 		.withUserName(UNIQUE_USER_NAME + 'Medico')
 		.withRole(role)
 		.build();
-	static User medico2 = Build.anUser()
+	private static User medico2 = Build.anUser()
 		.withUserName(UNIQUE_USER_NAME + 'Medico2')
 		.withRole(role)
 		.build();
-	static User userBack = Build.anUser()
+	private static User userBack = Build.anUser()
 		.withUserName(UNIQUE_USER_NAME + 'Back')
 		.withRole(role)
 		.build();
-	static User front = Build.anUser()
+	private static User front = Build.anUser()
 		.withUserName(UNIQUE_USER_NAME + 'front')
 		.withRole(role)
 		.build();
-	static Account centro;
-	static CaseTeamRole caseRole;
+	private static Account centro = Build.anAccountDelegacion(null, '661090').withName('Centro de Contacto').withEmail('test@xysssssss.org').build();
+	private static CaseTeamRole caseRole;
 	static {
+		for (Group cola : queues) {
+			switch on cola.DeveloperName {
+				when 'CDC' {
+					colaCDC = cola;
+				}
+				when 'Front' {
+					colaFront = cola;
+				}
+			}
+		}
 		List<User> usersToInsert = new List<User>();
 		for (Profile profileToAssign : profiles) {
 			switch on profileToAssign.Name {
@@ -60,10 +76,13 @@ private class CaseTriggerTest {
 				} when 'Front' {
 					front.ProfileId = profileToAssign.Id;
 					usersToInsert.add(front);
+					frontProfile = profileToAssign;
 				} when 'Administrador del sistema' {
 					adminProfile = profileToAssign;
 				} when 'System Administrator' {
 					adminProfile = profileToAssign;
+				} when 'CDC' {
+					CDCProfile = profileToAssign;
 				}
 			}
 		}
@@ -76,11 +95,6 @@ private class CaseTriggerTest {
 		System.runAs(new User(Id = UserInfo.getUserId())) {
 			insert caseRole;
 		}
-		centro =  new Account();
-		centro.RecordTypeId = DELEGACION_ID;
-		centro.Name = 'Centro de Contacto';
-		centro.Codigo_de_delegacion__c = '661090';
-		centro.Correo_electronico__c = 'test@xysssssss.org';
 		System.runAs(new User(Id = UserInfo.getUserId())) {
 			insert centro;
 		}
@@ -278,10 +292,7 @@ private class CaseTriggerTest {
 	------------------------------------------------------------------------------------------------------------------------*/
 		@IsTest
 		static void assignDelegacionFromUserTest() {
-			Account delegacion = new Account();
-			delegacion.RecordTypeId = DELEGACION_ID;
-			delegacion.Name = 'Test';
-			delegacion.Codigo_de_delegacion__c = '661089';
+			Account delegacion = Build.anAccountDelegacion(null, '661089').build();
 			insert  delegacion;
 			List<User> usersToInsert = new List<User>();
 			User usuario = Build.anUser()
@@ -353,17 +364,10 @@ private class CaseTriggerTest {
 		}
 		@IsTest
 		static void assignDelegacionFromUserWhenOwnerIsCDC() {
-			Account delegacion = new Account();
-			delegacion.RecordTypeId = DELEGACION_ID;
-			delegacion.Name = 'Test';
-			delegacion.Codigo_de_delegacion__c = '650078';
+			Account delegacion = Build.anAccountDelegacion(null, '650078').build();
 			insert  delegacion;
-			Group[] cdc = [SELECT id FROM Group WHERE Type = 'Queue' AND DeveloperName = 'CDC'];
-			if(cdc.isEmpty()) {
-				return;
-			}
 			Case aCase = new Case();
-			aCase.OwnerId = cdc[0].Id;
+			aCase.OwnerId = colaCDC.Id;
 			Test.startTest();
 			insert aCase;
 			Test.stopTest();
@@ -377,21 +381,16 @@ private class CaseTriggerTest {
 		}
 		@isTest
 		public static void ifTheOwnerOfTheCaseIsCDCShouldAssignTheDelegacionOfTheAccountRelatedTo(){
-			Profile pCDC = [SELECT Id FROM Profile WHERE Name='CDC'];
-			UserRole role = [SELECT Id,Name FROM UserRole WHERE Name = 'Administrador'];
-			String uniqueUserName = 'standardusercasetriggertest' + DateTime.now().getTime() + '@testorg.com';
-			Account delegacion = new Account();
-			delegacion.Type = 'Filial';
-			delegacion.RecordTypeId = DELEGACION_ID;
-			delegacion.Name = 'Test';
-			delegacion.Codigo_de_delegacion__c = '661089';
+			Account delegacion = Build.anAccountDelegacion('Filial', '661089').build();
 			insert  delegacion;
-			User userCDC = new User(Alias = 'standt', Email='standarduser@testorg.com',
-					EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='es',
-					LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
-					UserName=uniqueUserName + 'CDC', ProfileId = pCDC.Id, UserRole = role
-			);
-			insert userCDC;
+			User userCDC = Build.anUser()
+				.withUserName(UNIQUE_USER_NAME + 'CDC')
+				.withProfile(CDCProfile)
+				.withRole(role)
+				.build();
+			System.runAs(new User(Id = UserInfo.getUserId())) {
+				insert userCDC;
+			}
 			Account cuenta = new Account();
 			cuenta.Delegacion__c = delegacion.Id;
 			cuenta.Name = 'testcuetna';
@@ -400,10 +399,10 @@ private class CaseTriggerTest {
 			Case casoATipificar = new Case();
 			casoATipificar.AccountId = cuenta.Id;
 			casoATipificar.OwnerId = userCDC.Id;
-			casoATipificar.RecordTypeId = XappiaHelper.getRecordType('Case', 'Caso_a_tipificar').Id;
+			casoATipificar.RecordTypeId = A_TIPIFICAR_ID;
 			insert casoATipificar;
 			Test.startTest();
-			casoATipificar.RecordTypeId = XappiaHelper.getRecordType('Case','Solicitud_de_despegues').Id;
+			casoATipificar.RecordTypeId = DESPEGUE_ID;
 			casoATipificar.Estado_civil__c = 'S';
 			casoATipificar.Titular__c = cuenta.Id;
 			casoATipificar.Tipo_de_Parentesco__c = 'HI';
@@ -415,18 +414,9 @@ private class CaseTriggerTest {
 		}
 		@isTest
 		public static void ifTheOwnerOfTheCaseIsCDCQueueShouldAssignTheDelegacionOfTheAccountRelatedTo(){
-			Account delegacionCDC = new Account();
-			delegacionCDC.RecordTypeId = DELEGACION_ID;
-			delegacionCDC.Name = 'Test';
-			delegacionCDC.Codigo_de_delegacion__c = '650078';
+			Account delegacionCDC = Build.anAccountDelegacion(null, '650078').build();
 			insert  delegacionCDC;
-			Group colaCDC = [SELECT Id FROM Group WHERE Type = 'Queue' AND DeveloperName = 'CDC'];
-			String uniqueUserName = 'standardusercasetriggertest' + DateTime.now().getTime() + '@testorg.com';
-			Account delegacion = new Account();
-			delegacion.RecordTypeId = DELEGACION_ID;
-			delegacion.Type = 'Filial';
-			delegacion.Name = 'Test';
-			delegacion.Codigo_de_delegacion__c = '661089';
+			Account delegacion = Build.anAccountDelegacion('Filial', '661089').build();
 			insert  delegacion;
 			Account cuenta = new Account();
 			cuenta.Delegacion__c = delegacion.Id;
@@ -436,10 +426,10 @@ private class CaseTriggerTest {
 			Case casoATipificar = new Case();
 			casoATipificar.AccountId = cuenta.Id;
 			casoATipificar.OwnerId = colaCDC.Id;
-			casoATipificar.RecordTypeId = XappiaHelper.getRecordType('Case', 'Caso_a_tipificar').Id;
+			casoATipificar.RecordTypeId = A_TIPIFICAR_ID;
 			insert casoATipificar;
 			Test.startTest();
-			casoATipificar.RecordTypeId = XappiaHelper.getRecordType('Case','Solicitud_de_despegues').Id;
+			casoATipificar.RecordTypeId = DESPEGUE_ID;
 			casoATipificar.Estado_civil__c = 'S';
 			casoATipificar.Titular__c = cuenta.Id;
 			casoATipificar.Tipo_de_Parentesco__c = 'HI';
@@ -451,21 +441,10 @@ private class CaseTriggerTest {
 		}
 		@isTest
 		public static void ifTheOwnerOfTheCaseIsCDCQueueAndDelegacionIsAgenciaShouldAssignTheDelegacion2OfTheAccountRelatedTo(){
-			Account delegacion2CDC = new Account();
-			delegacion2CDC.RecordTypeId = DELEGACION_ID;
-			delegacion2CDC.Type = 'Filial';
-			delegacion2CDC.Name = 'Test Dos';
-			delegacion2CDC.Codigo_de_delegacion__c = '650079';
+			Account delegacion2CDC = Build.anAccountDelegacion('Filial', '650079').withName('Test Dos').build();
 			insert  delegacion2CDC;
-			Account delegacionCDC = new Account();
-			delegacionCDC.RecordTypeId = DELEGACION_ID;
-			delegacionCDC.Type = 'Agencia';
-			delegacionCDC.Name = 'Test';
-			delegacionCDC.Codigo_de_delegacion__c = '650078';
-			delegacionCDC.Delegacion2__c = delegacion2CDC.Id;
+			Account delegacionCDC = Build.anAccountDelegacion('Agencia', '650078').withName('Test').withDelegacion2(delegacion2CDC).build();
 			insert  delegacionCDC;
-			Group colaCDC = [SELECT Id FROM Group WHERE Type = 'Queue' AND DeveloperName = 'CDC'];
-			String uniqueUserName = 'standardusercasetriggertest' + DateTime.now().getTime() + '@testorg.com';
 			Account cuenta = new Account();
 			cuenta.Delegacion__c = delegacionCDC.Id;
 			cuenta.Name = 'testcuetna';
@@ -474,10 +453,10 @@ private class CaseTriggerTest {
 			Case casoATipificar = new Case();
 			casoATipificar.AccountId = cuenta.Id;
 			casoATipificar.OwnerId = colaCDC.Id;
-			casoATipificar.RecordTypeId = XappiaHelper.getRecordType('Case', 'Caso_a_tipificar').Id;
+			casoATipificar.RecordTypeId = A_TIPIFICAR_ID;
 			insert casoATipificar;
 			Test.startTest();
-			casoATipificar.RecordTypeId = XappiaHelper.getRecordType('Case','Solicitud_de_despegues').Id;
+			casoATipificar.RecordTypeId = DESPEGUE_ID;
 			casoATipificar.Estado_civil__c = 'S';
 			casoATipificar.Titular__c = cuenta.Id;
 			casoATipificar.Tipo_de_Parentesco__c = 'HI';
@@ -489,22 +468,8 @@ private class CaseTriggerTest {
 		}
 		@isTest
 		public static void ifTheOwnerOfTheCaseIsFrontQueueShouldAssignTheDelegacionOfTheAccountRelatedTo(){
-			Group colaFront = [SELECT Id FROM Group WHERE Type = 'Queue' AND DeveloperName = 'Front'];
-			Profile pFront = [SELECT Id FROM Profile WHERE Name='Front'];
-			UserRole role = [SELECT Id,Name FROM UserRole WHERE Name = 'Administrador'];
-			String uniqueUserName = 'standardusercasetriggertest' + DateTime.now().getTime() + '@testorg.com';
-			Account delegacion = new Account();
-			delegacion.RecordTypeId = DELEGACION_ID;
-			delegacion.Name = 'Test';
-			delegacion.Codigo_de_delegacion__c = '661089';
-			delegacion.Correo_electronico__c = 'test@xyz.org';
+			Account delegacion = Build.anAccountDelegacion(null, '661089').withEmail('test@xyz.org').build();
 			insert  delegacion;
-			User userFront = new User(Alias = 'standt', Email='standarduser@testorg.com',
-					EmailEncodingKey='UTF-8', LastName='Testing', LanguageLocaleKey='es',
-					LocaleSidKey='es_AR', TimeZoneSidKey='America/Argentina/Buenos_Aires',
-					UserName=uniqueUserName + 'Front', ProfileId = pFront.Id, UserRole = role
-			);
-			insert userFront;
 			Account cuenta = new Account();
 			cuenta.Delegacion__c = delegacion.Id;
 			cuenta.Name = 'testcuetna';
@@ -513,7 +478,7 @@ private class CaseTriggerTest {
 			Case casoATipificar = new Case();
 			casoATipificar.AccountId = cuenta.Id;
 			casoATipificar.OwnerId = colaFront.Id;
-			casoATipificar.RecordTypeId = XappiaHelper.getRecordType('Case', 'Caso_a_tipificar').Id;
+			casoATipificar.RecordTypeId = A_TIPIFICAR_ID;
 			Test.startTest();
 			EmailMessage email = new EmailMessage();
 			email.FromAddress = 'test@abc.org';
@@ -1222,49 +1187,15 @@ private class CaseTriggerTest {
 	------------------------------------------------------------------------------------------------------------------------*/
 		@isTest
 		private static void whenACaseAltaFamiliarChangeToTRANSFORMADAAndInfoIsIncompleteShouldChangeStatusToClosedWithPendingInfo () {
-			Account delegacion = Build.anAccountDelegacion().withCodigoDeDelegacion('650098').build();
-			insert delegacion;
-			Account entidad = Build.anAccountEmpresa().build();
-			entidad.CUIT__c = '30676863822';
-			entidad.Codigo_de_empresa__c = '639506';
-			insert entidad;
-			Account cuenta = build.anAccount()
-										.withAfiIddelTitular(182701)
-										.withType('TIT')
-										.withCodigodeAfiliado('70332/34')
-										.withLastName('Testing182701')
-										.build();
-			cuenta.Estado__c = 'A';
-			insert cuenta;
-			Account obraSocial = Build.anAccountObrasocial().build();
-			insert obraSocial;
-			Date fechaNacimiento = Date.newInstance(1990, 05, 01);
-			Date fechaVigencia = Date.newInstance(2020, 08, 01);
-			Case casoSolicitudAltaFamiliar = Build.aCaseSolicituddealtafamiliar()
-				.withDerivaAportes(true)
-				.withAporte(5000)
+			Case casoSolicitudAltaFamiliar = setCaseAltaFamiliar('650098')
 				.withBebeSinDNI(true)
 				.withInformacionCompleta(false)
 				.withBebeNacidoEnElSistema(true)
 				.withInformacionAlAsociado('info')
-				.withCuit('20414624416')
-				.withCuitEmpleador('20434624726')
-				.withDiscapacidad(false)
 				.withDNI('')
 				.withEstadoCivil('N')
-				.withFechaDeNacimiento(fechaNacimiento)
-				.withFechaDeVigencia(fechaVigencia)
-				.withFirstName('Santiago')
-				.withLastName('Test')
-				.withNacionalidad('Argentina')
-				.withSexo('Masculino')
-				.withTipodedocumento('ND')
+				.withTipoDeDocumento('ND')
 				.withTipoDeParentesco('CO')
-				.withObraSocial2(obraSocial.Id)
-				.withEmpleador(entidad.Id)
-				.withCuil('20414624416')
-				.withAccountId(cuenta.Id)
-				.withDelegacionId(delegacion.Id)
 				.build();
 			insert casoSolicitudAltaFamiliar;
 			Test.startTest();
@@ -1275,33 +1206,10 @@ private class CaseTriggerTest {
 		}
 		@isTest
 		private static void whenACaseAltaFamiliarToTRANSFORMADAAnd_BebeNacidoEnSistema_IsFalseShouldChangeStatusToClosed () {
-			Account delegacion = Build.anAccountDelegacion().withCodigoDeDelegacion('650098').build();
-			insert delegacion;
-			Account entidad = Build.anAccountEmpresa().build();
-			entidad.CUIT__c = '30676863822';
-			entidad.Codigo_de_empresa__c = '639506';
-			insert entidad;
-			Account cuenta = build.anAccount()
-										.withAfiIddelTitular(182701)
-										.withType('TIT')
-										.withCodigodeAfiliado('70332/34')
-										.withLastName('Testing182701')
-										.build();
-			cuenta.Estado__c = 'A';
-			insert cuenta;
-			Account obraSocial = Build.anAccountObrasocial().build();
-			insert obraSocial;
-			Date fechaNacimiento = Date.newInstance(1990, 05, 01);
-			Date fechaVigencia = Date.newInstance(2020, 08, 01);
-			Case casoSolicitudAltaFamiliar = Build.aCaseSolicituddealtafamiliar()
-									.withBebeNacidoEnElSistema(false)
-									.withFechaDeNacimiento(fechaNacimiento)
-									.withFechaDeVigencia(fechaVigencia)
-									.withObraSocial2(obraSocial.Id)
-									.withEmpleador(entidad.Id)
-									.withAccountId(cuenta.Id)
-									.withDelegacionId(delegacion.Id)
-									.build();
+			Case casoSolicitudAltaFamiliar = setCaseAltaFamiliar('650098')
+				.withBebeNacidoEnElSistema(false)
+				.withDNI('')
+				.build();
 			insert casoSolicitudAltaFamiliar;
 			Test.startTest();
 			casoSolicitudAltaFamiliar.Estado_de_solicitud__c = 'TRANSFORMADA';
@@ -1325,51 +1233,15 @@ private class CaseTriggerTest {
 				'}' +
 			'}';
 			TestUtils.setMockResponse(getSuccessResponse, '/v1/salud/solicitudes-afiliados/868663/proceso-archivos', jsonResponse);
-			Account delegacion = Build.anAccountDelegacion().withCodigoDeDelegacion('868663').build();
-			insert delegacion;
-			Account entidad = Build.anAccountEmpresa().build();
-			entidad.CUIT__c = '30676863822';
-			entidad.Codigo_de_empresa__c = '639506';
-			insert entidad;
-			Account cuenta = build.anAccount()
-				.withAfiIddelTitular(182701)
-				.withType('TIT')
-				.withCodigodeAfiliado('70332/34')
-				.withLastName('Testing182701')
-				.build();
-			cuenta.Estado__c = 'A';
-			insert cuenta;
-			Account obraSocial = Build.anAccountObrasocial().build();
-			insert obraSocial;
-			Date fechaNacimiento = Date.newInstance(1990, 05, 01);
-			Date fechaVigencia = Date.newInstance(2020, 08, 01);
-			Case casoSolicitudAltaFamiliar = Build.aCaseSolicituddealtafamiliar()
-				.withDerivaAportes(true)
-				.withAporte(5000)
+			Case casoSolicitudAltaFamiliar = setCaseAltaFamiliar('868663')
 				.withBebeSinDNI(true)
 				.withInformacionCompleta(false)
 				.withBebeNacidoEnElSistema(true)
 				.withInformacionAlAsociado('info')
 				.withEstadoDeSolicitud('TRANSFORMADA')
 				.withNroDeSolicitudSS('868663')
-				.withCuit('20414624416')
-				.withCuitEmpleador('20434624726')
-				.withDiscapacidad(false)
 				.withDNI('')
-				.withEstadoCivil('N')
-				.withFechaDeNacimiento(fechaNacimiento)
-				.withFechaDeVigencia(fechaVigencia)
-				.withFirstName('Santiago')
-				.withLastName('Test')
-				.withNacionalidad('Argentina')
-				.withSexo('Masculino')
-				.withTipodedocumento('ND')
-				.withTipoDeParentesco('CO')
-				.withObraSocial2(obraSocial.Id)
-				.withEmpleador(entidad.Id)
-				.withCuil('20414624416')
-				.withAccountId(cuenta.Id)
-				.withDelegacionId(delegacion.Id)
+				.withTipoDeDocumento('ND')
 				.build();
 			insert casoSolicitudAltaFamiliar;
 			Test.setMock(HttpCalloutMock.class, getResponseFound);
@@ -1382,56 +1254,20 @@ private class CaseTriggerTest {
 		}
 		@isTest
 		private static void whenACaseAltaFamiliarHasDuplicatedDNIAndBebeHasDNIShouldReturnError () {
-			Account delegacion = Build.anAccountDelegacion().withCodigoDeDelegacion('868663').build();
-			insert delegacion;
-			Account entidad = Build.anAccountEmpresa().build();
-			entidad.CUIT__c = '30676863822';
-			entidad.Codigo_de_empresa__c = '639506';
-			insert entidad;
-			Account cuenta = build.anAccount()
-										.withAfiIddelTitular(182701)
-										.withType('TIT')
-										.withCodigodeAfiliado('70332/34')
-										.withLastName('Testing182701')
-										.withNroDeDocumento('41462441')
-										.build();
-			cuenta.Estado__c = 'A';
-			insert cuenta;
-			Account obraSocial = Build.anAccountObrasocial().build();
-			insert obraSocial;
-			Date fechaNacimiento = Date.newInstance(1990, 05, 01);
-			Date fechaVigencia = Date.newInstance(2020, 08, 01);
-			Case casoSolicitudAltaFamiliar = Build.aCaseSolicituddealtafamiliar()
-				.withDerivaAportes(true)
-				.withAporte(5000)
+			Case casoSolicitudAltaFamiliar = setCaseAltaFamiliar('868663')
 				.withBebeSinDNI(false)
 				.withInformacionCompleta(false)
 				.withBebeNacidoEnElSistema(true)
 				.withInformacionAlAsociado('info')
 				.withEstadoDeSolicitud('TRANSFORMADA')
 				.withNroDeSolicitudSS('868663')
-				.withCuit('20414624416')
-				.withCuitEmpleador('20434624726')
-				.withDiscapacidad(false)
 				.withDNI('41462441')
 				.withEstadoCivil('N')
-				.withFechaDeNacimiento(fechaNacimiento)
-				.withFechaDeVigencia(fechaVigencia)
-				.withFirstName('Santiago')
-				.withLastName('Test')
-				.withNacionalidad('Argentina')
-				.withSexo('Masculino')
-				.withTipodedocumento('DNI')
-				.withTipoDeParentesco('CO')
-				.withObraSocial2(obraSocial.Id)
-				.withEmpleador(entidad.Id)
-				.withCuil('20414624416')
-				.withAccountId(cuenta.Id)
-				.withDelegacionId(delegacion.Id)
+				.withTipoDeDocumento('DNI')
+				.withStatus('')
+				.withEstadoDDJJ('')
+				.withEstadoDeSolicitud('')
 				.build();
-			casoSolicitudAltaFamiliar.Status = '';
-			casoSolicitudAltaFamiliar.Estado_DDJJ__c = '';
-			casoSolicitudAltaFamiliar.Estado_de_Solicitud__c = '';
 			Test.startTest();
 			Database.SaveResult res = Database.insert(casoSolicitudAltaFamiliar, false);
 			Test.stopTest();
@@ -1440,52 +1276,16 @@ private class CaseTriggerTest {
 		}
 		@isTest
 		private static void whenACaseAltaFamiliarHasDuplicatedDNIAndBebeNotHasDNIShouldReturnNoError() {
-			Account delegacion = Build.anAccountDelegacion().withCodigoDeDelegacion('868663').build();
-			insert delegacion;
-			Account entidad = Build.anAccountEmpresa().build();
-			entidad.CUIT__c = '30676863822';
-			entidad.Codigo_de_empresa__c = '639506';
-			insert entidad;
-			Account cuenta = build.anAccount()
-										.withAfiIddelTitular(182701)
-										.withType('TIT')
-										.withCodigodeAfiliado('70332/34')
-										.withLastName('Testing182701')
-										.withNroDeDocumento('41462441')
-										.build();
-			cuenta.Estado__c = 'A';
-			insert cuenta;
-			Account obraSocial = Build.anAccountObrasocial().build();
-			insert obraSocial;
-			Date fechaNacimiento = Date.newInstance(1990, 05, 01);
-			Date fechaVigencia = Date.newInstance(2020, 08, 01);
-			Case casoSolicitudAltaFamiliar = Build.aCaseSolicituddealtafamiliar()
-				.withDerivaAportes(true)
-				.withAporte(5000)
+			Case casoSolicitudAltaFamiliar = setCaseAltaFamiliar('868663')
 				.withBebeSinDNI(false)
 				.withInformacionCompleta(false)
 				.withBebeNacidoEnElSistema(true)
 				.withInformacionAlAsociado('info')
 				.withEstadoDeSolicitud('TRANSFORMADA')
 				.withNroDeSolicitudSS('868663')
-				.withCuit('20414624416')
-				.withCuitEmpleador('20434624726')
-				.withDiscapacidad(false)
 				.withDNI('41462441')
 				.withEstadoCivil('N')
-				.withFechaDeNacimiento(fechaNacimiento)
-				.withFechaDeVigencia(fechaVigencia)
-				.withFirstName('Santiago')
-				.withLastName('Test')
-				.withNacionalidad('Argentina')
-				.withSexo('Masculino')
-				.withTipodedocumento('DNI')
-				.withTipoDeParentesco('CO')
-				.withObraSocial2(obraSocial.Id)
-				.withEmpleador(entidad.Id)
-				.withCuil('20414624416')
-				.withAccountId(cuenta.Id)
-				.withDelegacionId(delegacion.Id)
+				.withTipoDeDocumento('DNI')
 				.build();
 			Test.startTest();
 			Database.SaveResult res = Database.insert(casoSolicitudAltaFamiliar, false);
@@ -1658,7 +1458,7 @@ private class CaseTriggerTest {
 		@isTest
 		public static void ifACaseChangeTheRecordTypeFromCasoATipificarToAnotherOneShouldThePicklistEstadoUpdate(){
 			Case casoATipificar = new Case();
-			casoATipificar.RecordTypeId = XappiaHelper.getRecordType('Case', 'Caso_a_tipificar').Id;
+			casoATipificar.RecordTypeId = A_TIPIFICAR_ID;
 			insert casoATipificar;
 			Test.startTest();
 			casoATipificar.RecordTypeId = XappiaHelper.getRecordType('Case','Reintegro').Id;
@@ -1670,7 +1470,7 @@ private class CaseTriggerTest {
 		@isTest
 		public static void ifACaseChangeTheRecordTypeFromCasoATipificarToAnotherWichDoesntNeedChangeShouldtChange(){
 			Case casoATipificar = new Case();
-			casoATipificar.RecordTypeId = XappiaHelper.getRecordType('Case', 'Caso_a_tipificar').Id;
+			casoATipificar.RecordTypeId = A_TIPIFICAR_ID;
 			insert casoATipificar;
 			Test.startTest();
 			casoATipificar.RecordTypeId = XappiaHelper.getRecordType('Case','Solicitud_de_segmento').Id;
@@ -1686,10 +1486,10 @@ private class CaseTriggerTest {
 			cuenta.Type = 'T';
 			insert cuenta;
 			Case casoATipificar = new Case();
-			casoATipificar.RecordTypeId = XappiaHelper.getRecordType('Case', 'Caso_a_tipificar').Id;
+			casoATipificar.RecordTypeId = A_TIPIFICAR_ID;
 			insert casoATipificar;
 			Test.startTest();
-			casoATipificar.RecordTypeId = XappiaHelper.getRecordType('Case','Solicitud_de_despegues').Id;
+			casoATipificar.RecordTypeId = DESPEGUE_ID;
 			casoATipificar.Estado_civil__c = 'S';
 			casoATipificar.Titular__c = cuenta.Id;
 			casoATipificar.Tipo_de_Parentesco__c = 'HI';
@@ -1706,7 +1506,7 @@ private class CaseTriggerTest {
 			cuenta.Type = 'T';
 			insert cuenta;
 			Case casoATipificar = new Case();
-			casoATipificar.RecordTypeId = XappiaHelper.getRecordType('Case', 'Caso_a_tipificar').Id;
+			casoATipificar.RecordTypeId = A_TIPIFICAR_ID;
 			insert casoATipificar;
 			Test.startTest();
 			casoATipificar.RecordTypeId = XappiaHelper.getRecordType('Case','Solicitud_de_alta_familiar').Id;
@@ -1883,7 +1683,7 @@ private class CaseTriggerTest {
 				.withLastName('Test')
 				.withNacionalidad('Argentina')
 				.withSexo('Masculino')
-				.withTipodedocumento('DNI')
+				.withTipoDeDocumento('DNI')
 				.withTipoDeParentesco('CO')
 				.withTitular(cuenta.Id)
 				.withObraSocial2(obraSocial.Id)
@@ -1969,6 +1769,33 @@ private class CaseTriggerTest {
 			System.assertEquals(aCase.Diagnostico__c, em.Diagnostico__c, 'El valor debe coincidir con el del evento médico');
 		}
 	/** Utils */
+	private static Build.CaseBuilder setCaseAltaFamiliar (String codigoDelegacion) {
+		Account delegacion = Build.anAccountDelegacion().withCodigoDeDelegacion(codigoDelegacion).build();
+		insert delegacion;
+		Account entidad = Build.anAccountEmpresa().withCuit('30676863822').withCodigoEmpresa('639506').build();
+		insert entidad;
+		Account cuenta = build.anAccount()
+			.withAfiIddelTitular(182701)
+			.withType('TIT')
+			.withCodigodeAfiliado('70332/34')
+			.withLastName('Testing182701')
+			.withEstado('A')
+			.withNroDeDocumento('41462441')
+			.build();
+		insert cuenta;
+		Account obraSocial = Build.anAccountObrasocial().build();
+		insert obraSocial;
+		Date fechaNacimiento = Date.newInstance(1990, 05, 01);
+		Date fechaVigencia = Date.newInstance(2020, 08, 01);
+		Build.CaseBuilder casoSolicitudAltaFamiliarBuilder = Build.aCaseSolicituddealtafamiliar()
+			.withFechaDeNacimiento(fechaNacimiento)
+			.withFechaDeVigencia(fechaVigencia)
+			.withObraSocial2(obraSocial.Id)
+			.withEmpleador(entidad.Id)
+			.withAccountId(cuenta.Id)
+			.withDelegacionId(delegacion.Id);
+		return casoSolicitudAltaFamiliarBuilder;
+	}
 	private static void validateInsertCaseError (Database.SaveResult result) {
 		System.assert(!result.isSuccess(), 'Debe haber ocurrido un error');
 		System.assertEquals(ERROR_MESSAGE, result.getErrors().get(0).getMessage(), 'El mensaje no indica el error');
