@@ -2,15 +2,13 @@
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Bebe_Sin_DNI</fullName>
     <active>true</active>
-    <description>Si se marca Bebé sin DNI el tipo de documento debe ser ND y el número debe quedar vacío.</description>
+    <description>Si se marca Bebé sin DNI el número de DNI debe quedar vacío.</description>
     <errorConditionFormula>AND(
 	RecordType.DeveloperName = &quot;Solicitud_de_alta_familiar&quot;,
 	Bebe_sin_DNI__c,
-	OR(
-		NOT(ISPICKVAL(Tipo_DNI__c, &apos;ND&apos;)),
-		NOT(ISBLANK(DNI__c))
-	)
+	NOT(ISBLANK(DNI__c)),
+	DNI__c &lt;&gt; Account.Numero_de_documento__c
 )</errorConditionFormula>
-    <errorDisplayField>Tipo_DNI__c</errorDisplayField>
-    <errorMessage>Cuando se marca &quot;Bebé sin DNI&quot;, el Tipo de DNI debe ser &quot;No Determinado&quot; y el número debe quedar vacío</errorMessage>
+    <errorDisplayField>DNI__c</errorDisplayField>
+    <errorMessage>Cuando se marca &quot;Bebé sin DNI&quot;, el número de DNI debe quedar vacío</errorMessage>
 </ValidationRule>
