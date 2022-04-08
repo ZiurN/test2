@@ -4,7 +4,8 @@
 @IsTest
 private class CaseTriggerTest {
 	private static final String REINTEGRO_URL = ConfigUtils.getEndpointsByTipo('reintegros').get('reintegros').Endpoint__c;
-	private static final String ERROR_MESSAGE = System.Label.VR_Case_No_cargar_a_EM_anulado;
+	private static final String ERROR_MESSAGE_EM_ANULADO = System.Label.VR_Case_No_cargar_a_EM_anulado;
+	private static final String ERROR_MESSAGE_SOLICITUD_COMPLETADA = 'No se puede cambiar el estado de la solicitud a Anulada si fue completada en SaludSoft';
 	private static final String UNIQUE_USER_NAME = 'standardusercasetriggertest' + DateTime.now().getTime() + '@testorg.com';
 	/** RT de Eventos Médicos */
 	private static final Id EMSRTId = XappiaHelper.getRecordType('Evento_medico__c', 'Evento_medico_de_seguimiento').Id;
@@ -50,6 +51,20 @@ private class CaseTriggerTest {
 		.build();
 	private static Account centro = Build.anAccountDelegacion(null, '661090').withName('Centro de Contacto').withEmail('test@xysssssss.org').build();
 	private static CaseTeamRole caseRole;
+	/** Para establecer las solicitudes */
+	private static Account delegacion;
+	private static Account entidad = Build.anAccountEmpresa().withCuit('30676863822').withCodigoEmpresa('639506').build();
+	private static Account cuenta = build.anAccount()
+		.withAfiIddelTitular(182701)
+		.withType('TIT')
+		.withCodigodeAfiliado('70332/34')
+		.withLastName('Testing182701')
+		.withEstado('A')
+		.withNroDeDocumento('41462441')
+		.build();
+	private static Account obraSocial = Build.anAccountObrasocial().build();
+	private static Date fechaNacimiento = Date.newInstance(1990, 05, 01);
+	private static Date fechaVigencia = Date.newInstance(2020, 08, 01);
 	static {
 		for (Group cola : queues) {
 			switch on cola.DeveloperName {
@@ -1576,13 +1591,13 @@ private class CaseTriggerTest {
 			Database.SaveResult result;
 			System.runAs(front) {
 				result = Database.insert(badCase, false);
-				validateInsertCaseError(result);
+				validateInsertCaseError(result, ERROR_MESSAGE_EM_ANULADO);
 				badCase.Evento_Medico__c = emRechazado.Id;
 				result = Database.insert(badCase, false);
-				validateInsertCaseError(result);
+				validateInsertCaseError(result, ERROR_MESSAGE_EM_ANULADO);
 				badCase.Evento_Medico__c = emSuspendido.Id;
 				result = Database.insert(badCase, false);
-				validateInsertCaseError(result);
+				validateInsertCaseError(result, ERROR_MESSAGE_EM_ANULADO);
 			}
 		}
 		@isTest
@@ -1602,12 +1617,12 @@ private class CaseTriggerTest {
 			Database.SaveResult result;
 			System.runAs(front) {
 				result = Database.insert(testCase, false);
-				validateInsertCaseError(result);
+				validateInsertCaseError(result, ERROR_MESSAGE_EM_ANULADO);
 			}
 			testCase.Fecha__c = Date.valueOf((fechaInicioEM.addDays(-2)));
 			System.runAs(front) {
 				result = Database.insert(testCase, false);
-				validateInsertCaseError(result);
+				validateInsertCaseError(result, ERROR_MESSAGE_EM_ANULADO);
 			}
 			testCase.Fecha__c = Date.valueOf(fechaInicioEM);
 			System.runAs(front) {
@@ -1632,12 +1647,12 @@ private class CaseTriggerTest {
 			Database.SaveResult result;
 			System.runAs(front) {
 				result = Database.insert(testCase, false);
-				validateInsertCaseError(result);
+				validateInsertCaseError(result, ERROR_MESSAGE_EM_ANULADO);
 			}
 			testCase.Fecha__c = Date.valueOf(fechaInicioEM.addDays(-2));
 			System.runAs(front) {
 				result = Database.insert(testCase, false);
-				validateInsertCaseError(result);
+				validateInsertCaseError(result, ERROR_MESSAGE_EM_ANULADO);
 			}
 			testCase.Fecha__c = Date.valueOf(fechaInicioEM);
 			System.runAs(front) {
@@ -1646,51 +1661,123 @@ private class CaseTriggerTest {
 			}
 		}
 	/**-----------------------------------------------------------------------------------------------------------------------
+		Validaciones para paso de solicitudes a Anulada
+	------------------------------------------------------------------------------------------------------------------------*/
+		@isTest
+		private static void toAnulada_AltaFamiliar_IfHasSSNumberAndStatusCOMPLETA_DontAllowChangeStatusAndSendErrorMessage () {
+			Case casoSolicitudAltaFamiliar = setCaseAltaFamiliar('650098')
+				.withDNI('41462442')
+				.withCuit('20414624426')
+				.withEstadoCivil('N')
+				.withTipoDeDocumento('DNI')
+				.withNroDeSolicitudSS('973816')
+				.withEstadoDeSolicitud('COMPLETA')
+				.build();
+			insert casoSolicitudAltaFamiliar;
+			Database.SaveResult result;
+			Test.startTest();
+			casoSolicitudAltaFamiliar.Status = 'CA-----N';
+			result = Database.update(casoSolicitudAltaFamiliar, false);
+			Test.stopTest();
+			validateInsertCaseError(result, ERROR_MESSAGE_SOLICITUD_COMPLETADA);
+		}
+		@isTest
+		private static void toAnulada_AltaFamiliar_IfHasSSNumberAndStatusINCOMPLETA_ChangeTheSatusToAnulada () {
+			Case casoSolicitudAltaFamiliar = setCaseAltaFamiliar('650098')
+				.withDNI('41462442')
+				.withCuit('20414624426')
+				.withEstadoCivil('N')
+				.withTipoDeDocumento('DNI')
+				.withNroDeSolicitudSS('973816')
+				.withEstadoDeSolicitud('INCOMPLETA')
+				.build();
+			insert casoSolicitudAltaFamiliar;
+			Database.SaveResult result;
+			Test.startTest();
+			casoSolicitudAltaFamiliar.Status = 'CA-----N';
+			result = Database.update(casoSolicitudAltaFamiliar);
+			Test.stopTest();
+			System.assert(result.isSuccess(), 'La solicitud se debio haber guardado correctamente');
+		}
+		@isTest
+		private static void toAnulada_AltaFamiliar_IfHasNotSSNumber_ChangeTheSatusToAnulada () {
+			Case casoSolicitudAltaFamiliar = setCaseAltaFamiliar('650098')
+				.withDNI('41462442')
+				.withCuit('20414624426')
+				.withEstadoCivil('N')
+				.withTipoDeDocumento('DNI')
+				.withNroDeSolicitudSS('')
+				.withEstadoDeSolicitud('')
+				.build();
+			insert casoSolicitudAltaFamiliar;
+			Database.SaveResult result;
+			Test.startTest();
+			casoSolicitudAltaFamiliar.Status = 'CA-----N';
+			result = Database.update(casoSolicitudAltaFamiliar);
+			Test.stopTest();
+			System.assert(result.isSuccess(), 'La solicitud se debio haber guardado correctamente');
+		}
+		@isTest
+		private static void toAnulada_Despegue_IfHasSSCodeAndStatusCOMPLETA_DontAllowChangeStatusAndSendErrorMessage () {
+			Case casoSolicitudDespegue = setCaseDespegue('650098')
+				.withDNI('41462442')
+				.withCuit('20414624426')
+				.withEstadoCivil('N')
+				.withTipoDeDocumento('DNI')
+				.withNroDeSolicitudSS('973816')
+				.withEstadoDeSolicitud('COMPLETA')
+				.build();
+			insert casoSolicitudDespegue;
+			Database.SaveResult result;
+			Test.startTest();
+			casoSolicitudDespegue.Status = 'CA-----N';
+			result = Database.update(casoSolicitudDespegue, false);
+			Test.stopTest();
+			validateInsertCaseError(result, ERROR_MESSAGE_SOLICITUD_COMPLETADA);
+		}
+		@isTest
+		private static void toAnulada_Despegue_IfHasSSCodeAndStatusINCOMPLETA_ChangeTheSatusToAnulada () {
+			Case casoSolicitudDespegue = setCaseDespegue('650098')
+				.withDNI('41462442')
+				.withCuit('20414624426')
+				.withEstadoCivil('N')
+				.withTipoDeDocumento('DNI')
+				.withNroDeSolicitudSS('973816')
+				.withEstadoDeSolicitud('INCOMPLETA')
+				.build();
+			insert casoSolicitudDespegue;
+			Database.SaveResult result;
+			Test.startTest();
+			casoSolicitudDespegue.Status = 'CA-----N';
+			result = Database.update(casoSolicitudDespegue);
+			Test.stopTest();
+			System.assert(result.isSuccess(), 'La solicitud se debio haber guardado correctamente');
+		}
+		@isTest
+		private static void toAnulada_Despegue_IfHasNotSSCode_ChangeTheSatusToAnulada () {
+			Case casoSolicitudDespegue = setCaseDespegue('650098')
+				.withDNI('41462442')
+				.withCuit('20414624426')
+				.withEstadoCivil('N')
+				.withTipoDeDocumento('DNI')
+				.withNroDeSolicitudSS('')
+				.withEstadoDeSolicitud('')
+				.build();
+			insert casoSolicitudDespegue;
+			Database.SaveResult result;
+			Test.startTest();
+			casoSolicitudDespegue.Status = 'CA-----N';
+			result = Database.update(casoSolicitudDespegue);
+			Test.stopTest();
+			System.assert(result.isSuccess(), 'La solicitud se debio haber guardado correctamente');
+		}
+	/**-----------------------------------------------------------------------------------------------------------------------
 		Otras Validaciones
 	------------------------------------------------------------------------------------------------------------------------*/
 		@isTest
 		private static void whenACaseDespegueChangeToTRANSFORMADAShouldChangeStatusToClosed() {
-			Account delegacion = Build.anAccountDelegacion().withCodigoDeDelegacion('650098').build();
-			insert delegacion;
-			Account entidad = Build.anAccountEmpresa().build();
-			entidad.CUIT__c = '30676863822';
-			entidad.Codigo_de_empresa__c = '639506';
-			insert entidad;
-			Account cuenta = build.anAccount()
-				.withType('TIT')
-				.withAfiIddelTitular(182701)
-				.withCodigodeAfiliado('70332/34')
-				.withLastName('Testing182701')
-				.withEstado('A')
-				.build();
-			insert cuenta;
-			Account obraSocial = Build.anAccountObrasocial().build();
-			insert obraSocial;
-			Date fechaNacimiento = Date.newInstance(1990, 05, 01);
-			Date fechaVigencia = Date.newInstance(2020, 08, 01);
-			Case casoSolicitudDespeguesFT = Build.aCaseSolicituddedespegues()
-				.withDerivaAportes(true)
-				.withAporte(5000)
+			Case casoSolicitudDespeguesFT = setCaseDespegue('650098')
 				.withBebeSinDNI(true)
-				.withCuit('20414624416')
-				.withCuitEmpleador('20434624726')
-				.withDiscapacidad(false)
-				.withDNI('41462441')
-				.withEstadoCivil('N')
-				.withFechaDeNacimiento(fechaNacimiento)
-				.withFechaDeVigencia(fechaVigencia)
-				.withFirstName('Santiago')
-				.withLastName('Test')
-				.withNacionalidad('Argentina')
-				.withSexo('Masculino')
-				.withTipoDeDocumento('DNI')
-				.withTipoDeParentesco('CO')
-				.withTitular(cuenta.Id)
-				.withObraSocial2(obraSocial.Id)
-				.withEmpleador(entidad.Id)
-				.withCuil('20414624416')
-				.withAccountId(cuenta.Id)
-				.withDelegacionId(delegacion.Id)
 				.withType('TF')
 				.build();
 			insert casoSolicitudDespeguesFT;
@@ -1770,24 +1857,9 @@ private class CaseTriggerTest {
 		}
 	/** Utils */
 	private static Build.CaseBuilder setCaseAltaFamiliar (String codigoDelegacion) {
-		Account delegacion = Build.anAccountDelegacion().withCodigoDeDelegacion(codigoDelegacion).build();
-		insert delegacion;
-		Account entidad = Build.anAccountEmpresa().withCuit('30676863822').withCodigoEmpresa('639506').build();
-		insert entidad;
-		Account cuenta = build.anAccount()
-			.withAfiIddelTitular(182701)
-			.withType('TIT')
-			.withCodigodeAfiliado('70332/34')
-			.withLastName('Testing182701')
-			.withEstado('A')
-			.withNroDeDocumento('41462441')
-			.build();
-		insert cuenta;
-		Account obraSocial = Build.anAccountObrasocial().build();
-		insert obraSocial;
-		Date fechaNacimiento = Date.newInstance(1990, 05, 01);
-		Date fechaVigencia = Date.newInstance(2020, 08, 01);
+		setCaseDependentData(codigoDelegacion);
 		Build.CaseBuilder casoSolicitudAltaFamiliarBuilder = Build.aCaseSolicituddealtafamiliar()
+			.withStatus('En Proceso')
 			.withFechaDeNacimiento(fechaNacimiento)
 			.withFechaDeVigencia(fechaVigencia)
 			.withObraSocial2(obraSocial.Id)
@@ -1796,9 +1868,29 @@ private class CaseTriggerTest {
 			.withDelegacionId(delegacion.Id);
 		return casoSolicitudAltaFamiliarBuilder;
 	}
-	private static void validateInsertCaseError (Database.SaveResult result) {
+	private static Build.CaseBuilder setCaseDespegue (String codigoDelegacion) {
+		setCaseDependentData(codigoDelegacion);
+		Build.CaseBuilder casoSolicitudDespeguesBuilder = Build.aCaseSolicituddedespegues()
+			.withFechaDeNacimiento(fechaNacimiento)
+			.withFechaDeVigencia(fechaVigencia)
+			.withTitular(cuenta.Id)
+			.withObraSocial2(obraSocial.Id)
+			.withEmpleador(entidad.Id)
+			.withAccountId(cuenta.Id)
+			.withDelegacionId(delegacion.Id)
+			.withType('TF');
+		return casoSolicitudDespeguesBuilder;
+	}
+	private static void setCaseDependentData (String codigoDelegacion) {
+		delegacion = Build.anAccountDelegacion().withCodigoDeDelegacion(codigoDelegacion).build();
+		insert delegacion;
+		insert entidad;
+		insert cuenta;
+		insert obraSocial;
+	}
+	private static void validateInsertCaseError (Database.SaveResult result, String errorMessage) {
 		System.assert(!result.isSuccess(), 'Debe haber ocurrido un error');
-		System.assertEquals(ERROR_MESSAGE, result.getErrors().get(0).getMessage(), 'El mensaje no indica el error');
+		System.assertEquals(errorMessage, result.getErrors().get(0).getMessage(), 'El mensaje no indica el error');
 	}
 	private static void validateCaseMilestone (String entitlementName) {
 		Case upCase = [SELECT SlaStartDate,Entitlement.Name,MilestoneStatus FROM Case];
