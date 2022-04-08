@@ -4,10 +4,11 @@
     <active>true</active>
     <description>JIRA DES 7970- para los perfiles que tienen asignados el Layout Caso a Tipificar CDC que tiene editable el campo &quot;Delegación&quot; se agrega la presente delegación para evitar la selección de una delegación que no esté activa o no sea tipo Delegación</description>
     <errorConditionFormula>AND(
+	RecordType.DeveloperName = &quot;Caso_a_tipificar&quot;,
+	ISCHANGED(Delegacion__c),
 	OR(
 		$Profile.Name = &quot;Front&quot;,
 		$Profile.Name = &quot;CDC&quot;),
-	RecordType.DeveloperName = &quot;Caso_a_tipificar&quot;,
 	OR
 		(
 		NOT(ISPICKVAL(Delegacion__r.Type, &quot;Filial&quot;)),
