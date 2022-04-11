@@ -293,7 +293,7 @@ private class OpportunitySendAltaBtnCtrlTest {
 		OpportunitySendAltaBtnCtrl.Response responseToAssert = OpportunitySendAltaBtnCtrl.sendAltaToSS(opp.Id);
 		Test.stopTest();
 		Opportunity oppToAssert = [SELECT Estado_de_solicitud__c, Nro_de_solicitud__c FROM Opportunity WHERE Id =: opp.Id];
-		System.assertEquals('OK', responseToAssert.message, 'Se espera un mensaje ok');
+		System.assertEquals('OK', responseToAssert.message.toUpperCase(), 'Se espera un mensaje ok');
 		System.assert(!responseToAssert.hasError, 'No deben haber errores');
 		System.assertEquals('Completa', oppToAssert.Estado_de_solicitud__c, 'El estado debe ser Completa');
 		System.assertEquals('724171', oppToAssert.Nro_de_solicitud__c, 'El número de solicitud debe ser 724171');
@@ -327,7 +327,7 @@ private class OpportunitySendAltaBtnCtrlTest {
 		Test.stopTest();
 		Opportunity oppToAssert = [SELECT Estado_de_solicitud__c, Nro_de_solicitud__c FROM Opportunity WHERE Id =: opp.Id];
 		System.assert(!responseToAssert.hasError, 'No debe haber un error');
-		System.assertEquals('OK', responseToAssert.message, 'Debe haber un mensaje de ok');
+		System.assertEquals('OK', responseToAssert.message.toUpperCase(), 'Debe haber un mensaje de ok');
 		System.assertEquals('Completa', oppToAssert.Estado_de_solicitud__c, 'El estado de la solicitud es Completa');
 		System.assertEquals('724171', oppToAssert.Nro_de_solicitud__c, 'El id de la solicitud debe ser 724171');
 	}
@@ -353,7 +353,7 @@ private class OpportunitySendAltaBtnCtrlTest {
 		Opportunity oppToAssert = [SELECT Estado_de_solicitud__c, Nro_de_solicitud__c, StageName
 									FROM Opportunity WHERE Id =: opp.Id];
 		System.assert(!responseToAssert.hasError, 'No debe haber un error');
-		System.assertEquals('OK', responseToAssert.message, 'Debe haber un mensaje de ok');
+		System.assertEquals('OK', responseToAssert.message.toUpperCase(), 'Debe haber un mensaje de ok');
 		System.assertEquals('Completa', oppToAssert.Estado_de_solicitud__c, 'El estado de la solicitud es Completa');
 		System.assertEquals('724171', oppToAssert.Nro_de_solicitud__c, 'El id de la solicitud debe ser 724171');
 		System.assertEquals('En tramitación', oppToAssert.StageName, 'El Estado debe ser En tramitación');
@@ -380,7 +380,7 @@ private class OpportunitySendAltaBtnCtrlTest {
 		Opportunity oppToAssert = [SELECT Estado_de_solicitud__c, Nro_de_solicitud__c, StageName
 									FROM Opportunity WHERE Id =: opp.Id];
 		System.assert(!responseToAssert.hasError, 'No debe haber un error');
-		System.assertEquals('OK', responseToAssert.message, 'Debe haber un mensaje de ok');
+		System.assertEquals('OK', responseToAssert.message.toUpperCase(), 'Debe haber un mensaje de ok');
 		System.assertEquals('Transformada', oppToAssert.Estado_de_solicitud__c, 'El estado de la solicitud es Transformada');
 		System.assertEquals('724354', oppToAssert.Nro_de_solicitud__c, 'El id de la solicitud debe ser 724354');
 		System.assertEquals('Cerrada ganada', oppToAssert.StageName, 'El Estado debe ser Cerrada ganada');
@@ -606,7 +606,7 @@ private class OpportunitySendAltaBtnCtrlTest {
 		Test.stopTest();
 		System.debug(responseToAssert);
 		System.assert(!responseToAssert.hasError, 'No debe haber un error');
-		System.assertEquals('OK', responseToAssert.message, 'Debe haber un mensaje ok');
+		System.assertEquals('OK', responseToAssert.message.toUpperCase(), 'Debe haber un mensaje ok');
 		Integrante__c integranteToAssert = [SELECT Nro_de_asociado__c FROM Integrante__c WHERE Id =: integrante.Id];
 		System.assertEquals('223483/24', integranteToAssert.Nro_de_asociado__c, 'El número de asociado debe ser 223483/24');
 	}
@@ -681,8 +681,8 @@ private class OpportunitySendAltaBtnCtrlTest {
 					'Fecha de vigencia de solicitud: No puede estar vacío.\n' +
 					'Sexo: no puede estar vacío.\n' +
 					'Actividad/Profesión del titular: No puede estar vacía.\n' +
-					'En la Cuenta, Parentesco: No puede estar vacío.\n' +
-					'Nro asociado titular anterior: No puede estar vacío.\n';
+					'Nro asociado titular anterior: No puede estar vacío.\n' +
+					'En la Cuenta, Parentesco: No puede estar vacío.\n';
 		System.assert(!responseToAssert.hasError, 'No debe haber un error');
 		System.assertEquals(msg, responseToAssert.message, 'Debe haber un mensaje de error');
 	}
