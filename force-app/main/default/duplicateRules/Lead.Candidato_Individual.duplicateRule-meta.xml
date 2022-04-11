@@ -13,6 +13,13 @@
             <sortOrder>1</sortOrder>
             <table>Lead</table>
         </duplicateRuleFilterItems>
+        <duplicateRuleFilterItems>
+            <field>Status</field>
+            <operation>notEqual</operation>
+            <value>Contactado - No Interesado, Contactado - No Califica</value>
+            <sortOrder>2</sortOrder>
+            <table>Lead</table>
+        </duplicateRuleFilterItems>
     </duplicateRuleFilter>
     <duplicateRuleMatchRules>
         <matchRuleSObjectType>Lead</matchRuleSObjectType>
