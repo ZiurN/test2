@@ -648,6 +648,8 @@ public without sharing class CasoEnviarASSBtnCtrl {
 								'Orden_de_Compra__r.forma_de_Pago__c, ' +
 								'Orden_de_Compra__r.Estado_OC__c, ' +
 								'Evento_Medico__r.Estado__c, ' +
+								'Fecha_comprobante__c, ' +
+								'Nro_comprobante__c, ' +
 								'Urgente__c';
 		String queryEnd = ' FROM Case WHERE Id = : caseId ';
 		String queryPrestacionesSubQuery = '(SELECT Id, ' +
