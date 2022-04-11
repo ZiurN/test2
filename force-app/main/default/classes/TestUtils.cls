@@ -23,7 +23,7 @@ public without sharing class TestUtils {
 										String body) {
 		setAuthToken(mock);
 		mock.buildResponse()
-			.withStatus('status')
+			.withStatus('OK')
 			.withStatusCode(200)
 			.withBody(body)
 			.addForAddress(SERVICE_CONFIG.URL__c + url);
@@ -66,7 +66,7 @@ public without sharing class TestUtils {
 			setAuthToken(mock);
 		}
 		mock.buildResponse()
-			.withStatus('status')
+			.withStatus('OK')
 			.withStatusCode(200)
 			.withBody(body)
 			.addForAddress(SERVICE_CONFIG.URL__c + url);
