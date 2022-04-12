@@ -4,6 +4,7 @@
 .vim*
 .vscode/
 delta*/
+dataMigration/
 .project
 .settings/
 .metadata

@@ -754,8 +754,9 @@ public with sharing class CasoEnviarASSParser {
 					reintegro.observaciones = this.caso.Observaciones__c;
 					reintegro.importe = this.caso.Importe_reintegro__c != null
 										? String.valueOf(this.caso.Importe_reintegro__c) : '';
-					reintegro.fecha_comprobante = null;
-					reintegro.numero_comprobante = null;
+					reintegro.fecha_comprobante = this.caso.Fecha_comprobante__c != null
+													? String.valueOf(this.caso.Fecha_comprobante__c) : '';
+					reintegro.numero_comprobante = this.caso.Nro_comprobante__c;
 					reintegro.tipo_comprobante = this.caso.Tipo_de_Comprobante__c;
 					reintegro.razon_social = razonSocial60Char;
 					reintegro.cuit = this.caso.CUIT__c;
