@@ -473,6 +473,8 @@ public without sharing class CasoEnviarASSBtnCtrl {
 		caseFromSF.Tiempo_SLA__c = reintegroWS.sla;
 		caseFromSF.Codigo_reintegro_SS__c = reintegroWS.rei_id;
 		caseFromSF.Existente_SS__c = true;
+		caseFromSF.Nro_comprobante__c = reintegroWS.nro_comprobante;
+		caseFromSF.Fecha_comprobante__c = Date.valueOf(reintegroWS.fecha_comprobante);
 		caseFromSF.Status = Utils.translateStateReintegroToAP(reintegroWS.vda_drv_estado);
 		List<Prestacion_de_reintegro__c> prestacionesToUpsert = new List<Prestacion_de_reintegro__c>();
 		List<Alerta__c> alertasToUpsert = new List<Alerta__c>();
@@ -646,6 +648,8 @@ public without sharing class CasoEnviarASSBtnCtrl {
 								'Orden_de_Compra__r.forma_de_Pago__c, ' +
 								'Orden_de_Compra__r.Estado_OC__c, ' +
 								'Evento_Medico__r.Estado__c, ' +
+								'Fecha_comprobante__c, ' +
+								'Nro_comprobante__c, ' +
 								'Urgente__c';
 		String queryEnd = ' FROM Case WHERE Id = : caseId ';
 		String queryPrestacionesSubQuery = '(SELECT Id, ' +
