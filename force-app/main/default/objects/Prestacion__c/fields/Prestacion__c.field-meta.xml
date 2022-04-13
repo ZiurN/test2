@@ -4,7 +4,32 @@
     <deleteConstraint>SetNull</deleteConstraint>
     <externalId>false</externalId>
     <label>Prestación</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Nomenclador_de_Prestacion__c.Codigo__c</field>
+            <operation>notEqual</operation>
+            <value>02501003</value>
+        </filterItems>
+        <filterItems>
+            <field>Nomenclador_de_Prestacion__c.Codigo__c</field>
+            <operation>notEqual</operation>
+            <value>02501004</value>
+        </filterItems>
+        <filterItems>
+            <field>Nomenclador_de_Prestacion__c.Codigo__c</field>
+            <operation>notEqual</operation>
+            <value>02501011</value>
+        </filterItems>
+        <filterItems>
+            <field>Nomenclador_de_Prestacion__c.Codigo__c</field>
+            <operation>notEqual</operation>
+            <value>02501014</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
     <referenceTo>Nomenclador_de_Prestacion__c</referenceTo>
+    <relationshipLabel>Prestaciones</relationshipLabel>
     <relationshipName>Prestaciones</relationshipName>
     <required>false</required>
     <trackHistory>true</trackHistory>
