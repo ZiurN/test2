@@ -8,6 +8,7 @@
 		RecordType.DeveloperName = "Solicitud_de_alta_familiar",
 		RecordType.DeveloperName = "Solicitud_de_despegues"
 	),
+	NOT($Permission.Usuario_integracion),
 	ISCHANGED(Status),
 	ISPICKVAL(Status, &apos;CA-----N&apos;),
 	NOT(ISBLANK(Nro_de_solicitud_SS__c)),
