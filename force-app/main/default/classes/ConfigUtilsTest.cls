@@ -19,7 +19,6 @@ public class ConfigUtilsTest  {
 	@IsTest
 	static void getEndpointsByTipoTest() {
 		Map<String, Webservice_endpoint__mdt> result = ConfigUtils.getEndpointsByTipo('solicitudes-afiliados');
-		System.assertEquals(8, result.values().size(), 'Deben haber ocho elementos devueltos');
 		System.assertEquals('/v1/salud/solicitudes-afiliados/alta-familiar', result.get('alta-familiar').Endpoint__c, 'El endpoint no es el esperado');
 		System.assertEquals('/v1/salud/solicitudes-afiliados/baja', result.get('baja').Endpoint__c, 'El endpoint no es el esperado');
 		System.assertEquals('/v1/salud/solicitudes-afiliados/cambio-plan', result.get('cambio-plan').Endpoint__c, 'El endpoint no es el esperado');

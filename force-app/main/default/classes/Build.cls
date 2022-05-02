@@ -894,21 +894,7 @@ public class Build {
 		public static CaseBuilder aCaseSolicituddealtafamiliar() {
 			CaseBuilder value = new CaseBuilder();
 			value.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Solicitud_de_alta_familiar').Id;
-			value.withDerivaAportes(true)
-			.withAporte(5000)
-			.withCuit('20414624416')
-			.withCuitEmpleador('20434624726')
-			.withDiscapacidad(false)
-			.withDNI('41462441')
-			.withEstadoCivil('N')
-			.withFirstName('Santiago')
-			.withLastName('Test')
-			.withNacionalidad('Argentina')
-			.withSexo('Masculino')
-			.withTipoDeDocumento('DNI')
-			.withTipoDeParentesco('CO')
-			.withCuil('20414624416');
-			return value;
+			return setCaseData(value);
 		}
 		public static CaseBuilder aCaseSolicitudDeCredencial() {
 			CaseBuilder value = new CaseBuilder();
@@ -945,21 +931,7 @@ public class Build {
 		public static CaseBuilder aCaseSolicitudDedespegues() {
 			CaseBuilder value = new CaseBuilder();
 			value.obj.RecordTypeId = XappiaHelper.getRecordType('Case', 'Solicitud_de_despegues').Id;
-			value.withDerivaAportes(true)
-			.withAporte(5000)
-			.withBebeSinDNI(true)
-			.withCuit('20414624416')
-			.withCuitEmpleador('20434624726')
-			.withDiscapacidad(false)
-			.withDNI('41462441')
-			.withEstadoCivil('N')
-			.withFirstName('Santiago')
-			.withLastName('Test')
-			.withNacionalidad('Argentina')
-			.withSexo('Masculino')
-			.withTipoDeDocumento('DNI')
-			.withCuil('20414624416');
-			return value;
+			return setCaseData(value);
 		}
 		public static CaseBuilder aCaseSolicitudDedespegues (Boolean withDatosGeograficos) {
 			CaseBuilder value = aCaseSolicitudDedespegues();
@@ -1013,6 +985,23 @@ public class Build {
 			CaseBuilder aCase = new CaseBuilder();
 			aCase.withRecordType('Autorizacion_previa');
 			return aCase;
+		}
+		private static CaseBuilder setCaseData (CaseBuilder caseBuilder) {
+			caseBuilder.withDerivaAportes(true)
+				.withAporte(5000)
+				.withCuit('20414624416')
+				.withCuitEmpleador('20434624726')
+				.withDiscapacidad(false)
+				.withDNI('41462441')
+				.withEstadoCivil('N')
+				.withFirstName('Santiago')
+				.withLastName('Test')
+				.withNacionalidad('Argentina')
+				.withSexo('Masculino')
+				.withTipoDeDocumento('DNI')
+				.withTipoDeParentesco('CO')
+				.withCuil('20414624416');
+			return caseBuilder;
 		}
 		public static CaseBuilder aCaseFalseamientoDDJJ () {
 			CaseBuilder aCase = new CaseBuilder();
