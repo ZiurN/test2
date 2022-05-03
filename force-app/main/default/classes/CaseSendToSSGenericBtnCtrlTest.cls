@@ -309,6 +309,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 				.withEmpleador(entidad.Id)
 				.withAccountId(cuenta.Id)
 				.withDelegacionId(delegacion.Id)
+				.withSupliedEmail('familiarEmail@test.com')
 				.build();
 			setInitialData(casoSolicitudAltaFamiliar);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoSolicitudAltaFamiliar.Id);
@@ -335,6 +336,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 				.withDelegacionId(delegacion.Id)
 				.withNroDeSolicitudSS('725187')
 				.withEstadoDeSolicitud('INCOMPLETA')
+				.withSupliedEmail('familiarEmail@test.com')
 				.build();
 			setInitialData(casoSolicitudAltaFamiliar);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoSolicitudAltaFamiliar.Id);
@@ -359,6 +361,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 				.withEmpleador(entidad.Id)
 				.withAccountId(cuenta.Id)
 				.withDelegacionId(delegacion.Id)
+				.withSupliedEmail('familiarEmail@test.com')
 				.build();
 			setInitialData(casoSolicitudAltaFamiliar);
 			TestUtils.setMockResponse(getResponseFound, SOLICITUD_ALTA_FAMILIAR_URL, WSSSGenericResponseTest.jsonError, 422, 'Not Found');
@@ -378,6 +381,7 @@ public class CaseSendToSSGenericBtnCtrlTest {
 				.withEmpleador(entidad.Id)
 				.withAccountId(cuenta.Id)
 				.withDelegacionId(delegacion.Id)
+				.withSupliedEmail('familiarEmail@test.com')
 				.build();
 			setInitialDataWithEmail(casoSolicitudAltaFamiliar);
 			Nota_de_Auditoria__c nota = new Nota_de_Auditoria__c(Nota__c = 'Nota de auditoria', APr_Id__c = casoSolicitudAltaFamiliar.Id);
