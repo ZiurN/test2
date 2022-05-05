@@ -2,7 +2,7 @@
 <CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Personal</fullName>
     <fields>Name</fields>
-    <fields>Modelo_Plan_Nombre__c</fields>
+    <fields>Plan_Codigo__c</fields>
     <fields>Codigo_de_Afiliado__c</fields>
     <fields>Scoring__c</fields>
     <fields>Type</fields>
