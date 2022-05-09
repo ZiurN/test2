@@ -2,38 +2,46 @@
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Validacion_sengun_tipo_despegue</fullName>
     <active>true</active>
-    <description>Validacion para que de acuerdo al tipo de de despegue no deje seleccionar o titilar o familiar</description>
+    <description>Validación para que, de acuerdo al tipo de de despegue, no deje seleccionar titular o familiar</description>
     <errorConditionFormula>OR(
-   AND(
-				   RecordType.DeveloperName = &quot;Solicitud_de_despegues&quot;,
-				   ISPICKVAL( Account.Type, &quot;FAM&quot;),
-				   ISPICKVAL(Type,&quot;TF&quot;) 
-							),
+	AND(
+		NOT(ISPICKVAL(Status, &quot;CA-----N&quot;)),
+		OR(
 			AND(
-				   RecordType.DeveloperName = &quot;Solicitud_de_despegues&quot;,
-				   ISPICKVAL( Account.Type,&quot;TIT&quot;),
-				   NOT(ISPICKVAL(Type,&quot;TF&quot;))
-							),
-				AND(
-								RecordType.DeveloperName = &quot;Solicitud_de_alta_familiar&quot;,
-								ISPICKVAL( Account.Type, &quot;FAM&quot;)
-								),
-				AND(
-								RecordType.DeveloperName = &quot;Solicitud_de_baja&quot;,
-								ISPICKVAL( Account.Type, &quot;FAM&quot;)
-								),
-				AND(
-								RecordType.DeveloperName = &quot;Solicitud_de_cambio_de_plan&quot;,
-								ISPICKVAL( Account.Type, &quot;FAM&quot;)
-								),
+				RecordType.DeveloperName = &quot;Solicitud_de_despegues&quot;,
+				OR(
 					AND(
-								RecordType.DeveloperName = &quot;Solicitud_de_segmento&quot;,
-								ISPICKVAL( Account.Type, &quot;FAM&quot;)
-									),
-			 	AND(
-									RecordType.DeveloperName = &quot;Interfaz_financiera&quot;,
-									ISPICKVAL( Account.Type, &quot;FAM&quot;)
-				     )
-				)</errorConditionFormula>
+						ISPICKVAL(Account.Type, &quot;FAM&quot;),
+						ISPICKVAL(Type,&quot;TF&quot;)
+					),
+					AND(
+						ISPICKVAL(Account.Type,&quot;TIT&quot;),
+						NOT(ISPICKVAL(Type,&quot;TF&quot;))
+					)
+				)
+			),
+			AND(
+				RecordType.DeveloperName = &quot;Solicitud_de_alta_familiar&quot;,
+				ISPICKVAL(Account.Type, &quot;FAM&quot;)
+			)
+		)
+	),
+	AND(
+		RecordType.DeveloperName = &quot;Solicitud_de_baja&quot;,
+		ISPICKVAL(Account.Type, &quot;FAM&quot;)
+	),
+	AND(
+		RecordType.DeveloperName = &quot;Solicitud_de_cambio_de_plan&quot;,
+		ISPICKVAL(Account.Type, &quot;FAM&quot;)
+	),
+	AND(
+		RecordType.DeveloperName = &quot;Solicitud_de_segmento&quot;,
+		ISPICKVAL(Account.Type, &quot;FAM&quot;)
+	),
+	AND(
+		RecordType.DeveloperName = &quot;Interfaz_financiera&quot;,
+		ISPICKVAL(Account.Type, &quot;FAM&quot;)
+	)
+)</errorConditionFormula>
     <errorMessage>Tipo de Asociado incorrecto para el tipo de solicitud seleccionada</errorMessage>
 </ValidationRule>
