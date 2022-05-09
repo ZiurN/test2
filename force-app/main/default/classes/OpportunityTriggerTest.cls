@@ -1,5 +1,6 @@
 @isTest
 private class OpportunityTriggerTest {
+	private static final String SOLICITUDES_AFILIADOS_URL = ConfigUtils.getEndpointsByTipo('solicitudes-afiliados').get('solicitudes-afiliados').Endpoint__c;
 	private static Profile agenteDeVentasProfile = [SELECT Id FROM Profile WHERE Name='Agente de Ventas'];
 	private static Profile frontProfile = [SELECT Id, Name FROM Profile WHERE Name = 'Front' LIMIT 1];
 	private static Profile backProfile = [SELECT Id, Name FROM Profile WHERE Name = 'Back' LIMIT 1];
@@ -37,6 +38,8 @@ private class OpportunityTriggerTest {
 		.build();
 	private static List<User> usersToInsert = new List<User>();
 	private static Map<String, String> paramsMap;
+	/** Mock para opps cerradas perdidas */
+	private static XHttpCalloutMock ssSolicitudAfiliadoIncompletaMock = new XHttpCalloutMock();
 	static {
 		for (userRole role : roles) {
 			if (role.DeveloperName == 'Comercial_AMBA') {
@@ -143,7 +146,7 @@ private class OpportunityTriggerTest {
 								'El sexp de la cuenta no coincide con el de la oportunidad');
 		}
 		@IsTest
-		static void whenEstadoSolicitudChangedToTransformadaAndNroAsociadoIsComplete_ActivateTheAcc () {
+		private static void whenEstadoSolicitudChangedToTransformadaAndNroAsociadoIsComplete_ActivateTheAcc () {
 			List<Account> accsToInsert = new List<Account>();
 			Account acc = setTestAccount().build();
 			accsToInsert.add(acc);
@@ -198,7 +201,7 @@ private class OpportunityTriggerTest {
 			System.assert(oppQuery.Cambio_Manual__c, 'El campo debe estar marcado como verdadero');
 		}
 		@IsTest
-		static void copyDataFromAccountToOpportunity () {
+		private static void copyDataFromAccountToOpportunity () {
 			List<Account> accsToInsert = new List<Account>();
 			Account os = Build.anAccountObrasocial().withCodigoDeOS('74123').build();
 			accsToInsert.add(os);
@@ -227,7 +230,7 @@ private class OpportunityTriggerTest {
 			System.assertEquals(acc.Estado_civil__c, oppFromQuery.Estado_Civil__c, 'El estado civil no coincide');
 		}
 		@IsTest
-		static void GrupoFamiliarCreationWhenOpportunityWithRecordTypeIndividuosStageNameChangesToClosedWin (){
+		private static void GrupoFamiliarCreationWhenOpportunityWithRecordTypeIndividuosStageNameChangesToClosedWin (){
 			XHttpCalloutMock getResponseFound = new XHttpCalloutMock();
 			TestUtils.setAuthToken(getResponseFound);
 			Test.setMock(HttpCalloutMock.class, getResponseFound);
@@ -824,6 +827,57 @@ private class OpportunityTriggerTest {
 			Opportunity oppUpdated = getOpportunityById(opp.Id);
 			System.assertEquals(UserInfo.getUserId(), oppUpdated.Organizador_lookup__c, 'El organizador no es el mismo');
 		}
+	/**-----------------------------------------------------------------------------------------------------------------------
+		Validaciones de oportunidad Cerrada Perdida.
+	------------------------------------------------------------------------------------------------------------------------*/
+		@isTest
+		private static void whenOppChangesToCloseLost_AndNotSolicitudSSAndEstadoSolicitudSS_DoNothing () {
+			Opportunity testOpp = setTestOppIndividuos(null, null);
+			Test.startTest();
+			setOppCloseLost(testOpp);
+			update testOpp;
+			Test.stopTest();
+			Opportunity updatedOpp = getOpportunityById(testOpp.Id);
+			System.assertEquals('Cerrada perdida', updatedOpp.stageName, 'La oportunidad debe estar cerrada perdida');
+			TestUtils.validatePlatformEventFired(false, 'SS_Opportunity_Response__e');
+		}
+		@isTest
+		private static void whenOppChangesToCloseLost_AndEstadoSolicitudSSInCompleta_DoNothing () {
+			Opportunity testOpp = setTestOppIndividuos('12345678', 'Incompleta');
+			Test.startTest();
+			setOppCloseLost(testOpp);
+			update testOpp;
+			Test.stopTest();
+			Opportunity updatedOpp = getOpportunityById(testOpp.Id);
+			System.assertEquals('Cerrada perdida', updatedOpp.stageName, 'La oportunidad debe estar cerrada perdida');
+			TestUtils.validatePlatformEventFired(false, 'SS_Opportunity_Response__e');
+		}
+		@isTest
+		private static void whenOppChangesToCloseLost_AndSolicitudSSFireEventToNotifyUserSSResult_OK () {
+			Opportunity testOpp = setTestOppIndividuos('12345678', 'Completa');
+			String finalURL = SOLICITUDES_AFILIADOS_URL + '/12345678/incompleta';
+			TestUtils.setMockResponse(ssSolicitudAfiliadoIncompletaMock, finalURL, SolicitudesAfiliadosMock.getIncompletaResponseOk());
+			Test.startTest();
+			setOppCloseLost(testOpp);
+			update testOpp;
+			Test.stopTest();
+			Opportunity updatedOpp = getOpportunityById(testOpp.Id);
+			System.assertEquals('Cerrada perdida', updatedOpp.stageName, 'La oportunidad debe estar cerrada perdida');
+			TestUtils.validatePlatformEventFired(false, 'SS_Opportunity_Response__e');
+		}
+		@isTest
+		private static void whenOppChangesToCloseLost_AndSolicitudSSFireEventToNotifyUserSSResult_Error () {
+			Opportunity testOpp = setTestOppIndividuos('12345678', 'Completa');
+			String finalURL = SOLICITUDES_AFILIADOS_URL + '/12345678/incompleta';
+			TestUtils.setMockResponse(ssSolicitudAfiliadoIncompletaMock, finalURL, SolicitudesAfiliadosMock.getIncompletaResponseError());
+			Test.startTest();
+			setOppCloseLost(testOpp);
+			update testOpp;
+			Test.stopTest();
+			Opportunity updatedOpp = getOpportunityById(testOpp.Id);
+			System.assertEquals('Cotizado', updatedOpp.stageName, 'La oportunidad debe estar cerrada perdida');
+			TestUtils.validatePlatformEventFired(true, 'SS_Opportunity_Response__e');
+		}
 	/** Utils */
 	private static Opportunity getOpportunityById (Id oppId) {
 		return [SELECT Id,
@@ -843,7 +897,8 @@ private class OpportunityTriggerTest {
 					Correo_Electronico__c,
 					OwnerId,
 					Delegacion__r.Codigo_de_delegacion__c,
-					Organizador_lookup__c
+					Organizador_lookup__c,
+					StageName
 				FROM Opportunity
 				WHERE Id = :oppId];
 	}
@@ -915,6 +970,45 @@ private class OpportunityTriggerTest {
 			.withStageName('En Edición')
 			.withAccount(accId);
 		return builder;
+	}
+	private static void setOppCloseLost (Opportunity testOpp) {
+		Account Competidor = Build.anAccountObrasocial().build();
+		insert Competidor;
+		testOpp.StageName = 'Cerrada perdida';
+		testOpp.Motivo_de_perdida__c = 'Test';
+		testOpp.Competidor__c = Competidor.Id;
+		testOpp.CloseDate = Date.today();
+	}
+	private static Opportunity setTestOppIndividuos (String nroSolicitudSS, String estadoSolicitudSS) {
+		List<Account> accsToInsert = new List<Account>();
+			Account acc = setTestAccount().build();
+			accsToInsert.add(acc);
+			Account os = Build.anAccountObrasocial().withCodigoDeOS('74123').build();
+			accsToInsert.add(os);
+			Account agencia = Build.anAccountDelegacion().withCodigoDeDelegacion('50123').build();
+			accsToInsert.add(agencia);
+			insert accsToInsert;
+			Opportunity testOpp = setTestOppIndividuos(acc.Id)
+				.withNroDeSolicitud(nroSolicitudSS)
+				.withEstadoDeSolicitud(estadoSolicitudSS)
+				.withStageName('Contactado')
+				.withCloseDate(Date.today().addDays(15))
+				.withNacionalidad('054')
+				.withSexo('M')
+				.withObraSocialTitutar(os.Id)
+				.withFechaNacimiento(Date.today())
+				.withCUIL('20342223339')
+				.withAgencia(agencia.Id)
+				.withEstadoCivil('S')
+				.build();
+			insert testOpp;
+			Cotizacion__c cotizacion = new Cotizacion__c();
+			cotizacion.Oportunidad__c = testOpp.Id;
+			cotizacion.CP__c = '7102';
+			insert cotizacion;
+			testOpp.StageName = 'Cotizado';
+			update testOpp;
+			return testOpp;
 	}
 	private static Build.OpportunityBuilder setTestOppIndividuosDDJJ (Id accId) {
 		Build.OpportunityBuilder builder = Build.anOpportunityIndividuos()

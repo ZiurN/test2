@@ -1,5 +1,4 @@
 public with sharing class WSCaseEnviarASSHelper {
-	@TestVisible
 	public static final Webservice_endpoint_setting__mdt SERVICE_CONFIG = ConfigUtils.getWebServiceConfig('SALUDSOFT.TEST');
 	public static Map<String,Webservice_endpoint__mdt> ENDPOINTS;
 	public static Response enviarASS (String body, String serviceType, String service) {

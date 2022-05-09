@@ -158,6 +158,20 @@ public without sharing class TestUtils {
 		);
 		return cvToReturn;
 	}
+	public static void validatePlatformEventFired (Boolean shouldBeCreated, String eventDevName) {
+		EventBusSubscriber[] subscribers =[SELECT Name,
+												Type,
+												Position,
+												Retries,
+												LastError
+				 							FROM EventBusSubscriber
+											WHERE Topic=: eventDevName];
+		if (shouldBeCreated) {
+			System.assertEquals(1, subscribers.size(), 'Debe haber un suscriptor por el trigger del evento');
+		} else {
+			System.assertEquals(0, subscribers.size(), 'No debe haber un suscriptor por el trigger del evento');
+		}
+	}
 	/** Utils */
 	public static void setAuthToken (XHttpCalloutMock mock) {
 		mock.buildResponse()
