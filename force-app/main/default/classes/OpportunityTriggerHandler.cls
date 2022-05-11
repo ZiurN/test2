@@ -137,36 +137,48 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 	public override void afterUpdate() {
 		List<Opportunity> oppsToActivateThePersonAccountList = new List<Opportunity>();
 		List<Opportunity> oppsToUpdateRTIndvCorp = new List<Opportunity>();
+		List<OpportunityTriggerHelper.OpportunityInfo> oppsInfoList = new List<OpportunityTriggerHelper.OpportunityInfo>();
 		List<Id> oppsToUpdateRTIndividuos = new List<Id>();
 		OpportunityTriggerHelper.validateSubestadoDDJJ(lNew, mOld);
-		for(Opportunity opp : lNew){
-			if(opp.StageName == 'Cerrada ganada'
-				&& opp.StageName != mOld.get(opp.Id).StageName){
-				if(opp.RecordTypeId == recordTypeIdIndividalCorp && opp.Tipo_de_Solicitud__c == 'ALTA'){
+		for (Opportunity opp : lNew) {
+			if (opp.StageName == 'Cerrada ganada'
+				&& opp.StageName != mOld.get(opp.Id).StageName) {
+				if (opp.RecordTypeId == recordTypeIdIndividalCorp && opp.Tipo_de_Solicitud__c == 'ALTA') {
 					oppsToUpdateRTIndvCorp.add(opp);
-				}else if (opp.RecordTypeId == recordTypeIdIndividalCorp && opp.Tipo_de_Solicitud__c != 'ALTA') {
+				} else if (opp.RecordTypeId == recordTypeIdIndividalCorp && opp.Tipo_de_Solicitud__c != 'ALTA') {
 					oppsToUpdateRTIndividuos.add(opp.Id);
 					oppsToActivateThePersonAccountList.add(opp);
-				}
-				else if(opp.RecordTypeId == recordTypeIdIndividuos){
+				} else if(opp.RecordTypeId == recordTypeIdIndividuos) {
 					oppsToUpdateRTIndividuos.add(opp.Id);
 				}
 			}
-			if(opp.RecordTypeId == recordTypeIdIndividuos
+			if (opp.RecordTypeId == recordTypeIdIndividuos
 				&& opp.Estado_de_solicitud__c == 'Transformada'
 				&& String.isNotBlank(opp.Nro_de_asociado__c)
 				&& String.isNotBlank(opp.AccountId)) {
 				oppsToActivateThePersonAccountList.add(opp);
 			}
+			if (opp.StageName == 'Cerrada perdida'
+				&& String.isNotBlank(opp.Nro_de_solicitud__c)
+				&& opp.Estado_de_solicitud__c == 'Completa') {
+				OpportunityTriggerHelper.OpportunityInfo oppInfo = new OpportunityTriggerHelper.OpportunityInfo();
+				oppInfo.oppId = opp.Id;
+				oppInfo.updatedOpportunity = opp;
+				oppInfo.previewOpportunity = mOld.get(opp.Id);
+				oppsInfoList.add(oppInfo);
+			}
 		}
-		if(!oppsToUpdateRTIndvCorp.isEmpty()) {
+		if (!oppsToUpdateRTIndvCorp.isEmpty()) {
 			OpportunityTriggerHelper.createAccWhenOpportunityIndividualCorporativoChangedToClosedWin(oppsToUpdateRTIndvCorp);
 		}
-		if(!oppsToUpdateRTIndividuos.isEmpty()){
-			OpportunityTriggerHelper.createGrupoFamiliarWhenOpportunityIndividuosChangedToClosedWin(oppsToUpdateRTIndividuos,null);
+		if (!oppsToUpdateRTIndividuos.isEmpty()) {
+			OpportunityTriggerHelper.createGrupoFamiliarWhenOpportunityIndividuosChangedToClosedWin(oppsToUpdateRTIndividuos, null);
 		}
-		if(!oppsToActivateThePersonAccountList.isEmpty()) {
+		if (!oppsToActivateThePersonAccountList.isEmpty()) {
 			OpportunityTriggerHelper.activatePersonAccounts(oppsToActivateThePersonAccountList);
+		}
+		if (!oppsInfoList.isEmpty()) {
+			OpportunityTriggerHelper.validateOppLostsInSS(oppsInfoList);
 		}
 	}
 	public override void afterDelete() {
