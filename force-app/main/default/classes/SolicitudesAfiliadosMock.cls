@@ -17,7 +17,7 @@ public with sharing class SolicitudesAfiliadosMock {
 			'"message": "La solicitud ha pasado a estado Incompleta exitosamente.",' +
 			'"meta": {' +
 				'"allowed_includes": [],' +
-				'"default_includes": [],' +
+				'"default_includes": []' +
 			'}' +
 		'}';
 	}
@@ -26,15 +26,17 @@ public with sharing class SolicitudesAfiliadosMock {
 	@description	Devuelve respuesta correcta del endpoint de solicitudes-afiliados/{solafi_id}/incompleta
 	@return			String con del JSON de respuesta.
 	------------------------------------------------------------------------------------------------------------------------*/
-	public static String getIncompletaResponseError() {
+	public static String getIncompletaResponseError () {
 		return '{' +
-			'"error": false,' +
-			'"data": null,' +
-			'"httpCode": 200,' +
-			'"message": "La solicitud ha pasado a estado Incompleta exitosamente.",' +
-			'"meta": {' +
-				'"allowed_includes": [],' +
-				'"default_includes": [],' +
+			'"data": {' +
+				'"error" : true,' +
+				'"errors": {' +
+					'"message": "No se pudo pasar a imcompleta la solicitud. La solicitud está transformada, no se puede modificar",' +
+					'"debug_message": ""' +
+				'},' +
+				'"data" : null,' +
+				'"httpCode": 400,' +
+				'"message": "No se pudo pasar a imcompleta la solicitud. La solicitud está transformada, no se puede modificar"' +
 			'}' +
 		'}';
 	}
