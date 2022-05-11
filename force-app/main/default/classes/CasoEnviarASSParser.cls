@@ -165,6 +165,7 @@ public with sharing class CasoEnviarASSParser {
 				public String nombre_empleador {get;set;}
 				public String codigo_empleador {get;set;}
 				public String cuit {get;set;}
+				public String email {get;set;}
 			}
 		/** Solicitudes */
 			public class Solicitudes {
@@ -209,6 +210,7 @@ public with sharing class CasoEnviarASSParser {
 					familiar.nacionalidad = getValueOf(this.caso.Nacionalidad__c);
 					familiar.parentesco = getValueOf(this.caso.Tipo_de_parentesco__c);
 					familiar.deriva_aportes = this.caso.Deriva_aportes__c ? 'V' : 'F';
+					familiar.email = getValueOf(this.caso.SuppliedEmail);
 					if(this.caso.Deriva_aportes__c) {
 						familiar.cuit = getValueOf(this.caso.Cuit__c);
 						familiar.importe_aportes = getValueOf(this.caso.Aporte__c);

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Evitar_Estado_Anulada_Solicitudes</fullName>
+    <active>true</active>
+    <description>Valida que si el registro fue enviado a SS (Tiene Número de Solicitud) y esta con estado COMPLETA, no sea posible cambiar el estado del caso a Anulada.</description>
+    <errorConditionFormula>AND(
+	OR(
+		RecordType.DeveloperName = "Solicitud_de_alta_familiar",
+		RecordType.DeveloperName = "Solicitud_de_despegues"
+	),
+	ISCHANGED(Status),
+	ISPICKVAL(Status, &apos;CA-----N&apos;),
+	NOT(ISBLANK(Nro_de_solicitud_SS__c)),
+	ISPICKVAL(Estado_de_solicitud__c, &apos;COMPLETA&apos;)
+)</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>No se puede cambiar el estado de la solicitud a Anulada si fue completada en SaludSoft</errorMessage>
+</ValidationRule>

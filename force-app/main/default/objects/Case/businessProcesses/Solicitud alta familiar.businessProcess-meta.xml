@@ -3,6 +3,10 @@
     <fullName>Solicitud alta familiar</fullName>
     <isActive>true</isActive>
     <values>
+        <fullName>Anulada</fullName>
+        <default>false</default>
+    </values>
+    <values>
         <fullName>Cerrado</fullName>
         <default>false</default>
     </values>

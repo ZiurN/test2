@@ -6,8 +6,9 @@
     <errorConditionFormula>AND(
 				RecordType.DeveloperName = &quot;Solicitud_de_alta_familiar&quot;,
 				NOT($Permission.Usuario_integracion),
-				ISPICKVAL( Estado_de_solicitud__c, &quot;INCOMPLETA&quot;),
-				ISCHANGED(Status) 
+				NOT(ISPICKVAL(Status, &apos;CA-----N&apos;)),
+				ISPICKVAL(Estado_de_solicitud__c, &quot;INCOMPLETA&quot;),
+				ISCHANGED(Status)
 				)</errorConditionFormula>
     <errorMessage>No puede modificar el estado del caso cuando el estado de la solicitud es &quot;INCOMPLETA&quot;</errorMessage>
 </ValidationRule>

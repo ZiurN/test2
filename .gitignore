@@ -1,5 +1,6 @@
 # GitIgnore for Salesforce Projects
 # Project Settings and MetaData
+.sf/
 .sfdx/
 .vim*
 .vscode/
