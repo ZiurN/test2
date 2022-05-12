@@ -222,6 +222,12 @@
                 <identifier>flexipage_tabset2</identifier>
             </componentInstance>
         </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>ssResponseEventListener</componentName>
+                <identifier>c_ssResponseEventListener</identifier>
+            </componentInstance>
+        </itemInstances>
         <mode>Replace</mode>
         <name>sidebar</name>
         <type>Region</type>

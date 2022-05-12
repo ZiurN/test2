@@ -256,6 +256,12 @@
                 <identifier>forceChatter_exposedFeed</identifier>
             </componentInstance>
         </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>ssResponseEventListener</componentName>
+                <identifier>c_ssResponseEventListener</identifier>
+            </componentInstance>
+        </itemInstances>
         <name>sidebar</name>
         <type>Region</type>
     </flexiPageRegions>
