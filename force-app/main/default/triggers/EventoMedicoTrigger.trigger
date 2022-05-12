@@ -5,5 +5,7 @@ trigger EventoMedicoTrigger on Evento_medico__c (before insert,
 												after update,
 												after delete,
 												after undelete) {
-	new EventoMedicoTriggerHandler().run();
+	if(!XappiaHelper.isIntegracionSSUser()) {
+		new EventoMedicoTriggerHandler().run();
+	}
 }
