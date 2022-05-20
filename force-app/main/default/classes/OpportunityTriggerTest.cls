@@ -766,7 +766,6 @@ private class OpportunityTriggerTest {
 			opp.Aceptado_por_el_asociado__c = true;
 			result = Database.update(opp, false);
 			Test.stopTest();
-			System.debug(result);
 			System.assert(result.isSuccess(), 'No debio ocurrir ningún error');
 		}
 	/**-----------------------------------------------------------------------------------------------------------------------
@@ -832,13 +831,14 @@ private class OpportunityTriggerTest {
 	------------------------------------------------------------------------------------------------------------------------*/
 		@isTest
 		private static void whenOppChangesToCloseLost_AndNotSolicitudSSAndEstadoSolicitudSS_DoNothing () {
-			Opportunity testOpp = setTestOppIndividuos(null, null);
+			Opportunity testOpp = setTestOppIndividuos(null, 'Incompleta');
 			Test.startTest();
 			setOppCloseLost(testOpp);
 			update testOpp;
 			Test.stopTest();
 			Opportunity updatedOpp = getOpportunityById(testOpp.Id);
 			System.assertEquals('Cerrada perdida', updatedOpp.stageName, 'La oportunidad debe estar cerrada perdida');
+			System.assertEquals('Incompleta', updatedOpp.Estado_de_solicitud__c, 'La oportunidad debe estar INCOMPLETA');
 			TestUtils.validatePlatformEventFired(true, 'SS_Response_Event__e');
 		}
 		@isTest
@@ -850,13 +850,13 @@ private class OpportunityTriggerTest {
 			Test.stopTest();
 			Opportunity updatedOpp = getOpportunityById(testOpp.Id);
 			System.assertEquals('Cerrada perdida', updatedOpp.stageName, 'La oportunidad debe estar cerrada perdida');
+			System.assertEquals('Incompleta', updatedOpp.Estado_de_solicitud__c, 'La oportunidad debe estar INCOMPLETA');
 			TestUtils.validatePlatformEventFired(true, 'SS_Response_Event__e');
 		}
 		@isTest
 		private static void whenOppChangesToCloseLost_AndSolicitudSSFireEventToNotifyUserSSResult_OK () {
 			Opportunity testOpp = setTestOppIndividuos('12345678', 'Completa');
 			String finalURL = SOLICITUDES_AFILIADOS_URL + '/12345678/incompleta';
-			System.debug(finalURL);
 			TestUtils.setMockResponse(ssSolicitudAfiliadoIncompletaMock, finalURL, SolicitudesAfiliadosMock.getIncompletaResponseOk());
 			Test.setMock(HttpCalloutMock.class, ssSolicitudAfiliadoIncompletaMock);
 			Test.startTest();
@@ -865,13 +865,13 @@ private class OpportunityTriggerTest {
 			Test.stopTest();
 			Opportunity updatedOpp = getOpportunityById(testOpp.Id);
 			System.assertEquals('Cerrada perdida', updatedOpp.stageName, 'La oportunidad debe estar cerrada perdida');
+			System.assertEquals('Incompleta', updatedOpp.Estado_de_solicitud__c, 'La oportunidad debe estar INCOMPLETA');
 			TestUtils.validatePlatformEventFired(true, 'SS_Response_Event__e');
 		}
 		@isTest
 		private static void whenOppChangesToCloseLost_AndSolicitudSSFireEventToNotifyUserSSResult_Error () {
 			Opportunity testOpp = setTestOppIndividuos('12345678', 'Completa');
 			String finalURL = SOLICITUDES_AFILIADOS_URL + '/12345678/incompleta';
-			System.debug(finalURL);
 			TestUtils.setMockResponse(ssSolicitudAfiliadoIncompletaMock, finalURL, SolicitudesAfiliadosMock.getIncompletaResponseError(), 400, 'Not Found');
 			Test.setMock(HttpCalloutMock.class, ssSolicitudAfiliadoIncompletaMock);
 			Test.startTest();
@@ -880,6 +880,7 @@ private class OpportunityTriggerTest {
 			Test.stopTest();
 			Opportunity updatedOpp = getOpportunityById(testOpp.Id);
 			System.assertEquals('Cotizado', updatedOpp.stageName, 'La oportunidad debe estar en Cotizado');
+			System.assertEquals('Completa', updatedOpp.Estado_de_solicitud__c, 'La oportunidad debe estar COMPLETA');
 			TestUtils.validatePlatformEventFired(true, 'SS_Response_Event__e');
 		}
 	/** Utils */
@@ -902,7 +903,8 @@ private class OpportunityTriggerTest {
 					OwnerId,
 					Delegacion__r.Codigo_de_delegacion__c,
 					Organizador_lookup__c,
-					StageName
+					StageName,
+					Estado_de_solicitud__c
 				FROM Opportunity
 				WHERE Id = :oppId];
 	}
