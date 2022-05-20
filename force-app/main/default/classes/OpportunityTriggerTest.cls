@@ -831,14 +831,14 @@ private class OpportunityTriggerTest {
 	------------------------------------------------------------------------------------------------------------------------*/
 		@isTest
 		private static void whenOppChangesToCloseLost_AndNotSolicitudSSAndEstadoSolicitudSS_DoNothing () {
-			Opportunity testOpp = setTestOppIndividuos(null, 'Incompleta');
+			Opportunity testOpp = setTestOppIndividuos(null, null);
 			Test.startTest();
 			setOppCloseLost(testOpp);
 			update testOpp;
 			Test.stopTest();
 			Opportunity updatedOpp = getOpportunityById(testOpp.Id);
 			System.assertEquals('Cerrada perdida', updatedOpp.stageName, 'La oportunidad debe estar cerrada perdida');
-			System.assertEquals('Incompleta', updatedOpp.Estado_de_solicitud__c, 'La oportunidad debe estar INCOMPLETA');
+			System.assertEquals(null, updatedOpp.Estado_de_solicitud__c, 'La oportunidad debe ser nulo');
 			TestUtils.validatePlatformEventFired(true, 'SS_Response_Event__e');
 		}
 		@isTest

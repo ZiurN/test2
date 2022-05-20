@@ -99,6 +99,8 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 				oppsWithDNIChanged.add(opp);
 			}
 			if (opp.StageName == 'Cerrada perdida'
+				&& String.isNotBlank(opp.Nro_de_solicitud__c)
+				&& opp.Estado_de_solicitud__c == 'Completa'
 				&& opp.StageName != oldOpp.StageName) {
 				oppsClosedLost.add(opp);
 			}
