@@ -1,6 +1,6 @@
 /**-----------------------------------------------------------------------------------------------------------------------
 @author			Jeferson Ruiz.
-@description	Clase para Enviar información a SaludSoft.
+@description	Clase general para Enviar información a SaludSoft.
 @date			06/05/2022
 ------------------------------------------------------------------------------------------------------------------------*/
 @SuppressWarnings('PMD.ExcessiveParameterList')
