@@ -14,7 +14,7 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
     String recordTypeIdCorporativo = XappiaHelper.getRecordType('Opportunity', 'Corporativo').Id;
 	/** Variables */
 	Id rolEjecutivoId;
-	public override void beforeInsert() {
+	public override void beforeInsert () {
 		rolEjecutivoId = [SELECT Id FROM UserRole WHERE DeveloperName = 'Ejecutivo_de_cuenta_corporativo' LIMIT 1].Id;
 		Id perfilFrontId = XappiaHelper.getProfileIdByName('Front');
 		Map<String, List<Opportunity>> oppsIndividualCorporativaListByOppCorporativaId = new Map<String, List<Opportunity>>();
@@ -29,7 +29,7 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 			Boolean oppIndToCheck = (oportunidad.RecordTypeId == recordTypeIdIndividuos ||
 			oportunidad.RecordTypeId == recordTypeIdIndividalCorp) && userNoEjecutivo;
 			Boolean oppCorpToCheck = oportunidad.RecordTypeId == recordTypeIdCorporativo && userNoEjecutivo;
-			if((oportunidad.Localidad_new__c != null &&
+			if ((oportunidad.Localidad_new__c != null &&
 				!oportunidad.Es_corporativo__c) && (oppIndToCheck || oppCorpToCheck)) {
 				oppsLocChanged.add(oportunidad);
 			}
@@ -64,65 +64,68 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 			OpportunityTriggerHelper.checkReintegroIndCorp(oppsToCheckReingreso);
 		}
 	}
-	public override void beforeUpdate() {
+	public override void beforeUpdate () {
 		rolEjecutivoId = [SELECT Id FROM UserRole WHERE DeveloperName = 'Ejecutivo_de_cuenta_corporativo' LIMIT 1].Id;
 		OpportunityTriggerHelper.checkIfIsAcceptedByAsociado(lNew);
 		List<Opportunity> oppsToSetImporte = new List<Opportunity>();
-		List<Id> oppsToUpdate = new List<Id>();
 		List<Opportunity> oppsValidateRol = new List<Opportunity>();
 		List<Opportunity> oppsLocChanged = new List<Opportunity>();
 		List<Opportunity> oppsOwnerChanged = new List<Opportunity>();
 		List<Opportunity> oppsWithDNIChanged = new List<Opportunity>();
+		List<Opportunity> oppsClosedLost =  new List<Opportunity>();
 		Map<Opportunity, Id> localidadIdsByOpp = new Map<Opportunity, Id>();
-		for(Opportunity opp : lNew) {
+		for (Opportunity opp : lNew) {
 			Opportunity oldOpp = mOld.get(opp.Id);
-			if(opp.Localidad_new__c != null && opp.Localidad_new__c != oldOpp.Localidad_new__c) {
+			if (opp.Localidad_new__c != null && opp.Localidad_new__c != oldOpp.Localidad_new__c) {
 				Boolean userNoEjecutivo = UserInfo.getUserRoleId() != rolEjecutivoId;
 				Boolean oppIndToCheck = (opp.RecordTypeId == recordTypeIdIndividuos ||
 					opp.RecordTypeId == recordTypeIdIndividalCorp) && userNoEjecutivo;
 				Boolean oppCorpToCheck = opp.RecordTypeId == recordTypeIdCorporativo && userNoEjecutivo;
 				oppsLocChanged.add(opp);
-				if(oppIndToCheck || oppCorpToCheck) {
+				if (oppIndToCheck || oppCorpToCheck) {
 					oppsValidateRol.add(opp);
 				}
 				localidadIdsByOpp.put(opp, opp.Localidad_new__c);
 			}
-			if(opp.Cotizacion_elegida__c != mOld.get(opp.Id).Cotizacion_elegida__c){
+			if (opp.Cotizacion_elegida__c != oldOpp.Cotizacion_elegida__c) {
 				oppsToSetImporte.add(opp);
 			}
-			if(opp.OwnerId != mOld.get(opp.Id).OwnerId){
+			if (opp.OwnerId != oldOpp.OwnerId) {
 				oppsOwnerChanged.add(opp);
 			}
-			if(opp.StageName == 'Cerrada ganada'
-				&& opp.StageName != mOld.get(opp.Id).StageName) {
-				oppsToUpdate.add(opp.Id);
-			}
-			if(opp.Numero_de_documento__c != oldOpp.Numero_de_documento__c
+			if (opp.Numero_de_documento__c != oldOpp.Numero_de_documento__c
 				&& String.isNotBlank(opp.AccountId)
 				&& opp.RecordTypeId == recordTypeIdIndividuos) {
 				oppsWithDNIChanged.add(opp);
 			}
+			if (opp.StageName == 'Cerrada perdida'
+				&& opp.StageName != oldOpp.StageName) {
+				oppsClosedLost.add(opp);
+			}
 		}
-		if(!oppsToSetImporte.isEmpty()) {
+		if (!oppsToSetImporte.isEmpty()) {
 			OpportunityTriggerHelper.setImporteToOpps(oppsToSetImporte);
 		}
-		if(!oppsValidateRol.isEmpty()) {
+		if (!oppsValidateRol.isEmpty()) {
 			OpportunityTriggerHelper.validateRoleInLoc(oppsValidateRol);
 		}
-		if(!oppsOwnerChanged.isEmpty()) {
+		if (!oppsOwnerChanged.isEmpty()) {
 			OpportunityTriggerHelper.checkNewOwner(oppsOwnerChanged);
 		}
-		if(!oppsWithDNIChanged.isEmpty()) {
+		if (!oppsWithDNIChanged.isEmpty()) {
 			OpportunityTriggerHelper.updateDNIInAccount(oppsWithDNIChanged);
 		}
-		if(!oppsLocChanged.isEmpty()) {
+		if (!oppsLocChanged.isEmpty()) {
 			OpportunityTriggerHelper.changeOganizadorInOpp(localidadIdsByOpp);
 		}
+		if (!oppsClosedLost.isEmpty()) {
+			OpportunityTriggerHelper.changeEstadoSolicitudToIncompleta(oppsClosedLost);
+		}
 	}
-	public override void beforeDelete() {
+	public override void beforeDelete () {
 		//Nothing
 	}
-	public override void afterInsert() {
+	public override void afterInsert () {
 		Map<Id, List<Opportunity>> opportunitiesByUserId = new Map<Id, List<Opportunity>>();
 		for (Opportunity opp : lNew) {
 			if (!opportunitiesByUserId.containsKey(opp.OwnerId)) {
@@ -134,7 +137,7 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 			OpportunityTriggerHelper.assignDelegacionFromUser(opportunitiesByUserId);
 		}
 	}
-	public override void afterUpdate() {
+	public override void afterUpdate () {
 		List<Opportunity> oppsToActivateThePersonAccountList = new List<Opportunity>();
 		List<Opportunity> oppsToUpdateRTIndvCorp = new List<Opportunity>();
 		List<OpportunityTriggerHelper.OpportunityInfo> oppsInfoList = new List<OpportunityTriggerHelper.OpportunityInfo>();
@@ -148,7 +151,7 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 				} else if (opp.RecordTypeId == recordTypeIdIndividalCorp && opp.Tipo_de_Solicitud__c != 'ALTA') {
 					oppsToUpdateRTIndividuos.add(opp.Id);
 					oppsToActivateThePersonAccountList.add(opp);
-				} else if(opp.RecordTypeId == recordTypeIdIndividuos) {
+				} else if (opp.RecordTypeId == recordTypeIdIndividuos) {
 					oppsToUpdateRTIndividuos.add(opp.Id);
 				}
 			}
@@ -160,7 +163,8 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 			}
 			if (opp.StageName == 'Cerrada perdida'
 				&& String.isNotBlank(opp.Nro_de_solicitud__c)
-				&& opp.Estado_de_solicitud__c == 'Completa') {
+				&& opp.Estado_de_solicitud__c == 'Incompleta'
+				&& mOld.get(opp.Id).Estado_de_solicitud__c == 'Completa') {
 				OpportunityTriggerHelper.OpportunityInfo oppInfo = new OpportunityTriggerHelper.OpportunityInfo();
 				oppInfo.oppId = opp.Id;
 				oppInfo.updatedOpportunity = opp;
@@ -181,10 +185,10 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 			OpportunityTriggerHelper.validateOppLostsInSS(oppsInfoList);
 		}
 	}
-	public override void afterDelete() {
+	public override void afterDelete () {
 		//Nothing
 	}
-	public override void afterUndelete() {
+	public override void afterUndelete () {
 		//Nothing
 	}
 }

@@ -557,6 +557,16 @@ public with sharing class OpportunityTriggerHelper {
 			System.enqueueJob(new AsyncValidateInSSOppCloseLost(oppInfo, userNick));
 		}
 	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz
+	@description	Método para cambiar el Estado de la Solicitud en SF a Incompleta.
+	@param			oppsClosedLost - Lista de oportunidades a modificar.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static void changeEstadoSolicitudToIncompleta (List<Opportunity> oppsClosedLost) {
+		for (Opportunity opp : oppsClosedLost) {
+			opp.Estado_de_solicitud__c = 'Incompleta';
+		}
+	}
 	public class OpportunityInfo {
 		public Id oppId {get; set;}
 		public Opportunity updatedOpportunity {get; set;}
