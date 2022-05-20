@@ -12,9 +12,10 @@ public with sharing class AsyncValidateInSSOppCloseLost implements Queueable, Da
 		this.userNick = userNick;
 	}
 	public void execute(QueueableContext context) {
+		String body = '{"nota_usuario" : "' + userNick + '"}';
 		String extraParams = solafi_id + '/incompleta';
-		WSOpportunityEnviarASSHelper sendSSHelper = new WSOpportunityEnviarASSHelper();
-		WSOpportunityEnviarASSHelper.Response response = (WSOpportunityEnviarASSHelper.Response) sendSSHelper.enviarASS('{"nota_usuario" : "' + userNick + '"}', 'solicitudes-afiliados', 'solicitudes-afiliados', 'PUT', extraParams);
+		WSEnviarASSHelper.SSRequest ssRequest = new WSEnviarASSHelper.SSRequest(body, 'solicitudes-afiliados', 'solicitudes-afiliados', 'PUT', extraParams);
+		WSEnviarASSHelper.Response response = WSEnviarASSHelper.enviarASS(ssRequest);
 		String message = response.message + '\n';
 		Database.SaveResult result;
 		if (response.hasError) {
