@@ -956,4 +956,31 @@ public class WSSSGenericResponseTest {
 		System.assert(objAp.nivel == null, 'El valor deber ser nulo');
 		System.assert(objAp.clasificacion == null, 'El valor deber ser nulo');
 	}
+	@isTest
+	static void testParseAfiliadoDatosOk () {
+		String expectedMessage = 'Se ejecutó el proceso.';
+		WSSSGenericResponse response = WSSSGenericResponse.parse(AfiliadoEndpointsMockResponses.getDatosSFResponseOk());
+		System.assert(response.data != null, 'El valor deber ser no nulo');
+		System.assert(response.data[0].domiafi_id == null, 'El valor debe ser nulo');
+		System.assert(response.data[0].telafi_id == null, 'El valor debe ser nulo');
+		System.assert(!response.error, 'El valor debe ser false');
+		System.assert(response.httpCode != null, 'El valor debe ser no nulo');
+		System.assertEquals(200, response.httpCode, 'El código debe ser 200');
+		System.assert(response.message != null, 'El valor debe ser no nulo');
+		System.assertEquals(expectedMessage, response.message, 'El mensaje no es el esperado');
+		System.assert(response.meta != null, 'El valor debe ser no nulo');
+		System.assert(response.meta.allowed_includes.isEmpty(), 'La lista debe estar vacía');
+		System.assert(response.meta.default_includes.isEmpty(), 'La lista debe estar vacía');
+	}
+	@isTest
+	static void testParseAfiliadoDatosError () {
+		String expectedMessage = 'No se pudieron replicar los datos.';
+		WSSSGenericResponse response = WSSSGenericResponse.parse(AfiliadoEndpointsMockResponses.getDatosSFResponseError());
+		System.assert(response.data != null, 'El valor deber ser no nulo');
+		System.assert(response.error == null, 'El valor debe ser false');
+		System.assert(response.httpCode != null, 'El valor debe ser no nulo');
+		System.assertEquals(400, response.httpCode, 'El código debe ser 200');
+		System.assert(response.message != null, 'El valor debe ser no nulo');
+		System.assertEquals(expectedMessage, response.message, 'El mensaje no es el esperado');
+	}
 }
