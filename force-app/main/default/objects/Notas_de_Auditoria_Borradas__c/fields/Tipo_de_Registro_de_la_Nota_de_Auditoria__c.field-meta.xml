@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Id_externo_solicitudes__c</fullName>
-    <description>id externo utilizado para las notas relacionadas a los registros utilizados para solicitudes de afiliados (alta, reingreso, etc)</description>
+    <fullName>Tipo_de_Registro_de_la_Nota_de_Auditoria__c</fullName>
+    <description>Campo Texto que refleja el Record Type de la Nota de Registro Borrada</description>
     <externalId>false</externalId>
-    <label>Id Nota SS</label>
+    <label>Tipo de Registro de la Nota de Auditoria</label>
     <length>255</length>
     <required>false</required>
     <trackTrending>false</trackTrending>

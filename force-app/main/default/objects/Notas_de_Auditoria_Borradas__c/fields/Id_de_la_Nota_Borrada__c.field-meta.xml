@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Id_externo_solicitudes__c</fullName>
-    <description>id externo utilizado para las notas relacionadas a los registros utilizados para solicitudes de afiliados (alta, reingreso, etc)</description>
+    <fullName>Id_de_la_Nota_Borrada__c</fullName>
+    <description>SF ID de la Nota que ha sido Borrada</description>
     <externalId>false</externalId>
-    <label>Id Nota SS</label>
+    <label>Id de la Nota Borrada</label>
     <length>255</length>
     <required>false</required>
     <trackTrending>false</trackTrending>

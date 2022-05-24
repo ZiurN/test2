@@ -155,13 +155,13 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <gender>Feminine</gender>
-    <label>Nota de Auditoria Borradas</label>
+    <label>Notas de Auditoria Borradas</label>
     <nameField>
         <label>Notas de Auditoria Borradas Name</label>
         <type>Text</type>
     </nameField>
     <pluralLabel>Notas de Auditoria Borradas</pluralLabel>
     <searchLayouts></searchLayouts>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Read</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
