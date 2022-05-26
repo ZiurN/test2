@@ -6,10 +6,11 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class OpportunityTriggerHelper {
 	private static List<String> adminProfilesNames = new List<String>{'Administrador del sistema', 'System Administrator'};
-	private static User currentUser = [SELECT ProfileId, Profile.Name FROM User WHERE id =: UserInfo.getUserId()];
+	private static User currentUser = [SELECT ProfileId, Profile.Name, CommunityNickname FROM User WHERE id =: UserInfo.getUserId()];
 	private static Boolean userIsAdmin = adminProfilesNames.contains(currentUser.Profile.Name);
 	private static Boolean userIsFront = currentUser.Profile.Name == 'Front';
 	private static Boolean userIsAgenteVentas = currentUser.Profile.Name == 'Agente de Ventas';
+	private static String userNick = currentUser.CommunityNickname != null ? currentUser.CommunityNickname.toUpperCase() : null;
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Matias Moll.
 	@description	Asigna la cuenta de la oportunidad corporativa a las oportunidades individuales corporativas asociadas.
@@ -545,5 +546,30 @@ public with sharing class OpportunityTriggerHelper {
 				opp.Organizador_lookup__c = organizadorId;
 			}
 		}
+	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz
+	@description	Método para validar en SS si la oportunidad puede pasar a cerrada/perdida.
+	@param			oppsInfoList - Lista de las oportunidades a validar.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static void validateOppLostsInSS (List<OpportunityInfo> oppsInfoList) {
+		for (OpportunityInfo oppInfo : oppsInfoList) {
+			System.enqueueJob(new AsyncValidateInSSOppCloseLost(oppInfo, userNick));
+		}
+	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz
+	@description	Método para cambiar el Estado de la Solicitud en SF a Incompleta.
+	@param			oppsClosedLost - Lista de oportunidades a modificar.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static void changeEstadoSolicitudToIncompleta (List<Opportunity> oppsClosedLost) {
+		for (Opportunity opp : oppsClosedLost) {
+			opp.Estado_de_solicitud__c = 'Incompleta';
+		}
+	}
+	public class OpportunityInfo {
+		public Id oppId {get; set;}
+		public Opportunity updatedOpportunity {get; set;}
+		public Opportunity previewOpportunity {get; set;}
 	}
 }
