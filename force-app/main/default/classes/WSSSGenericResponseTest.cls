@@ -618,7 +618,7 @@ public class WSSSGenericResponseTest {
 		WSSSGenericResponse r = WSSSGenericResponse.parse(json);
 		System.assert(r != null, 'No debe ser nulo');
 	}
-	/** El cuerpo de la propiedad Errors cambia */
+	/** El cuerpo de La propiedad Errors cambia */
 	@isTest
 	static void testParseReintegroAltaError () {
 		String jsonError = '{' +
@@ -955,6 +955,39 @@ public class WSSSGenericResponseTest {
 		System.assert(objAp.nro_sf == null, 'El valor deber ser nulo');
 		System.assert(objAp.nivel == null, 'El valor deber ser nulo');
 		System.assert(objAp.clasificacion == null, 'El valor deber ser nulo');
+	}
+	@isTest
+	static void testParseOppClosedLost_ResponseOK () {
+		String expectedMessage = 'La solicitud ha pasado a estado Incompleta exitosamente.';
+		WSSSGenericResponse parsedResponse = WSSSGenericResponse.parse(SolicitudesAfiliadosMock.getIncompletaResponseOk());
+		System.assert(parsedResponse != null, 'El objeto no debe ser nulo');
+		System.assert(parsedResponse.data == null, 'El objeto data debe ser nulo');
+		System.assert(!parsedResponse.error, 'El booleano error debe ser falso');
+		System.assert(parsedResponse.meta != null, 'El objeto meta error debe ser diferente de nulo');
+		System.assert(parsedResponse.meta.allowed_includes.isEmpty(), 'La lista allowed_includes debe esta vacía');
+		System.assert(parsedResponse.meta.default_includes.isEmpty(), 'La lista default_includes debe esta vacía');
+		System.assert(parsedResponse.httpCode != null, 'El httpCode error debe ser diferente de nulo');
+		System.assertEquals(200, parsedResponse.httpCode, 'El httpCode debe ser 200');
+		System.assertEquals(expectedMessage, parsedResponse.message, 'El mensaje no es el esperado');
+	}
+	@isTest
+	static void testParseOppClosedLost_ResponseError () {
+		String expectedMessage = 'No se pudo pasar a imcompleta la solicitud. La solicitud está transformada, no se puede modificar';
+		WSSSGenericResponse parsedResponse = WSSSGenericResponse.parse(SolicitudesAfiliadosMock.getIncompletaResponseError());
+		System.assert(parsedResponse != null, 'El objeto no debe ser nulo');
+		System.assert(parsedResponse.error == null, 'El booleano error debe ser nulo');
+		System.assert(parsedResponse.meta == null, 'El objeto meta error debe ser nulo');
+		System.assert(parsedResponse.httpCode == null, 'El httpCode error debe ser nulo');
+		System.assert(parsedResponse.data != null, 'El objeto data debe ser nulo');
+		System.assertEquals(1, parsedResponse.data.size(), 'Debe haber un solo objeto data');
+		WSSSGenericResponse.data data = parsedResponse.data[0];
+		System.assert(data.error, 'La propiedad error debe ser true');
+		System.assert(data.httpCode != null, 'La propiedad data debe ser diferente de null');
+		System.assertEquals(400, data.httpCode, 'El códido debe ser 400');
+		System.assert(data.message != null, 'La propiedad data debe ser diferente de null');
+		System.assertEquals(expectedMessage, data.message, 'La propiedad data debe ser diferente de null');
+		System.assert(data.errors != null, 'La propiedad errors debe ser diferente de null');
+		System.assertEquals(expectedMessage, data.errors.message, 'La propiedad data debe ser diferente de null');
 	}
 	@isTest
 	static void testParseAfiliadoDatosOk () {
