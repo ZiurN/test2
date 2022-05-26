@@ -142,7 +142,7 @@ private class SegmentoTriggerTest {
 			Test.startTest();
 			System.enqueueJob(segmentoQueable);
 			Test.stopTest();
-			validatePlatformEventFired(true);
+			TestUtils.validatePlatformEventFired(true, 'SS_Segmento_Response__e');
 			Segmentos__c segToAssert = [SELECT Fecha_Inicio_real__c, Fecha_Fin_real__c FROM Segmentos__c WHERE Id =: seg1.Id];
 			Datetime inicio = Datetime.newInstance(2020, 2, 3, 0, 0, 0);
 			Datetime fin = Datetime.newInstance(2020, 2, 4, 0, 0, 0);
@@ -167,7 +167,7 @@ private class SegmentoTriggerTest {
 			insert seg2;
 			Test.stopTest();
 			/** Validar que se creó el platform event informando el error en SS */
-			validatePlatformEventFired(true);
+			TestUtils.validatePlatformEventFired(true, 'SS_Segmento_Response__e');
 			List<Segmentos__c> segsToAssert = [SELECT Id FROM Segmentos__c WHERE Evento_Medico__c =: em.Id];
 			System.assertEquals(1, segsToAssert.size(), 'Solo debe haber un segmento médico asociado al evento');
 			System.assertEquals(seg.Id, segsToAssert[0].Id, 'Solo debe haber un segmento médico asociado al evento');
@@ -190,7 +190,7 @@ private class SegmentoTriggerTest {
 			Test.startTest();
 			System.enqueueJob(segmentoQueable);
 			Test.stopTest();
-			validatePlatformEventFired(true);
+			TestUtils.validatePlatformEventFired(true, 'SS_Segmento_Response__e');
 			Segmentos__c segToAssert = [SELECT Estado__c, Fecha_Inicio_real__c, Fecha_Fin_real__c
 											FROM Segmentos__c
 											WHERE Id =: seg1.Id];
@@ -210,7 +210,7 @@ private class SegmentoTriggerTest {
 			Test.startTest();
 			System.enqueueJob(segmentoQueable);
 			Test.stopTest();
-			validatePlatformEventFired(true);
+			TestUtils.validatePlatformEventFired(true, 'SS_Segmento_Response__e');
 			Segmentos__c segToAssert = [SELECT Error_en_SS__c FROM Segmentos__c WHERE Id =: seg.Id];
 			System.assertEquals('<p style="color: rgb(228, 10, 10);">El segmento solicitado es inválido.</p>',
 								segToAssert.Error_en_SS__c,
@@ -352,7 +352,7 @@ private class SegmentoTriggerTest {
 				update oldSeg;
 				Test.stopTest();
 			}
-			validatePlatformEventFired(true);
+			TestUtils.validatePlatformEventFired(true, 'SS_Segmento_Response__e');
 			oldSeg = [SELECT Fecha_Inicio_real__c, Fecha_Fin_real__c FROM Segmentos__c WHERE Id =: oldSeg.Id];
 			System.assert(oldSeg.Fecha_Inicio_real__c == fechaInicioReal, 'Las fechas no coinciden');
 			System.assert(oldSeg.Fecha_Fin_real__c == fechaFinReal, 'Las fechas no coinciden');
@@ -530,19 +530,4 @@ private class SegmentoTriggerTest {
 			}
 			System.assert(result.isSuccess(), 'El Segmento se debe guardar');
 		}
-	/** Utils */
-	private static void validatePlatformEventFired (Boolean shouldBeCreated) {
-		EventBusSubscriber[] subscribers =[SELECT Name,
-												Type,
-												Position,
-												Retries,
-												LastError
-				 							FROM EventBusSubscriber
-											WHERE Topic='SS_Segmento_Response__e'];
-		if (shouldBeCreated) {
-			System.assertEquals(1, subscribers.size(), 'Debe haber un suscriptor por el trigger del evento');
-		} else {
-			System.assertEquals(0, subscribers.size(), 'No debe haber un suscriptor por el trigger del evento');
-		}
-	}
 }
