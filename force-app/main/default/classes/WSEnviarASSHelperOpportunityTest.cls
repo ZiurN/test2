@@ -22,7 +22,7 @@ public with sharing class WSEnviarASSHelperOpportunityTest {
 		WSEnviarASSHelper.Response response = WSEnviarASSHelper.enviarASS(ssRequest);
 		Test.stopTest();
 		System.assert(!response.hasError, 'No debe haber ningun error');
-		System.assertEquals(expectedMessage, response.message, 'El mensaje no es el esperado');
+		System.assertEquals('Ok', response.message, 'El mensaje no es el esperado');
 	}
 	@isTest
 	private static void oppClosedLost_ifSSResponseIsError_getResponse () {
@@ -32,7 +32,6 @@ public with sharing class WSEnviarASSHelperOpportunityTest {
 		String finalURL = SOLICITUDES_AFILIADOS_URL + '/' + extraParams;
 		TestUtils.setMockResponse(ssSolicitudesAfiliadosResponseMock, finalURL, SolicitudesAfiliadosMock.getIncompletaResponseError(), 400, 'Not Found');
 		Test.setMock(HttpCalloutMock.class, ssSolicitudesAfiliadosResponseMock);
-		Test.startTest();
 		Test.startTest();
 		WSEnviarASSHelper.SSRequest ssRequest = new WSEnviarASSHelper.SSRequest(body, 'solicitudes-afiliados', 'solicitudes-afiliados', 'PUT', extraParams);
 		WSEnviarASSHelper.Response response = WSEnviarASSHelper.enviarASS(ssRequest);
