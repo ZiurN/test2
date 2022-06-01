@@ -1037,7 +1037,7 @@ public class WSSSGenericResponse {
 			} else if (!String.isBlank(this.data[0].message) && this.data[0].error) {
 				message = this.data[0].message;
 			}
-		} else{
+		} else {
 			message = processErrorMessages();
 		}
 		return message;

@@ -398,6 +398,18 @@ public class Build {
 				obj.OwnerId = owner.Id;
 				return this;
 			}
+			public OpportunityBuilder withEstadoDeSolicitud (String value) {
+				obj.Estado_de_solicitud__c = value;
+				return this;
+			}
+			public OpportunityBuilder withMotivoPerdida (String value) {
+				obj.Motivo_de_perdida__c = value;
+				return this;
+			}
+			public OpportunityBuilder withCompetidor (String value) {
+				obj.Competidor__c = value;
+				return this;
+			}
 			public Opportunity build() {
 				return obj;
 			}
