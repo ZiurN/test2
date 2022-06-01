@@ -45,19 +45,25 @@ public class XHttpCalloutMock implements HttpCalloutMock {
 		buildResponse().withStatus('404 not found').withStatusCode(404)
 		.addForAddress(NOT_FOUND_ADDRESS);
 	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
+	@description	Método validar que el request de los diferentes llamados sea el correcto.
+	@param			req - Cuerpo del request
+	------------------------------------------------------------------------------------------------------------------------*/
 	private void validateRequest (HTTPRequest req) {
-		Map<String, Object> reqBody = (Map<String,Object>) JSON.deserializeUntyped(req.getBody());
-		System.debug(reqBody);
-		if (String.isBlank(serviceType) && String.isBlank(service)) {
+		String authTokenEndpoint = WSAuthToken.SERVICE_CONFIG.URL__c + '/oauth/token';
+		Boolean isAuthCall = req.getEndpoint() == authTokenEndpoint;
+		if (!isAuthCall && !String.isBlank(serviceType) && !String.isBlank(service)) {
+			Map<String, Object> reqBody = (Map<String,Object>) JSON.deserializeUntyped(req.getBody());
 			switch on serviceType {
 				when 'afiliado' {
 					switch on service {
 						when 'datos-sf' {
-							System.debug('En doble');
+							System.assert(!String.isBlank((String) reqBody.get('afi_id')), 'La propiedad no debe estar vacía');
+							System.assert(!String.isBlank((String) reqBody.get('email')), 'La propiedad no debe estar vacía');
 						}
 					}
 				}
-
 			}
 		}
 	}
