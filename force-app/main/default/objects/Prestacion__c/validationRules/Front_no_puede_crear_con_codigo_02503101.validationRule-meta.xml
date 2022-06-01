@@ -3,8 +3,12 @@
     <fullName>Front_no_puede_crear_con_codigo_02503101</fullName>
     <active>true</active>
     <errorConditionFormula>AND(
-				$Profile.Name = &apos;Front&apos;,
-				Codigo_Nomenclador__c = &apos;02503101&apos;
+	$Profile.Name = &apos;Front&apos;,
+	OR(
+		ISNEW(),
+		ISCHANGED(Codigo_Nomenclador__c)
+	),
+	Codigo_Nomenclador__c = &apos;02503101&apos;
 )</errorConditionFormula>
-    <errorMessage>Los usuarios Front no puede carga ese numero de nomenclador</errorMessage>
+    <errorMessage>Los usuarios Front no puede carga este número de nomenclador</errorMessage>
 </ValidationRule>
