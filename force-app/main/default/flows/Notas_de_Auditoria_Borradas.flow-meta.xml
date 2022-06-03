@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>55.0</apiVersion>
+    <apiVersion>54.0</apiVersion>
     <description>Al borrar una Nota de Auditoría se activa el flow creando un Registro en el Objeto Notas de Auditoría Borradas</description>
     <interviewLabel>Notas de Auditoria Borradas {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Notas de Auditoria Borradas</label>
