@@ -1012,8 +1012,38 @@ public class WSSSGenericResponseTest {
 		System.assert(response.data != null, 'El valor deber ser no nulo');
 		System.assert(response.error == null, 'El valor debe ser false');
 		System.assert(response.httpCode != null, 'El valor debe ser no nulo');
-		System.assertEquals(400, response.httpCode, 'El código debe ser 200');
+		System.assertEquals(400, response.httpCode, 'El código debe ser 400');
 		System.assert(response.message != null, 'El valor debe ser no nulo');
 		System.assertEquals(expectedMessage, response.message, 'El mensaje no es el esperado');
+	}
+	@isTest
+	static void testParseAsociacionFacturaElectronicaOK () {
+		String expectedMessage = 'Se actualizó la información de FE del socio.';
+		WSSSGenericResponse response = WSSSGenericResponse.parse(AfiliadoEndpointsMockResponses.getAsociacionFacturaElectronicaOK());
+		System.assert(response != null, 'El valor debe ser no nulo');
+		System.assert(!response.error, 'No debe haber un error');
+		System.assert(response.data == null, 'El valor deber ser nulo');
+		System.assert(response.httpCode != null, 'El valor debe ser no nulo');
+		System.assertEquals(201, response.httpCode, 'El código debe ser 200');
+		System.assert(response.message != null, 'El valor debe ser no nulo');
+		System.assertEquals(expectedMessage, response.message, 'El mensaje no es el esperado');
+		System.assert(response.meta != null, 'El valor debe ser no nulo');
+		System.assert(response.meta.allowed_includes.isEmpty(), 'La lista debe estar vacía');
+		System.assert(response.meta.default_includes.isEmpty(), 'La lista debe estar vacía');
+	}
+	@isTest
+	static void testParseAsociacionFacturaElectronicaError () {
+		String expectedMessage = 'No se pudo actualizar la información de FE del socio. DATO INGRESADO IGUAL AL ACTUAL.';
+		WSSSGenericResponse response = WSSSGenericResponse.parse(AfiliadoEndpointsMockResponses.getAsociacionFacturaElectronicaError());
+		System.assert(response.error == null, 'El valor debe ser false');
+		System.assert(response.httpCode == null, 'El valor debe ser nulo');
+		System.assert(response.meta == null, 'El valor debe ser nulo');
+		System.assert(response.data != null, 'El valor deber ser no nulo');
+		System.assertEquals(1, response.data.size(), 'Debe haber un elemento Data');
+		WSSSGenericResponse.Data data = response.data[0];
+		System.assert(data.error, 'Debe haber un error');
+		System.assertEquals(400, data.httpCode, 'El código debe ser 400');
+		System.assert(data.message != null, 'El valor debe ser no nulo');
+		System.assertEquals(expectedMessage, data.message, 'El mensaje no es el esperado');
 	}
 }
