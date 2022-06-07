@@ -2,9 +2,9 @@ public with sharing class AsyncValidateChangesInAcountInSS implements Queueable,
 	private Account updatedAccount {get; set;}
 	private Account previewAccount {get; set;}
 	private AccountEnviarASSParser parser;
-	public AsyncValidateChangesInAcountInSS (Account updatedAccount, Account previewAccount) {
-		this.updatedAccount = updatedAccount;
-		this.previewAccount = previewAccount;
+	public AsyncValidateChangesInAcountInSS (AccountTriggerHelper.AccountInfo accInfo) {
+		this.updatedAccount = accInfo.updatedAccount;
+		this.previewAccount = accInfo.previewAccount;
 	}
 	public void execute(QueueableContext context) {
 		parser = new AccountEnviarASSParser(updatedAccount);

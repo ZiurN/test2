@@ -22,6 +22,7 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
 	}
 	public override void afterUpdate() {
 		Id[] accsToUpdateFacturaElectronicaInSS = new List<Id>();
+		List<AccountTriggerHelper.AccountInfo> accountsToValidate = new List<AccountTriggerHelper.AccountInfo>();
 		for (Account acc : lNew) {
 			Account oldAcc = mOld.get(acc.Id);
 			Boolean isAsync = System.isBatch() || System.isFuture() || System.isQueueable() || System.isScheduled();
@@ -31,6 +32,20 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
 		}
 		if (!accsToUpdateFacturaElectronicaInSS.isEmpty()) {
 			AccountTriggerHelper.updateFacturaElectronicaOnSS(accsToUpdateFacturaElectronicaInSS);
+		}
+		if(!System.isBatch() && !System.isQueueable() && !XappiaHelper.isIntegracionSSUser()) {
+			for (Account acc : lNew) {
+				Account oldAcc = mOld.get(acc.id);
+				if (acc.PersonEmail != oldAcc.PersonEmail && !String.isBlank(acc.Afi_Id__c)) {
+					AccountTriggerHelper.AccountInfo accInfo = new AccountTriggerHelper.AccountInfo();
+					accInfo.previewAccount = oldAcc;
+					accInfo.updatedAccount = acc;
+					accountsToValidate.add(accInfo);
+				}
+			}
+			if (!accountsToValidate.isEmpty()) {
+				AccountTriggerHelper.validateAccountsFieldsInSS(accountsToValidate);
+			}
 		}
 	}
 	public override void afterDelete() {

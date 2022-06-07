@@ -43,4 +43,18 @@ public with sharing class AccountTriggerHelper {
 			}
 		}
 	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz
+	@description	Método para validar en SS los campos modificados en SF.
+	@param			oppsInfoList - Lista de las oportunidades a validar.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static void validateAccountsFieldsInSS (List<AccountInfo> accountsToValidate) {
+		for (AccountInfo accInfo : accountsToValidate) {
+			System.enqueueJob(new AsyncValidateChangesInAcountInSS(accInfo));
+		}
+	}
+	public class AccountInfo {
+		public Account updatedAccount {get; set;}
+		public Account previewAccount {get; set;}
+	}
 }

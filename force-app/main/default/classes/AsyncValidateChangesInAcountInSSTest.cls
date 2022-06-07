@@ -24,7 +24,10 @@ public without sharing class AsyncValidateChangesInAcountInSSTest {
 		TestUtils.setMockResponse(getDatosSFResponse, DATOS_SF_URL, AfiliadoEndpointsMockResponses.getDatosSFResponseOk());
 		Test.setMock(HttpCalloutMock.class, getDatosSFResponse);
 		Test.startTest();
-        System.enqueueJob(new AsyncValidateChangesInAcountInSS(testAccount, testPreviewAccount));
+        AccountTriggerHelper.AccountInfo accInfo = new AccountTriggerHelper.AccountInfo();
+		accInfo.previewAccount = testPreviewAccount;
+		accInfo.updatedAccount = testAccount;
+        System.enqueueJob(new AsyncValidateChangesInAcountInSS(accInfo));
         Test.stopTest();
 		validateEventFired(testPreviewAccount.Id, expectedMessage, false);
 		testAccount = [SELECT PersonEmail FROM Account WHERE Id =: testAccount.Id];
@@ -36,7 +39,10 @@ public without sharing class AsyncValidateChangesInAcountInSSTest {
 		TestUtils.setMockResponse(getDatosSFResponse, DATOS_SF_URL, AfiliadoEndpointsMockResponses.getDatosSFResponseError(), 400, 'Not found');
 		Test.setMock(HttpCalloutMock.class, getDatosSFResponse);
 		Test.startTest();
-        System.enqueueJob(new AsyncValidateChangesInAcountInSS(testAccount, testPreviewAccount));
+		AccountTriggerHelper.AccountInfo accInfo = new AccountTriggerHelper.AccountInfo();
+		accInfo.previewAccount = testPreviewAccount;
+		accInfo.updatedAccount = testAccount;
+        System.enqueueJob(new AsyncValidateChangesInAcountInSS(accInfo));
         Test.stopTest();
 		validateEventFired(testPreviewAccount.Id, expectedMessage, true);
 		testAccount = [SELECT PersonEmail FROM Account WHERE Id =: testAccount.Id];
