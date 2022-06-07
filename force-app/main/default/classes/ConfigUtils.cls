@@ -1,5 +1,6 @@
-@SuppressWarnings('PMD.ApexCRUDViolation')
+@SuppressWarnings('PMD.ApexCRUDViolation, PMD.ExcessiveParameterList')
 public without sharing class ConfigUtils  {
+	public static SSResponseEventTriggerHandler eventHandler = new SSResponseEventTriggerHandler();
 	public static Organization currentOrg;
 	public static Boolean isSandboxEnviroment() {
 		if (currentOrg == null) {
@@ -75,5 +76,13 @@ public without sharing class ConfigUtils  {
 				}
 			}
 		}
+	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
+	@description	Método para manejar eventos tipo SS_Response_Event__e.
+	@param			event - Evento a manejar
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static void HandleSSResponseEventFired (SS_Response_Event__e event) {
+		eventHandler.handleFiredEvent(event);
 	}
 }
