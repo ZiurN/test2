@@ -9,8 +9,7 @@ public without sharing class WSDatosAfiliados {
 			for(Account acc : accounts) {
 				Account oldAcc = oldMap.get(acc.id);
 				if((acc.Tipo_de_documento__c != oldAcc.Tipo_de_documento__c 
-							|| acc.Numero_de_documento__c != oldAcc.Numero_de_documento__c
-							|| acc.PersonEmail != oldAcc.PersonEmail) 
+							|| acc.Numero_de_documento__c != oldAcc.Numero_de_documento__c)
 						&& !String.isBlank(
 								acc.Afi_Id__c
 							)

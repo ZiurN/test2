@@ -129,7 +129,7 @@ public class Build {
 			value.obj.Name = 'STRING';
 			return value;
 		}
-		public static AccountBuilder anAccountCuentapersonal() {
+		public static AccountBuilder anAccountCuentaPersonal() {
 			AccountBuilder value = new AccountBuilder();
 			value.obj.RecordTypeId = XappiaHelper.getRecordType('Account', 'Cuenta_personal').Id;
 			value.obj.LastName = 'STRING';
