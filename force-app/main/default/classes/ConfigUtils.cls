@@ -82,7 +82,7 @@ public without sharing class ConfigUtils  {
 	@description	Método para manejar eventos tipo SS_Response_Event__e.
 	@param			event - Evento a manejar
 	------------------------------------------------------------------------------------------------------------------------*/
-	public static void HandleSSResponseEventFired (SS_Response_Event__e event) {
+	public static void handleSSResponseEventFired (SS_Response_Event__e event) {
 		eventHandler.handleFiredEvent(event);
 	}
 }

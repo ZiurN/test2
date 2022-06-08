@@ -1,11 +1,8 @@
 import { LightningElement, api, wire } from 'lwc';
-import { getRecord, getRecordNotifyChange } from 'lightning/uiRecordApi';
+import { getRecordNotifyChange } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { subscribe, unsubscribe, onError } from 'lightning/empApi';
-const FIELDS_OPPORTUNITY = [
-	'Opportunity.Estado_de_solicitud__c',
-	'Opportunity.Nro_de_solicitud__c'
-];
+
 export default class SegmentoResponseListener extends LightningElement {
 	@api recordId;
 	estado;
@@ -14,18 +11,6 @@ export default class SegmentoResponseListener extends LightningElement {
 	isSubscribeDisabled = false;
 	isUnsubscribeDisabled = !this.isSubscribeDisabled;
 	subscription = {};
-	/** get Data */
-	@wire(getRecord, { recordId: '$recordId', fields: FIELDS_OPPORTUNITY })
-	processDataFromSF ({data, error}) {
-		if (data) {
-			this.estado = data.fields.Estado_de_solicitud__c.value;
-			this.nroSolicitud = data.fields.Nro_de_solicitud__c.value;
-			console.log(this.estado);
-			console.log(this.nroSolicitud);
-		} else if (error) {
-			console.log(error);
-		}
-	}
 	/** Lifecycle methods */
 	connectedCallback() {
 		this.registerErrorListener();
@@ -36,7 +21,20 @@ export default class SegmentoResponseListener extends LightningElement {
 	}
 	/** Events handlers */
 	handleSubscribe () {
-		subscribe(this.channelName, -1, this.messageCallback).then(
+		const messageCallback = (response) => {
+			console.log(JSON.parse(JSON.stringify(response.recorddata.payload)));
+			let record_Id = response.recorddata.payload.Id_Registro__c;
+			let hasSSError = response.data.payload.error__c;
+			let isDelete = response.data.payload.isDelete__c;
+			if (isDelete || (record_Id === this.recordId && hasSSError)) {
+				this.sendMessageToUser('error', response.data.payload.Response_Error__c);
+			} else if (!hasSSError && !isDelete) {
+				this.sendMessageToUser('success', response.data.payload.Response_Error__c);
+				this.handleUnsubscribe();
+			}
+			getRecordNotifyChange([{recordId: this.recordId}]);
+		}
+		subscribe(this.channelName, -1, messageCallback).then(
 			response => {
 				this.subscription = response;
 				console.log('suscrito: ' + response.channel);
@@ -47,18 +45,6 @@ export default class SegmentoResponseListener extends LightningElement {
 		unsubscribe(this.subscription, response => {
 			console.log('Desuscrito: ' + response);
 		});
-	}
-	messageCallback = (response) => {
-		let record_Id = response.recorddata.payload.Id_Registro__c;
-		let hasSSError = response.data.payload.error__c;
-		let isDelete = response.data.payload.isDelete__c;
-		if (isDelete || (record_Id === this.recordId && hasSSError)) {
-			this.sendMessageToUser('error', response.data.payload.Response_Error__c);
-		} else if (!hasSSError && !isDelete) {
-			this.sendMessageToUser('success', response.data.payload.Response_Error__c);
-		}
-		getRecordNotifyChange([{recordId: this.recordId}]);
-		this.handleUnsubscribe();
 	}
 	registerErrorListener() {
 		// Invoke onError empApi method
