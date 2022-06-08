@@ -839,7 +839,7 @@ private class OpportunityTriggerTest {
 			Opportunity updatedOpp = getOpportunityById(testOpp.Id);
 			System.assertEquals('Cerrada perdida', updatedOpp.stageName, 'La oportunidad debe estar cerrada perdida');
 			System.assertEquals(null, updatedOpp.Estado_de_solicitud__c, 'La oportunidad debe ser nulo');
-			TestUtils.validatePlatformEventFired(true, 'SS_Response_Event__e');
+			TestUtils.validatePlatformEventFired(true, 'SSResponseEvent__e');
 		}
 		@isTest
 		private static void whenOppChangesToCloseLost_AndEstadoSolicitudSSInCompleta_DoNothing () {
@@ -851,7 +851,7 @@ private class OpportunityTriggerTest {
 			Opportunity updatedOpp = getOpportunityById(testOpp.Id);
 			System.assertEquals('Cerrada perdida', updatedOpp.stageName, 'La oportunidad debe estar cerrada perdida');
 			System.assertEquals('Incompleta', updatedOpp.Estado_de_solicitud__c, 'La oportunidad debe estar INCOMPLETA');
-			TestUtils.validatePlatformEventFired(true, 'SS_Response_Event__e');
+			TestUtils.validatePlatformEventFired(true, 'SSResponseEvent__e');
 		}
 		@isTest
 		private static void whenOppChangesToCloseLost_AndSolicitudSSFireEventToNotifyUserSSResult_OK () {
@@ -866,7 +866,7 @@ private class OpportunityTriggerTest {
 			Opportunity updatedOpp = getOpportunityById(testOpp.Id);
 			System.assertEquals('Cerrada perdida', updatedOpp.stageName, 'La oportunidad debe estar cerrada perdida');
 			System.assertEquals('Incompleta', updatedOpp.Estado_de_solicitud__c, 'La oportunidad debe estar INCOMPLETA');
-			TestUtils.validatePlatformEventFired(true, 'SS_Response_Event__e');
+			TestUtils.validatePlatformEventFired(true, 'SSResponseEvent__e');
 		}
 		@isTest
 		private static void whenOppChangesToCloseLost_AndSolicitudSSFireEventToNotifyUserSSResult_Error () {
@@ -881,7 +881,7 @@ private class OpportunityTriggerTest {
 			Opportunity updatedOpp = getOpportunityById(testOpp.Id);
 			System.assertEquals('Cotizado', updatedOpp.stageName, 'La oportunidad debe estar en Cotizado');
 			System.assertEquals('Completa', updatedOpp.Estado_de_solicitud__c, 'La oportunidad debe estar COMPLETA');
-			TestUtils.validatePlatformEventFired(true, 'SS_Response_Event__e');
+			TestUtils.validatePlatformEventFired(true, 'SSResponseEvent__e');
 		}
 	/** Utils */
 	private static Opportunity getOpportunityById (Id oppId) {

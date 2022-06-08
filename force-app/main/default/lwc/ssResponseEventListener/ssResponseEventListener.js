@@ -1,4 +1,4 @@
-import { LightningElement, api, wire } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { getRecordNotifyChange } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { subscribe, unsubscribe, onError } from 'lightning/empApi';
@@ -7,7 +7,7 @@ export default class SegmentoResponseListener extends LightningElement {
 	@api recordId;
 	estado;
 	nroSolicitud;
-	channelName = '/event/SS_Response_Event__e';
+	channelName = '/event/SSResponseEvent__e';
 	isSubscribeDisabled = false;
 	isUnsubscribeDisabled = !this.isSubscribeDisabled;
 	subscription = {};
@@ -21,20 +21,24 @@ export default class SegmentoResponseListener extends LightningElement {
 	}
 	/** Events handlers */
 	handleSubscribe () {
-		const messageCallback = (response) => {
-			console.log(JSON.parse(JSON.stringify(response.recorddata.payload)));
-			let record_Id = response.recorddata.payload.Id_Registro__c;
-			let hasSSError = response.data.payload.error__c;
-			let isDelete = response.data.payload.isDelete__c;
-			if (isDelete || (record_Id === this.recordId && hasSSError)) {
-				this.sendMessageToUser('error', response.data.payload.Response_Error__c);
-			} else if (!hasSSError && !isDelete) {
-				this.sendMessageToUser('success', response.data.payload.Response_Error__c);
-				this.handleUnsubscribe();
-			}
+		subscribe(this.channelName, -1, (response) => {
+			try {
+				console.log(JSON.parse(JSON.stringify(response.data.payload)));
+				let record_Id = response.data.payload.recordId__c;
+				let hasSSError = response.data.payload.isErrorEvent__c;
+				let isDelete = response.data.payload.isCreationEvent__c;
+				if (isDelete || (record_Id === this.recordId && hasSSError)) {
+					this.sendMessageToUser('error', response.data.payload.message__c);
+				} else if (!hasSSError && !isDelete) {
+					this.sendMessageToUser('success', response.data.payload.message__c);
+					this.handleUnsubscribe();
+				}
 			getRecordNotifyChange([{recordId: this.recordId}]);
-		}
-		subscribe(this.channelName, -1, messageCallback).then(
+			} catch (error) {
+				console.log(error);
+				this.sendMessageToUser('warning', 'Error al procesar respuesta de SaludSoft, por favor recargue la página');
+			}
+		}).then(
 			response => {
 				this.subscription = response;
 				console.log('suscrito: ' + response.channel);

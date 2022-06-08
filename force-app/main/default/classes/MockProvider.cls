@@ -25,9 +25,9 @@ public class MockProvider implements System.StubProvider {
 		return null;
 	}
 	public class eventFiredRegistry {
-		public SS_Response_Event__e event {get; set;}
+		public SSResponseEvent__e event {get; set;}
 		public eventFiredRegistry (Map<String, Object> paramsMap) {
-			this.event = (SS_Response_Event__e) paramsMap.get('event');
+			this.event = (SSResponseEvent__e) paramsMap.get('event');
 			SSResponseEventTriggerHandler realHandler =  new SSResponseEventTriggerHandler();
 			realHandler.handleFiredEvent(event);
 		}

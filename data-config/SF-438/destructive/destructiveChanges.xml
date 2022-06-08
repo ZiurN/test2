@@ -8,4 +8,8 @@
 		<members>WSAsociadoFacturaElectronicaMock</members>
 		<name>ApexClass</name>
 	</types>
+	<types>
+		<members>SS_Response_Event__e</members>
+		<name>CustomObject</name>
+	</types>
 </Package>

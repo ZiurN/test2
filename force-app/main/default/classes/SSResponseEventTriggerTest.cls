@@ -21,9 +21,9 @@ public without sharing class SSResponseEventTriggerTest {
 		Test.stopTest();
 		System.assertEquals(1, mockProvider.timesEventWasFired, 'El evento se debío disparar una vez');
 		System.assert(mockProvider.lastEventFiredRegistry != null, 'Debe existir un registro del evento disparado');
-		System.assert(mockProvider.lastEventFiredRegistry.event.error__c, 'El valor debe ser true');
-		System.assert(!mockProvider.lastEventFiredRegistry.event.isDelete__c, 'El valor debe ser false');
-		System.assertEquals(message, mockProvider.lastEventFiredRegistry.event.Response_Error__c, 'El mensaje no coincide');
-		System.assertEquals(recordId, mockProvider.lastEventFiredRegistry.event.Id_Registro__c, 'El Id no coincide');
+		System.assert(mockProvider.lastEventFiredRegistry.event.isErrorEvent__c, 'El valor debe ser true');
+		System.assert(!mockProvider.lastEventFiredRegistry.event.isCreationEvent__c, 'El valor debe ser false');
+		System.assertEquals(message, mockProvider.lastEventFiredRegistry.event.message__c, 'El mensaje no coincide');
+		System.assertEquals(recordId, mockProvider.lastEventFiredRegistry.event.recordId__c, 'El Id no coincide');
 	}
 }

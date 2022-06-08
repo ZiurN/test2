@@ -61,13 +61,13 @@ public without sharing class ConfigUtils  {
 	@param			isError - Booleano que indica si el evento está relacionado a una respuesta de error en SS.
 	------------------------------------------------------------------------------------------------------------------------*/
 	public static void fireSSResponseEvent (String message, String recordId, Boolean isCreating, Boolean isError) {
-		SS_Response_Event__e errorEvent =  new SS_Response_Event__e(
-			isDelete__c = isCreating,
-			error__c = isError,
-			Response_Error__c = message,
-			Id_Registro__c = !String.isBlank(recordId) ? recordId : 'NoID'
+		SSResponseEvent__e errorEvent =  new SSResponseEvent__e(
+			isCreationEvent__c = isCreating,
+			isErrorEvent__c = isError,
+			message__c = message,
+			recordId__c = !String.isBlank(recordId) ? recordId : 'NoID'
 		);
-		List<Database.SaveResult> results = EventBus.publish(new List<SS_Response_Event__e>{errorEvent});
+		List<Database.SaveResult> results = EventBus.publish(new List<SSResponseEvent__e>{errorEvent});
 		for (Database.SaveResult result : results) {
 			if (!result.isSuccess()) {
 				for (Database.Error err : result.getErrors()) {
@@ -79,10 +79,10 @@ public without sharing class ConfigUtils  {
 	}
 	/**-----------------------------------------------------------------------------------------------------------------------
 	@author			Jeferson Ruiz.
-	@description	Método para manejar eventos tipo SS_Response_Event__e.
+	@description	Método para manejar eventos tipo SSResponseEvent__e.
 	@param			event - Evento a manejar
 	------------------------------------------------------------------------------------------------------------------------*/
-	public static void handleSSResponseEventFired (SS_Response_Event__e event) {
+	public static void handleSSResponseEventFired (SSResponseEvent__e event) {
 		eventHandler.handleFiredEvent(event);
 	}
 }
