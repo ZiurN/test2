@@ -268,9 +268,9 @@ public class WSSSGenericResponseTest {
 						'\"tipo_ap_sf\": \"PRESTACION\",'+
 						'\"ap_material\": \"F\",'+
 						'\"ap_presupuesto\": \"F\",'+
-				'\"celula\": \"Celula 2\",' +
-			' \"sla\": \"24\",' +
-			' \"estado_em\": \"Autorizado\",' +
+						'\"celula\": \"Celula 2\",' +
+						'\"sla\": \"24\",' +
+						'\"estado_em\": \"Autorizado\",' +
 						'\"prestaciones\": ['+
 							'{'+
 								'\"apr_id\": \"1014010605\",'+
@@ -1045,5 +1045,53 @@ public class WSSSGenericResponseTest {
 		System.assertEquals(400, data.httpCode, 'El código debe ser 400');
 		System.assert(data.message != null, 'El valor debe ser no nulo');
 		System.assertEquals(expectedMessage, data.message, 'El mensaje no es el esperado');
+	}
+	@isTest
+	static void testParseOppAlta_ResponseOk () {
+		String expectedMessage = 'Se generó satisfactoriamente la solicitud de alta';
+		String json = '{'+
+			'\"error\": false,'+
+			'\"data\": [{'+
+				'\"sf_id\": \"sfid12345\",'+
+				'\"solafi_id\": \"724171\",'+
+				'\"estado_sol\": \"COMPLETA\",'+
+				'\"estado_dj\": \"NUEVA\",'+
+				'\"codigo_as\": null,'+
+				'\"tipo_asoc\": \"DSATIT\",'+
+				'\"notas\": ['+
+					'{'+
+						'\"nota_id\": \"128804\",'+
+						'\"texto_nota\": \"Nota de prueba\"'+
+					'}'+
+				']'+
+			'}],'+
+			'\"httpCode\": 200,'+
+			'\"message\": \"Se generó satisfactoriamente la solicitud de alta\",'+
+			'\"meta\": {'+
+				'\"allowed_includes\": [],'+
+				'\"default_includes\": []'+
+			'}'+
+		'}';
+		WSSSGenericResponse parsedObject = WSSSGenericResponse.parse(json);
+		System.assert(parsedObject != null, 'El valor no debe ser nulo');
+		System.assert(parsedObject != null, 'El valor no debe ser nulo');
+		System.assert(!parsedObject.error, 'El campo debe ser false');
+		System.assert(parsedObject.data != null, 'El objeto data debe ser nulo');
+		System.assertEquals(1, parsedObject.data.size(), 'Debe haber un solo objeto data');
+		WSSSGenericResponse.data data = parsedObject.data[0];
+		System.assertEquals('sfid12345', data.sf_id, 'El valor no coincide con el esperado');
+		System.assertEquals('724171', data.solafi_id, 'El valor no coincide con el esperado');
+		System.assertEquals('DSATIT', data.tipo_asoc, 'El valor no coincide con el esperado');
+		System.assertEquals(null, data.codigo_as, 'El valor no coincide con el esperado');
+		System.assertEquals(1, data.notas.size(), 'Debe haber un solo objeto data');
+		WSSSGenericResponse.Notas nota = data.notas[0];
+		System.assertEquals('128804', nota.nota_id, 'El valor no coincide con el esperado');
+		System.assertEquals('Nota de prueba', nota.texto_nota, 'El valor no coincide con el esperado');
+		System.assert(parsedObject.httpCode != null, 'El campo no debe ser nulo');
+		System.assertEquals(200, parsedObject.httpCode, 'Debe haber un solo objeto data');
+		System.assertEquals(expectedMessage, parsedObject.message, 'Debe haber un solo objeto data');
+		System.assert(parsedObject.meta != null, 'El campo no debe ser nulo');
+		System.assert(parsedObject.meta.allowed_includes.isEmpty(), 'La lista debe estar vacía');
+		System.assert(parsedObject.meta.default_includes.isEmpty(), 'La lista debe estar vacía');
 	}
 }
