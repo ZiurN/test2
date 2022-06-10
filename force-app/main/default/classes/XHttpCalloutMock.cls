@@ -59,8 +59,11 @@ public class XHttpCalloutMock implements HttpCalloutMock {
 				when 'afiliado' {
 					switch on service {
 						when 'datos-sf' {
+							Boolean emailSent = reqBody.containsKey('email');
 							System.assert(!String.isBlank((String) reqBody.get('afi_id')), 'La propiedad no debe estar vacía');
-							System.assert(!String.isBlank((String) reqBody.get('email')), 'La propiedad no debe estar vacía');
+							if (emailSent) {
+								System.assert(!String.isBlank((String) reqBody.get('email')) || reqBody.get('email') == '', 'La propiedad no debe estar vacía');
+							}
 						}
 					}
 				}

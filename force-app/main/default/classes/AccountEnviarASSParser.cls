@@ -45,7 +45,7 @@ public with sharing class AccountEnviarASSParser {
 		try {
 			solicitud = new SolicitudSS();
 			solicitud.afi_id = cuenta.Afi_Id__c;
-			solicitud.email = cuenta.PersonEmail;
+			solicitud.email = String.isBlank(cuenta.PersonEmail) ? '' : cuenta.PersonEmail;
 		} catch (Exception err) {
 			System.debug(err.getMessage());
 		}

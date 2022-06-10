@@ -86,6 +86,19 @@ private class AccountTriggerTest {
 			System.assert(String.isBlank(testAccount2.PersonEmail), 'El correo debe haber cambiado');
 			System.assertEquals(null, testAccount2.PersonEmail, 'El correo debe ser nulo');
 		}
+		@isTest
+		private static void ssValidation_IfEmailIsDeleted_RevertAccountUpdateAndFireSSResponseEvent () {
+			String expectedMessage = 'No se pudieron replicar los datos.';
+			TestUtils.setMockResponse(getDatosSFResponse, DATOS_SF_URL, AfiliadoEndpointsMockResponses.getDatosSFResponseError(), 400, 'Not found');
+			Test.setMock(HttpCalloutMock.class, getDatosSFResponse);
+			testAccount.PersonEmail = null;
+			Test.startTest();
+			update testAccount;
+			Test.stopTest();
+			validateEventFired(testAccount.Id, expectedMessage, true);
+			testAccount = [SELECT PersonEmail FROM Account WHERE Id =: testAccount.Id];
+			System.assertEquals('testemail1@test.com', testAccount.PersonEmail, 'El correo debe ser nulo');
+		}
 	/** Utils */
 	private static void validateEventFired (String recordId, String message, Boolean isErrorEvent) {
 		System.assertEquals(1, mockProvider.timesEventWasFired, 'El evento se debío disparar una vez');
