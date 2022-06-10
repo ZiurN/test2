@@ -14,7 +14,9 @@ public with sharing class AsyncValidateChangesInAcountInSS implements Queueable,
 		String message = response.message + '\n';
 		Database.SaveResult result;
 		if (response.hasError) {
-			result = Database.update(previewAccount, false);
+			Account revertedAccount = previewAccount.clone(true, true, true, true);
+			revertedAccount.PersonEmail = String.isBlank(previewAccount.PersonEmail) ? null : previewAccount.PersonEmail;
+			result = Database.update(revertedAccount, false);
 			if (!result.isSuccess()) {
 				for (Database.Error err : result.getErrors()) {
 					message += message + '\n';

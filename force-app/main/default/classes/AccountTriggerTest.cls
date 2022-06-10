@@ -4,6 +4,7 @@ private class AccountTriggerTest {
 	private static String DATOS_SF_URL = ConfigUtils.getEndpointsByTipo('afiliado').get('datos-sf').Endpoint__c;
 	private static String FACTURA_ELECTRONICA_URL = AFILIADO_URL + '/477443/factura-electronica';
 	private static Account testAccount = Build.anAccountCuentaPersonal().withPersonEmail('testemail1@test.com').withAfiId('123456').build();
+	private static Account testAccount2 = Build.anAccountCuentaPersonal().withPersonEmail(null).withAfiId('1234567').build();
 	private static XHttpCalloutMock facturaElectronicaMock = new XHttpCalloutMock();
 	private static XHttpCalloutMock getDatosSFResponse = new XHttpCalloutMock('afiliado', 'datos-sf');
 	private static MockProvider mockProvider = new MockProvider();
@@ -11,7 +12,7 @@ private class AccountTriggerTest {
 		(SSResponseEventTriggerHandler) TestUtils.createClassMock(SSResponseEventTriggerHandler.class, mockProvider);
 	static {
 		ConfigUtils.eventHandler = ssResponseHandlerMock;
-		insert testAccount;
+		insert new List<Account>{testAccount, testAccount2};
 	}
 	/**-----------------------------------------------------------------------
 		Validaciones para generación de Fáctura Electrónica.
@@ -70,6 +71,20 @@ private class AccountTriggerTest {
 			validateEventFired(testAccount.Id, expectedMessage, true);
 			testAccount = [SELECT PersonEmail FROM Account WHERE Id =: testAccount.Id];
 			System.assertEquals('testemail1@test.com', testAccount.PersonEmail, 'El correo debe haber cambiado');
+		}
+		@isTest
+		private static void ssValidation_IfPreviewEmailIsEmptyANDIfEmailIsNotValidated_RevertAccountUpdateAndFireSSResponseEvent () {
+			String expectedMessage = 'No se pudieron replicar los datos.';
+			TestUtils.setMockResponse(getDatosSFResponse, DATOS_SF_URL, AfiliadoEndpointsMockResponses.getDatosSFResponseError(), 400, 'Not found');
+			Test.setMock(HttpCalloutMock.class, getDatosSFResponse);
+			testAccount2.PersonEmail = 'testemail2@test.com';
+			Test.startTest();
+			update testAccount2;
+			Test.stopTest();
+			validateEventFired(testAccount2.Id, expectedMessage, true);
+			testAccount2 = [SELECT PersonEmail FROM Account WHERE Id =: testAccount2.Id];
+			System.assert(String.isBlank(testAccount2.PersonEmail), 'El correo debe haber cambiado');
+			System.assertEquals(null, testAccount2.PersonEmail, 'El correo debe ser nulo');
 		}
 	/** Utils */
 	private static void validateEventFired (String recordId, String message, Boolean isErrorEvent) {
