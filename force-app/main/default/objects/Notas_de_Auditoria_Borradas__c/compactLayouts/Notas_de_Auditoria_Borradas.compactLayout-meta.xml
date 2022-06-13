@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Notas_de_Auditoria_Borradas</fullName>
+    <fields>Tipo_de_Registro_de_la_Nota_de_Auditoria__c</fields>
+    <fields>Name</fields>
+    <fields>Usuario_Borrador_de_la_Nota__c</fields>
+    <fields>Fecha_de_Borrado_de_la_Nota__c</fields>
+    <label>Notas de Auditoria Borradas</label>
+</CompactLayout>
