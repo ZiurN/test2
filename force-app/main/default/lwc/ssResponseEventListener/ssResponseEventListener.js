@@ -33,7 +33,7 @@ export default class SegmentoResponseListener extends LightningElement {
 					this.sendMessageToUser('success', response.data.payload.message__c);
 					this.handleUnsubscribe();
 				}
-			getRecordNotifyChange([{recordId: this.recordId}]);
+				getRecordNotifyChange([{recordId: this.recordId}]);
 			} catch (error) {
 				console.log(error);
 				this.sendMessageToUser('warning', 'Error al procesar respuesta de SaludSoft, por favor recargue la página');
