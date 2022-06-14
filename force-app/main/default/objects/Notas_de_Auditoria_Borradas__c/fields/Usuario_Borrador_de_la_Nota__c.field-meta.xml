@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Usuario_Borrador_de_la_Nota__c</fullName>
+    <description>Campo Fórmula con el Alias del usuario que realiza el borrado de la Nota</description>
+    <externalId>false</externalId>
+    <formula>CreatedBy.Alias</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Usuario Borrador de la Nota</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
