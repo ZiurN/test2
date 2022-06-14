@@ -3,8 +3,17 @@ private class AccountTriggerTest {
 	private static String AFILIADO_URL = ConfigUtils.getEndpointsByTipo('afiliado').get('afiliado').Endpoint__c;
 	private static String DATOS_SF_URL = ConfigUtils.getEndpointsByTipo('afiliado').get('datos-sf').Endpoint__c;
 	private static String FACTURA_ELECTRONICA_URL = AFILIADO_URL + '/477443/factura-electronica';
-	private static Account testAccount = Build.anAccountCuentaPersonal().withPersonEmail('testemail1@test.com').withAfiId('123456').build();
-	private static Account testAccount2 = Build.anAccountCuentaPersonal().withPersonEmail(null).withAfiId('1234567').build();
+	private static Account testAccount = Build.anAccountCuentaPersonal()
+		.withNroDeDocumento('95527642')
+		.withTipoDocumento('DNI')
+		.withCuit('20955276427')
+		.withPersonEmail('testemail1@test.com')
+		.withAfiId('123456')
+		.build();
+	private static Account testAccount2 = Build.anAccountCuentaPersonal()
+		.withPersonEmail(null)
+		.withAfiId('1234567')
+		.build();
 	private static XHttpCalloutMock facturaElectronicaMock = new XHttpCalloutMock();
 	private static XHttpCalloutMock getDatosSFResponse = new XHttpCalloutMock('afiliado', 'datos-sf');
 	private static MockProvider mockProvider = new MockProvider();
@@ -98,6 +107,45 @@ private class AccountTriggerTest {
 			validateEventFired(testAccount.Id, expectedMessage, true);
 			testAccount = [SELECT PersonEmail FROM Account WHERE Id =: testAccount.Id];
 			System.assertEquals('testemail1@test.com', testAccount.PersonEmail, 'El correo debe ser nulo');
+		}
+		@isTest
+		private static void ssValidation_ifDNIChangeIsValid_DoNothingAndFireSSResponseEvent () {
+			String expectedMessage = 'Se ejecutó el proceso.';
+			TestUtils.setMockResponse(getDatosSFResponse, DATOS_SF_URL, AfiliadoEndpointsMockResponses.getDatosSFResponseOk());
+			Test.setMock(HttpCalloutMock.class, getDatosSFResponse);
+			testAccount.Numero_de_documento__c = '95527643';
+			Test.startTest();
+			update testAccount;
+			Test.stopTest();
+			validateEventFired(testAccount.Id, expectedMessage, false);
+			testAccount = [SELECT Numero_de_documento__c FROM Account WHERE Id =: testAccount.Id];
+			System.assertEquals('95527643', testAccount.Numero_de_documento__c, 'El número de documento no debio haber cambiado');
+		}
+		@isTest
+		private static void ssValidation_IfDNIChangeIsNotValidated_RevertAccountUpdateAndFireSSResponseEvent () {
+			String expectedMessage = 'No se pudieron replicar los datos.';
+			TestUtils.setMockResponse(getDatosSFResponse, DATOS_SF_URL, AfiliadoEndpointsMockResponses.getDatosSFResponseError(), 400, 'Not found');
+			Test.setMock(HttpCalloutMock.class, getDatosSFResponse);
+			testAccount.Numero_de_documento__c = '95527643';
+			Test.startTest();
+			update testAccount;
+			Test.stopTest();
+			validateEventFired(testAccount.Id, expectedMessage, true);
+			testAccount = [SELECT Numero_de_documento__c FROM Account WHERE Id =: testAccount.Id];
+			System.assertEquals('95527642', testAccount.Numero_de_documento__c, 'El número de documento debio haber cambiado');
+		}
+		@isTest
+		private static void ssValidation_IfDNIIsDeleted_RevertAccountUpdateAndFireSSResponseEvent () {
+			String expectedMessage = 'No se pudieron replicar los datos.';
+			TestUtils.setMockResponse(getDatosSFResponse, DATOS_SF_URL, AfiliadoEndpointsMockResponses.getDatosSFResponseError(), 400, 'Not found');
+			Test.setMock(HttpCalloutMock.class, getDatosSFResponse);
+			testAccount.Numero_de_documento__c = null;
+			Test.startTest();
+			update testAccount;
+			Test.stopTest();
+			validateEventFired(testAccount.Id, expectedMessage, true);
+			testAccount = [SELECT Numero_de_documento__c FROM Account WHERE Id =: testAccount.Id];
+			System.assertEquals('95527642', testAccount.Numero_de_documento__c, 'El número de documento debio haber cambiado');
 		}
 	/** Utils */
 	private static void validateEventFired (String recordId, String message, Boolean isErrorEvent) {

@@ -40,12 +40,17 @@ public with sharing class AccountEnviarASSParser {
 	@company		Xappia
 	@description	Método para entregar el body de la solicitud a la API para validar el email.
 	------------------------------------------------------------------------------------------------------------------------*/
-	public String parseEmailCheckBody () {
+	public String parseRequesBody (Boolean emailHasChanged, Boolean documentHasChanged) {
 		SolicitudSS solicitud;
 		try {
 			solicitud = new SolicitudSS();
 			solicitud.afi_id = cuenta.Afi_Id__c;
-			solicitud.email = String.isBlank(cuenta.PersonEmail) ? '' : cuenta.PersonEmail;
+			if (emailHasChanged) solicitud.email = String.isBlank(cuenta.PersonEmail) ? '' : cuenta.PersonEmail;
+			if (documentHasChanged) {
+				solicitud.doc_tipo = String.isBlank(cuenta.Tipo_de_documento__c) ? '' : cuenta.Tipo_de_documento__c;
+				solicitud.doc_numero = String.isBlank(cuenta.Numero_de_documento__c) ? '' : cuenta.Numero_de_documento__c;
+				solicitud.cuit = String.isBlank(cuenta.CUIT__c) ? '' : cuenta.CUIT__c;
+			}
 		} catch (Exception err) {
 			System.debug(err.getMessage());
 		}

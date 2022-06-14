@@ -36,8 +36,14 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
 		if(!System.isBatch() && !System.isQueueable() && !XappiaHelper.isIntegracionSSUser()) {
 			for (Account acc : lNew) {
 				Account oldAcc = mOld.get(acc.id);
-				if (acc.PersonEmail != oldAcc.PersonEmail && !String.isBlank(acc.Afi_Id__c)) {
+				Boolean emailHasChanged = acc.PersonEmail != oldAcc.PersonEmail;
+				Boolean documentHasChanged = acc.CUIT__c != oldAcc.CUIT__c
+					|| acc.Numero_de_documento__c != oldAcc.Numero_de_documento__c
+					|| acc.Tipo_de_documento__c != oldAcc.Tipo_de_documento__c;
+				if (!String.isBlank(acc.Afi_Id__c) && (emailHasChanged || documentHasChanged)) {
 					AccountTriggerHelper.AccountInfo accInfo = new AccountTriggerHelper.AccountInfo();
+					accInfo.documentHasChanged = documentHasChanged;
+					accInfo.emailHasChanged = emailHasChanged;
 					accInfo.previewAccount = oldAcc;
 					accInfo.updatedAccount = acc;
 					accountsToValidate.add(accInfo);

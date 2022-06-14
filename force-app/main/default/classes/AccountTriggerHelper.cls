@@ -56,5 +56,7 @@ public with sharing class AccountTriggerHelper {
 	public class AccountInfo {
 		public Account updatedAccount {get; set;}
 		public Account previewAccount {get; set;}
+		public Boolean emailHasChanged {get;set;}
+		public Boolean documentHasChanged {get;set;}
 	}
 }
