@@ -12,7 +12,7 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
 		// Nothing
 	}
 	public override void beforeUpdate() {
-		WSDatosAfiliados.updateAccountDetailsToWS(lNew, mOld);
+		// Nothing
 	}
 	public override void beforeDelete() {
 		// Nothing

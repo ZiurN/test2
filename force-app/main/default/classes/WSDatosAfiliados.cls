@@ -1,28 +1,6 @@
 public without sharing class WSDatosAfiliados {
     @TestVisible
-    public static final Webservice_endpoint_setting__mdt SERVICE_CONFIG =
-			ConfigUtils.getWebServiceConfig('SALUDSOFT.TEST');
-            
-	public static void updateAccountDetailsToWS(List<Account> accounts, Map<Id, Account> oldMap) {
-		if(!System.isBatch() && checkIsNotIntegrationUser()) {
-			Set<String> asociadosToSend = new Set<String>();
-			for(Account acc : accounts) {
-				Account oldAcc = oldMap.get(acc.id);
-				if((acc.Tipo_de_documento__c != oldAcc.Tipo_de_documento__c 
-							|| acc.Numero_de_documento__c != oldAcc.Numero_de_documento__c)
-						&& !String.isBlank(
-								acc.Afi_Id__c
-							)
-				) {
-					asociadosToSend.add(acc.Afi_Id__c);
-				}
-			}
-			if(!asociadosToSend.isEmpty()) {
-				submitChanges(asociadosToSend);
-			}
-		}
-	}
-    
+    public static final Webservice_endpoint_setting__mdt SERVICE_CONFIG = ConfigUtils.getWebServiceConfig('SALUDSOFT.TEST');
     public static void updateDomiciliosDetailsToWS(List<Domicilio__c> domicilios, Map<Id, Domicilio__c> oldMap) {
 		if(!System.isBatch() && checkIsNotIntegrationUser()) {
 			Map<Id, List<Domicilio__c>> newDomiciliosByAccount = new Map<Id, List<Domicilio__c>>();
@@ -75,7 +53,6 @@ public without sharing class WSDatosAfiliados {
 			}
         }
     }
-
 	public static void updateTelefonosDetailsToWS(List<Telefono__c> telefonos, Map<Id, Telefono__c> oldMap) {
 		if(!System.isBatch() && checkIsNotIntegrationUser()) {
 			Map<Id, List<Telefono__c>> newTelefonosByAccount = new Map<Id, List<Telefono__c>>();
@@ -141,8 +118,6 @@ public without sharing class WSDatosAfiliados {
 			}
         }
     }
-	
-	
 	public static void deleteDomiciliosDetailsToWS(List<Domicilio__c> domicilios) {
 		if(!System.isBatch() && checkIsNotIntegrationUser()) {
 			Map<Id, List<Domicilio__c>> domiciliosByAccount = new Map<Id, List<Domicilio__c>>();
@@ -166,7 +141,6 @@ public without sharing class WSDatosAfiliados {
 			}
         }
 	}
-	
 	public static void deleteTelefonosDetailsToWS(List<Telefono__c> telefonos) {
 		if(!System.isBatch() && checkIsNotIntegrationUser()) {
 			Map<Id, List<Telefono__c>> telefonosByAccount = new Map<Id, List<Telefono__c>>();
@@ -185,7 +159,7 @@ public without sharing class WSDatosAfiliados {
 			for(Account acc : [SELECT Afi_Id__c FROM Account WHERE Id IN :telefonosByAccount.keySet()]) {
                 for(Telefono__c tel :telefonosByAccount.get(acc.Id)){
 					itemsToSend.add(new ItemWrapper(acc.Afi_Id__c, tel.TEL_ID__c, 'tel_id'));
-				}           
+				}
             }
             if(!itemsToSend.isEmpty()) {
 				submitDeletesOfObject(Json.serialize(itemsToSend));
@@ -211,7 +185,6 @@ public without sharing class WSDatosAfiliados {
 			WSAuthToken.manageTokenResponse(tokenResp);
 		}
 	}
-
 	@Future(callout=true)
 	public static void submitDeletesOfObject (String itemsToSubmit) {
 		List<ItemWrapper> items = (List<ItemWrapper>) JSON.deserialize(itemsToSubmit, List<ItemWrapper>.class);
@@ -232,7 +205,6 @@ public without sharing class WSDatosAfiliados {
 			WSAuthToken.manageTokenResponse(tokenResp);
 		}
 	}
-
 	public class ItemWrapper {
 		public String afi_id;
 		public String objectId;
@@ -244,13 +216,11 @@ public without sharing class WSDatosAfiliados {
 			this.objectType = objectType;
 		}
 	}
-
 	public class Response extends WSResult {
         public override void processResponse(HttpResponse response) {
 			//Do Nothing
         }
 	}
-	
 	private static Boolean checkIsNotIntegrationUser () {
 		User usuario = [
 			SELECT Id, LastName
