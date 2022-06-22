@@ -190,7 +190,7 @@ public with sharing class CasoEnviarASSParser {
 					encabezado.agencia_codigo = this.usuario.Codigo_delegacion__c;
 					encabezado.usuario = getValueOf(this.userNick);
 					encabezado.bebe_sin_doc = (this.caso.Bebe_sin_DNI__c != null) ? (this.caso.Bebe_sin_DNI__c) ? 'V' : 'F' : '';
-					if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
+					if (!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
 						encabezado.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
 						encabezado.estado_dj = this.caso.Estado_DDJJ__c;
 					}
@@ -211,7 +211,7 @@ public with sharing class CasoEnviarASSParser {
 					familiar.parentesco = getValueOf(this.caso.Tipo_de_parentesco__c);
 					familiar.deriva_aportes = this.caso.Deriva_aportes__c ? 'V' : 'F';
 					familiar.email = getValueOf(this.caso.SuppliedEmail);
-					if(this.caso.Deriva_aportes__c) {
+					if (this.caso.Deriva_aportes__c) {
 						familiar.cuit = getValueOf(this.caso.Cuit__c);
 						familiar.importe_aportes = getValueOf(this.caso.Aporte__c);
 						familiar.cuit_empleador = (!String.isBlank(this.caso.Empleador__c))
@@ -263,10 +263,10 @@ public with sharing class CasoEnviarASSParser {
 												&& this.caso.Segmento_de_grupo_familiar__c.startsWith('OBL'))
 											|| (this.caso.deriva_aportes__c);
 					String civacodigo = XappiaHelper.stringToNumericString(getValueOf(getValueOf(this.caso.Condicion_IVA__c)));
-					if(civacodigo == '1' || civacodigo == '4' || derivaAportes) {
+					if (civacodigo == '1' || civacodigo == '4' || derivaAportes) {
 						encabezado.cuit = this.caso.Cuil__c;
 					}
-					if(derivaAportes) {
+					if (derivaAportes) {
 						encabezado.cuit_empleador = (!String.isBlank(this.caso.Empleador__c))
 													? this.caso.Empleador__r.Cuit__c
 														: (!String.isBlank(this.caso.Cuit_empleador__c))
@@ -293,15 +293,15 @@ public with sharing class CasoEnviarASSParser {
 							encabezado.parentesco = getValueOf(this.caso.Tipo_de_parentesco__c);
 						}
 					}
-					if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
+					if (!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
 						encabezado.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
 						encabezado.estado_dj = this.caso.Estado_DDJJ__c;
 					}
-					if(this.caso.Medio_de_cobro__c == 'CBUVOL') {
+					if (this.caso.Medio_de_cobro__c == 'CBUVOL') {
 						encabezado.cobro_medio = this.caso.Tipo_CBU__c;
 						encabezado.cobro_numero = this.caso.Numero_CBU_cobro_de_cuota__c;
 						encabezado.cuil_cbu = this.caso.CUIL_del_CBU__c;
-					} else if(this.caso.Medio_de_cobro__c == 'DEBAUT') {
+					} else if (this.caso.Medio_de_cobro__c == 'DEBAUT') {
 						encabezado.cobro_medio = (this.caso.Tarjeta_de_credito__c != null)
 													? this.caso.Tarjeta_de_credito__c : this.caso.Tipo_de_debito_por_ACA__c;
 						encabezado.cobro_numero = (!String.isBlank(this.caso.Numero_de_tarjeta_de_credito__c))
@@ -325,7 +325,7 @@ public with sharing class CasoEnviarASSParser {
 						familiar.discapacitado = (integrante.Discapacitado__c == 'Si') ? 'V' : 'F';
 						familiar.nacionalidad = integrante.Nacionalidad__c;
 						familiar.deriva_aportes = (integrante.Indicador_de_aporte__c) ? 'V' : 'F';
-							if(integrante.Indicador_de_aporte__c) {
+							if (integrante.Indicador_de_aporte__c) {
 							familiar.cuit = getValueOf(integrante.CUIT_Sin_guiones__c);
 							familiar.importe_aportes = getValueOf(integrante.Aportes__c);
 							familiar.cuit_empleador = (!String.isBlank(integrante.Empleador__c)) ? integrante.Empleador__r.Cuit__c : integrante.Cuit_empleador__c;
@@ -362,7 +362,7 @@ public with sharing class CasoEnviarASSParser {
 					solicitud.tipo_asociado = 'TIT';
 					solicitud.motivo_baja = this.caso.Motivo_de_baja__c;
 					solicitud.notas = parseNotas();
-				if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
+				if (!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
 					solicitud.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
 				}
 				solicitudSS.solicitudes = new List<Solicitudes>{solicitud};
@@ -385,13 +385,13 @@ public with sharing class CasoEnviarASSParser {
 					encabezado.agencia_codigo =  this.usuario.Codigo_delegacion__c;
 					encabezado.fecha_vigencia = formatDate(caso.Fecha_de_vigencia__c);
 					encabezado.usuario = this.userNick;
-					if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
+					if (!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
 						encabezado.solicitud_id =caso.Nro_de_solicitud_SS__c;
 					}
 				solicitudSS.encabezado = new List<Encabezado>{encabezado};
 				Map<Id, List<Nota_de_Auditoria__c>> notasByIntegranteId = new Map<Id, List<Nota_de_Auditoria__c>>();
 				for(Nota_de_Auditoria__c nota : this.notas){
-					if(notasByIntegranteId.containsKey(nota.Integrante__c)) {
+					if (notasByIntegranteId.containsKey(nota.Integrante__c)) {
 						notasByIntegranteId.get(nota.Integrante__c).add(nota);
 					} else {
 						notasByIntegranteId.put(nota.Integrante__c, new List<Nota_de_Auditoria__c> {nota});
@@ -409,7 +409,7 @@ public with sharing class CasoEnviarASSParser {
 					solicitud.tipo_asociado = 'FAM';
 					solicitud.motivo_baja = integrante.Motivo_de_baja__c;
 					solicitud.notas = parseNotas(integranteNotas);
-					if(!String.isBlank(integrante.Numero_de_solicitud__c)) {
+					if (!String.isBlank(integrante.Numero_de_solicitud__c)) {
 						solicitud.solicitud_id = integrante.Numero_de_solicitud__c;
 					}
 					solicitudes.add(solicitud);
@@ -442,11 +442,11 @@ public with sharing class CasoEnviarASSParser {
 					encabezado.nuevo_segmento = this.caso.Nuevo_segmento__c;
 					encabezado.codigo_empleador = (!String.isBlank(caso.Empleador__c))
 													? this.caso.Empleador__r.Codigo_de_empresa__c : '';
-					if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
+					if (!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
 						encabezado.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
 						encabezado.estado_dj = this.caso.Estado_DDJJ__c;
 					}
-					if(caso.Nuevo_segmento__c.contains('OBL') || this.caso.Nuevo_segmento__c == 'DTCAP') {
+					if (caso.Nuevo_segmento__c.contains('OBL') || this.caso.Nuevo_segmento__c == 'DTCAP') {
 						encabezado.importe_aportes = getValueOf(this.caso.Aporte__c);
 						encabezado.cuit = this.caso.Cuit__c;
 						encabezado.cuit_empleador = (!String.isBlank(this.caso.Empleador__c))
@@ -480,36 +480,37 @@ public with sharing class CasoEnviarASSParser {
 					encabezado.tipo_if = this.caso.Type;
 					encabezado.afi_codigo = (!String.isBlank(this.caso.Account.Codigo_de_Afiliado__c))
 											? getValueOf(this.caso.Account.Codigo_de_Afiliado__c) : '';
-					if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
+					if (!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) {
 						encabezado.solicitud_id = caso.Nro_de_solicitud_SS__c;
 						encabezado.estado_dj = caso.Estado_DDJJ__c;
 					}
 					//Reintegros
-					if(this.caso.Type == 'T') {
+					if (this.caso.Type == 'T') {
 							encabezado.cbu_reintegros = caso.Numero_CBU__c;
 							encabezado.cuit = caso.CUIT_CUIL_Titular_CBU__c;
 					}
 					//Facturacion
-					if(this.caso.Type == 'C') {
-						encabezado.civa_codigo = XappiaHelper.stringToNumericString(getValueOf(getValueOf(this.caso.Condicion_IVA__c)));
-						if(this.caso.Borrar_tarjeta_debito_o_cobro_por_CBU__c) {
+					if (this.caso.Type == 'C') {
+						encabezado.civa_codigo = String.isBlank(XappiaHelper.stringToNumericString(getValueOf(getValueOf(this.caso.Condicion_IVA__c))))
+													? null : XappiaHelper.stringToNumericString(getValueOf(getValueOf(this.caso.Condicion_IVA__c)));
+						if (this.caso.Borrar_tarjeta_debito_o_cobro_por_CBU__c) {
 							encabezado.cobro_medio = '';
 							encabezado.cobro_numero = '';
 						}
 						else {
-							if(!String.isBlank(this.caso.Tipo_CBU__c) && !String.isBlank(this.caso.CBU__c)) {
+							if (!String.isBlank(this.caso.Tipo_CBU__c) && !String.isBlank(this.caso.CBU__c)) {
 								encabezado.cobro_medio = caso.Tipo_CBU__c;
 								encabezado.cobro_numero = caso.CBU__c;
 								encabezado.cuil_cbu = caso.CUIL_del_CBU__c;
-							} else if(!String.isBlank(caso.Tarjeta_de_credito__c) && !String.isBlank(caso.Numero_de_tarjeta_de_credito__c)) {
+							} else if (!String.isBlank(caso.Tarjeta_de_credito__c) && !String.isBlank(caso.Numero_de_tarjeta_de_credito__c)) {
 								encabezado.cobro_medio = caso.Tarjeta_de_credito__c;
 								encabezado.cobro_numero = caso.Numero_de_tarjeta_de_credito__c;
-							} else if(!String.isBlank(caso.Tipo_de_debito_por_ACA__c) && !String.isBlank(caso.Cdigo_debito_por_ACA__c)) {
+							} else if (!String.isBlank(caso.Tipo_de_debito_por_ACA__c) && !String.isBlank(caso.Cdigo_debito_por_ACA__c)) {
 								encabezado.cobro_medio = caso.Tipo_de_debito_por_ACA__c;
 								encabezado.cobro_numero = caso.Cdigo_debito_por_ACA__c;
 							}
 						}
-						if(XappiaHelper.stringToNumericString(getValueOf(getValueOf(this.caso.Condicion_IVA__c))) == '1') {
+						if (XappiaHelper.stringToNumericString(getValueOf(getValueOf(this.caso.Condicion_IVA__c))) == '1') {
 							encabezado.cuit = caso.Cuit__c;
 						}
 					}
@@ -556,7 +557,7 @@ public with sharing class CasoEnviarASSParser {
 						}
 					}
 					if (this.caso.Type != 'MODIF_DELEG') encabezado.afi_tipo = this.caso.Tipo__c;
-					if(!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) encabezado.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
+					if (!String.isBlank(this.caso.Nro_de_solicitud_SS__c)) encabezado.solicitud_id = this.caso.Nro_de_solicitud_SS__c;
 				solicitud.encabezado = new List<Encabezado>{encabezado};
 			} catch (Exception err) {
 				System.debug(err.getMessage());
@@ -675,10 +676,10 @@ public with sharing class CasoEnviarASSParser {
 					autorizacion.chk_presupuesto = chkPresupuesto;
 					autorizacion.numero_sf = this.caso.Id;
 					autorizacion.urgente = this.caso.Urgente__c;
-					if(chkPresupuesto == 'V'){
+					if (chkPresupuesto == 'V'){
 						autorizacion.importe_presupuesto = this.caso.Importe_presupuesto__c;
 					}
-					if(this.caso.Nro_AP__c != null){
+					if (this.caso.Nro_AP__c != null){
 						autorizacion.numero_ap = this.caso.Nro_AP__c;
 					}
 					List<Prestaciones> prestacionesList = new List<Prestaciones>();
@@ -696,7 +697,7 @@ public with sharing class CasoEnviarASSParser {
 							prestacionToSend.observaciones = prestacion.Observaciones__c == null ? '' : prestacion.Observaciones__c;
 							prestacionToSend.contexto = prestacion.Contexto__c;
 							prestacionToSend.alerta = prestacion.Alerta__c;
-							if(prestacion.Tipo__c == 'G') {
+							if (prestacion.Tipo__c == 'G') {
 								prestacionToSend.grupo_prestaciones = codigoPrestacion(prestacion);
 								prestacionToSend.nom_prestacion_pdh = null;
 							}
@@ -767,14 +768,14 @@ public with sharing class CasoEnviarASSParser {
 					reintegro.lote = this.caso.Lote__r.Id_lote_SS__c;
 					reintegro.fecha = this.caso.Fecha__c != null
 									? String.valueOf(this.caso.Fecha__c) : '';
-					if(this.caso.Codigo_reintegro_SS__c != null) {
+					if (this.caso.Codigo_reintegro_SS__c != null) {
 						reintegro.rein_id = this.caso.Codigo_reintegro_SS__c;
 					}
 					List<Prestaciones> prestacionesToSend = new List<Prestaciones>();
 					for (Prestacion_de_reintegro__c prestacion : this.caso.Prestaciones_de_reintegros__r) {
 						String tipoPrestacion = getTypeCodeFromRT(prestacion);
 						String fecha;
-						if(tipoPrestacion == 'M') {
+						if (tipoPrestacion == 'M') {
 							fecha = prestacion.Fecha_de_dispensa__c != null ? String.valueOf(prestacion.Fecha_de_dispensa__c) : '';
 						}
 						else {
@@ -808,10 +809,10 @@ public with sharing class CasoEnviarASSParser {
 	private List<Archivos> parseFiles () {
 		List<Archivos> archivosToReturn = new List<Archivos>();
 		try {
-			if(!this.files.isEmpty()) {
+			if (!this.files.isEmpty()) {
 				ContentVersion data = this.files[0];
 				String title = Utils.getStringAlphanumericOnly(data.Title);
-				if(title.length() > 44) {title = title.substring(0, 44);}
+				if (title.length() > 44) {title = title.substring(0, 44);}
 				Archivos archivo = new Archivos();
 				archivo.datos = 'data:' + Utils.getTypeAndExtension(data.FileExtension) +
 								';base64,' + EncodingUtil.base64Encode(data.VersionData);
@@ -870,11 +871,11 @@ public with sharing class CasoEnviarASSParser {
 		String medicamentoRTId = XappiaHelper.getRecordType('Prestacion_de_reintegro__c', 'Medicamento').Id;
 		String odontologicaRTId = XappiaHelper.getRecordType('Prestacion_de_reintegro__c', 'Odontologica').Id;
 		String prestacionalRTId = XappiaHelper.getRecordType('Prestacion_de_reintegro__c', 'Prestacional').Id;
-		if(prestacion.RecordTypeId == medicamentoRTId) {
+		if (prestacion.RecordTypeId == medicamentoRTId) {
 			return 'M';
-		} else if(prestacion.RecordTypeId == odontologicaRTId) {
+		} else if (prestacion.RecordTypeId == odontologicaRTId) {
 			return 'O';
-		} else if(prestacion.RecordTypeId == prestacionalRTId) {
+		} else if (prestacion.RecordTypeId == prestacionalRTId) {
 			return 'N';
 		}
 		return null;
