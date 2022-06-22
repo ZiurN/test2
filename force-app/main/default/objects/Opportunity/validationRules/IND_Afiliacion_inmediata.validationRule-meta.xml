@@ -2,12 +2,9 @@
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>IND_Afiliacion_inmediata</fullName>
     <active>true</active>
-    <description>Cuando es el campo plan de grupo familiar as200 o as204 Valores de pick list (AS500,	AS400,AS300), medio de cobro cbu o tarjeta (Otros), segmento del grupo voldir (OBLEMP, VOLEMP,OBLDIR),tipo de solicitud nuevo (REINGRESO, REING_GFAM) - Modif. JiraDES5765</description>
+    <description>Validación que no permite marcar el campo &quot;Afiliación Inmediata&quot; cuando el campo Medio de Cobro es (Otros),  o el segmento del grupo familiar es (OBLEMP, VOLEMP,OBLDIR), o el tipo de solicitud es (REINGRESO, REING_GFAM) - Modif. JiraDES9756</description>
     <errorConditionFormula>AND( 
       OR(
-            ISPICKVAL(Plan_del_grupo_familiar__c, &quot;AS500&quot;),
-            ISPICKVAL(Plan_del_grupo_familiar__c, &quot;AS400&quot;),
-            ISPICKVAL(Plan_del_grupo_familiar__c, &quot;AS300&quot;),
             ISPICKVAL(Segmento_del_Grupo_Familiar__c, &quot;OBLEMP&quot;),
             ISPICKVAL(Segmento_del_Grupo_Familiar__c, &quot;VOLEMP&quot;),
             ISPICKVAL(Segmento_del_Grupo_Familiar__c, &quot;OBLDIR&quot;),
@@ -18,5 +15,5 @@
            Indicador_de_Afiliacion_de_Inmediata__c = True
 )</errorConditionFormula>
     <errorDisplayField>Indicador_de_Afiliacion_de_Inmediata__c</errorDisplayField>
-    <errorMessage>No se le permite Afiliación inmediata para ese Plan de grupo familiar, Segmento de grupo familiar, medio de cobro</errorMessage>
+    <errorMessage>No se le permite Afiliación inmediata para ese Segmento de grupo familiar o medio de cobro</errorMessage>
 </ValidationRule>
