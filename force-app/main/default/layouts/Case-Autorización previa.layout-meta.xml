@@ -75,6 +75,10 @@
                 <behavior>Edit</behavior>
                 <field>Medico_asignado__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Pendiente_de_Respuesta_de_OS__c</field>
+            </layoutItems>            
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
