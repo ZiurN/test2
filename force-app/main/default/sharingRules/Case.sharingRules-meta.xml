@@ -53,6 +53,37 @@
         <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
+        <fullName>Liquidaciones_de_Prestaciones</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>Regla para compatir casos que pasaron por Liqiudación de Prestaciones- JIRA DES 9619/484</description>
+        <label>Liquidaciones de Prestaciones</label>
+        <sharedTo>
+            <group>Liquidacion_de_Prestaciones</group>
+        </sharedTo>
+        <booleanFilter>1 OR (2 AND 3 AND 4)</booleanFilter>
+        <criteriaItems>
+            <field>Viene_de_Liquidacion_de_Prestaciones__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Reclamos</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Type</field>
+            <operation>equals</operation>
+            <value>Copago</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Sub_tipo__c</field>
+            <operation>equals</operation>
+            <value>No corresponde</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
         <fullName>Presupuesto_Administracion_de_Convenios</fullName>
         <accessLevel>Read</accessLevel>
         <description>Sharing Rule para compartir registros de usuarios de Administracion de  Prestadores respecto de casos Subtipo= Valor Presupuesto o Ap Presupuesto = True- JIRA DES 5195</description>
