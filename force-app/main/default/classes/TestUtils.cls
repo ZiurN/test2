@@ -172,6 +172,15 @@ public without sharing class TestUtils {
 			System.assertEquals(0, subscribers.size(), 'No debe haber un suscriptor por el trigger del evento');
 		}
 	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz
+	@description	Clase que permite crear un mock para otras clases de Apex
+	@param			typeToMock - La clase que se desea "mockear".
+	@param			mockProvider - Instancia de la clase MockProvider para crear el mock.
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static Object createClassMock(Type typeToMock, MockProvider mockProvider) {
+		return Test.createStub(typeToMock, mockProvider);
+	}
 	/** Utils */
 	public static void setAuthToken (XHttpCalloutMock mock) {
 		mock.buildResponse()

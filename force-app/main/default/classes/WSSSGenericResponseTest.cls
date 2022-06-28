@@ -268,9 +268,9 @@ public class WSSSGenericResponseTest {
 						'\"tipo_ap_sf\": \"PRESTACION\",'+
 						'\"ap_material\": \"F\",'+
 						'\"ap_presupuesto\": \"F\",'+
-				'\"celula\": \"Celula 2\",' +
-			' \"sla\": \"24\",' +
-			' \"estado_em\": \"Autorizado\",' +
+						'\"celula\": \"Celula 2\",' +
+						'\"sla\": \"24\",' +
+						'\"estado_em\": \"Autorizado\",' +
 						'\"prestaciones\": ['+
 							'{'+
 								'\"apr_id\": \"1014010605\",'+
@@ -988,5 +988,110 @@ public class WSSSGenericResponseTest {
 		System.assertEquals(expectedMessage, data.message, 'La propiedad data debe ser diferente de null');
 		System.assert(data.errors != null, 'La propiedad errors debe ser diferente de null');
 		System.assertEquals(expectedMessage, data.errors.message, 'La propiedad data debe ser diferente de null');
+	}
+	@isTest
+	static void testParseAfiliadoDatosOk () {
+		String expectedMessage = 'Se ejecutó el proceso.';
+		WSSSGenericResponse response = WSSSGenericResponse.parse(AfiliadoEndpointsMockResponses.getDatosSFResponseOk());
+		System.assert(response.data != null, 'El valor deber ser no nulo');
+		System.assert(response.data[0].domiafi_id == null, 'El valor debe ser nulo');
+		System.assert(response.data[0].telafi_id == null, 'El valor debe ser nulo');
+		System.assert(!response.error, 'El valor debe ser false');
+		System.assert(response.httpCode != null, 'El valor debe ser no nulo');
+		System.assertEquals(200, response.httpCode, 'El código debe ser 200');
+		System.assert(response.message != null, 'El valor debe ser no nulo');
+		System.assertEquals(expectedMessage, response.message, 'El mensaje no es el esperado');
+		System.assert(response.meta != null, 'El valor debe ser no nulo');
+		System.assert(response.meta.allowed_includes.isEmpty(), 'La lista debe estar vacía');
+		System.assert(response.meta.default_includes.isEmpty(), 'La lista debe estar vacía');
+	}
+	@isTest
+	static void testParseAfiliadoDatosError () {
+		String expectedMessage = 'No se pudieron replicar los datos.';
+		WSSSGenericResponse response = WSSSGenericResponse.parse(AfiliadoEndpointsMockResponses.getDatosSFResponseError());
+		System.assert(response.data != null, 'El valor deber ser no nulo');
+		System.assert(response.error == null, 'El valor debe ser false');
+		System.assert(response.httpCode != null, 'El valor debe ser no nulo');
+		System.assertEquals(400, response.httpCode, 'El código debe ser 400');
+		System.assert(response.message != null, 'El valor debe ser no nulo');
+		System.assertEquals(expectedMessage, response.message, 'El mensaje no es el esperado');
+	}
+	@isTest
+	static void testParseAsociacionFacturaElectronicaOK () {
+		String expectedMessage = 'Se actualizó la información de FE del socio.';
+		WSSSGenericResponse response = WSSSGenericResponse.parse(AfiliadoEndpointsMockResponses.getAsociacionFacturaElectronicaOK());
+		System.assert(response != null, 'El valor debe ser no nulo');
+		System.assert(!response.error, 'No debe haber un error');
+		System.assert(response.data == null, 'El valor deber ser nulo');
+		System.assert(response.httpCode != null, 'El valor debe ser no nulo');
+		System.assertEquals(201, response.httpCode, 'El código debe ser 200');
+		System.assert(response.message != null, 'El valor debe ser no nulo');
+		System.assertEquals(expectedMessage, response.message, 'El mensaje no es el esperado');
+		System.assert(response.meta != null, 'El valor debe ser no nulo');
+		System.assert(response.meta.allowed_includes.isEmpty(), 'La lista debe estar vacía');
+		System.assert(response.meta.default_includes.isEmpty(), 'La lista debe estar vacía');
+	}
+	@isTest
+	static void testParseAsociacionFacturaElectronicaError () {
+		String expectedMessage = 'No se pudo actualizar la información de FE del socio. DATO INGRESADO IGUAL AL ACTUAL.';
+		WSSSGenericResponse response = WSSSGenericResponse.parse(AfiliadoEndpointsMockResponses.getAsociacionFacturaElectronicaError());
+		System.assert(response.error == null, 'El valor debe ser false');
+		System.assert(response.httpCode == null, 'El valor debe ser nulo');
+		System.assert(response.meta == null, 'El valor debe ser nulo');
+		System.assert(response.data != null, 'El valor deber ser no nulo');
+		System.assertEquals(1, response.data.size(), 'Debe haber un elemento Data');
+		WSSSGenericResponse.Data data = response.data[0];
+		System.assert(data.error, 'Debe haber un error');
+		System.assertEquals(400, data.httpCode, 'El código debe ser 400');
+		System.assert(data.message != null, 'El valor debe ser no nulo');
+		System.assertEquals(expectedMessage, data.message, 'El mensaje no es el esperado');
+	}
+	@isTest
+	static void testParseOppAlta_ResponseOk () {
+		String expectedMessage = 'Se generó satisfactoriamente la solicitud de alta';
+		String json = '{'+
+			'\"error\": false,'+
+			'\"data\": [{'+
+				'\"sf_id\": \"sfid12345\",'+
+				'\"solafi_id\": \"724171\",'+
+				'\"estado_sol\": \"COMPLETA\",'+
+				'\"estado_dj\": \"NUEVA\",'+
+				'\"codigo_as\": null,'+
+				'\"tipo_asoc\": \"DSATIT\",'+
+				'\"notas\": ['+
+					'{'+
+						'\"nota_id\": \"128804\",'+
+						'\"texto_nota\": \"Nota de prueba\"'+
+					'}'+
+				']'+
+			'}],'+
+			'\"httpCode\": 200,'+
+			'\"message\": \"Se generó satisfactoriamente la solicitud de alta\",'+
+			'\"meta\": {'+
+				'\"allowed_includes\": [],'+
+				'\"default_includes\": []'+
+			'}'+
+		'}';
+		WSSSGenericResponse parsedObject = WSSSGenericResponse.parse(json);
+		System.assert(parsedObject != null, 'El valor no debe ser nulo');
+		System.assert(parsedObject != null, 'El valor no debe ser nulo');
+		System.assert(!parsedObject.error, 'El campo debe ser false');
+		System.assert(parsedObject.data != null, 'El objeto data debe ser nulo');
+		System.assertEquals(1, parsedObject.data.size(), 'Debe haber un solo objeto data');
+		WSSSGenericResponse.data data = parsedObject.data[0];
+		System.assertEquals('sfid12345', data.sf_id, 'El valor no coincide con el esperado');
+		System.assertEquals('724171', data.solafi_id, 'El valor no coincide con el esperado');
+		System.assertEquals('DSATIT', data.tipo_asoc, 'El valor no coincide con el esperado');
+		System.assertEquals(null, data.codigo_as, 'El valor no coincide con el esperado');
+		System.assertEquals(1, data.notas.size(), 'Debe haber un solo objeto data');
+		WSSSGenericResponse.Notas nota = data.notas[0];
+		System.assertEquals('128804', nota.nota_id, 'El valor no coincide con el esperado');
+		System.assertEquals('Nota de prueba', nota.texto_nota, 'El valor no coincide con el esperado');
+		System.assert(parsedObject.httpCode != null, 'El campo no debe ser nulo');
+		System.assertEquals(200, parsedObject.httpCode, 'Debe haber un solo objeto data');
+		System.assertEquals(expectedMessage, parsedObject.message, 'Debe haber un solo objeto data');
+		System.assert(parsedObject.meta != null, 'El campo no debe ser nulo');
+		System.assert(parsedObject.meta.allowed_includes.isEmpty(), 'La lista debe estar vacía');
+		System.assert(parsedObject.meta.default_includes.isEmpty(), 'La lista debe estar vacía');
 	}
 }

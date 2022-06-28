@@ -1,5 +1,6 @@
-@SuppressWarnings('PMD.ApexCRUDViolation')
+@SuppressWarnings('PMD.ApexCRUDViolation, PMD.ExcessiveParameterList')
 public without sharing class ConfigUtils  {
+	public static SSResponseEventTriggerHandler eventHandler = new SSResponseEventTriggerHandler();
 	public static Organization currentOrg;
 	public static Boolean isSandboxEnviroment() {
 		if (currentOrg == null) {
@@ -35,22 +36,6 @@ public without sharing class ConfigUtils  {
 		if(!result.isEmpty()) {return result[0];}
 		return null;
 	}
-	public static Access_Token__c getToken(){
-		Access_Token__c[] token = [SELECT DueDate__c,
-									Encrypting_Key__c,
-									Value__c,
-									Value_2__c,
-									Value_3__c,
-									Value_4__c,
-									Value_5__c,
-									Refresh_Value__c,
-									Refresh_Value_2__c,
-									Refresh_Value_3__c,
-									Refresh_Value_4__c
-							FROM Access_Token__c];
-		if(token.isEmpty()){return null;}
-		else{return token[0];}
-	}
 	public static AWS_settings__mdt getAWSConfig(String name) {
 		List<AWS_settings__mdt> result = [SELECT Name_Credential__c, Bucket__c, File_Directory__c, Region__c
 											FROM AWS_settings__mdt
@@ -76,13 +61,13 @@ public without sharing class ConfigUtils  {
 	@param			isError - Booleano que indica si el evento está relacionado a una respuesta de error en SS.
 	------------------------------------------------------------------------------------------------------------------------*/
 	public static void fireSSResponseEvent (String message, String recordId, Boolean isCreating, Boolean isError) {
-		SS_Response_Event__e errorEvent =  new SS_Response_Event__e(
-			isDelete__c = isCreating,
-			error__c = isError,
-			Response_Error__c = message,
-			Id_Registro__c = !String.isBlank(recordId) ? recordId : 'NoID'
+		SSResponseEvent__e errorEvent =  new SSResponseEvent__e(
+			isCreationEvent__c = isCreating,
+			isErrorEvent__c = isError,
+			message__c = message,
+			recordId__c = !String.isBlank(recordId) ? recordId : 'NoID'
 		);
-		List<Database.SaveResult> results = EventBus.publish(new List<SS_Response_Event__e>{errorEvent});
+		List<Database.SaveResult> results = EventBus.publish(new List<SSResponseEvent__e>{errorEvent});
 		for (Database.SaveResult result : results) {
 			if (!result.isSuccess()) {
 				for (Database.Error err : result.getErrors()) {
@@ -91,5 +76,13 @@ public without sharing class ConfigUtils  {
 				}
 			}
 		}
+	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
+	@description	Método para manejar eventos tipo SSResponseEvent__e.
+	@param			event - Evento a manejar
+	------------------------------------------------------------------------------------------------------------------------*/
+	public static void handleSSResponseEventFired (SSResponseEvent__e event) {
+		eventHandler.handleFiredEvent(event);
 	}
 }

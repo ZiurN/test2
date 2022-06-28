@@ -27,10 +27,11 @@ public with sharing class WSEnviarASSHelper {
 		public WSSSGenericResponse result;
 		public override void processResponse(HttpResponse response) {
 			result = WSEnviarASSHelper.processResponse(response);
+			this.message = !String.isBlank(result.message) ? result.message : this.message;
 		}
 		public override void processError(HttpResponse response) {
 			result = WSEnviarASSHelper.processResponse(response);
-			this.message = result.processMessage();
+			this.message = !String.isBlank(result.message) ? result.message : result.processMessage();
 		}
 	}
 	public class SSRequest {

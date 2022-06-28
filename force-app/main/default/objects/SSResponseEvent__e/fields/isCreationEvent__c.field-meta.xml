@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>isDelete__c</fullName>
+    <fullName>isCreationEvent__c</fullName>
     <defaultValue>false</defaultValue>
-    <description>Verifica si el evento se dispara para borrar un registro</description>
+    <description>Verifica si el evento se dispara durante la creación de un registro</description>
     <externalId>false</externalId>
     <isFilteringDisabled>false</isFilteringDisabled>
     <isNameField>false</isNameField>
     <isSortingDisabled>false</isSortingDisabled>
-    <label>isDelete</label>
+    <label>is Create Event</label>
     <type>Checkbox</type>
 </CustomField>

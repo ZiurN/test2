@@ -13,10 +13,6 @@ public class ConfigUtilsTest  {
 		System.assertNotEquals(null, ConfigUtils.getBatchDebugEmails(), 'La respuesta no debe ser nula');
 	}
 	@IsTest
-	static void getAccessToken(){
-		System.assertEquals(null, ConfigUtils.getToken(), 'La respuesta no debe ser nula');
-	}
-	@IsTest
 	static void getEndpointsByTipoTest() {
 		Map<String, Webservice_endpoint__mdt> result = ConfigUtils.getEndpointsByTipo('solicitudes-afiliados');
 		System.assertEquals('/v1/salud/solicitudes-afiliados/alta-familiar', result.get('alta-familiar').Endpoint__c, 'El endpoint no es el esperado');
