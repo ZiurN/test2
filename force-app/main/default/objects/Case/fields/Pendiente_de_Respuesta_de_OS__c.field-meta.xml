@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pendiente_de_Respuesta_de_OS__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>JIRA DES-10010 requerido por Equipo de Discapacidad que permita identificar los presentados de los no presentados</description>
+    <externalId>false</externalId>
+    <label>Pendiente de Respuesta de OS</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
