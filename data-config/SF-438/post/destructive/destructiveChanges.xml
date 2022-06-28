@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+	<types>
+		<members>WSAsociadoFacturaElectronicaResp</members>
+		<members>WSAsociadoFacturaElectronicaRespTest</members>
+		<members>WSAsociadoFacturaElectronica</members>
+		<members>WSAsociadoFacturaElectronicaTest</members>
+		<members>WSAsociadoFacturaElectronicaMock</members>
+		<name>ApexClass</name>
+	</types>
+	<types>
+		<members>SS_Response_Event__e</members>
+		<name>CustomObject</name>
+	</types>
+</Package>
