@@ -2,7 +2,7 @@
 @IsTest
 public class Build {
 	/**-----------------------------------------------------------------------
-		AccountBuilder
+		Account
 	------------------------------------------------------------------------*/
 		public class AccountBuilder {
 			private Account obj = new Account();
@@ -129,7 +129,7 @@ public class Build {
 			value.obj.Name = 'STRING';
 			return value;
 		}
-		public static AccountBuilder anAccountCuentapersonal() {
+		public static AccountBuilder anAccountCuentaPersonal() {
 			AccountBuilder value = new AccountBuilder();
 			value.obj.RecordTypeId = XappiaHelper.getRecordType('Account', 'Cuenta_personal').Id;
 			value.obj.LastName = 'STRING';
@@ -172,7 +172,7 @@ public class Build {
 			return new MasterConfigsBuilder();
 		}
 	/*------------------------------------------------------------------------
-		LeadBuilder
+		Lead
 	------------------------------------------------------------------------*/
 		public class LeadBuilder {
 			Lead o = new Lead(
@@ -648,7 +648,7 @@ public class Build {
 			return value;
 		}
 	/*------------------------------------------------------------------------
-		CaseBuilder
+		Case
 	------------------------------------------------------------------------*/
 		public class CaseBuilder {
 			private Case obj = new Case();
@@ -1022,7 +1022,7 @@ public class Build {
 			return aCase;
 		}
 	/*------------------------------------------------------------------------
-		User Builder
+		User
 	------------------------------------------------------------------------*/
 		public class UserBuilder {
 			String orgId = UserInfo.getOrganizationId();
@@ -1095,7 +1095,7 @@ public class Build {
 		}
 		public static UserBuilder anUser() { return new UserBuilder(); }
 	/*------------------------------------------------------------------------
-		Nomenclador Builder
+		Nomenclador
 	------------------------------------------------------------------------*/
 		public class NomencladorDePrestacionBuilder {
 			private Nomenclador_de_Prestacion__c nomenclador = new Nomenclador_de_Prestacion__c();

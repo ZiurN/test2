@@ -1,31 +1,16 @@
-import { LightningElement, api, wire } from 'lwc';
-import { getRecord, getRecordNotifyChange } from 'lightning/uiRecordApi';
+import { LightningElement, api } from 'lwc';
+import { getRecordNotifyChange } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { subscribe, unsubscribe, onError } from 'lightning/empApi';
-const FIELDS_OPPORTUNITY = [
-	'Opportunity.Estado_de_solicitud__c',
-	'Opportunity.Nro_de_solicitud__c'
-];
+
 export default class SegmentoResponseListener extends LightningElement {
 	@api recordId;
 	estado;
 	nroSolicitud;
-	channelName = '/event/SS_Response_Event__e';
+	channelName = '/event/SSResponseEvent__e';
 	isSubscribeDisabled = false;
 	isUnsubscribeDisabled = !this.isSubscribeDisabled;
 	subscription = {};
-	/** get Data */
-	@wire(getRecord, { recordId: '$recordId', fields: FIELDS_OPPORTUNITY })
-	processDataFromSF ({data, error}) {
-		if (data) {
-			this.estado = data.fields.Estado_de_solicitud__c.value;
-			this.nroSolicitud = data.fields.Nro_de_solicitud__c.value;
-			console.log(this.estado);
-			console.log(this.nroSolicitud);
-		} else if (error) {
-			console.log(error);
-		}
-	}
 	/** Lifecycle methods */
 	connectedCallback() {
 		this.registerErrorListener();
@@ -36,7 +21,24 @@ export default class SegmentoResponseListener extends LightningElement {
 	}
 	/** Events handlers */
 	handleSubscribe () {
-		subscribe(this.channelName, -1, this.messageCallback).then(
+		subscribe(this.channelName, -1, (response) => {
+			try {
+				console.log(JSON.parse(JSON.stringify(response.data.payload)));
+				let record_Id = response.data.payload.recordId__c;
+				let hasSSError = response.data.payload.isErrorEvent__c;
+				let isDelete = response.data.payload.isCreationEvent__c;
+				if (isDelete || (record_Id === this.recordId && hasSSError)) {
+					this.sendMessageToUser('error', response.data.payload.message__c);
+				} else if (!hasSSError && !isDelete) {
+					this.sendMessageToUser('success', response.data.payload.message__c);
+					this.handleUnsubscribe();
+				}
+				getRecordNotifyChange([{recordId: this.recordId}]);
+			} catch (error) {
+				console.log(error);
+				this.sendMessageToUser('warning', 'Error al procesar respuesta de SaludSoft, por favor recargue la página');
+			}
+		}).then(
 			response => {
 				this.subscription = response;
 				console.log('suscrito: ' + response.channel);
@@ -47,18 +49,6 @@ export default class SegmentoResponseListener extends LightningElement {
 		unsubscribe(this.subscription, response => {
 			console.log('Desuscrito: ' + response);
 		});
-	}
-	messageCallback = (response) => {
-		let record_Id = response.recorddata.payload.Id_Registro__c;
-		let hasSSError = response.data.payload.error__c;
-		let isDelete = response.data.payload.isDelete__c;
-		if (isDelete || (record_Id === this.recordId && hasSSError)) {
-			this.sendMessageToUser('error', response.data.payload.Response_Error__c);
-		} else if (!hasSSError && !isDelete) {
-			this.sendMessageToUser('success', response.data.payload.Response_Error__c);
-		}
-		getRecordNotifyChange([{recordId: this.recordId}]);
-		this.handleUnsubscribe();
 	}
 	registerErrorListener() {
 		// Invoke onError empApi method

@@ -25,7 +25,7 @@ public class WSSSGenericResponse {
 								} when 'default_includes' {
 									default_includes = arrayOfNotas(parser);
 								} when else {
-									System.debug(LoggingLevel.WARN, 'Meta consuming unrecognized property: '+text);
+									System.debug(LoggingLevel.WARN, 'Meta consuming unrecognized property: ' + text);
 									consumeObject(parser);
 								}
 							}
@@ -90,8 +90,10 @@ public class WSSSGenericResponse {
 			public Integer line {get; set;}
 			public EventoMedico em {get; set;}
 			public List<Prestaciones> prestaciones {get;set;}
+			public String domiafi_id {get;set;}
+			public String telafi_id {get;set;}
 			public Data() {}
-			public Data(JSONParser parser) {
+			public Data (JSONParser parser) {
 				while (parser.nextToken() != System.JSONToken.END_OBJECT) {
 					if (parser.getCurrentToken() == System.JSONToken.FIELD_NAME) {
 						String text = parser.getText();
@@ -155,6 +157,10 @@ public class WSSSGenericResponse {
 									em = new EventoMedico(parser);
 								} when 'prestaciones' {
 									prestaciones = arrayOfPrestaciones(parser);
+								} when 'domiafi_id' {
+									domiafi_id = parser.getText();
+								} when 'telafi_id'{
+									telafi_id = parser.getText();
 								} when else {
 									System.debug(LoggingLevel.WARN, 'Data consuming unrecognized property: ' + text);
 									consumeObject(parser);
@@ -961,11 +967,11 @@ public class WSSSGenericResponse {
 		this.data = new List<Data>{response.data};
 	}
 	/** Métodos de construcción */
-	public static WSSSGenericResponse parse(String json) {
+	public static WSSSGenericResponse parse (String json) {
 		System.JSONParser parser = System.JSON.createParser(json);
 		return new WSSSGenericResponse(parser);
 	}
-	private static List<Data> arrayOfDatas(System.JSONParser p) {
+	private static List<Data> arrayOfDatas (System.JSONParser p) {
 		List<Data> res = new List<Data>();
 		if (p.getCurrentToken() == null) p.nextToken();
 		while (p.nextToken() != System.JSONToken.END_ARRAY) {
@@ -973,7 +979,7 @@ public class WSSSGenericResponse {
 		}
 		return res;
 	}
-	private static List<Notas> arrayOfNotas(System.JSONParser p) {
+	private static List<Notas> arrayOfNotas (System.JSONParser p) {
 		List<Notas> res = new List<Notas>();
 		if (p.getCurrentToken() == null) p.nextToken();
 		while (p.nextToken() != System.JSONToken.END_ARRAY) {
@@ -981,7 +987,7 @@ public class WSSSGenericResponse {
 		}
 		return res;
 	}
-	private static List<Ap> arrayOfAp(System.JSONParser p) {
+	private static List<Ap> arrayOfAp (System.JSONParser p) {
 		List<Ap> res = new List<Ap>();
 		if (p.getCurrentToken() == null) p.nextToken();
 		while (p.nextToken() != System.JSONToken.END_ARRAY) {
@@ -989,7 +995,7 @@ public class WSSSGenericResponse {
 		}
 		return res;
 	}
-	private static List<Prestaciones> arrayOfPrestaciones(System.JSONParser p) {
+	private static List<Prestaciones> arrayOfPrestaciones (System.JSONParser p) {
 		List<Prestaciones> res = new List<Prestaciones>();
 		if (p.getCurrentToken() == null) p.nextToken();
 		while (p.nextToken() != System.JSONToken.END_ARRAY) {
@@ -997,7 +1003,7 @@ public class WSSSGenericResponse {
 		}
 		return res;
 	}
-	private static List<Alertas> arrayOfAlertas(System.JSONParser p) {
+	private static List<Alertas> arrayOfAlertas (System.JSONParser p) {
 		List<Alertas> res = new List<Alertas>();
 		if (p.getCurrentToken() == null) p.nextToken();
 		while (p.nextToken() != System.JSONToken.END_ARRAY) {
@@ -1005,7 +1011,7 @@ public class WSSSGenericResponse {
 		}
 		return res;
 	}
-	private static List<Segmento> arrayOfSegmento(System.JSONParser p) {
+	private static List<Segmento> arrayOfSegmento (System.JSONParser p) {
 		List<Segmento> res = new List<Segmento>();
 		if (p.getCurrentToken() == null) p.nextToken();
 		while (p.nextToken() != System.JSONToken.END_ARRAY) {
@@ -1013,7 +1019,7 @@ public class WSSSGenericResponse {
 		}
 		return res;
 	}
-	public static void consumeObject(System.JSONParser parser) {
+	public static void consumeObject (System.JSONParser parser) {
 		Integer depth = 0;
 		do {
 			System.JSONToken curr = parser.getCurrentToken();

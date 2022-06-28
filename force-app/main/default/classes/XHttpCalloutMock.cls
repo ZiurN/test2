@@ -1,5 +1,7 @@
 @isTest
 public class XHttpCalloutMock implements HttpCalloutMock {
+	private String serviceType {get;set;}
+	private String service {get;set;}
 	public static final String NOT_FOUND_ADDRESS = '404 not found';
 	// Total amount of calls made to all callout services.
 	public Integer callsMade;
@@ -7,14 +9,15 @@ public class XHttpCalloutMock implements HttpCalloutMock {
 	public HTTPRequest latestRequest;
 	public List<HTTPRequest> receivedRequests;
 	public XHttpCalloutMock() {
-		callsMade = 0;
-		receivedRequests = new List<HTTPRequest>();
-		responseWrappers = new Map<String, ResponseWrapper>();
-		//Make sure there is a 404 in case the address received doesn't match
-		buildResponse().withStatus('404 not found').withStatusCode(404)
-		.addForAddress(NOT_FOUND_ADDRESS);
+		setXHttpCalloutMock();
+	}
+	public XHttpCalloutMock(String serviceType, String service) {
+		this.serviceType = serviceType;
+		this.service = service;
+		setXHttpCalloutMock();
 	}
 	public HTTPResponse respond(HTTPRequest req) {
+		validateRequest(req);
 		latestRequest = req;
 		receivedRequests.add(req);
 		callsMade++;
@@ -33,6 +36,39 @@ public class XHttpCalloutMock implements HttpCalloutMock {
 	}
 	public ResponseWrapperBuilder buildResponse() {
 		return new ResponseWrapperBuilder(this);
+	}
+	private void setXHttpCalloutMock () {
+		callsMade = 0;
+		receivedRequests = new List<HTTPRequest>();
+		responseWrappers = new Map<String, ResponseWrapper>();
+		//Make sure there is a 404 in case the address received doesn't match
+		buildResponse().withStatus('404 not found').withStatusCode(404)
+		.addForAddress(NOT_FOUND_ADDRESS);
+	}
+	/**-----------------------------------------------------------------------------------------------------------------------
+	@author			Jeferson Ruiz.
+	@description	Método validar que el request de los diferentes llamados sea el correcto.
+	@param			req - Cuerpo del request
+	------------------------------------------------------------------------------------------------------------------------*/
+	private void validateRequest (HTTPRequest req) {
+		String authTokenEndpoint = WSAuthToken.SERVICE_CONFIG.URL__c + '/oauth/token';
+		Boolean isAuthCall = req.getEndpoint() == authTokenEndpoint;
+		if (!isAuthCall && !String.isBlank(serviceType) && !String.isBlank(service)) {
+			Map<String, Object> reqBody = (Map<String,Object>) JSON.deserializeUntyped(req.getBody());
+			switch on serviceType {
+				when 'afiliado' {
+					switch on service {
+						when 'datos-sf' {
+							Boolean emailSent = reqBody.containsKey('email');
+							System.assert(!String.isBlank((String) reqBody.get('afi_id')), 'La propiedad no debe estar vacía');
+							if (emailSent) {
+								System.assert(!String.isBlank((String) reqBody.get('email')) || reqBody.get('email') == '', 'La propiedad no debe estar vacía');
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	public class ResponseWrapper {
 		public Integer statusCode = 200;

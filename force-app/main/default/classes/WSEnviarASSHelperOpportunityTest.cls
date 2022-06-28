@@ -13,7 +13,7 @@ public with sharing class WSEnviarASSHelperOpportunityTest {
 		String body = '{"nota_usuario" : "CRIOS"}';
 		String extraParams = '12345678/incompleta';
 		String finalURL = SOLICITUDES_AFILIADOS_URL + '/' + extraParams;
-		System.debug(finalURL);
+		String expectedMessage = 'La solicitud ha pasado a estado Incompleta exitosamente.';
 		TestUtils.setMockResponse(ssSolicitudesAfiliadosResponseMock, finalURL, SolicitudesAfiliadosMock.getIncompletaResponseOk());
 		Test.setMock(HttpCalloutMock.class, ssSolicitudesAfiliadosResponseMock);
 		Test.startTest();
@@ -21,7 +21,7 @@ public with sharing class WSEnviarASSHelperOpportunityTest {
 		WSEnviarASSHelper.Response response = WSEnviarASSHelper.enviarASS(ssRequest);
 		Test.stopTest();
 		System.assert(!response.hasError, 'No debe haber ningun error');
-		System.assertEquals('Ok', response.message, 'El mensaje no es el esperado');
+		System.assertEquals(expectedMessage, response.message, 'El mensaje no es el esperado');
 	}
 	@isTest
 	private static void oppClosedLost_ifSSResponseIsError_getResponse () {
